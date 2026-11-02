@@ -1,0 +1,1232 @@
+#VRML_SIM R2025a utf8
+EXTERNPROTO "../protos/SimpleBot.proto"
+
+WorldInfo {
+  basicTimeStep 32
+  contactProperties [ ContactProperties { material2 "slippery" coulombFriction [ 0 ] } ]
+}
+Viewpoint {
+  orientation -0.45 0.45 0.77 1.82
+  position 1 -15 17
+}
+Background { skyColor [ 0.75 0.8 0.85 ] }
+DirectionalLight { direction -0.3 0.4 -1 intensity 2.5 castShadows TRUE }
+DirectionalLight { direction 0.4 -0.3 -1 intensity 1 }
+Solid {
+  name "floor"
+  children [ Shape { appearance PBRAppearance { baseColor 0.55 0.55 0.52 roughness 1 metalness 0 } geometry Plane { size 20.0 14.0 } } ]
+  boundingObject Plane { size 20.0 14.0 }
+}
+Solid {
+  name "inbound_mark"
+  translation -7.22 0 0.001
+  children [ Shape { appearance PBRAppearance { baseColor 0.85 0.75 0.3 roughness 1 metalness 0 } geometry Plane { size 0.7 12.4 } } ]
+}
+Solid {
+  translation 0.000 7.000 0.250
+  name "wall_n"
+  children [ Shape { appearance PBRAppearance { baseColor 0.75 0.75 0.7 roughness 0.8 metalness 0 } geometry Box { size 20.0 0.1 0.5 } } ]
+  boundingObject Box { size 20.0 0.1 0.5 }
+}
+Solid {
+  translation 0.000 -7.000 0.250
+  name "wall_s"
+  children [ Shape { appearance PBRAppearance { baseColor 0.75 0.75 0.7 roughness 0.8 metalness 0 } geometry Box { size 20.0 0.1 0.5 } } ]
+  boundingObject Box { size 20.0 0.1 0.5 }
+}
+Solid {
+  translation 10.000 0.000 0.250
+  name "wall_e"
+  children [ Shape { appearance PBRAppearance { baseColor 0.75 0.75 0.7 roughness 0.8 metalness 0 } geometry Box { size 0.1 14.0 0.5 } } ]
+  boundingObject Box { size 0.1 14.0 0.5 }
+}
+Solid {
+  translation -10.000 0.000 0.250
+  name "wall_w"
+  children [ Shape { appearance PBRAppearance { baseColor 0.75 0.75 0.7 roughness 0.8 metalness 0 } geometry Box { size 0.1 14.0 0.5 } } ]
+  boundingObject Box { size 0.1 14.0 0.5 }
+}
+Solid {
+  translation 2.000 -4.500 0.060
+  name "rack0_base"
+  children [ Shape { appearance PBRAppearance { baseColor 0.45 0.45 0.5 roughness 0.8 metalness 0 } geometry Box { size 10.0 0.6 0.12 } } ]
+  boundingObject Box { size 10.0 0.6 0.12 }
+}
+Solid {
+  translation 2.000 -4.500 0.350
+  name "rack0_panel"
+  children [ Shape { appearance PBRAppearance { baseColor 0.35 0.4 0.5 roughness 0.8 metalness 0 } geometry Box { size 10.0 0.04 0.7 } } ]
+  boundingObject Box { size 10.0 0.04 0.7 }
+}
+DEF ITEM_blue_00 Solid {
+  translation -2.750 -4.670 0.270
+  name "blue_00"
+  children [ Shape { appearance PBRAppearance { baseColor 0.15 0.35 0.8 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "blue_00"
+  recognitionColors [ 0.15 0.35 0.8 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_blue_01 Solid {
+  translation -2.250 -4.670 0.270
+  name "blue_01"
+  children [ Shape { appearance PBRAppearance { baseColor 0.15 0.35 0.8 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "blue_01"
+  recognitionColors [ 0.15 0.35 0.8 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_blue_02 Solid {
+  translation -1.750 -4.670 0.270
+  name "blue_02"
+  children [ Shape { appearance PBRAppearance { baseColor 0.15 0.35 0.8 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "blue_02"
+  recognitionColors [ 0.15 0.35 0.8 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_red_00 Solid {
+  translation -0.750 -4.670 0.270
+  name "red_00"
+  children [ Shape { appearance PBRAppearance { baseColor 0.8 0.2 0.15 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "red_00"
+  recognitionColors [ 0.8 0.2 0.15 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_red_01 Solid {
+  translation -0.250 -4.670 0.270
+  name "red_01"
+  children [ Shape { appearance PBRAppearance { baseColor 0.8 0.2 0.15 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "red_01"
+  recognitionColors [ 0.8 0.2 0.15 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_red_02 Solid {
+  translation 0.250 -4.670 0.270
+  name "red_02"
+  children [ Shape { appearance PBRAppearance { baseColor 0.8 0.2 0.15 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "red_02"
+  recognitionColors [ 0.8 0.2 0.15 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_brown_00 Solid {
+  translation 1.250 -4.670 0.270
+  name "brown_00"
+  children [ Shape { appearance PBRAppearance { baseColor 0.55 0.38 0.2 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "brown_00"
+  recognitionColors [ 0.55 0.38 0.2 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_brown_01 Solid {
+  translation 1.750 -4.670 0.270
+  name "brown_01"
+  children [ Shape { appearance PBRAppearance { baseColor 0.55 0.38 0.2 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "brown_01"
+  recognitionColors [ 0.55 0.38 0.2 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_brown_02 Solid {
+  translation 2.250 -4.670 0.270
+  name "brown_02"
+  children [ Shape { appearance PBRAppearance { baseColor 0.55 0.38 0.2 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "brown_02"
+  recognitionColors [ 0.55 0.38 0.2 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_green_00 Solid {
+  translation 3.250 -4.670 0.270
+  name "green_00"
+  children [ Shape { appearance PBRAppearance { baseColor 0.2 0.6 0.25 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "green_00"
+  recognitionColors [ 0.2 0.6 0.25 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_green_01 Solid {
+  translation 3.750 -4.670 0.270
+  name "green_01"
+  children [ Shape { appearance PBRAppearance { baseColor 0.2 0.6 0.25 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "green_01"
+  recognitionColors [ 0.2 0.6 0.25 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_green_02 Solid {
+  translation 4.250 -4.670 0.270
+  name "green_02"
+  children [ Shape { appearance PBRAppearance { baseColor 0.2 0.6 0.25 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "green_02"
+  recognitionColors [ 0.2 0.6 0.25 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_blue_03 Solid {
+  translation 5.250 -4.670 0.270
+  name "blue_03"
+  children [ Shape { appearance PBRAppearance { baseColor 0.15 0.35 0.8 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "blue_03"
+  recognitionColors [ 0.15 0.35 0.8 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_blue_04 Solid {
+  translation 5.750 -4.670 0.270
+  name "blue_04"
+  children [ Shape { appearance PBRAppearance { baseColor 0.15 0.35 0.8 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "blue_04"
+  recognitionColors [ 0.15 0.35 0.8 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_blue_05 Solid {
+  translation 6.250 -4.670 0.270
+  name "blue_05"
+  children [ Shape { appearance PBRAppearance { baseColor 0.15 0.35 0.8 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "blue_05"
+  recognitionColors [ 0.15 0.35 0.8 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_red_03 Solid {
+  translation -2.750 -4.330 0.270
+  name "red_03"
+  children [ Shape { appearance PBRAppearance { baseColor 0.8 0.2 0.15 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "red_03"
+  recognitionColors [ 0.8 0.2 0.15 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_red_04 Solid {
+  translation -2.250 -4.330 0.270
+  name "red_04"
+  children [ Shape { appearance PBRAppearance { baseColor 0.8 0.2 0.15 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "red_04"
+  recognitionColors [ 0.8 0.2 0.15 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_red_05 Solid {
+  translation -1.750 -4.330 0.270
+  name "red_05"
+  children [ Shape { appearance PBRAppearance { baseColor 0.8 0.2 0.15 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "red_05"
+  recognitionColors [ 0.8 0.2 0.15 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_brown_03 Solid {
+  translation -0.750 -4.330 0.270
+  name "brown_03"
+  children [ Shape { appearance PBRAppearance { baseColor 0.55 0.38 0.2 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "brown_03"
+  recognitionColors [ 0.55 0.38 0.2 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_brown_04 Solid {
+  translation -0.250 -4.330 0.270
+  name "brown_04"
+  children [ Shape { appearance PBRAppearance { baseColor 0.55 0.38 0.2 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "brown_04"
+  recognitionColors [ 0.55 0.38 0.2 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_brown_05 Solid {
+  translation 0.250 -4.330 0.270
+  name "brown_05"
+  children [ Shape { appearance PBRAppearance { baseColor 0.55 0.38 0.2 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "brown_05"
+  recognitionColors [ 0.55 0.38 0.2 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_green_03 Solid {
+  translation 1.250 -4.330 0.270
+  name "green_03"
+  children [ Shape { appearance PBRAppearance { baseColor 0.2 0.6 0.25 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "green_03"
+  recognitionColors [ 0.2 0.6 0.25 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_green_04 Solid {
+  translation 1.750 -4.330 0.270
+  name "green_04"
+  children [ Shape { appearance PBRAppearance { baseColor 0.2 0.6 0.25 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "green_04"
+  recognitionColors [ 0.2 0.6 0.25 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_green_05 Solid {
+  translation 2.250 -4.330 0.270
+  name "green_05"
+  children [ Shape { appearance PBRAppearance { baseColor 0.2 0.6 0.25 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "green_05"
+  recognitionColors [ 0.2 0.6 0.25 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_blue_06 Solid {
+  translation 3.250 -4.330 0.270
+  name "blue_06"
+  children [ Shape { appearance PBRAppearance { baseColor 0.15 0.35 0.8 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "blue_06"
+  recognitionColors [ 0.15 0.35 0.8 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_blue_07 Solid {
+  translation 3.750 -4.330 0.270
+  name "blue_07"
+  children [ Shape { appearance PBRAppearance { baseColor 0.15 0.35 0.8 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "blue_07"
+  recognitionColors [ 0.15 0.35 0.8 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_blue_08 Solid {
+  translation 4.250 -4.330 0.270
+  name "blue_08"
+  children [ Shape { appearance PBRAppearance { baseColor 0.15 0.35 0.8 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "blue_08"
+  recognitionColors [ 0.15 0.35 0.8 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_red_06 Solid {
+  translation 5.250 -4.330 0.270
+  name "red_06"
+  children [ Shape { appearance PBRAppearance { baseColor 0.8 0.2 0.15 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "red_06"
+  recognitionColors [ 0.8 0.2 0.15 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_red_07 Solid {
+  translation 5.750 -4.330 0.270
+  name "red_07"
+  children [ Shape { appearance PBRAppearance { baseColor 0.8 0.2 0.15 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "red_07"
+  recognitionColors [ 0.8 0.2 0.15 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_red_08 Solid {
+  translation 6.250 -4.330 0.270
+  name "red_08"
+  children [ Shape { appearance PBRAppearance { baseColor 0.8 0.2 0.15 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "red_08"
+  recognitionColors [ 0.8 0.2 0.15 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+Solid {
+  translation 2.000 -1.500 0.060
+  name "rack1_base"
+  children [ Shape { appearance PBRAppearance { baseColor 0.45 0.45 0.5 roughness 0.8 metalness 0 } geometry Box { size 10.0 0.6 0.12 } } ]
+  boundingObject Box { size 10.0 0.6 0.12 }
+}
+Solid {
+  translation 2.000 -1.500 0.350
+  name "rack1_panel"
+  children [ Shape { appearance PBRAppearance { baseColor 0.35 0.4 0.5 roughness 0.8 metalness 0 } geometry Box { size 10.0 0.04 0.7 } } ]
+  boundingObject Box { size 10.0 0.04 0.7 }
+}
+DEF ITEM_brown_06 Solid {
+  translation -2.750 -1.670 0.270
+  name "brown_06"
+  children [ Shape { appearance PBRAppearance { baseColor 0.55 0.38 0.2 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "brown_06"
+  recognitionColors [ 0.55 0.38 0.2 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_brown_07 Solid {
+  translation -2.250 -1.670 0.270
+  name "brown_07"
+  children [ Shape { appearance PBRAppearance { baseColor 0.55 0.38 0.2 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "brown_07"
+  recognitionColors [ 0.55 0.38 0.2 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_brown_08 Solid {
+  translation -1.750 -1.670 0.270
+  name "brown_08"
+  children [ Shape { appearance PBRAppearance { baseColor 0.55 0.38 0.2 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "brown_08"
+  recognitionColors [ 0.55 0.38 0.2 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_green_06 Solid {
+  translation -0.750 -1.670 0.270
+  name "green_06"
+  children [ Shape { appearance PBRAppearance { baseColor 0.2 0.6 0.25 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "green_06"
+  recognitionColors [ 0.2 0.6 0.25 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_green_07 Solid {
+  translation -0.250 -1.670 0.270
+  name "green_07"
+  children [ Shape { appearance PBRAppearance { baseColor 0.2 0.6 0.25 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "green_07"
+  recognitionColors [ 0.2 0.6 0.25 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_green_08 Solid {
+  translation 0.250 -1.670 0.270
+  name "green_08"
+  children [ Shape { appearance PBRAppearance { baseColor 0.2 0.6 0.25 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "green_08"
+  recognitionColors [ 0.2 0.6 0.25 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_blue_09 Solid {
+  translation 1.250 -1.670 0.270
+  name "blue_09"
+  children [ Shape { appearance PBRAppearance { baseColor 0.15 0.35 0.8 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "blue_09"
+  recognitionColors [ 0.15 0.35 0.8 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_blue_10 Solid {
+  translation 1.750 -1.670 0.270
+  name "blue_10"
+  children [ Shape { appearance PBRAppearance { baseColor 0.15 0.35 0.8 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "blue_10"
+  recognitionColors [ 0.15 0.35 0.8 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_blue_11 Solid {
+  translation 2.250 -1.670 0.270
+  name "blue_11"
+  children [ Shape { appearance PBRAppearance { baseColor 0.15 0.35 0.8 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "blue_11"
+  recognitionColors [ 0.15 0.35 0.8 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_red_09 Solid {
+  translation 3.250 -1.670 0.270
+  name "red_09"
+  children [ Shape { appearance PBRAppearance { baseColor 0.8 0.2 0.15 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "red_09"
+  recognitionColors [ 0.8 0.2 0.15 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_red_10 Solid {
+  translation 3.750 -1.670 0.270
+  name "red_10"
+  children [ Shape { appearance PBRAppearance { baseColor 0.8 0.2 0.15 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "red_10"
+  recognitionColors [ 0.8 0.2 0.15 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_red_11 Solid {
+  translation 4.250 -1.670 0.270
+  name "red_11"
+  children [ Shape { appearance PBRAppearance { baseColor 0.8 0.2 0.15 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "red_11"
+  recognitionColors [ 0.8 0.2 0.15 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_brown_09 Solid {
+  translation 5.250 -1.670 0.270
+  name "brown_09"
+  children [ Shape { appearance PBRAppearance { baseColor 0.55 0.38 0.2 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "brown_09"
+  recognitionColors [ 0.55 0.38 0.2 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_brown_10 Solid {
+  translation 5.750 -1.670 0.270
+  name "brown_10"
+  children [ Shape { appearance PBRAppearance { baseColor 0.55 0.38 0.2 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "brown_10"
+  recognitionColors [ 0.55 0.38 0.2 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_brown_11 Solid {
+  translation 6.250 -1.670 0.270
+  name "brown_11"
+  children [ Shape { appearance PBRAppearance { baseColor 0.55 0.38 0.2 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "brown_11"
+  recognitionColors [ 0.55 0.38 0.2 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_green_09 Solid {
+  translation -2.750 -1.330 0.270
+  name "green_09"
+  children [ Shape { appearance PBRAppearance { baseColor 0.2 0.6 0.25 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "green_09"
+  recognitionColors [ 0.2 0.6 0.25 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_green_10 Solid {
+  translation -2.250 -1.330 0.270
+  name "green_10"
+  children [ Shape { appearance PBRAppearance { baseColor 0.2 0.6 0.25 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "green_10"
+  recognitionColors [ 0.2 0.6 0.25 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_green_11 Solid {
+  translation -1.750 -1.330 0.270
+  name "green_11"
+  children [ Shape { appearance PBRAppearance { baseColor 0.2 0.6 0.25 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "green_11"
+  recognitionColors [ 0.2 0.6 0.25 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_blue_12 Solid {
+  translation -0.750 -1.330 0.270
+  name "blue_12"
+  children [ Shape { appearance PBRAppearance { baseColor 0.15 0.35 0.8 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "blue_12"
+  recognitionColors [ 0.15 0.35 0.8 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_blue_13 Solid {
+  translation -0.250 -1.330 0.270
+  name "blue_13"
+  children [ Shape { appearance PBRAppearance { baseColor 0.15 0.35 0.8 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "blue_13"
+  recognitionColors [ 0.15 0.35 0.8 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_blue_14 Solid {
+  translation 0.250 -1.330 0.270
+  name "blue_14"
+  children [ Shape { appearance PBRAppearance { baseColor 0.15 0.35 0.8 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "blue_14"
+  recognitionColors [ 0.15 0.35 0.8 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_red_12 Solid {
+  translation 1.250 -1.330 0.270
+  name "red_12"
+  children [ Shape { appearance PBRAppearance { baseColor 0.8 0.2 0.15 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "red_12"
+  recognitionColors [ 0.8 0.2 0.15 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_red_13 Solid {
+  translation 1.750 -1.330 0.270
+  name "red_13"
+  children [ Shape { appearance PBRAppearance { baseColor 0.8 0.2 0.15 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "red_13"
+  recognitionColors [ 0.8 0.2 0.15 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_red_14 Solid {
+  translation 2.250 -1.330 0.270
+  name "red_14"
+  children [ Shape { appearance PBRAppearance { baseColor 0.8 0.2 0.15 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "red_14"
+  recognitionColors [ 0.8 0.2 0.15 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_brown_12 Solid {
+  translation 3.250 -1.330 0.270
+  name "brown_12"
+  children [ Shape { appearance PBRAppearance { baseColor 0.55 0.38 0.2 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "brown_12"
+  recognitionColors [ 0.55 0.38 0.2 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_brown_13 Solid {
+  translation 3.750 -1.330 0.270
+  name "brown_13"
+  children [ Shape { appearance PBRAppearance { baseColor 0.55 0.38 0.2 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "brown_13"
+  recognitionColors [ 0.55 0.38 0.2 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_brown_14 Solid {
+  translation 4.250 -1.330 0.270
+  name "brown_14"
+  children [ Shape { appearance PBRAppearance { baseColor 0.55 0.38 0.2 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "brown_14"
+  recognitionColors [ 0.55 0.38 0.2 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_green_12 Solid {
+  translation 5.250 -1.330 0.270
+  name "green_12"
+  children [ Shape { appearance PBRAppearance { baseColor 0.2 0.6 0.25 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "green_12"
+  recognitionColors [ 0.2 0.6 0.25 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_green_13 Solid {
+  translation 5.750 -1.330 0.270
+  name "green_13"
+  children [ Shape { appearance PBRAppearance { baseColor 0.2 0.6 0.25 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "green_13"
+  recognitionColors [ 0.2 0.6 0.25 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_green_14 Solid {
+  translation 6.250 -1.330 0.270
+  name "green_14"
+  children [ Shape { appearance PBRAppearance { baseColor 0.2 0.6 0.25 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "green_14"
+  recognitionColors [ 0.2 0.6 0.25 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+Solid {
+  translation 2.000 1.500 0.060
+  name "rack2_base"
+  children [ Shape { appearance PBRAppearance { baseColor 0.45 0.45 0.5 roughness 0.8 metalness 0 } geometry Box { size 10.0 0.6 0.12 } } ]
+  boundingObject Box { size 10.0 0.6 0.12 }
+}
+Solid {
+  translation 2.000 1.500 0.350
+  name "rack2_panel"
+  children [ Shape { appearance PBRAppearance { baseColor 0.35 0.4 0.5 roughness 0.8 metalness 0 } geometry Box { size 10.0 0.04 0.7 } } ]
+  boundingObject Box { size 10.0 0.04 0.7 }
+}
+DEF ITEM_blue_15 Solid {
+  translation -2.750 1.330 0.270
+  name "blue_15"
+  children [ Shape { appearance PBRAppearance { baseColor 0.15 0.35 0.8 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "blue_15"
+  recognitionColors [ 0.15 0.35 0.8 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_blue_16 Solid {
+  translation -2.250 1.330 0.270
+  name "blue_16"
+  children [ Shape { appearance PBRAppearance { baseColor 0.15 0.35 0.8 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "blue_16"
+  recognitionColors [ 0.15 0.35 0.8 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_blue_17 Solid {
+  translation -1.750 1.330 0.270
+  name "blue_17"
+  children [ Shape { appearance PBRAppearance { baseColor 0.15 0.35 0.8 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "blue_17"
+  recognitionColors [ 0.15 0.35 0.8 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_red_15 Solid {
+  translation -0.750 1.330 0.270
+  name "red_15"
+  children [ Shape { appearance PBRAppearance { baseColor 0.8 0.2 0.15 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "red_15"
+  recognitionColors [ 0.8 0.2 0.15 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_red_16 Solid {
+  translation -0.250 1.330 0.270
+  name "red_16"
+  children [ Shape { appearance PBRAppearance { baseColor 0.8 0.2 0.15 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "red_16"
+  recognitionColors [ 0.8 0.2 0.15 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_red_17 Solid {
+  translation 0.250 1.330 0.270
+  name "red_17"
+  children [ Shape { appearance PBRAppearance { baseColor 0.8 0.2 0.15 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "red_17"
+  recognitionColors [ 0.8 0.2 0.15 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_brown_15 Solid {
+  translation 1.250 1.330 0.270
+  name "brown_15"
+  children [ Shape { appearance PBRAppearance { baseColor 0.55 0.38 0.2 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "brown_15"
+  recognitionColors [ 0.55 0.38 0.2 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_brown_16 Solid {
+  translation 1.750 1.330 0.270
+  name "brown_16"
+  children [ Shape { appearance PBRAppearance { baseColor 0.55 0.38 0.2 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "brown_16"
+  recognitionColors [ 0.55 0.38 0.2 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_brown_17 Solid {
+  translation 2.250 1.330 0.270
+  name "brown_17"
+  children [ Shape { appearance PBRAppearance { baseColor 0.55 0.38 0.2 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "brown_17"
+  recognitionColors [ 0.55 0.38 0.2 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_green_15 Solid {
+  translation 3.250 1.330 0.270
+  name "green_15"
+  children [ Shape { appearance PBRAppearance { baseColor 0.2 0.6 0.25 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "green_15"
+  recognitionColors [ 0.2 0.6 0.25 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_green_16 Solid {
+  translation 3.750 1.330 0.270
+  name "green_16"
+  children [ Shape { appearance PBRAppearance { baseColor 0.2 0.6 0.25 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "green_16"
+  recognitionColors [ 0.2 0.6 0.25 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_green_17 Solid {
+  translation 4.250 1.330 0.270
+  name "green_17"
+  children [ Shape { appearance PBRAppearance { baseColor 0.2 0.6 0.25 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "green_17"
+  recognitionColors [ 0.2 0.6 0.25 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_blue_18 Solid {
+  translation 5.250 1.330 0.270
+  name "blue_18"
+  children [ Shape { appearance PBRAppearance { baseColor 0.15 0.35 0.8 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "blue_18"
+  recognitionColors [ 0.15 0.35 0.8 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_blue_19 Solid {
+  translation 5.750 1.330 0.270
+  name "blue_19"
+  children [ Shape { appearance PBRAppearance { baseColor 0.15 0.35 0.8 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "blue_19"
+  recognitionColors [ 0.15 0.35 0.8 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_blue_20 Solid {
+  translation 6.250 1.330 0.270
+  name "blue_20"
+  children [ Shape { appearance PBRAppearance { baseColor 0.15 0.35 0.8 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "blue_20"
+  recognitionColors [ 0.15 0.35 0.8 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_red_18 Solid {
+  translation -2.750 1.670 0.270
+  name "red_18"
+  children [ Shape { appearance PBRAppearance { baseColor 0.8 0.2 0.15 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "red_18"
+  recognitionColors [ 0.8 0.2 0.15 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_red_19 Solid {
+  translation -2.250 1.670 0.270
+  name "red_19"
+  children [ Shape { appearance PBRAppearance { baseColor 0.8 0.2 0.15 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "red_19"
+  recognitionColors [ 0.8 0.2 0.15 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_red_20 Solid {
+  translation -1.750 1.670 0.270
+  name "red_20"
+  children [ Shape { appearance PBRAppearance { baseColor 0.8 0.2 0.15 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "red_20"
+  recognitionColors [ 0.8 0.2 0.15 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_brown_18 Solid {
+  translation -0.750 1.670 0.270
+  name "brown_18"
+  children [ Shape { appearance PBRAppearance { baseColor 0.55 0.38 0.2 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "brown_18"
+  recognitionColors [ 0.55 0.38 0.2 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_brown_19 Solid {
+  translation -0.250 1.670 0.270
+  name "brown_19"
+  children [ Shape { appearance PBRAppearance { baseColor 0.55 0.38 0.2 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "brown_19"
+  recognitionColors [ 0.55 0.38 0.2 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_brown_20 Solid {
+  translation 0.250 1.670 0.270
+  name "brown_20"
+  children [ Shape { appearance PBRAppearance { baseColor 0.55 0.38 0.2 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "brown_20"
+  recognitionColors [ 0.55 0.38 0.2 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_green_18 Solid {
+  translation 1.250 1.670 0.270
+  name "green_18"
+  children [ Shape { appearance PBRAppearance { baseColor 0.2 0.6 0.25 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "green_18"
+  recognitionColors [ 0.2 0.6 0.25 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_green_19 Solid {
+  translation 1.750 1.670 0.270
+  name "green_19"
+  children [ Shape { appearance PBRAppearance { baseColor 0.2 0.6 0.25 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "green_19"
+  recognitionColors [ 0.2 0.6 0.25 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_green_20 Solid {
+  translation 2.250 1.670 0.270
+  name "green_20"
+  children [ Shape { appearance PBRAppearance { baseColor 0.2 0.6 0.25 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "green_20"
+  recognitionColors [ 0.2 0.6 0.25 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_blue_21 Solid {
+  translation 3.250 1.670 0.270
+  name "blue_21"
+  children [ Shape { appearance PBRAppearance { baseColor 0.15 0.35 0.8 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "blue_21"
+  recognitionColors [ 0.15 0.35 0.8 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_blue_22 Solid {
+  translation 3.750 1.670 0.270
+  name "blue_22"
+  children [ Shape { appearance PBRAppearance { baseColor 0.15 0.35 0.8 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "blue_22"
+  recognitionColors [ 0.15 0.35 0.8 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_blue_23 Solid {
+  translation 4.250 1.670 0.270
+  name "blue_23"
+  children [ Shape { appearance PBRAppearance { baseColor 0.15 0.35 0.8 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "blue_23"
+  recognitionColors [ 0.15 0.35 0.8 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_red_21 Solid {
+  translation 5.250 1.670 0.270
+  name "red_21"
+  children [ Shape { appearance PBRAppearance { baseColor 0.8 0.2 0.15 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "red_21"
+  recognitionColors [ 0.8 0.2 0.15 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_red_22 Solid {
+  translation 5.750 1.670 0.270
+  name "red_22"
+  children [ Shape { appearance PBRAppearance { baseColor 0.8 0.2 0.15 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "red_22"
+  recognitionColors [ 0.8 0.2 0.15 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_red_23 Solid {
+  translation 6.250 1.670 0.270
+  name "red_23"
+  children [ Shape { appearance PBRAppearance { baseColor 0.8 0.2 0.15 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "red_23"
+  recognitionColors [ 0.8 0.2 0.15 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+Solid {
+  translation 2.000 4.500 0.060
+  name "rack3_base"
+  children [ Shape { appearance PBRAppearance { baseColor 0.45 0.45 0.5 roughness 0.8 metalness 0 } geometry Box { size 10.0 0.6 0.12 } } ]
+  boundingObject Box { size 10.0 0.6 0.12 }
+}
+Solid {
+  translation 2.000 4.500 0.350
+  name "rack3_panel"
+  children [ Shape { appearance PBRAppearance { baseColor 0.35 0.4 0.5 roughness 0.8 metalness 0 } geometry Box { size 10.0 0.04 0.7 } } ]
+  boundingObject Box { size 10.0 0.04 0.7 }
+}
+DEF ITEM_brown_21 Solid {
+  translation -2.750 4.330 0.270
+  name "brown_21"
+  children [ Shape { appearance PBRAppearance { baseColor 0.55 0.38 0.2 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "brown_21"
+  recognitionColors [ 0.55 0.38 0.2 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_brown_22 Solid {
+  translation -2.250 4.330 0.270
+  name "brown_22"
+  children [ Shape { appearance PBRAppearance { baseColor 0.55 0.38 0.2 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "brown_22"
+  recognitionColors [ 0.55 0.38 0.2 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_brown_23 Solid {
+  translation -1.750 4.330 0.270
+  name "brown_23"
+  children [ Shape { appearance PBRAppearance { baseColor 0.55 0.38 0.2 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "brown_23"
+  recognitionColors [ 0.55 0.38 0.2 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_green_21 Solid {
+  translation -0.750 4.330 0.270
+  name "green_21"
+  children [ Shape { appearance PBRAppearance { baseColor 0.2 0.6 0.25 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "green_21"
+  recognitionColors [ 0.2 0.6 0.25 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_green_22 Solid {
+  translation -0.250 4.330 0.270
+  name "green_22"
+  children [ Shape { appearance PBRAppearance { baseColor 0.2 0.6 0.25 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "green_22"
+  recognitionColors [ 0.2 0.6 0.25 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_green_23 Solid {
+  translation 0.250 4.330 0.270
+  name "green_23"
+  children [ Shape { appearance PBRAppearance { baseColor 0.2 0.6 0.25 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "green_23"
+  recognitionColors [ 0.2 0.6 0.25 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_blue_24 Solid {
+  translation 1.250 4.330 0.270
+  name "blue_24"
+  children [ Shape { appearance PBRAppearance { baseColor 0.15 0.35 0.8 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "blue_24"
+  recognitionColors [ 0.15 0.35 0.8 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_blue_25 Solid {
+  translation 1.750 4.330 0.270
+  name "blue_25"
+  children [ Shape { appearance PBRAppearance { baseColor 0.15 0.35 0.8 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "blue_25"
+  recognitionColors [ 0.15 0.35 0.8 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_blue_26 Solid {
+  translation 2.250 4.330 0.270
+  name "blue_26"
+  children [ Shape { appearance PBRAppearance { baseColor 0.15 0.35 0.8 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "blue_26"
+  recognitionColors [ 0.15 0.35 0.8 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_red_24 Solid {
+  translation 3.250 4.330 0.270
+  name "red_24"
+  children [ Shape { appearance PBRAppearance { baseColor 0.8 0.2 0.15 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "red_24"
+  recognitionColors [ 0.8 0.2 0.15 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_red_25 Solid {
+  translation 3.750 4.330 0.270
+  name "red_25"
+  children [ Shape { appearance PBRAppearance { baseColor 0.8 0.2 0.15 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "red_25"
+  recognitionColors [ 0.8 0.2 0.15 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_red_26 Solid {
+  translation 4.250 4.330 0.270
+  name "red_26"
+  children [ Shape { appearance PBRAppearance { baseColor 0.8 0.2 0.15 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "red_26"
+  recognitionColors [ 0.8 0.2 0.15 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_brown_24 Solid {
+  translation 5.250 4.330 0.270
+  name "brown_24"
+  children [ Shape { appearance PBRAppearance { baseColor 0.55 0.38 0.2 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "brown_24"
+  recognitionColors [ 0.55 0.38 0.2 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_brown_25 Solid {
+  translation 5.750 4.330 0.270
+  name "brown_25"
+  children [ Shape { appearance PBRAppearance { baseColor 0.55 0.38 0.2 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "brown_25"
+  recognitionColors [ 0.55 0.38 0.2 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_brown_26 Solid {
+  translation 6.250 4.330 0.270
+  name "brown_26"
+  children [ Shape { appearance PBRAppearance { baseColor 0.55 0.38 0.2 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "brown_26"
+  recognitionColors [ 0.55 0.38 0.2 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_green_24 Solid {
+  translation -2.750 4.670 0.270
+  name "green_24"
+  children [ Shape { appearance PBRAppearance { baseColor 0.2 0.6 0.25 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "green_24"
+  recognitionColors [ 0.2 0.6 0.25 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_green_25 Solid {
+  translation -2.250 4.670 0.270
+  name "green_25"
+  children [ Shape { appearance PBRAppearance { baseColor 0.2 0.6 0.25 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "green_25"
+  recognitionColors [ 0.2 0.6 0.25 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_green_26 Solid {
+  translation -1.750 4.670 0.270
+  name "green_26"
+  children [ Shape { appearance PBRAppearance { baseColor 0.2 0.6 0.25 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "green_26"
+  recognitionColors [ 0.2 0.6 0.25 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_blue_27 Solid {
+  translation -0.750 4.670 0.270
+  name "blue_27"
+  children [ Shape { appearance PBRAppearance { baseColor 0.15 0.35 0.8 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "blue_27"
+  recognitionColors [ 0.15 0.35 0.8 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_blue_28 Solid {
+  translation -0.250 4.670 0.270
+  name "blue_28"
+  children [ Shape { appearance PBRAppearance { baseColor 0.15 0.35 0.8 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "blue_28"
+  recognitionColors [ 0.15 0.35 0.8 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_blue_29 Solid {
+  translation 0.250 4.670 0.270
+  name "blue_29"
+  children [ Shape { appearance PBRAppearance { baseColor 0.15 0.35 0.8 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "blue_29"
+  recognitionColors [ 0.15 0.35 0.8 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_red_27 Solid {
+  translation 1.250 4.670 0.270
+  name "red_27"
+  children [ Shape { appearance PBRAppearance { baseColor 0.8 0.2 0.15 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "red_27"
+  recognitionColors [ 0.8 0.2 0.15 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_red_28 Solid {
+  translation 1.750 4.670 0.270
+  name "red_28"
+  children [ Shape { appearance PBRAppearance { baseColor 0.8 0.2 0.15 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "red_28"
+  recognitionColors [ 0.8 0.2 0.15 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_red_29 Solid {
+  translation 2.250 4.670 0.270
+  name "red_29"
+  children [ Shape { appearance PBRAppearance { baseColor 0.8 0.2 0.15 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "red_29"
+  recognitionColors [ 0.8 0.2 0.15 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_brown_27 Solid {
+  translation 3.250 4.670 0.270
+  name "brown_27"
+  children [ Shape { appearance PBRAppearance { baseColor 0.55 0.38 0.2 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "brown_27"
+  recognitionColors [ 0.55 0.38 0.2 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_brown_28 Solid {
+  translation 3.750 4.670 0.270
+  name "brown_28"
+  children [ Shape { appearance PBRAppearance { baseColor 0.55 0.38 0.2 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "brown_28"
+  recognitionColors [ 0.55 0.38 0.2 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_brown_29 Solid {
+  translation 4.250 4.670 0.270
+  name "brown_29"
+  children [ Shape { appearance PBRAppearance { baseColor 0.55 0.38 0.2 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "brown_29"
+  recognitionColors [ 0.55 0.38 0.2 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_green_27 Solid {
+  translation 5.250 4.670 0.270
+  name "green_27"
+  children [ Shape { appearance PBRAppearance { baseColor 0.2 0.6 0.25 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "green_27"
+  recognitionColors [ 0.2 0.6 0.25 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_green_28 Solid {
+  translation 5.750 4.670 0.270
+  name "green_28"
+  children [ Shape { appearance PBRAppearance { baseColor 0.2 0.6 0.25 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "green_28"
+  recognitionColors [ 0.2 0.6 0.25 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF ITEM_green_29 Solid {
+  translation 6.250 4.670 0.270
+  name "green_29"
+  children [ Shape { appearance PBRAppearance { baseColor 0.2 0.6 0.25 roughness 0.8 metalness 0 } geometry Box { size 0.1 0.1 0.3 } } ]
+  model "green_29"
+  recognitionColors [ 0.2 0.6 0.25 ]
+  boundingObject Box { size 0.1 0.1 0.3 }
+}
+DEF R0 SimpleBot {
+  translation -4.85 -6.2 0
+  rotation 0 0 1 0.0000
+  name "robot_0"
+  controller "agent"
+  controllerArgs [ "--id" "0" ]
+  color 0.9 0.6 0.1
+  receiverChannel 100
+  cameraFov 1.08
+}
+DEF R1 SimpleBot {
+  translation -4.85 6.2 0
+  rotation 0 0 1 0.0000
+  name "robot_1"
+  controller "agent"
+  controllerArgs [ "--id" "1" ]
+  color 0.9 0.6 0.1
+  receiverChannel 101
+  cameraFov 1.08
+}
+DEF R2 SimpleBot {
+  translation 8.4 0.0 0
+  rotation 0 0 1 0.0000
+  name "robot_2"
+  controller "agent"
+  controllerArgs [ "--id" "2" ]
+  color 0.9 0.6 0.1
+  receiverChannel 102
+  cameraFov 1.08
+}
+DEF R3 SimpleBot {
+  translation -4.3 -0.6 0
+  rotation 0 0 1 0.0000
+  name "robot_3"
+  controller "agent"
+  controllerArgs [ "--id" "3" ]
+  color 0.2 0.4 0.9
+  receiverChannel 103
+  cameraFov 1.08
+}
+DEF R4 SimpleBot {
+  translation -4.3 0.6 0
+  rotation 0 0 1 0.0000
+  name "robot_4"
+  controller "agent"
+  controllerArgs [ "--id" "4" ]
+  color 0.2 0.4 0.9
+  receiverChannel 104
+  cameraFov 1.08
+}
+DEF R5 SimpleBot {
+  translation -4.3 -1.8 0
+  rotation 0 0 1 0.0000
+  name "robot_5"
+  controller "agent"
+  controllerArgs [ "--id" "5" ]
+  color 0.2 0.4 0.9
+  receiverChannel 105
+  cameraFov 1.08
+}
+DEF R6 SimpleBot {
+  translation -4.3 1.8 0
+  rotation 0 0 1 0.0000
+  name "robot_6"
+  controller "agent"
+  controllerArgs [ "--id" "6" ]
+  color 0.2 0.4 0.9
+  receiverChannel 106
+  cameraFov 1.08
+}
+DEF R7 SimpleBot {
+  translation -4.3 -3.0 0
+  rotation 0 0 1 0.0000
+  name "robot_7"
+  controller "agent"
+  controllerArgs [ "--id" "7" ]
+  color 0.2 0.4 0.9
+  receiverChannel 107
+  cameraFov 1.08
+}
+DEF R8 SimpleBot {
+  translation -4.3 3.0 0
+  rotation 0 0 1 0.0000
+  name "robot_8"
+  controller "agent"
+  controllerArgs [ "--id" "8" ]
+  color 0.2 0.4 0.9
+  receiverChannel 108
+  cameraFov 1.08
+}
+DEF R9 SimpleBot {
+  translation -4.3 -4.2 0
+  rotation 0 0 1 0.0000
+  name "robot_9"
+  controller "agent"
+  controllerArgs [ "--id" "9" ]
+  color 0.2 0.4 0.9
+  receiverChannel 109
+  cameraFov 1.08
+}
+DEF R10 SimpleBot {
+  translation -4.3 4.2 0
+  rotation 0 0 1 0.0000
+  name "robot_10"
+  controller "agent"
+  controllerArgs [ "--id" "10" ]
+  color 0.2 0.4 0.9
+  receiverChannel 110
+  cameraFov 1.08
+}
+DEF R11 SimpleBot {
+  translation 9.3 -6.0 0
+  rotation 0 0 1 3.1416
+  name "robot_11"
+  controller "agent"
+  controllerArgs [ "--id" "11" ]
+  color 0.55 0.55 0.55
+  receiverChannel 111
+  cameraFov 1.08
+}
+DEF R12 SimpleBot {
+  translation 9.3 -4.8 0
+  rotation 0 0 1 3.1416
+  name "robot_12"
+  controller "agent"
+  controllerArgs [ "--id" "12" ]
+  color 0.55 0.55 0.55
+  receiverChannel 112
+  cameraFov 1.08
+}
+DEF R13 SimpleBot {
+  translation 9.3 -3.6 0
+  rotation 0 0 1 3.1416
+  name "robot_13"
+  controller "agent"
+  controllerArgs [ "--id" "13" ]
+  color 0.55 0.55 0.55
+  receiverChannel 113
+  cameraFov 1.08
+}
+DEF R14 SimpleBot {
+  translation 9.3 -2.4 0
+  rotation 0 0 1 3.1416
+  name "robot_14"
+  controller "agent"
+  controllerArgs [ "--id" "14" ]
+  color 0.55 0.55 0.55
+  receiverChannel 114
+  cameraFov 1.08
+}
+DEF R15 SimpleBot {
+  translation 9.3 -1.2 0
+  rotation 0 0 1 3.1416
+  name "robot_15"
+  controller "agent"
+  controllerArgs [ "--id" "15" ]
+  color 0.55 0.55 0.55
+  receiverChannel 115
+  cameraFov 1.08
+}
+DEF R16 SimpleBot {
+  translation 9.3 0.0 0
+  rotation 0 0 1 3.1416
+  name "robot_16"
+  controller "agent"
+  controllerArgs [ "--id" "16" ]
+  color 0.55 0.55 0.55
+  receiverChannel 116
+  cameraFov 1.08
+}
+Robot {
+  name "supervisor"
+  supervisor TRUE
+  controller "supervisor"
+  children [ Emitter { name "emitter" channel 100 range -1 } Receiver { name "receiver" channel 0 } ]
+}

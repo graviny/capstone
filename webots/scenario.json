@@ -1,0 +1,4790 @@
+{
+  "seed": 0,
+  "world": {
+    "x_min": -10.0,
+    "x_max": 10.0,
+    "y_min": -7.0,
+    "y_max": 7.0
+  },
+  "racks": [
+    {
+      "y": -4.5,
+      "x_min": -3.0,
+      "x_max": 7.0,
+      "half_depth": 0.3
+    },
+    {
+      "y": -1.5,
+      "x_min": -3.0,
+      "x_max": 7.0,
+      "half_depth": 0.3
+    },
+    {
+      "y": 1.5,
+      "x_min": -3.0,
+      "x_max": 7.0,
+      "half_depth": 0.3
+    },
+    {
+      "y": 4.5,
+      "x_min": -3.0,
+      "x_max": 7.0,
+      "half_depth": 0.3
+    }
+  ],
+  "obstacles": [
+    {
+      "x_min": -7.5,
+      "x_max": -6.95,
+      "y_min": -6.15,
+      "y_max": 6.15
+    }
+  ],
+  "pile": {
+    "zone": {
+      "x_min": -7.5,
+      "x_max": -6.95,
+      "y_min": -6.15,
+      "y_max": 6.15
+    },
+    "lane_x": -6.2
+  },
+  "item_size": [
+    0.1,
+    0.1,
+    0.3
+  ],
+  "rack_top": 0.12,
+  "slots": [
+    {
+      "id": "r0s00",
+      "kind": "rack",
+      "pos": [
+        -2.75,
+        -4.67
+      ],
+      "approach": [
+        -2.75,
+        -5.1
+      ],
+      "type": "blue",
+      "home_of": "blue_00"
+    },
+    {
+      "id": "r0s01",
+      "kind": "rack",
+      "pos": [
+        -2.25,
+        -4.67
+      ],
+      "approach": [
+        -2.25,
+        -5.1
+      ],
+      "type": "blue",
+      "home_of": "blue_01"
+    },
+    {
+      "id": "r0s02",
+      "kind": "rack",
+      "pos": [
+        -1.75,
+        -4.67
+      ],
+      "approach": [
+        -1.75,
+        -5.1
+      ],
+      "type": "blue",
+      "home_of": "blue_02"
+    },
+    {
+      "id": "r0s03",
+      "kind": "rack",
+      "pos": [
+        -1.25,
+        -4.67
+      ],
+      "approach": [
+        -1.25,
+        -5.1
+      ],
+      "type": "blue",
+      "home_of": null
+    },
+    {
+      "id": "r0s04",
+      "kind": "rack",
+      "pos": [
+        -0.75,
+        -4.67
+      ],
+      "approach": [
+        -0.75,
+        -5.1
+      ],
+      "type": "red",
+      "home_of": "red_00"
+    },
+    {
+      "id": "r0s05",
+      "kind": "rack",
+      "pos": [
+        -0.25,
+        -4.67
+      ],
+      "approach": [
+        -0.25,
+        -5.1
+      ],
+      "type": "red",
+      "home_of": "red_01"
+    },
+    {
+      "id": "r0s06",
+      "kind": "rack",
+      "pos": [
+        0.25,
+        -4.67
+      ],
+      "approach": [
+        0.25,
+        -5.1
+      ],
+      "type": "red",
+      "home_of": "red_02"
+    },
+    {
+      "id": "r0s07",
+      "kind": "rack",
+      "pos": [
+        0.75,
+        -4.67
+      ],
+      "approach": [
+        0.75,
+        -5.1
+      ],
+      "type": "red",
+      "home_of": null
+    },
+    {
+      "id": "r0s08",
+      "kind": "rack",
+      "pos": [
+        1.25,
+        -4.67
+      ],
+      "approach": [
+        1.25,
+        -5.1
+      ],
+      "type": "brown",
+      "home_of": "brown_00"
+    },
+    {
+      "id": "r0s09",
+      "kind": "rack",
+      "pos": [
+        1.75,
+        -4.67
+      ],
+      "approach": [
+        1.75,
+        -5.1
+      ],
+      "type": "brown",
+      "home_of": "brown_01"
+    },
+    {
+      "id": "r0s10",
+      "kind": "rack",
+      "pos": [
+        2.25,
+        -4.67
+      ],
+      "approach": [
+        2.25,
+        -5.1
+      ],
+      "type": "brown",
+      "home_of": "brown_02"
+    },
+    {
+      "id": "r0s11",
+      "kind": "rack",
+      "pos": [
+        2.75,
+        -4.67
+      ],
+      "approach": [
+        2.75,
+        -5.1
+      ],
+      "type": "brown",
+      "home_of": null
+    },
+    {
+      "id": "r0s12",
+      "kind": "rack",
+      "pos": [
+        3.25,
+        -4.67
+      ],
+      "approach": [
+        3.25,
+        -5.1
+      ],
+      "type": "green",
+      "home_of": "green_00"
+    },
+    {
+      "id": "r0s13",
+      "kind": "rack",
+      "pos": [
+        3.75,
+        -4.67
+      ],
+      "approach": [
+        3.75,
+        -5.1
+      ],
+      "type": "green",
+      "home_of": "green_01"
+    },
+    {
+      "id": "r0s14",
+      "kind": "rack",
+      "pos": [
+        4.25,
+        -4.67
+      ],
+      "approach": [
+        4.25,
+        -5.1
+      ],
+      "type": "green",
+      "home_of": "green_02"
+    },
+    {
+      "id": "r0s15",
+      "kind": "rack",
+      "pos": [
+        4.75,
+        -4.67
+      ],
+      "approach": [
+        4.75,
+        -5.1
+      ],
+      "type": "green",
+      "home_of": null
+    },
+    {
+      "id": "r0s16",
+      "kind": "rack",
+      "pos": [
+        5.25,
+        -4.67
+      ],
+      "approach": [
+        5.25,
+        -5.1
+      ],
+      "type": "blue",
+      "home_of": "blue_03"
+    },
+    {
+      "id": "r0s17",
+      "kind": "rack",
+      "pos": [
+        5.75,
+        -4.67
+      ],
+      "approach": [
+        5.75,
+        -5.1
+      ],
+      "type": "blue",
+      "home_of": "blue_04"
+    },
+    {
+      "id": "r0s18",
+      "kind": "rack",
+      "pos": [
+        6.25,
+        -4.67
+      ],
+      "approach": [
+        6.25,
+        -5.1
+      ],
+      "type": "blue",
+      "home_of": "blue_05"
+    },
+    {
+      "id": "r0s19",
+      "kind": "rack",
+      "pos": [
+        6.75,
+        -4.67
+      ],
+      "approach": [
+        6.75,
+        -5.1
+      ],
+      "type": "blue",
+      "home_of": null
+    },
+    {
+      "id": "r0n00",
+      "kind": "rack",
+      "pos": [
+        -2.75,
+        -4.33
+      ],
+      "approach": [
+        -2.75,
+        -3.9
+      ],
+      "type": "red",
+      "home_of": "red_03"
+    },
+    {
+      "id": "r0n01",
+      "kind": "rack",
+      "pos": [
+        -2.25,
+        -4.33
+      ],
+      "approach": [
+        -2.25,
+        -3.9
+      ],
+      "type": "red",
+      "home_of": "red_04"
+    },
+    {
+      "id": "r0n02",
+      "kind": "rack",
+      "pos": [
+        -1.75,
+        -4.33
+      ],
+      "approach": [
+        -1.75,
+        -3.9
+      ],
+      "type": "red",
+      "home_of": "red_05"
+    },
+    {
+      "id": "r0n03",
+      "kind": "rack",
+      "pos": [
+        -1.25,
+        -4.33
+      ],
+      "approach": [
+        -1.25,
+        -3.9
+      ],
+      "type": "red",
+      "home_of": null
+    },
+    {
+      "id": "r0n04",
+      "kind": "rack",
+      "pos": [
+        -0.75,
+        -4.33
+      ],
+      "approach": [
+        -0.75,
+        -3.9
+      ],
+      "type": "brown",
+      "home_of": "brown_03"
+    },
+    {
+      "id": "r0n05",
+      "kind": "rack",
+      "pos": [
+        -0.25,
+        -4.33
+      ],
+      "approach": [
+        -0.25,
+        -3.9
+      ],
+      "type": "brown",
+      "home_of": "brown_04"
+    },
+    {
+      "id": "r0n06",
+      "kind": "rack",
+      "pos": [
+        0.25,
+        -4.33
+      ],
+      "approach": [
+        0.25,
+        -3.9
+      ],
+      "type": "brown",
+      "home_of": "brown_05"
+    },
+    {
+      "id": "r0n07",
+      "kind": "rack",
+      "pos": [
+        0.75,
+        -4.33
+      ],
+      "approach": [
+        0.75,
+        -3.9
+      ],
+      "type": "brown",
+      "home_of": null
+    },
+    {
+      "id": "r0n08",
+      "kind": "rack",
+      "pos": [
+        1.25,
+        -4.33
+      ],
+      "approach": [
+        1.25,
+        -3.9
+      ],
+      "type": "green",
+      "home_of": "green_03"
+    },
+    {
+      "id": "r0n09",
+      "kind": "rack",
+      "pos": [
+        1.75,
+        -4.33
+      ],
+      "approach": [
+        1.75,
+        -3.9
+      ],
+      "type": "green",
+      "home_of": "green_04"
+    },
+    {
+      "id": "r0n10",
+      "kind": "rack",
+      "pos": [
+        2.25,
+        -4.33
+      ],
+      "approach": [
+        2.25,
+        -3.9
+      ],
+      "type": "green",
+      "home_of": "green_05"
+    },
+    {
+      "id": "r0n11",
+      "kind": "rack",
+      "pos": [
+        2.75,
+        -4.33
+      ],
+      "approach": [
+        2.75,
+        -3.9
+      ],
+      "type": "green",
+      "home_of": null
+    },
+    {
+      "id": "r0n12",
+      "kind": "rack",
+      "pos": [
+        3.25,
+        -4.33
+      ],
+      "approach": [
+        3.25,
+        -3.9
+      ],
+      "type": "blue",
+      "home_of": "blue_06"
+    },
+    {
+      "id": "r0n13",
+      "kind": "rack",
+      "pos": [
+        3.75,
+        -4.33
+      ],
+      "approach": [
+        3.75,
+        -3.9
+      ],
+      "type": "blue",
+      "home_of": "blue_07"
+    },
+    {
+      "id": "r0n14",
+      "kind": "rack",
+      "pos": [
+        4.25,
+        -4.33
+      ],
+      "approach": [
+        4.25,
+        -3.9
+      ],
+      "type": "blue",
+      "home_of": "blue_08"
+    },
+    {
+      "id": "r0n15",
+      "kind": "rack",
+      "pos": [
+        4.75,
+        -4.33
+      ],
+      "approach": [
+        4.75,
+        -3.9
+      ],
+      "type": "blue",
+      "home_of": null
+    },
+    {
+      "id": "r0n16",
+      "kind": "rack",
+      "pos": [
+        5.25,
+        -4.33
+      ],
+      "approach": [
+        5.25,
+        -3.9
+      ],
+      "type": "red",
+      "home_of": "red_06"
+    },
+    {
+      "id": "r0n17",
+      "kind": "rack",
+      "pos": [
+        5.75,
+        -4.33
+      ],
+      "approach": [
+        5.75,
+        -3.9
+      ],
+      "type": "red",
+      "home_of": "red_07"
+    },
+    {
+      "id": "r0n18",
+      "kind": "rack",
+      "pos": [
+        6.25,
+        -4.33
+      ],
+      "approach": [
+        6.25,
+        -3.9
+      ],
+      "type": "red",
+      "home_of": "red_08"
+    },
+    {
+      "id": "r0n19",
+      "kind": "rack",
+      "pos": [
+        6.75,
+        -4.33
+      ],
+      "approach": [
+        6.75,
+        -3.9
+      ],
+      "type": "red",
+      "home_of": null
+    },
+    {
+      "id": "r1s00",
+      "kind": "rack",
+      "pos": [
+        -2.75,
+        -1.67
+      ],
+      "approach": [
+        -2.75,
+        -2.1
+      ],
+      "type": "brown",
+      "home_of": "brown_06"
+    },
+    {
+      "id": "r1s01",
+      "kind": "rack",
+      "pos": [
+        -2.25,
+        -1.67
+      ],
+      "approach": [
+        -2.25,
+        -2.1
+      ],
+      "type": "brown",
+      "home_of": "brown_07"
+    },
+    {
+      "id": "r1s02",
+      "kind": "rack",
+      "pos": [
+        -1.75,
+        -1.67
+      ],
+      "approach": [
+        -1.75,
+        -2.1
+      ],
+      "type": "brown",
+      "home_of": "brown_08"
+    },
+    {
+      "id": "r1s03",
+      "kind": "rack",
+      "pos": [
+        -1.25,
+        -1.67
+      ],
+      "approach": [
+        -1.25,
+        -2.1
+      ],
+      "type": "brown",
+      "home_of": null
+    },
+    {
+      "id": "r1s04",
+      "kind": "rack",
+      "pos": [
+        -0.75,
+        -1.67
+      ],
+      "approach": [
+        -0.75,
+        -2.1
+      ],
+      "type": "green",
+      "home_of": "green_06"
+    },
+    {
+      "id": "r1s05",
+      "kind": "rack",
+      "pos": [
+        -0.25,
+        -1.67
+      ],
+      "approach": [
+        -0.25,
+        -2.1
+      ],
+      "type": "green",
+      "home_of": "green_07"
+    },
+    {
+      "id": "r1s06",
+      "kind": "rack",
+      "pos": [
+        0.25,
+        -1.67
+      ],
+      "approach": [
+        0.25,
+        -2.1
+      ],
+      "type": "green",
+      "home_of": "green_08"
+    },
+    {
+      "id": "r1s07",
+      "kind": "rack",
+      "pos": [
+        0.75,
+        -1.67
+      ],
+      "approach": [
+        0.75,
+        -2.1
+      ],
+      "type": "green",
+      "home_of": null
+    },
+    {
+      "id": "r1s08",
+      "kind": "rack",
+      "pos": [
+        1.25,
+        -1.67
+      ],
+      "approach": [
+        1.25,
+        -2.1
+      ],
+      "type": "blue",
+      "home_of": "blue_09"
+    },
+    {
+      "id": "r1s09",
+      "kind": "rack",
+      "pos": [
+        1.75,
+        -1.67
+      ],
+      "approach": [
+        1.75,
+        -2.1
+      ],
+      "type": "blue",
+      "home_of": "blue_10"
+    },
+    {
+      "id": "r1s10",
+      "kind": "rack",
+      "pos": [
+        2.25,
+        -1.67
+      ],
+      "approach": [
+        2.25,
+        -2.1
+      ],
+      "type": "blue",
+      "home_of": "blue_11"
+    },
+    {
+      "id": "r1s11",
+      "kind": "rack",
+      "pos": [
+        2.75,
+        -1.67
+      ],
+      "approach": [
+        2.75,
+        -2.1
+      ],
+      "type": "blue",
+      "home_of": null
+    },
+    {
+      "id": "r1s12",
+      "kind": "rack",
+      "pos": [
+        3.25,
+        -1.67
+      ],
+      "approach": [
+        3.25,
+        -2.1
+      ],
+      "type": "red",
+      "home_of": "red_09"
+    },
+    {
+      "id": "r1s13",
+      "kind": "rack",
+      "pos": [
+        3.75,
+        -1.67
+      ],
+      "approach": [
+        3.75,
+        -2.1
+      ],
+      "type": "red",
+      "home_of": "red_10"
+    },
+    {
+      "id": "r1s14",
+      "kind": "rack",
+      "pos": [
+        4.25,
+        -1.67
+      ],
+      "approach": [
+        4.25,
+        -2.1
+      ],
+      "type": "red",
+      "home_of": "red_11"
+    },
+    {
+      "id": "r1s15",
+      "kind": "rack",
+      "pos": [
+        4.75,
+        -1.67
+      ],
+      "approach": [
+        4.75,
+        -2.1
+      ],
+      "type": "red",
+      "home_of": null
+    },
+    {
+      "id": "r1s16",
+      "kind": "rack",
+      "pos": [
+        5.25,
+        -1.67
+      ],
+      "approach": [
+        5.25,
+        -2.1
+      ],
+      "type": "brown",
+      "home_of": "brown_09"
+    },
+    {
+      "id": "r1s17",
+      "kind": "rack",
+      "pos": [
+        5.75,
+        -1.67
+      ],
+      "approach": [
+        5.75,
+        -2.1
+      ],
+      "type": "brown",
+      "home_of": "brown_10"
+    },
+    {
+      "id": "r1s18",
+      "kind": "rack",
+      "pos": [
+        6.25,
+        -1.67
+      ],
+      "approach": [
+        6.25,
+        -2.1
+      ],
+      "type": "brown",
+      "home_of": "brown_11"
+    },
+    {
+      "id": "r1s19",
+      "kind": "rack",
+      "pos": [
+        6.75,
+        -1.67
+      ],
+      "approach": [
+        6.75,
+        -2.1
+      ],
+      "type": "brown",
+      "home_of": null
+    },
+    {
+      "id": "r1n00",
+      "kind": "rack",
+      "pos": [
+        -2.75,
+        -1.33
+      ],
+      "approach": [
+        -2.75,
+        -0.9
+      ],
+      "type": "green",
+      "home_of": "green_09"
+    },
+    {
+      "id": "r1n01",
+      "kind": "rack",
+      "pos": [
+        -2.25,
+        -1.33
+      ],
+      "approach": [
+        -2.25,
+        -0.9
+      ],
+      "type": "green",
+      "home_of": "green_10"
+    },
+    {
+      "id": "r1n02",
+      "kind": "rack",
+      "pos": [
+        -1.75,
+        -1.33
+      ],
+      "approach": [
+        -1.75,
+        -0.9
+      ],
+      "type": "green",
+      "home_of": "green_11"
+    },
+    {
+      "id": "r1n03",
+      "kind": "rack",
+      "pos": [
+        -1.25,
+        -1.33
+      ],
+      "approach": [
+        -1.25,
+        -0.9
+      ],
+      "type": "green",
+      "home_of": null
+    },
+    {
+      "id": "r1n04",
+      "kind": "rack",
+      "pos": [
+        -0.75,
+        -1.33
+      ],
+      "approach": [
+        -0.75,
+        -0.9
+      ],
+      "type": "blue",
+      "home_of": "blue_12"
+    },
+    {
+      "id": "r1n05",
+      "kind": "rack",
+      "pos": [
+        -0.25,
+        -1.33
+      ],
+      "approach": [
+        -0.25,
+        -0.9
+      ],
+      "type": "blue",
+      "home_of": "blue_13"
+    },
+    {
+      "id": "r1n06",
+      "kind": "rack",
+      "pos": [
+        0.25,
+        -1.33
+      ],
+      "approach": [
+        0.25,
+        -0.9
+      ],
+      "type": "blue",
+      "home_of": "blue_14"
+    },
+    {
+      "id": "r1n07",
+      "kind": "rack",
+      "pos": [
+        0.75,
+        -1.33
+      ],
+      "approach": [
+        0.75,
+        -0.9
+      ],
+      "type": "blue",
+      "home_of": null
+    },
+    {
+      "id": "r1n08",
+      "kind": "rack",
+      "pos": [
+        1.25,
+        -1.33
+      ],
+      "approach": [
+        1.25,
+        -0.9
+      ],
+      "type": "red",
+      "home_of": "red_12"
+    },
+    {
+      "id": "r1n09",
+      "kind": "rack",
+      "pos": [
+        1.75,
+        -1.33
+      ],
+      "approach": [
+        1.75,
+        -0.9
+      ],
+      "type": "red",
+      "home_of": "red_13"
+    },
+    {
+      "id": "r1n10",
+      "kind": "rack",
+      "pos": [
+        2.25,
+        -1.33
+      ],
+      "approach": [
+        2.25,
+        -0.9
+      ],
+      "type": "red",
+      "home_of": "red_14"
+    },
+    {
+      "id": "r1n11",
+      "kind": "rack",
+      "pos": [
+        2.75,
+        -1.33
+      ],
+      "approach": [
+        2.75,
+        -0.9
+      ],
+      "type": "red",
+      "home_of": null
+    },
+    {
+      "id": "r1n12",
+      "kind": "rack",
+      "pos": [
+        3.25,
+        -1.33
+      ],
+      "approach": [
+        3.25,
+        -0.9
+      ],
+      "type": "brown",
+      "home_of": "brown_12"
+    },
+    {
+      "id": "r1n13",
+      "kind": "rack",
+      "pos": [
+        3.75,
+        -1.33
+      ],
+      "approach": [
+        3.75,
+        -0.9
+      ],
+      "type": "brown",
+      "home_of": "brown_13"
+    },
+    {
+      "id": "r1n14",
+      "kind": "rack",
+      "pos": [
+        4.25,
+        -1.33
+      ],
+      "approach": [
+        4.25,
+        -0.9
+      ],
+      "type": "brown",
+      "home_of": "brown_14"
+    },
+    {
+      "id": "r1n15",
+      "kind": "rack",
+      "pos": [
+        4.75,
+        -1.33
+      ],
+      "approach": [
+        4.75,
+        -0.9
+      ],
+      "type": "brown",
+      "home_of": null
+    },
+    {
+      "id": "r1n16",
+      "kind": "rack",
+      "pos": [
+        5.25,
+        -1.33
+      ],
+      "approach": [
+        5.25,
+        -0.9
+      ],
+      "type": "green",
+      "home_of": "green_12"
+    },
+    {
+      "id": "r1n17",
+      "kind": "rack",
+      "pos": [
+        5.75,
+        -1.33
+      ],
+      "approach": [
+        5.75,
+        -0.9
+      ],
+      "type": "green",
+      "home_of": "green_13"
+    },
+    {
+      "id": "r1n18",
+      "kind": "rack",
+      "pos": [
+        6.25,
+        -1.33
+      ],
+      "approach": [
+        6.25,
+        -0.9
+      ],
+      "type": "green",
+      "home_of": "green_14"
+    },
+    {
+      "id": "r1n19",
+      "kind": "rack",
+      "pos": [
+        6.75,
+        -1.33
+      ],
+      "approach": [
+        6.75,
+        -0.9
+      ],
+      "type": "green",
+      "home_of": null
+    },
+    {
+      "id": "r2s00",
+      "kind": "rack",
+      "pos": [
+        -2.75,
+        1.33
+      ],
+      "approach": [
+        -2.75,
+        0.9
+      ],
+      "type": "blue",
+      "home_of": "blue_15"
+    },
+    {
+      "id": "r2s01",
+      "kind": "rack",
+      "pos": [
+        -2.25,
+        1.33
+      ],
+      "approach": [
+        -2.25,
+        0.9
+      ],
+      "type": "blue",
+      "home_of": "blue_16"
+    },
+    {
+      "id": "r2s02",
+      "kind": "rack",
+      "pos": [
+        -1.75,
+        1.33
+      ],
+      "approach": [
+        -1.75,
+        0.9
+      ],
+      "type": "blue",
+      "home_of": "blue_17"
+    },
+    {
+      "id": "r2s03",
+      "kind": "rack",
+      "pos": [
+        -1.25,
+        1.33
+      ],
+      "approach": [
+        -1.25,
+        0.9
+      ],
+      "type": "blue",
+      "home_of": null
+    },
+    {
+      "id": "r2s04",
+      "kind": "rack",
+      "pos": [
+        -0.75,
+        1.33
+      ],
+      "approach": [
+        -0.75,
+        0.9
+      ],
+      "type": "red",
+      "home_of": "red_15"
+    },
+    {
+      "id": "r2s05",
+      "kind": "rack",
+      "pos": [
+        -0.25,
+        1.33
+      ],
+      "approach": [
+        -0.25,
+        0.9
+      ],
+      "type": "red",
+      "home_of": "red_16"
+    },
+    {
+      "id": "r2s06",
+      "kind": "rack",
+      "pos": [
+        0.25,
+        1.33
+      ],
+      "approach": [
+        0.25,
+        0.9
+      ],
+      "type": "red",
+      "home_of": "red_17"
+    },
+    {
+      "id": "r2s07",
+      "kind": "rack",
+      "pos": [
+        0.75,
+        1.33
+      ],
+      "approach": [
+        0.75,
+        0.9
+      ],
+      "type": "red",
+      "home_of": null
+    },
+    {
+      "id": "r2s08",
+      "kind": "rack",
+      "pos": [
+        1.25,
+        1.33
+      ],
+      "approach": [
+        1.25,
+        0.9
+      ],
+      "type": "brown",
+      "home_of": "brown_15"
+    },
+    {
+      "id": "r2s09",
+      "kind": "rack",
+      "pos": [
+        1.75,
+        1.33
+      ],
+      "approach": [
+        1.75,
+        0.9
+      ],
+      "type": "brown",
+      "home_of": "brown_16"
+    },
+    {
+      "id": "r2s10",
+      "kind": "rack",
+      "pos": [
+        2.25,
+        1.33
+      ],
+      "approach": [
+        2.25,
+        0.9
+      ],
+      "type": "brown",
+      "home_of": "brown_17"
+    },
+    {
+      "id": "r2s11",
+      "kind": "rack",
+      "pos": [
+        2.75,
+        1.33
+      ],
+      "approach": [
+        2.75,
+        0.9
+      ],
+      "type": "brown",
+      "home_of": null
+    },
+    {
+      "id": "r2s12",
+      "kind": "rack",
+      "pos": [
+        3.25,
+        1.33
+      ],
+      "approach": [
+        3.25,
+        0.9
+      ],
+      "type": "green",
+      "home_of": "green_15"
+    },
+    {
+      "id": "r2s13",
+      "kind": "rack",
+      "pos": [
+        3.75,
+        1.33
+      ],
+      "approach": [
+        3.75,
+        0.9
+      ],
+      "type": "green",
+      "home_of": "green_16"
+    },
+    {
+      "id": "r2s14",
+      "kind": "rack",
+      "pos": [
+        4.25,
+        1.33
+      ],
+      "approach": [
+        4.25,
+        0.9
+      ],
+      "type": "green",
+      "home_of": "green_17"
+    },
+    {
+      "id": "r2s15",
+      "kind": "rack",
+      "pos": [
+        4.75,
+        1.33
+      ],
+      "approach": [
+        4.75,
+        0.9
+      ],
+      "type": "green",
+      "home_of": null
+    },
+    {
+      "id": "r2s16",
+      "kind": "rack",
+      "pos": [
+        5.25,
+        1.33
+      ],
+      "approach": [
+        5.25,
+        0.9
+      ],
+      "type": "blue",
+      "home_of": "blue_18"
+    },
+    {
+      "id": "r2s17",
+      "kind": "rack",
+      "pos": [
+        5.75,
+        1.33
+      ],
+      "approach": [
+        5.75,
+        0.9
+      ],
+      "type": "blue",
+      "home_of": "blue_19"
+    },
+    {
+      "id": "r2s18",
+      "kind": "rack",
+      "pos": [
+        6.25,
+        1.33
+      ],
+      "approach": [
+        6.25,
+        0.9
+      ],
+      "type": "blue",
+      "home_of": "blue_20"
+    },
+    {
+      "id": "r2s19",
+      "kind": "rack",
+      "pos": [
+        6.75,
+        1.33
+      ],
+      "approach": [
+        6.75,
+        0.9
+      ],
+      "type": "blue",
+      "home_of": null
+    },
+    {
+      "id": "r2n00",
+      "kind": "rack",
+      "pos": [
+        -2.75,
+        1.67
+      ],
+      "approach": [
+        -2.75,
+        2.1
+      ],
+      "type": "red",
+      "home_of": "red_18"
+    },
+    {
+      "id": "r2n01",
+      "kind": "rack",
+      "pos": [
+        -2.25,
+        1.67
+      ],
+      "approach": [
+        -2.25,
+        2.1
+      ],
+      "type": "red",
+      "home_of": "red_19"
+    },
+    {
+      "id": "r2n02",
+      "kind": "rack",
+      "pos": [
+        -1.75,
+        1.67
+      ],
+      "approach": [
+        -1.75,
+        2.1
+      ],
+      "type": "red",
+      "home_of": "red_20"
+    },
+    {
+      "id": "r2n03",
+      "kind": "rack",
+      "pos": [
+        -1.25,
+        1.67
+      ],
+      "approach": [
+        -1.25,
+        2.1
+      ],
+      "type": "red",
+      "home_of": null
+    },
+    {
+      "id": "r2n04",
+      "kind": "rack",
+      "pos": [
+        -0.75,
+        1.67
+      ],
+      "approach": [
+        -0.75,
+        2.1
+      ],
+      "type": "brown",
+      "home_of": "brown_18"
+    },
+    {
+      "id": "r2n05",
+      "kind": "rack",
+      "pos": [
+        -0.25,
+        1.67
+      ],
+      "approach": [
+        -0.25,
+        2.1
+      ],
+      "type": "brown",
+      "home_of": "brown_19"
+    },
+    {
+      "id": "r2n06",
+      "kind": "rack",
+      "pos": [
+        0.25,
+        1.67
+      ],
+      "approach": [
+        0.25,
+        2.1
+      ],
+      "type": "brown",
+      "home_of": "brown_20"
+    },
+    {
+      "id": "r2n07",
+      "kind": "rack",
+      "pos": [
+        0.75,
+        1.67
+      ],
+      "approach": [
+        0.75,
+        2.1
+      ],
+      "type": "brown",
+      "home_of": null
+    },
+    {
+      "id": "r2n08",
+      "kind": "rack",
+      "pos": [
+        1.25,
+        1.67
+      ],
+      "approach": [
+        1.25,
+        2.1
+      ],
+      "type": "green",
+      "home_of": "green_18"
+    },
+    {
+      "id": "r2n09",
+      "kind": "rack",
+      "pos": [
+        1.75,
+        1.67
+      ],
+      "approach": [
+        1.75,
+        2.1
+      ],
+      "type": "green",
+      "home_of": "green_19"
+    },
+    {
+      "id": "r2n10",
+      "kind": "rack",
+      "pos": [
+        2.25,
+        1.67
+      ],
+      "approach": [
+        2.25,
+        2.1
+      ],
+      "type": "green",
+      "home_of": "green_20"
+    },
+    {
+      "id": "r2n11",
+      "kind": "rack",
+      "pos": [
+        2.75,
+        1.67
+      ],
+      "approach": [
+        2.75,
+        2.1
+      ],
+      "type": "green",
+      "home_of": null
+    },
+    {
+      "id": "r2n12",
+      "kind": "rack",
+      "pos": [
+        3.25,
+        1.67
+      ],
+      "approach": [
+        3.25,
+        2.1
+      ],
+      "type": "blue",
+      "home_of": "blue_21"
+    },
+    {
+      "id": "r2n13",
+      "kind": "rack",
+      "pos": [
+        3.75,
+        1.67
+      ],
+      "approach": [
+        3.75,
+        2.1
+      ],
+      "type": "blue",
+      "home_of": "blue_22"
+    },
+    {
+      "id": "r2n14",
+      "kind": "rack",
+      "pos": [
+        4.25,
+        1.67
+      ],
+      "approach": [
+        4.25,
+        2.1
+      ],
+      "type": "blue",
+      "home_of": "blue_23"
+    },
+    {
+      "id": "r2n15",
+      "kind": "rack",
+      "pos": [
+        4.75,
+        1.67
+      ],
+      "approach": [
+        4.75,
+        2.1
+      ],
+      "type": "blue",
+      "home_of": null
+    },
+    {
+      "id": "r2n16",
+      "kind": "rack",
+      "pos": [
+        5.25,
+        1.67
+      ],
+      "approach": [
+        5.25,
+        2.1
+      ],
+      "type": "red",
+      "home_of": "red_21"
+    },
+    {
+      "id": "r2n17",
+      "kind": "rack",
+      "pos": [
+        5.75,
+        1.67
+      ],
+      "approach": [
+        5.75,
+        2.1
+      ],
+      "type": "red",
+      "home_of": "red_22"
+    },
+    {
+      "id": "r2n18",
+      "kind": "rack",
+      "pos": [
+        6.25,
+        1.67
+      ],
+      "approach": [
+        6.25,
+        2.1
+      ],
+      "type": "red",
+      "home_of": "red_23"
+    },
+    {
+      "id": "r2n19",
+      "kind": "rack",
+      "pos": [
+        6.75,
+        1.67
+      ],
+      "approach": [
+        6.75,
+        2.1
+      ],
+      "type": "red",
+      "home_of": null
+    },
+    {
+      "id": "r3s00",
+      "kind": "rack",
+      "pos": [
+        -2.75,
+        4.33
+      ],
+      "approach": [
+        -2.75,
+        3.9
+      ],
+      "type": "brown",
+      "home_of": "brown_21"
+    },
+    {
+      "id": "r3s01",
+      "kind": "rack",
+      "pos": [
+        -2.25,
+        4.33
+      ],
+      "approach": [
+        -2.25,
+        3.9
+      ],
+      "type": "brown",
+      "home_of": "brown_22"
+    },
+    {
+      "id": "r3s02",
+      "kind": "rack",
+      "pos": [
+        -1.75,
+        4.33
+      ],
+      "approach": [
+        -1.75,
+        3.9
+      ],
+      "type": "brown",
+      "home_of": "brown_23"
+    },
+    {
+      "id": "r3s03",
+      "kind": "rack",
+      "pos": [
+        -1.25,
+        4.33
+      ],
+      "approach": [
+        -1.25,
+        3.9
+      ],
+      "type": "brown",
+      "home_of": null
+    },
+    {
+      "id": "r3s04",
+      "kind": "rack",
+      "pos": [
+        -0.75,
+        4.33
+      ],
+      "approach": [
+        -0.75,
+        3.9
+      ],
+      "type": "green",
+      "home_of": "green_21"
+    },
+    {
+      "id": "r3s05",
+      "kind": "rack",
+      "pos": [
+        -0.25,
+        4.33
+      ],
+      "approach": [
+        -0.25,
+        3.9
+      ],
+      "type": "green",
+      "home_of": "green_22"
+    },
+    {
+      "id": "r3s06",
+      "kind": "rack",
+      "pos": [
+        0.25,
+        4.33
+      ],
+      "approach": [
+        0.25,
+        3.9
+      ],
+      "type": "green",
+      "home_of": "green_23"
+    },
+    {
+      "id": "r3s07",
+      "kind": "rack",
+      "pos": [
+        0.75,
+        4.33
+      ],
+      "approach": [
+        0.75,
+        3.9
+      ],
+      "type": "green",
+      "home_of": null
+    },
+    {
+      "id": "r3s08",
+      "kind": "rack",
+      "pos": [
+        1.25,
+        4.33
+      ],
+      "approach": [
+        1.25,
+        3.9
+      ],
+      "type": "blue",
+      "home_of": "blue_24"
+    },
+    {
+      "id": "r3s09",
+      "kind": "rack",
+      "pos": [
+        1.75,
+        4.33
+      ],
+      "approach": [
+        1.75,
+        3.9
+      ],
+      "type": "blue",
+      "home_of": "blue_25"
+    },
+    {
+      "id": "r3s10",
+      "kind": "rack",
+      "pos": [
+        2.25,
+        4.33
+      ],
+      "approach": [
+        2.25,
+        3.9
+      ],
+      "type": "blue",
+      "home_of": "blue_26"
+    },
+    {
+      "id": "r3s11",
+      "kind": "rack",
+      "pos": [
+        2.75,
+        4.33
+      ],
+      "approach": [
+        2.75,
+        3.9
+      ],
+      "type": "blue",
+      "home_of": null
+    },
+    {
+      "id": "r3s12",
+      "kind": "rack",
+      "pos": [
+        3.25,
+        4.33
+      ],
+      "approach": [
+        3.25,
+        3.9
+      ],
+      "type": "red",
+      "home_of": "red_24"
+    },
+    {
+      "id": "r3s13",
+      "kind": "rack",
+      "pos": [
+        3.75,
+        4.33
+      ],
+      "approach": [
+        3.75,
+        3.9
+      ],
+      "type": "red",
+      "home_of": "red_25"
+    },
+    {
+      "id": "r3s14",
+      "kind": "rack",
+      "pos": [
+        4.25,
+        4.33
+      ],
+      "approach": [
+        4.25,
+        3.9
+      ],
+      "type": "red",
+      "home_of": "red_26"
+    },
+    {
+      "id": "r3s15",
+      "kind": "rack",
+      "pos": [
+        4.75,
+        4.33
+      ],
+      "approach": [
+        4.75,
+        3.9
+      ],
+      "type": "red",
+      "home_of": null
+    },
+    {
+      "id": "r3s16",
+      "kind": "rack",
+      "pos": [
+        5.25,
+        4.33
+      ],
+      "approach": [
+        5.25,
+        3.9
+      ],
+      "type": "brown",
+      "home_of": "brown_24"
+    },
+    {
+      "id": "r3s17",
+      "kind": "rack",
+      "pos": [
+        5.75,
+        4.33
+      ],
+      "approach": [
+        5.75,
+        3.9
+      ],
+      "type": "brown",
+      "home_of": "brown_25"
+    },
+    {
+      "id": "r3s18",
+      "kind": "rack",
+      "pos": [
+        6.25,
+        4.33
+      ],
+      "approach": [
+        6.25,
+        3.9
+      ],
+      "type": "brown",
+      "home_of": "brown_26"
+    },
+    {
+      "id": "r3s19",
+      "kind": "rack",
+      "pos": [
+        6.75,
+        4.33
+      ],
+      "approach": [
+        6.75,
+        3.9
+      ],
+      "type": "brown",
+      "home_of": null
+    },
+    {
+      "id": "r3n00",
+      "kind": "rack",
+      "pos": [
+        -2.75,
+        4.67
+      ],
+      "approach": [
+        -2.75,
+        5.1
+      ],
+      "type": "green",
+      "home_of": "green_24"
+    },
+    {
+      "id": "r3n01",
+      "kind": "rack",
+      "pos": [
+        -2.25,
+        4.67
+      ],
+      "approach": [
+        -2.25,
+        5.1
+      ],
+      "type": "green",
+      "home_of": "green_25"
+    },
+    {
+      "id": "r3n02",
+      "kind": "rack",
+      "pos": [
+        -1.75,
+        4.67
+      ],
+      "approach": [
+        -1.75,
+        5.1
+      ],
+      "type": "green",
+      "home_of": "green_26"
+    },
+    {
+      "id": "r3n03",
+      "kind": "rack",
+      "pos": [
+        -1.25,
+        4.67
+      ],
+      "approach": [
+        -1.25,
+        5.1
+      ],
+      "type": "green",
+      "home_of": null
+    },
+    {
+      "id": "r3n04",
+      "kind": "rack",
+      "pos": [
+        -0.75,
+        4.67
+      ],
+      "approach": [
+        -0.75,
+        5.1
+      ],
+      "type": "blue",
+      "home_of": "blue_27"
+    },
+    {
+      "id": "r3n05",
+      "kind": "rack",
+      "pos": [
+        -0.25,
+        4.67
+      ],
+      "approach": [
+        -0.25,
+        5.1
+      ],
+      "type": "blue",
+      "home_of": "blue_28"
+    },
+    {
+      "id": "r3n06",
+      "kind": "rack",
+      "pos": [
+        0.25,
+        4.67
+      ],
+      "approach": [
+        0.25,
+        5.1
+      ],
+      "type": "blue",
+      "home_of": "blue_29"
+    },
+    {
+      "id": "r3n07",
+      "kind": "rack",
+      "pos": [
+        0.75,
+        4.67
+      ],
+      "approach": [
+        0.75,
+        5.1
+      ],
+      "type": "blue",
+      "home_of": null
+    },
+    {
+      "id": "r3n08",
+      "kind": "rack",
+      "pos": [
+        1.25,
+        4.67
+      ],
+      "approach": [
+        1.25,
+        5.1
+      ],
+      "type": "red",
+      "home_of": "red_27"
+    },
+    {
+      "id": "r3n09",
+      "kind": "rack",
+      "pos": [
+        1.75,
+        4.67
+      ],
+      "approach": [
+        1.75,
+        5.1
+      ],
+      "type": "red",
+      "home_of": "red_28"
+    },
+    {
+      "id": "r3n10",
+      "kind": "rack",
+      "pos": [
+        2.25,
+        4.67
+      ],
+      "approach": [
+        2.25,
+        5.1
+      ],
+      "type": "red",
+      "home_of": "red_29"
+    },
+    {
+      "id": "r3n11",
+      "kind": "rack",
+      "pos": [
+        2.75,
+        4.67
+      ],
+      "approach": [
+        2.75,
+        5.1
+      ],
+      "type": "red",
+      "home_of": null
+    },
+    {
+      "id": "r3n12",
+      "kind": "rack",
+      "pos": [
+        3.25,
+        4.67
+      ],
+      "approach": [
+        3.25,
+        5.1
+      ],
+      "type": "brown",
+      "home_of": "brown_27"
+    },
+    {
+      "id": "r3n13",
+      "kind": "rack",
+      "pos": [
+        3.75,
+        4.67
+      ],
+      "approach": [
+        3.75,
+        5.1
+      ],
+      "type": "brown",
+      "home_of": "brown_28"
+    },
+    {
+      "id": "r3n14",
+      "kind": "rack",
+      "pos": [
+        4.25,
+        4.67
+      ],
+      "approach": [
+        4.25,
+        5.1
+      ],
+      "type": "brown",
+      "home_of": "brown_29"
+    },
+    {
+      "id": "r3n15",
+      "kind": "rack",
+      "pos": [
+        4.75,
+        4.67
+      ],
+      "approach": [
+        4.75,
+        5.1
+      ],
+      "type": "brown",
+      "home_of": null
+    },
+    {
+      "id": "r3n16",
+      "kind": "rack",
+      "pos": [
+        5.25,
+        4.67
+      ],
+      "approach": [
+        5.25,
+        5.1
+      ],
+      "type": "green",
+      "home_of": "green_27"
+    },
+    {
+      "id": "r3n17",
+      "kind": "rack",
+      "pos": [
+        5.75,
+        4.67
+      ],
+      "approach": [
+        5.75,
+        5.1
+      ],
+      "type": "green",
+      "home_of": "green_28"
+    },
+    {
+      "id": "r3n18",
+      "kind": "rack",
+      "pos": [
+        6.25,
+        4.67
+      ],
+      "approach": [
+        6.25,
+        5.1
+      ],
+      "type": "green",
+      "home_of": "green_29"
+    },
+    {
+      "id": "r3n19",
+      "kind": "rack",
+      "pos": [
+        6.75,
+        4.67
+      ],
+      "approach": [
+        6.75,
+        5.1
+      ],
+      "type": "green",
+      "home_of": null
+    },
+    {
+      "id": "p0x00",
+      "kind": "pile",
+      "pos": [
+        -7.1,
+        -6.0
+      ],
+      "approach": [
+        -6.45,
+        -6.0
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p0x01",
+      "kind": "pile",
+      "pos": [
+        -7.1,
+        -5.75
+      ],
+      "approach": [
+        -6.45,
+        -5.75
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p0x02",
+      "kind": "pile",
+      "pos": [
+        -7.1,
+        -5.5
+      ],
+      "approach": [
+        -6.45,
+        -5.5
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p0x03",
+      "kind": "pile",
+      "pos": [
+        -7.1,
+        -5.25
+      ],
+      "approach": [
+        -6.45,
+        -5.25
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p0x04",
+      "kind": "pile",
+      "pos": [
+        -7.1,
+        -5.0
+      ],
+      "approach": [
+        -6.45,
+        -5.0
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p0x05",
+      "kind": "pile",
+      "pos": [
+        -7.1,
+        -4.75
+      ],
+      "approach": [
+        -6.45,
+        -4.75
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p0x06",
+      "kind": "pile",
+      "pos": [
+        -7.1,
+        -4.5
+      ],
+      "approach": [
+        -6.45,
+        -4.5
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p0x07",
+      "kind": "pile",
+      "pos": [
+        -7.1,
+        -4.25
+      ],
+      "approach": [
+        -6.45,
+        -4.25
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p0x08",
+      "kind": "pile",
+      "pos": [
+        -7.1,
+        -4.0
+      ],
+      "approach": [
+        -6.45,
+        -4.0
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p0x09",
+      "kind": "pile",
+      "pos": [
+        -7.1,
+        -3.75
+      ],
+      "approach": [
+        -6.45,
+        -3.75
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p0x10",
+      "kind": "pile",
+      "pos": [
+        -7.1,
+        -3.5
+      ],
+      "approach": [
+        -6.45,
+        -3.5
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p0x11",
+      "kind": "pile",
+      "pos": [
+        -7.1,
+        -3.25
+      ],
+      "approach": [
+        -6.45,
+        -3.25
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p0x12",
+      "kind": "pile",
+      "pos": [
+        -7.1,
+        -3.0
+      ],
+      "approach": [
+        -6.45,
+        -3.0
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p0x13",
+      "kind": "pile",
+      "pos": [
+        -7.1,
+        -2.75
+      ],
+      "approach": [
+        -6.45,
+        -2.75
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p0x14",
+      "kind": "pile",
+      "pos": [
+        -7.1,
+        -2.5
+      ],
+      "approach": [
+        -6.45,
+        -2.5
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p0x15",
+      "kind": "pile",
+      "pos": [
+        -7.1,
+        -2.25
+      ],
+      "approach": [
+        -6.45,
+        -2.25
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p0x16",
+      "kind": "pile",
+      "pos": [
+        -7.1,
+        -2.0
+      ],
+      "approach": [
+        -6.45,
+        -2.0
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p0x17",
+      "kind": "pile",
+      "pos": [
+        -7.1,
+        -1.75
+      ],
+      "approach": [
+        -6.45,
+        -1.75
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p0x18",
+      "kind": "pile",
+      "pos": [
+        -7.1,
+        -1.5
+      ],
+      "approach": [
+        -6.45,
+        -1.5
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p0x19",
+      "kind": "pile",
+      "pos": [
+        -7.1,
+        -1.25
+      ],
+      "approach": [
+        -6.45,
+        -1.25
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p0x20",
+      "kind": "pile",
+      "pos": [
+        -7.1,
+        -1.0
+      ],
+      "approach": [
+        -6.45,
+        -1.0
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p0x21",
+      "kind": "pile",
+      "pos": [
+        -7.1,
+        -0.75
+      ],
+      "approach": [
+        -6.45,
+        -0.75
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p0x22",
+      "kind": "pile",
+      "pos": [
+        -7.1,
+        -0.5
+      ],
+      "approach": [
+        -6.45,
+        -0.5
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p0x23",
+      "kind": "pile",
+      "pos": [
+        -7.1,
+        -0.25
+      ],
+      "approach": [
+        -6.45,
+        -0.25
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p0x24",
+      "kind": "pile",
+      "pos": [
+        -7.1,
+        0.0
+      ],
+      "approach": [
+        -6.45,
+        0.0
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p0x25",
+      "kind": "pile",
+      "pos": [
+        -7.1,
+        0.25
+      ],
+      "approach": [
+        -6.45,
+        0.25
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p0x26",
+      "kind": "pile",
+      "pos": [
+        -7.1,
+        0.5
+      ],
+      "approach": [
+        -6.45,
+        0.5
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p0x27",
+      "kind": "pile",
+      "pos": [
+        -7.1,
+        0.75
+      ],
+      "approach": [
+        -6.45,
+        0.75
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p0x28",
+      "kind": "pile",
+      "pos": [
+        -7.1,
+        1.0
+      ],
+      "approach": [
+        -6.45,
+        1.0
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p0x29",
+      "kind": "pile",
+      "pos": [
+        -7.1,
+        1.25
+      ],
+      "approach": [
+        -6.45,
+        1.25
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p0x30",
+      "kind": "pile",
+      "pos": [
+        -7.1,
+        1.5
+      ],
+      "approach": [
+        -6.45,
+        1.5
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p0x31",
+      "kind": "pile",
+      "pos": [
+        -7.1,
+        1.75
+      ],
+      "approach": [
+        -6.45,
+        1.75
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p0x32",
+      "kind": "pile",
+      "pos": [
+        -7.1,
+        2.0
+      ],
+      "approach": [
+        -6.45,
+        2.0
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p0x33",
+      "kind": "pile",
+      "pos": [
+        -7.1,
+        2.25
+      ],
+      "approach": [
+        -6.45,
+        2.25
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p0x34",
+      "kind": "pile",
+      "pos": [
+        -7.1,
+        2.5
+      ],
+      "approach": [
+        -6.45,
+        2.5
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p0x35",
+      "kind": "pile",
+      "pos": [
+        -7.1,
+        2.75
+      ],
+      "approach": [
+        -6.45,
+        2.75
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p0x36",
+      "kind": "pile",
+      "pos": [
+        -7.1,
+        3.0
+      ],
+      "approach": [
+        -6.45,
+        3.0
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p0x37",
+      "kind": "pile",
+      "pos": [
+        -7.1,
+        3.25
+      ],
+      "approach": [
+        -6.45,
+        3.25
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p0x38",
+      "kind": "pile",
+      "pos": [
+        -7.1,
+        3.5
+      ],
+      "approach": [
+        -6.45,
+        3.5
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p0x39",
+      "kind": "pile",
+      "pos": [
+        -7.1,
+        3.75
+      ],
+      "approach": [
+        -6.45,
+        3.75
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p0x40",
+      "kind": "pile",
+      "pos": [
+        -7.1,
+        4.0
+      ],
+      "approach": [
+        -6.45,
+        4.0
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p0x41",
+      "kind": "pile",
+      "pos": [
+        -7.1,
+        4.25
+      ],
+      "approach": [
+        -6.45,
+        4.25
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p0x42",
+      "kind": "pile",
+      "pos": [
+        -7.1,
+        4.5
+      ],
+      "approach": [
+        -6.45,
+        4.5
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p0x43",
+      "kind": "pile",
+      "pos": [
+        -7.1,
+        4.75
+      ],
+      "approach": [
+        -6.45,
+        4.75
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p0x44",
+      "kind": "pile",
+      "pos": [
+        -7.1,
+        5.0
+      ],
+      "approach": [
+        -6.45,
+        5.0
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p0x45",
+      "kind": "pile",
+      "pos": [
+        -7.1,
+        5.25
+      ],
+      "approach": [
+        -6.45,
+        5.25
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p0x46",
+      "kind": "pile",
+      "pos": [
+        -7.1,
+        5.5
+      ],
+      "approach": [
+        -6.45,
+        5.5
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p0x47",
+      "kind": "pile",
+      "pos": [
+        -7.1,
+        5.75
+      ],
+      "approach": [
+        -6.45,
+        5.75
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p0x48",
+      "kind": "pile",
+      "pos": [
+        -7.1,
+        6.0
+      ],
+      "approach": [
+        -6.45,
+        6.0
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p1x00",
+      "kind": "pile",
+      "pos": [
+        -7.35,
+        -6.0
+      ],
+      "approach": [
+        -6.45,
+        -6.0
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p1x01",
+      "kind": "pile",
+      "pos": [
+        -7.35,
+        -5.75
+      ],
+      "approach": [
+        -6.45,
+        -5.75
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p1x02",
+      "kind": "pile",
+      "pos": [
+        -7.35,
+        -5.5
+      ],
+      "approach": [
+        -6.45,
+        -5.5
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p1x03",
+      "kind": "pile",
+      "pos": [
+        -7.35,
+        -5.25
+      ],
+      "approach": [
+        -6.45,
+        -5.25
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p1x04",
+      "kind": "pile",
+      "pos": [
+        -7.35,
+        -5.0
+      ],
+      "approach": [
+        -6.45,
+        -5.0
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p1x05",
+      "kind": "pile",
+      "pos": [
+        -7.35,
+        -4.75
+      ],
+      "approach": [
+        -6.45,
+        -4.75
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p1x06",
+      "kind": "pile",
+      "pos": [
+        -7.35,
+        -4.5
+      ],
+      "approach": [
+        -6.45,
+        -4.5
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p1x07",
+      "kind": "pile",
+      "pos": [
+        -7.35,
+        -4.25
+      ],
+      "approach": [
+        -6.45,
+        -4.25
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p1x08",
+      "kind": "pile",
+      "pos": [
+        -7.35,
+        -4.0
+      ],
+      "approach": [
+        -6.45,
+        -4.0
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p1x09",
+      "kind": "pile",
+      "pos": [
+        -7.35,
+        -3.75
+      ],
+      "approach": [
+        -6.45,
+        -3.75
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p1x10",
+      "kind": "pile",
+      "pos": [
+        -7.35,
+        -3.5
+      ],
+      "approach": [
+        -6.45,
+        -3.5
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p1x11",
+      "kind": "pile",
+      "pos": [
+        -7.35,
+        -3.25
+      ],
+      "approach": [
+        -6.45,
+        -3.25
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p1x12",
+      "kind": "pile",
+      "pos": [
+        -7.35,
+        -3.0
+      ],
+      "approach": [
+        -6.45,
+        -3.0
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p1x13",
+      "kind": "pile",
+      "pos": [
+        -7.35,
+        -2.75
+      ],
+      "approach": [
+        -6.45,
+        -2.75
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p1x14",
+      "kind": "pile",
+      "pos": [
+        -7.35,
+        -2.5
+      ],
+      "approach": [
+        -6.45,
+        -2.5
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p1x15",
+      "kind": "pile",
+      "pos": [
+        -7.35,
+        -2.25
+      ],
+      "approach": [
+        -6.45,
+        -2.25
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p1x16",
+      "kind": "pile",
+      "pos": [
+        -7.35,
+        -2.0
+      ],
+      "approach": [
+        -6.45,
+        -2.0
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p1x17",
+      "kind": "pile",
+      "pos": [
+        -7.35,
+        -1.75
+      ],
+      "approach": [
+        -6.45,
+        -1.75
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p1x18",
+      "kind": "pile",
+      "pos": [
+        -7.35,
+        -1.5
+      ],
+      "approach": [
+        -6.45,
+        -1.5
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p1x19",
+      "kind": "pile",
+      "pos": [
+        -7.35,
+        -1.25
+      ],
+      "approach": [
+        -6.45,
+        -1.25
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p1x20",
+      "kind": "pile",
+      "pos": [
+        -7.35,
+        -1.0
+      ],
+      "approach": [
+        -6.45,
+        -1.0
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p1x21",
+      "kind": "pile",
+      "pos": [
+        -7.35,
+        -0.75
+      ],
+      "approach": [
+        -6.45,
+        -0.75
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p1x22",
+      "kind": "pile",
+      "pos": [
+        -7.35,
+        -0.5
+      ],
+      "approach": [
+        -6.45,
+        -0.5
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p1x23",
+      "kind": "pile",
+      "pos": [
+        -7.35,
+        -0.25
+      ],
+      "approach": [
+        -6.45,
+        -0.25
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p1x24",
+      "kind": "pile",
+      "pos": [
+        -7.35,
+        0.0
+      ],
+      "approach": [
+        -6.45,
+        0.0
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p1x25",
+      "kind": "pile",
+      "pos": [
+        -7.35,
+        0.25
+      ],
+      "approach": [
+        -6.45,
+        0.25
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p1x26",
+      "kind": "pile",
+      "pos": [
+        -7.35,
+        0.5
+      ],
+      "approach": [
+        -6.45,
+        0.5
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p1x27",
+      "kind": "pile",
+      "pos": [
+        -7.35,
+        0.75
+      ],
+      "approach": [
+        -6.45,
+        0.75
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p1x28",
+      "kind": "pile",
+      "pos": [
+        -7.35,
+        1.0
+      ],
+      "approach": [
+        -6.45,
+        1.0
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p1x29",
+      "kind": "pile",
+      "pos": [
+        -7.35,
+        1.25
+      ],
+      "approach": [
+        -6.45,
+        1.25
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p1x30",
+      "kind": "pile",
+      "pos": [
+        -7.35,
+        1.5
+      ],
+      "approach": [
+        -6.45,
+        1.5
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p1x31",
+      "kind": "pile",
+      "pos": [
+        -7.35,
+        1.75
+      ],
+      "approach": [
+        -6.45,
+        1.75
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p1x32",
+      "kind": "pile",
+      "pos": [
+        -7.35,
+        2.0
+      ],
+      "approach": [
+        -6.45,
+        2.0
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p1x33",
+      "kind": "pile",
+      "pos": [
+        -7.35,
+        2.25
+      ],
+      "approach": [
+        -6.45,
+        2.25
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p1x34",
+      "kind": "pile",
+      "pos": [
+        -7.35,
+        2.5
+      ],
+      "approach": [
+        -6.45,
+        2.5
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p1x35",
+      "kind": "pile",
+      "pos": [
+        -7.35,
+        2.75
+      ],
+      "approach": [
+        -6.45,
+        2.75
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p1x36",
+      "kind": "pile",
+      "pos": [
+        -7.35,
+        3.0
+      ],
+      "approach": [
+        -6.45,
+        3.0
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p1x37",
+      "kind": "pile",
+      "pos": [
+        -7.35,
+        3.25
+      ],
+      "approach": [
+        -6.45,
+        3.25
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p1x38",
+      "kind": "pile",
+      "pos": [
+        -7.35,
+        3.5
+      ],
+      "approach": [
+        -6.45,
+        3.5
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p1x39",
+      "kind": "pile",
+      "pos": [
+        -7.35,
+        3.75
+      ],
+      "approach": [
+        -6.45,
+        3.75
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p1x40",
+      "kind": "pile",
+      "pos": [
+        -7.35,
+        4.0
+      ],
+      "approach": [
+        -6.45,
+        4.0
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p1x41",
+      "kind": "pile",
+      "pos": [
+        -7.35,
+        4.25
+      ],
+      "approach": [
+        -6.45,
+        4.25
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p1x42",
+      "kind": "pile",
+      "pos": [
+        -7.35,
+        4.5
+      ],
+      "approach": [
+        -6.45,
+        4.5
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p1x43",
+      "kind": "pile",
+      "pos": [
+        -7.35,
+        4.75
+      ],
+      "approach": [
+        -6.45,
+        4.75
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p1x44",
+      "kind": "pile",
+      "pos": [
+        -7.35,
+        5.0
+      ],
+      "approach": [
+        -6.45,
+        5.0
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p1x45",
+      "kind": "pile",
+      "pos": [
+        -7.35,
+        5.25
+      ],
+      "approach": [
+        -6.45,
+        5.25
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p1x46",
+      "kind": "pile",
+      "pos": [
+        -7.35,
+        5.5
+      ],
+      "approach": [
+        -6.45,
+        5.5
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p1x47",
+      "kind": "pile",
+      "pos": [
+        -7.35,
+        5.75
+      ],
+      "approach": [
+        -6.45,
+        5.75
+      ],
+      "type": null,
+      "home_of": null
+    },
+    {
+      "id": "p1x48",
+      "kind": "pile",
+      "pos": [
+        -7.35,
+        6.0
+      ],
+      "approach": [
+        -6.45,
+        6.0
+      ],
+      "type": null,
+      "home_of": null
+    }
+  ],
+  "items": [
+    {
+      "id": "blue_00",
+      "type": "blue",
+      "home": "r0s00"
+    },
+    {
+      "id": "blue_01",
+      "type": "blue",
+      "home": "r0s01"
+    },
+    {
+      "id": "blue_02",
+      "type": "blue",
+      "home": "r0s02"
+    },
+    {
+      "id": "red_00",
+      "type": "red",
+      "home": "r0s04"
+    },
+    {
+      "id": "red_01",
+      "type": "red",
+      "home": "r0s05"
+    },
+    {
+      "id": "red_02",
+      "type": "red",
+      "home": "r0s06"
+    },
+    {
+      "id": "brown_00",
+      "type": "brown",
+      "home": "r0s08"
+    },
+    {
+      "id": "brown_01",
+      "type": "brown",
+      "home": "r0s09"
+    },
+    {
+      "id": "brown_02",
+      "type": "brown",
+      "home": "r0s10"
+    },
+    {
+      "id": "green_00",
+      "type": "green",
+      "home": "r0s12"
+    },
+    {
+      "id": "green_01",
+      "type": "green",
+      "home": "r0s13"
+    },
+    {
+      "id": "green_02",
+      "type": "green",
+      "home": "r0s14"
+    },
+    {
+      "id": "blue_03",
+      "type": "blue",
+      "home": "r0s16"
+    },
+    {
+      "id": "blue_04",
+      "type": "blue",
+      "home": "r0s17"
+    },
+    {
+      "id": "blue_05",
+      "type": "blue",
+      "home": "r0s18"
+    },
+    {
+      "id": "red_03",
+      "type": "red",
+      "home": "r0n00"
+    },
+    {
+      "id": "red_04",
+      "type": "red",
+      "home": "r0n01"
+    },
+    {
+      "id": "red_05",
+      "type": "red",
+      "home": "r0n02"
+    },
+    {
+      "id": "brown_03",
+      "type": "brown",
+      "home": "r0n04"
+    },
+    {
+      "id": "brown_04",
+      "type": "brown",
+      "home": "r0n05"
+    },
+    {
+      "id": "brown_05",
+      "type": "brown",
+      "home": "r0n06"
+    },
+    {
+      "id": "green_03",
+      "type": "green",
+      "home": "r0n08"
+    },
+    {
+      "id": "green_04",
+      "type": "green",
+      "home": "r0n09"
+    },
+    {
+      "id": "green_05",
+      "type": "green",
+      "home": "r0n10"
+    },
+    {
+      "id": "blue_06",
+      "type": "blue",
+      "home": "r0n12"
+    },
+    {
+      "id": "blue_07",
+      "type": "blue",
+      "home": "r0n13"
+    },
+    {
+      "id": "blue_08",
+      "type": "blue",
+      "home": "r0n14"
+    },
+    {
+      "id": "red_06",
+      "type": "red",
+      "home": "r0n16"
+    },
+    {
+      "id": "red_07",
+      "type": "red",
+      "home": "r0n17"
+    },
+    {
+      "id": "red_08",
+      "type": "red",
+      "home": "r0n18"
+    },
+    {
+      "id": "brown_06",
+      "type": "brown",
+      "home": "r1s00"
+    },
+    {
+      "id": "brown_07",
+      "type": "brown",
+      "home": "r1s01"
+    },
+    {
+      "id": "brown_08",
+      "type": "brown",
+      "home": "r1s02"
+    },
+    {
+      "id": "green_06",
+      "type": "green",
+      "home": "r1s04"
+    },
+    {
+      "id": "green_07",
+      "type": "green",
+      "home": "r1s05"
+    },
+    {
+      "id": "green_08",
+      "type": "green",
+      "home": "r1s06"
+    },
+    {
+      "id": "blue_09",
+      "type": "blue",
+      "home": "r1s08"
+    },
+    {
+      "id": "blue_10",
+      "type": "blue",
+      "home": "r1s09"
+    },
+    {
+      "id": "blue_11",
+      "type": "blue",
+      "home": "r1s10"
+    },
+    {
+      "id": "red_09",
+      "type": "red",
+      "home": "r1s12"
+    },
+    {
+      "id": "red_10",
+      "type": "red",
+      "home": "r1s13"
+    },
+    {
+      "id": "red_11",
+      "type": "red",
+      "home": "r1s14"
+    },
+    {
+      "id": "brown_09",
+      "type": "brown",
+      "home": "r1s16"
+    },
+    {
+      "id": "brown_10",
+      "type": "brown",
+      "home": "r1s17"
+    },
+    {
+      "id": "brown_11",
+      "type": "brown",
+      "home": "r1s18"
+    },
+    {
+      "id": "green_09",
+      "type": "green",
+      "home": "r1n00"
+    },
+    {
+      "id": "green_10",
+      "type": "green",
+      "home": "r1n01"
+    },
+    {
+      "id": "green_11",
+      "type": "green",
+      "home": "r1n02"
+    },
+    {
+      "id": "blue_12",
+      "type": "blue",
+      "home": "r1n04"
+    },
+    {
+      "id": "blue_13",
+      "type": "blue",
+      "home": "r1n05"
+    },
+    {
+      "id": "blue_14",
+      "type": "blue",
+      "home": "r1n06"
+    },
+    {
+      "id": "red_12",
+      "type": "red",
+      "home": "r1n08"
+    },
+    {
+      "id": "red_13",
+      "type": "red",
+      "home": "r1n09"
+    },
+    {
+      "id": "red_14",
+      "type": "red",
+      "home": "r1n10"
+    },
+    {
+      "id": "brown_12",
+      "type": "brown",
+      "home": "r1n12"
+    },
+    {
+      "id": "brown_13",
+      "type": "brown",
+      "home": "r1n13"
+    },
+    {
+      "id": "brown_14",
+      "type": "brown",
+      "home": "r1n14"
+    },
+    {
+      "id": "green_12",
+      "type": "green",
+      "home": "r1n16"
+    },
+    {
+      "id": "green_13",
+      "type": "green",
+      "home": "r1n17"
+    },
+    {
+      "id": "green_14",
+      "type": "green",
+      "home": "r1n18"
+    },
+    {
+      "id": "blue_15",
+      "type": "blue",
+      "home": "r2s00"
+    },
+    {
+      "id": "blue_16",
+      "type": "blue",
+      "home": "r2s01"
+    },
+    {
+      "id": "blue_17",
+      "type": "blue",
+      "home": "r2s02"
+    },
+    {
+      "id": "red_15",
+      "type": "red",
+      "home": "r2s04"
+    },
+    {
+      "id": "red_16",
+      "type": "red",
+      "home": "r2s05"
+    },
+    {
+      "id": "red_17",
+      "type": "red",
+      "home": "r2s06"
+    },
+    {
+      "id": "brown_15",
+      "type": "brown",
+      "home": "r2s08"
+    },
+    {
+      "id": "brown_16",
+      "type": "brown",
+      "home": "r2s09"
+    },
+    {
+      "id": "brown_17",
+      "type": "brown",
+      "home": "r2s10"
+    },
+    {
+      "id": "green_15",
+      "type": "green",
+      "home": "r2s12"
+    },
+    {
+      "id": "green_16",
+      "type": "green",
+      "home": "r2s13"
+    },
+    {
+      "id": "green_17",
+      "type": "green",
+      "home": "r2s14"
+    },
+    {
+      "id": "blue_18",
+      "type": "blue",
+      "home": "r2s16"
+    },
+    {
+      "id": "blue_19",
+      "type": "blue",
+      "home": "r2s17"
+    },
+    {
+      "id": "blue_20",
+      "type": "blue",
+      "home": "r2s18"
+    },
+    {
+      "id": "red_18",
+      "type": "red",
+      "home": "r2n00"
+    },
+    {
+      "id": "red_19",
+      "type": "red",
+      "home": "r2n01"
+    },
+    {
+      "id": "red_20",
+      "type": "red",
+      "home": "r2n02"
+    },
+    {
+      "id": "brown_18",
+      "type": "brown",
+      "home": "r2n04"
+    },
+    {
+      "id": "brown_19",
+      "type": "brown",
+      "home": "r2n05"
+    },
+    {
+      "id": "brown_20",
+      "type": "brown",
+      "home": "r2n06"
+    },
+    {
+      "id": "green_18",
+      "type": "green",
+      "home": "r2n08"
+    },
+    {
+      "id": "green_19",
+      "type": "green",
+      "home": "r2n09"
+    },
+    {
+      "id": "green_20",
+      "type": "green",
+      "home": "r2n10"
+    },
+    {
+      "id": "blue_21",
+      "type": "blue",
+      "home": "r2n12"
+    },
+    {
+      "id": "blue_22",
+      "type": "blue",
+      "home": "r2n13"
+    },
+    {
+      "id": "blue_23",
+      "type": "blue",
+      "home": "r2n14"
+    },
+    {
+      "id": "red_21",
+      "type": "red",
+      "home": "r2n16"
+    },
+    {
+      "id": "red_22",
+      "type": "red",
+      "home": "r2n17"
+    },
+    {
+      "id": "red_23",
+      "type": "red",
+      "home": "r2n18"
+    },
+    {
+      "id": "brown_21",
+      "type": "brown",
+      "home": "r3s00"
+    },
+    {
+      "id": "brown_22",
+      "type": "brown",
+      "home": "r3s01"
+    },
+    {
+      "id": "brown_23",
+      "type": "brown",
+      "home": "r3s02"
+    },
+    {
+      "id": "green_21",
+      "type": "green",
+      "home": "r3s04"
+    },
+    {
+      "id": "green_22",
+      "type": "green",
+      "home": "r3s05"
+    },
+    {
+      "id": "green_23",
+      "type": "green",
+      "home": "r3s06"
+    },
+    {
+      "id": "blue_24",
+      "type": "blue",
+      "home": "r3s08"
+    },
+    {
+      "id": "blue_25",
+      "type": "blue",
+      "home": "r3s09"
+    },
+    {
+      "id": "blue_26",
+      "type": "blue",
+      "home": "r3s10"
+    },
+    {
+      "id": "red_24",
+      "type": "red",
+      "home": "r3s12"
+    },
+    {
+      "id": "red_25",
+      "type": "red",
+      "home": "r3s13"
+    },
+    {
+      "id": "red_26",
+      "type": "red",
+      "home": "r3s14"
+    },
+    {
+      "id": "brown_24",
+      "type": "brown",
+      "home": "r3s16"
+    },
+    {
+      "id": "brown_25",
+      "type": "brown",
+      "home": "r3s17"
+    },
+    {
+      "id": "brown_26",
+      "type": "brown",
+      "home": "r3s18"
+    },
+    {
+      "id": "green_24",
+      "type": "green",
+      "home": "r3n00"
+    },
+    {
+      "id": "green_25",
+      "type": "green",
+      "home": "r3n01"
+    },
+    {
+      "id": "green_26",
+      "type": "green",
+      "home": "r3n02"
+    },
+    {
+      "id": "blue_27",
+      "type": "blue",
+      "home": "r3n04"
+    },
+    {
+      "id": "blue_28",
+      "type": "blue",
+      "home": "r3n05"
+    },
+    {
+      "id": "blue_29",
+      "type": "blue",
+      "home": "r3n06"
+    },
+    {
+      "id": "red_27",
+      "type": "red",
+      "home": "r3n08"
+    },
+    {
+      "id": "red_28",
+      "type": "red",
+      "home": "r3n09"
+    },
+    {
+      "id": "red_29",
+      "type": "red",
+      "home": "r3n10"
+    },
+    {
+      "id": "brown_27",
+      "type": "brown",
+      "home": "r3n12"
+    },
+    {
+      "id": "brown_28",
+      "type": "brown",
+      "home": "r3n13"
+    },
+    {
+      "id": "brown_29",
+      "type": "brown",
+      "home": "r3n14"
+    },
+    {
+      "id": "green_27",
+      "type": "green",
+      "home": "r3n16"
+    },
+    {
+      "id": "green_28",
+      "type": "green",
+      "home": "r3n17"
+    },
+    {
+      "id": "green_29",
+      "type": "green",
+      "home": "r3n18"
+    }
+  ],
+  "robots": [
+    {
+      "id": 0,
+      "def": "R0",
+      "name": "robot_0",
+      "role": "patrol",
+      "start": [
+        -4.85,
+        -6.2
+      ],
+      "home": [
+        -4.85,
+        -6.2
+      ],
+      "faces": [
+        "pile",
+        "pile_w"
+      ]
+    },
+    {
+      "id": 1,
+      "def": "R1",
+      "name": "robot_1",
+      "role": "patrol",
+      "start": [
+        -4.85,
+        6.2
+      ],
+      "home": [
+        -4.85,
+        6.2
+      ],
+      "faces": [
+        "r0s",
+        "r0n",
+        "r1s",
+        "r1n",
+        "r2s",
+        "r2n",
+        "r3s",
+        "r3n"
+      ]
+    },
+    {
+      "id": 2,
+      "def": "R2",
+      "name": "robot_2",
+      "role": "patrol",
+      "start": [
+        8.4,
+        0.0
+      ],
+      "home": [
+        8.4,
+        0.0
+      ],
+      "faces": [
+        "r0s",
+        "r0n",
+        "r1s",
+        "r1n",
+        "r2s",
+        "r2n",
+        "r3s",
+        "r3n"
+      ]
+    },
+    {
+      "id": 3,
+      "def": "R3",
+      "name": "robot_3",
+      "role": "recovery",
+      "start": [
+        -4.3,
+        -0.6
+      ],
+      "home": [
+        -4.3,
+        -0.6
+      ]
+    },
+    {
+      "id": 4,
+      "def": "R4",
+      "name": "robot_4",
+      "role": "recovery",
+      "start": [
+        -4.3,
+        0.6
+      ],
+      "home": [
+        -4.3,
+        0.6
+      ]
+    },
+    {
+      "id": 5,
+      "def": "R5",
+      "name": "robot_5",
+      "role": "recovery",
+      "start": [
+        -4.3,
+        -1.8
+      ],
+      "home": [
+        -4.3,
+        -1.8
+      ]
+    },
+    {
+      "id": 6,
+      "def": "R6",
+      "name": "robot_6",
+      "role": "recovery",
+      "start": [
+        -4.3,
+        1.8
+      ],
+      "home": [
+        -4.3,
+        1.8
+      ]
+    },
+    {
+      "id": 7,
+      "def": "R7",
+      "name": "robot_7",
+      "role": "recovery",
+      "start": [
+        -4.3,
+        -3.0
+      ],
+      "home": [
+        -4.3,
+        -3.0
+      ]
+    },
+    {
+      "id": 8,
+      "def": "R8",
+      "name": "robot_8",
+      "role": "recovery",
+      "start": [
+        -4.3,
+        3.0
+      ],
+      "home": [
+        -4.3,
+        3.0
+      ]
+    },
+    {
+      "id": 9,
+      "def": "R9",
+      "name": "robot_9",
+      "role": "recovery",
+      "start": [
+        -4.3,
+        -4.2
+      ],
+      "home": [
+        -4.3,
+        -4.2
+      ]
+    },
+    {
+      "id": 10,
+      "def": "R10",
+      "name": "robot_10",
+      "role": "recovery",
+      "start": [
+        -4.3,
+        4.2
+      ],
+      "home": [
+        -4.3,
+        4.2
+      ]
+    },
+    {
+      "id": 11,
+      "def": "R11",
+      "name": "robot_11",
+      "role": "transport",
+      "start": [
+        9.3,
+        -6.0
+      ],
+      "home": [
+        9.3,
+        -6.0
+      ]
+    },
+    {
+      "id": 12,
+      "def": "R12",
+      "name": "robot_12",
+      "role": "transport",
+      "start": [
+        9.3,
+        -4.8
+      ],
+      "home": [
+        9.3,
+        -4.8
+      ]
+    },
+    {
+      "id": 13,
+      "def": "R13",
+      "name": "robot_13",
+      "role": "transport",
+      "start": [
+        9.3,
+        -3.6
+      ],
+      "home": [
+        9.3,
+        -3.6
+      ]
+    },
+    {
+      "id": 14,
+      "def": "R14",
+      "name": "robot_14",
+      "role": "transport",
+      "start": [
+        9.3,
+        -2.4
+      ],
+      "home": [
+        9.3,
+        -2.4
+      ]
+    },
+    {
+      "id": 15,
+      "def": "R15",
+      "name": "robot_15",
+      "role": "transport",
+      "start": [
+        9.3,
+        -1.2
+      ],
+      "home": [
+        9.3,
+        -1.2
+      ]
+    },
+    {
+      "id": 16,
+      "def": "R16",
+      "name": "robot_16",
+      "role": "transport",
+      "start": [
+        9.3,
+        0.0
+      ],
+      "home": [
+        9.3,
+        0.0
+      ]
+    }
+  ],
+  "faces": [
+    {
+      "id": "pile",
+      "start": [
+        -6.2,
+        -6.3
+      ],
+      "end": [
+        -6.2,
+        6.3
+      ],
+      "interval_s": 40.0
+    },
+    {
+      "id": "pile_w",
+      "start": [
+        -7.95,
+        6.3
+      ],
+      "end": [
+        -7.95,
+        -6.3
+      ],
+      "interval_s": 40.0
+    },
+    {
+      "id": "r0s",
+      "start": [
+        -3.6,
+        -5.45
+      ],
+      "end": [
+        7.6,
+        -5.45
+      ],
+      "interval_s": 240.0
+    },
+    {
+      "id": "r0n",
+      "start": [
+        7.6,
+        -3.55
+      ],
+      "end": [
+        -3.6,
+        -3.55
+      ],
+      "interval_s": 240.0
+    },
+    {
+      "id": "r1s",
+      "start": [
+        -3.6,
+        -2.45
+      ],
+      "end": [
+        7.6,
+        -2.45
+      ],
+      "interval_s": 240.0
+    },
+    {
+      "id": "r1n",
+      "start": [
+        7.6,
+        -0.55
+      ],
+      "end": [
+        -3.6,
+        -0.55
+      ],
+      "interval_s": 240.0
+    },
+    {
+      "id": "r2s",
+      "start": [
+        -3.6,
+        0.55
+      ],
+      "end": [
+        7.6,
+        0.55
+      ],
+      "interval_s": 240.0
+    },
+    {
+      "id": "r2n",
+      "start": [
+        7.6,
+        2.45
+      ],
+      "end": [
+        -3.6,
+        2.45
+      ],
+      "interval_s": 240.0
+    },
+    {
+      "id": "r3s",
+      "start": [
+        -3.6,
+        3.55
+      ],
+      "end": [
+        7.6,
+        3.55
+      ],
+      "interval_s": 240.0
+    },
+    {
+      "id": "r3n",
+      "start": [
+        7.6,
+        5.45
+      ],
+      "end": [
+        -3.6,
+        5.45
+      ],
+      "interval_s": 240.0
+    }
+  ],
+  "stations": [
+    [
+      8.4,
+      -6.0
+    ],
+    [
+      8.4,
+      -3.0
+    ],
+    [
+      8.4,
+      0.0
+    ],
+    [
+      8.4,
+      3.0
+    ],
+    [
+      8.4,
+      6.0
+    ],
+    [
+      -4.85,
+      -6.3
+    ],
+    [
+      -4.85,
+      6.3
+    ],
+    [
+      2.0,
+      -5.9
+    ],
+    [
+      2.0,
+      -3.0
+    ],
+    [
+      2.0,
+      0.0
+    ],
+    [
+      2.0,
+      3.0
+    ],
+    [
+      2.0,
+      5.9
+    ]
+  ],
+  "episode": {
+    "duration_s": 600,
+    "initial_inbound": 12,
+    "inbound_period_s": 50.0,
+    "inbound_batch": 4,
+    "anomaly_rate_per_s": 0.011111111111111112,
+    "p_fallen": 0.3,
+    "p_swap": 0.3,
+    "p_next_to_lookalike": 0.6,
+    "p_place_error": 0.03
+  },
+  "perception": {
+    "patrol_read_label_m": 1.0,
+    "slot_match_m": 0.2,
+    "fallen_tilt_cos": 0.7,
+    "candidate_radius_m": 0.6,
+    "c_noise_m": 0.25
+  },
+  "comm": {
+    "bandwidth_bps": 22000000,
+    "per_attempt_overhead_s": 0.0003,
+    "bg_util": 0.6,
+    "bg_packet_bytes": 1500,
+    "max_retries": 3,
+    "base_latency_s": 0.007,
+    "range_m": 14.0,
+    "ber_good": 2e-06,
+    "ber_bad": 3e-05,
+    "ber_factor_per_rack": 3.0,
+    "p_good_to_bad_per_s": 0.02,
+    "p_bad_to_good_per_s": 0.2,
+    "ap_pos": [
+      1.0,
+      0.0
+    ],
+    "max_queue_s": 2.0
+  },
+  "fleet": {
+    "status_hz": 2.0,
+    "status_bytes": 1500,
+    "task_req_bytes": 200,
+    "task_bytes": 800,
+    "task_timeout_s": 3.0,
+    "dwell_s": 2.0
+  },
+  "traffic": {
+    "policy": "proposed",
+    "header_bytes": 160,
+    "evidence_bytes": {
+      "none": 0,
+      "thumb": 1800,
+      "crop": 4200,
+      "frame": 138000
+    },
+    "ack_bytes": 40,
+    "req_bytes": 60,
+    "report_timeout_s": 90.0,
+    "evidence_timeout_s": 4.0,
+    "act_s": 2.0
+  },
+  "proposed": {
+    "wrong_pick_cost_s": 60.0,
+    "task_s": 40.0,
+    "externality": 50,
+    "service_s": 0.00085,
+    "p_detect_per_frame": 0.15,
+    "p_remember": 0.97,
+    "seen_range_m": 2.0,
+    "claim_range_m": 6.0,
+    "undetected_delay_s": 120.0
+  },
+  "nav": {
+    "speed_mps": 0.3,
+    "wheel_radius": 0.033,
+    "reach_m": 0.2,
+    "goal_reach_m": 0.1,
+    "avoid_dist_m": 0.6,
+    "stop_dist_m": 0.3,
+    "replan_after_s": 2.0
+  }
+}
