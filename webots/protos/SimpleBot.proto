@@ -12,6 +12,7 @@ PROTO SimpleBot [
   field SFInt32    receiverChannel 100
   field SFRotation cameraRotation  0 0 1 1.5708
   field SFFloat    cameraFov       1.08          # Pi camera (OV5647) horizontal FOV, 62 deg
+  field SFBool     detailed        TRUE          # PiCar-like looks; FALSE: plain cylinder (faster)
 ]
 {
   Robot {
@@ -22,6 +23,85 @@ PROTO SimpleBot [
     controllerArgs IS controllerArgs
     contactMaterial "slippery"
     children [
+      %< if (fields.detailed.value) { >%
+      # Looks only (PiCar-like chassis, camera, tote tray); physics use the bounding object below.
+      Pose {
+        translation 0 0 0.055
+        children [
+          Shape {
+            appearance DEF CHASSIS PBRAppearance { baseColor 0.16 0.17 0.19 roughness 0.5 metalness 0.4 }
+            geometry Box { size 0.26 0.14 0.04 }
+          }
+        ]
+      }
+      Pose {
+        translation 0 0 0.08
+        children [
+          Shape {
+            appearance PBRAppearance { baseColor IS color roughness 0.4 metalness 0.1 }
+            geometry Box { size 0.24 0.13 0.012 }
+          }
+        ]
+      }
+      # Ultrasonic sensor at the front.
+      Pose {
+        translation 0.135 0.02 0.065
+        rotation 0 1 0 1.5708
+        children [ DEF SONAR Shape {
+            appearance PBRAppearance { baseColor 0.75 0.77 0.8 roughness 0.3 metalness 0.8 }
+            geometry Cylinder { radius 0.012 height 0.015 }
+          } ]
+      }
+      Pose { translation 0.135 -0.02 0.065 rotation 0 1 0 1.5708 children [ USE SONAR ] }
+      # Mast and tote tray (a carried carton rides at 0.5 m).
+      Pose {
+        translation 0.07 0 0.255
+        children [ DEF MAST Shape {
+            appearance PBRAppearance { baseColor 0.6 0.62 0.65 roughness 0.3 metalness 0.8 }
+            geometry Cylinder { radius 0.012 height 0.35 }
+          } ]
+      }
+      Pose { translation -0.07 0 0.255 children [ USE MAST ] }
+      Pose {
+        translation 0 0 0.425
+        children [
+          Shape {
+            appearance PBRAppearance { baseColor 0.3 0.32 0.35 roughness 0.4 metalness 0.6 }
+            geometry Box { size 0.24 0.2 0.015 }
+          }
+        ]
+      }
+      # Camera module looking left, with its lens.
+      Pose {
+        translation 0 0.012 0.24
+        children [
+          Shape {
+            appearance PBRAppearance { baseColor 0.1 0.35 0.15 roughness 0.6 metalness 0.2 }
+            geometry Box { size 0.035 0.01 0.035 }
+          }
+        ]
+      }
+      Pose {
+        translation 0 0.022 0.24
+        rotation 1 0 0 1.5708
+        children [
+          Shape {
+            appearance PBRAppearance { baseColor 0.05 0.05 0.05 roughness 0.1 metalness 0.5 }
+            geometry Cylinder { radius 0.007 height 0.01 }
+          }
+        ]
+      }
+      Pose {
+        translation 0 0 0.16
+        children [
+          Shape {
+            appearance USE CHASSIS
+            geometry Box { size 0.02 0.02 0.16 }
+          }
+        ]
+      }
+      %< } else { >%
+      # Simple looks: a lot faster in batch runs (gen_world --plain).
       Pose {
         translation 0 0 0.06
         children [
@@ -40,6 +120,7 @@ PROTO SimpleBot [
           }
         ]
       }
+      %< } >%
       HingeJoint {
         jointParameters HingeJointParameters { axis 0 1 0 anchor 0 0.09 0.033 }
         device [ RotationalMotor { name "left wheel motor" maxVelocity 15 } ]

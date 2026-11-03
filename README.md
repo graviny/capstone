@@ -1,97 +1,229 @@
-# 산업 작업공간 다중 로봇 시뮬레이터
+# 물류센터 멀티로봇 WES 시뮬레이터
 
 캡스톤 디자인 팀 **404 Context Not Found**의 프로젝트입니다.
 
-Webots로 물류센터를 시뮬레이션하고, 서버가 믿는 재고·작업 정보와 실제 상태가 달라질 때 로봇이 어떻게 소통해야 실수를 줄일 수 있는지 연구합니다.
+연구 주제는 **물류센터의 재고·작업 상태 불일치 상황에서 멀티로봇 작업 검증 및 동적 재계획을 위한 WES 최적화**입니다. 이 저장소의 `webots/`는 그중 **시뮬레이션 환경과 로봇 실행 모듈**입니다.
 
-## 현재 상태
+- 실제 주문 데이터로 입고·출고 작업을 만들고, 오적치(S1), Short Pick(S2), 낡은 작업 정보(S3)가 자연스럽게 생기게 합니다.
+- 통신 지연이나 손실은 넣지 않습니다. 로봇 메시지는 즉시 전달됩니다.
 
-지금 구현된 내용과 앞으로 만들 내용은 다음과 같습니다.
+## 환경 구성
 
-| 구분 | 내용 |
+24×14m 창고입니다.
+
+```text
+ 서쪽(입고)                       가운데(보관)                      동쪽(출고)
+ 트럭 → 벨트 → 고정 스캐너 → 대기 칸   선반 4줄 × 2면 × 20칸 = 160칸    지역별 출고 레인 4개 + 트럭
+                 └ 판독 실패 → 예외 칸
+```
+
+| 구역 | 내용 |
 | --- | --- |
-| 구현됨 | 20×14m 창고, 순찰·분류·운반 로봇, A* 경로 계획, 충돌 회피, 이상 상황 주입, 통신 채널 모델, 통신 정책 비교 |
-| 진행 예정 | 장부와 실제 상태 분리, 중앙 WMS/WES, 출고 흐름, 벨트 입고, 라벨 판독 실패, 로봇 재시작 |
+| 입고 | 트럭이 3초 간격으로 상자를 벨트에 내림 → 스캐너가 라벨 판독 → 벨트 옆 적재대의 대기 칸 6개 중, 앞쪽에 남은 가장 끝 빈칸으로 밀려남. 벨트는 한 방향이라 이미 지나친 빈칸에는 뒤에 오는 상자가 들어감. 앞쪽에 빈칸이 없으면 벨트 끝에서 줄을 서고, 벨트 입구까지 차면 트럭 하역이 멈춤 |
+| 예외 | 스캐너가 못 읽은 상자는 예외 칸 2개로 빠짐 → 순찰 로봇이 확인(VERIFY)한 뒤 적치 |
+| 보관 | 한 칸에 상자 하나. 시작 시 96칸에 재고, 빠르게 팔리는 A등급은 출고 쪽에 가깝게 배치 |
+| 출고 | 지역(R1~R4)마다 레인 8칸. **레인에 6개가 모이거나 15분마다 오는 마감 시각이 되면** 트럭이 15초간 싣고 출발, 3분 뒤 복귀. 트럭이 없는 동안 레인이 차면 로봇은 대기 |
 
-현재 코드는 로봇끼리 작업을 조율하는 구조입니다. 중앙 WMS/WES 구조로 전환할 예정이며, 기존 방식은 비교군으로 남깁니다.
+| 로봇 | 기본 수 | 하는 일 |
+| --- | --- | --- |
+| 운반 (파랑) | 6 | PUTAWAY(대기 칸 → 선반), PICK(선반 → 출고 레인), RELOCATE. 집기 전에 라벨, 놓기 전에 빈칸을 카메라로 확인 |
+| 순찰 (주황) | 2 | VERIFY(지정 칸 확인). 기본은 지시가 있을 때만 움직임. `--patrol-sweep`이면 쉬는 동안 선반 면을 돌며 지나가는 칸마다 관측 결과를 보고 |
+
+로봇은 카메라(왼쪽, 62°)로 1.2m 안의 라벨만 읽고, 실제 상태는 모릅니다. 위치는 천장 카메라 측위를 가정해 슈퍼바이저가 알려줍니다.
+
+화면은 실제 물류센터처럼 꾸몄습니다. 콘크리트 바닥과 통로·주행로 표시, 도크 문이 있는 창고 벽과 천장등, 3단 파렛트 랙과 칸 위치 라벨, 골판지 상자(모델별 색 라벨), 롤러 컨베이어·스캐너 게이트·푸셔, 도크에 붙는 트럭, 출고 레인 표지판과 롤케이지가 있습니다. **로봇이 다루는 칸은 맨 아래 1단뿐이고, 위층 파렛트는 장식입니다.** 기록 없는 변화(S1 이동, S2 반출, S3 반품 적치)가 생기면 그 칸 앞에 작업자가 8초 동안 나타나는데, 보이기만 하고 로봇의 길을 막지는 않습니다.
+
+## S1~S3가 생기는 원인
+
+모두 `scenario.json`의 `faults`에서 조절합니다. 원인은 `truth.jsonl`에만 기록되고, WES에는 알리지 않습니다.
+
+| 시나리오 | 원인 | 기본값 |
+| --- | --- | --- |
+| S1 오적치 | 놓기 실행 오류: 지시한 칸 대신 같은 면의 옆 빈칸에 놓임(옆이 다 차 있으면 정상). 로봇은 모르고 지시한 칸으로 완료 보고 | 선반에 놓을 때 5% |
+| S1 오적치 | 작업자가 기록 없이 상자를 근처(3칸 안) 빈칸으로 옮김 | 평균 시간당 8회 시도(근처에 빈칸이 없으면 건너뜀) |
+| S2 Short Pick | 작업자가 기록 없이 상자를 가져감. 오적치로 원래 칸이 빈 경우도 S2가 됨 | 평균 시간당 3회 |
+| S3 낡은 작업 정보 | 로봇이 선반으로 운반하는 동안 작업자가 반품 상자를 목적지에 둠. 오적치 상자가 예약된 칸을 차지해도 생김 | 적치 작업의 10% |
+| 입고 예외 | 스캐너 판독 실패 → 예외 칸 | 상자당 3% |
+
+놓기 오류와 S3 발생 여부는 상자·작업 ID로 정해서, 같은 시드라면 정책이 달라도 같은 오류가 납니다. 작업자 사건은 시드로 고정된 시각에 생기지만, 그때 어떤 상자를 건드리는지는 창고 상태에 따라 달라집니다.
+
+## 데이터
+
+[Order Picking Dataset from a Warehouse of a Footwear Manufacturing Company](https://doi.org/10.17632/pf2w725pw3.1)(CC BY 4.0)를 전처리해서 씁니다. 원본은 저장소에 없고, 전처리 결과가 `webots/data/`에 있습니다.
+
+| 항목 | 출처 | 처리 |
+| --- | --- | --- |
+| SKU | 실제 | 주문 수량 상위 60개(상품 14종 × 사이즈), 전체 주문 수량의 28.8% |
+| 출고 웨이브 | 실제 | 하루치 웨이브를 상위 SKU로 거르고, 한 줄 수량은 최대 6개로 제한. 시간은 에피소드에 맞게 압축하고, 웨이브는 90초 간격으로 순서대로 릴리스(주문 생성 전에는 릴리스하지 않음) |
+| 배송 지역 | 합성 | 고객 코드 해시로 R1~R4에 배정(데이터에 주소 없음) |
+| 초기 재고, 입고 트럭 | 합성 | 하루 수요의 절반을 초기 재고로 두고, 나머지와 안전재고 15%를 트럭(12상자)에 실어 수요보다 먼저 도착하게 배정 |
+
+기본 날짜는 2023-03-09(평상시, 웨이브 25개, 133개)이고, 2023-03-22(피크, 웨이브 203개)도 준비돼 있습니다. 피크는 `--order-sample`로 주문을 줄여 써야 합니다.
 
 ## 폴더 구조
 
 ```text
 webots/
 ├── controllers/
-│   ├── agent/agent.py            로봇 컨트롤러
-│   └── supervisor/supervisor.py  창고 상태, 통신 채널, 로그
-├── lib/nav.py                    점유 격자, A* 경로 계획
-├── protos/SimpleBot.proto        로봇 모델
+│   ├── agent/agent.py            로봇: 지시 실행, 카메라 확인, 이벤트 보고
+│   └── supervisor/supervisor.py  실제 상태, 벨트, 출고 트럭, 오류 주입, WES 연결, 로그
+├── lib/
+│   ├── nav.py                    점유 격자, A* 경로 계획
+│   └── wes_standin.py            임시 WMS+WES (팀 모듈로 교체할 자리)
+├── data/                         전처리된 SKU, 주문
+├── protos/SimpleBot.proto        로봇 모델 (겉모습은 PiCar 형태, 충돌 범위는 원통)
+├── textures/
+│   ├── webots/                   콘크리트·골판지 등 사진 질감 (Webots 프로젝트, Apache 2.0)
+│   └── gen/                      칸 라벨·표지판·바코드 라벨 (gen_world.py가 생성)
 ├── tools/
-│   ├── gen_world.py              월드와 scenario.json 생성
+│   ├── prep_dataset.py           데이터셋 → data/
+│   ├── gen_world.py              data/ → 월드와 scenario.json
+│   ├── world_visuals.py          창고 겉모습(랙, 컨베이어, 트럭, 작업자 등)
+│   ├── make_textures.py          글자가 들어간 질감 이미지 생성
 │   └── measure/                  Raspberry Pi 측정 스크립트와 기록
-├── worlds/warehouse.wbt          생성된 Webots 월드
+├── worlds/warehouse.wbt          생성된 월드
 └── scenario.json                 생성된 실험 설정
 ```
 
-## 준비
-
-- Webots R2025a
-- Python 3.11
-
-Webots에서 Python 컨트롤러를 실행할 수 있도록 Python 경로를 설정해 주세요.
-
 ## 실행
 
-명령은 `webots` 폴더에서 실행합니다. 아래 예시는 Windows PowerShell 기준입니다.
+명령은 `webots` 폴더에서, Windows PowerShell 기준입니다. Webots R2025a와 Python 3.11이 필요합니다.
 
-### 1. 월드 생성
+### 1. 데이터 전처리 (data/를 다시 만들 때만)
+
+원본 데이터셋 폴더를 저장소 루트에 두고 실행합니다.
 
 ```powershell
-python tools/gen_world.py --patrols 3 --recoveries 8 --transports 6 --seed 0 --policy proposed
+python tools/prep_dataset.py --top-sku 60 --dates 2023-03-09,2023-03-22
+```
+
+### 2. 월드 생성
+
+```powershell
+python tools/gen_world.py --date 2023-03-09 --duration 3600 --patrols 2 --transports 6 --seed 0
 ```
 
 | 인자 | 기본값 | 뜻 |
 | --- | --- | --- |
-| `--patrols` | 3 | 순찰 로봇 수 |
-| `--recoveries` | 8 | 분류 로봇 수 |
-| `--transports` | 6 | 운반 로봇 수 |
+| `--date` | 2023-03-09 | 사용할 날짜(`data/orders_<날짜>.json`) |
+| `--duration` | 3600 | 에피소드 길이(초) |
+| `--patrols`, `--transports` | 2, 6 | 순찰(최대 3)·운반(최대 8) 로봇 수 |
 | `--seed` | 0 | 난수 시드 |
-| `--policy` | `proposed` | 통신 정책: `full`, `none`, `pull`, `cache`, `proposed` |
+| `--order-sample` | 1.0 | 남길 주문 비율(주문 단위) |
+| `--wave-interval` | 90 | 웨이브 릴리스 최소 간격(초) |
+| `--max-line-qty` | 6 | 주문 한 줄의 최대 수량 |
+| `--no-faults` | 꺼짐 | 오류 주입을 모두 끔(정상 물류 실험) |
+| `--plain` | 꺼짐 | 장식을 빼고 로봇·상자를 단순한 모양으로 그림. 동작과 결과는 같고 배치 실행이 약 3배 빠름 |
+| `--patrol-sweep` | 꺼짐 | 쉬는 순찰 로봇이 선반을 계속 순회(주기적 재고 조사 비교용) |
 
-`gen_world.py`는 `worlds/warehouse.wbt`와 `scenario.json`을 다시 만듭니다.
+나머지 인자는 `python tools/gen_world.py -h`로 볼 수 있습니다.
 
-### 2. 화면으로 실행
+### 3. 실행
 
-Webots에서 `worlds/warehouse.wbt`를 열고 시뮬레이션을 시작합니다.
+**화면으로 볼 때는 기본(꾸민) 월드, 배치 실험은 `--plain` 월드를 쓰세요.** 이 PC에서 렌더링 없이 돌렸을 때 기본 월드는 실시간의 약 2배속, `--plain`은 약 6배속이었습니다. 로봇 겉모습의 부품 수가 속도에 가장 큰 영향을 줍니다.
 
-### 3. 배치 실험
+화면으로 보려면 Webots에서 `worlds/warehouse.wbt`를 열면 됩니다. 배치 실험은 다음과 같습니다.
 
 ```powershell
 $env:QUIT_AT_END = "1"
-$env:POLICY = "proposed"
-$env:BG_UTIL = "0.6"
 & "<Webots 설치 경로>\msys64\mingw64\bin\webots.exe" --batch --mode=fast --minimize --no-rendering --stdout --stderr worlds/warehouse.wbt
 ```
 
 | 환경 변수 | 뜻 |
 | --- | --- |
-| `QUIT_AT_END` | `1`이면 실험이 끝난 뒤 Webots를 종료 |
-| `POLICY` | 월드에 지정된 통신 정책을 덮어씀 |
-| `BG_UTIL` | 통신 채널의 배경 부하(예: `0.6`은 60%) |
+| `QUIT_AT_END` | `1`이면 에피소드가 끝난 뒤 Webots 종료 |
+| `WES_MODULE` | 사용할 WES 모듈 이름(기본 `wes_standin`, `lib/`에서 찾음) |
+| `SNAPSHOT_AT` | 예: `60,1800`. 그 시각의 창고를 위에서(`view_<시각>.png`), 남서쪽에서 비스듬히(`persp_<시각>.png`) 찍어 저장. 렌더링이 필요해서 `--no-rendering` 없이 실행해야 하고, 렌더링을 켜면 실행이 느려짐 |
+| `SNAPSHOT_EYE` | 예: `-1,-6.3,0.6,-1,-4.5,0.15`. 원근 카메라를 앞 세 값 위치에 두고 뒤 세 값 지점을 보게 함 |
 
-## 실험 결과
+## WES 연결 방법
 
-실행 결과는 `webots/logs/`에 저장됩니다. 이 폴더는 Git에 올리지 않습니다.
+`lib/wes_standin.py`는 환경을 끝까지 돌리기 위한 **임시 모듈**입니다. 선입선출로 가장 가까운 로봇에 배정하고, 예외가 나면 바로 다른 칸으로 바꿉니다. Mock WMS와 Baseline/Proposed WES는 같은 형태의 클래스를 `lib/`에 만들고 `WES_MODULE`로 지정하면 됩니다.
+
+```python
+class WES:
+    name = "my_policy"
+    def __init__(self, scenario): ...            # scenario.json 내용
+    def on_event(self, event): ...               # 이벤트 한 건
+    def decide(self, t, robots): return [...]    # 매 스텝, Decision 목록
+    def record_snapshot(self): return {...}      # 선택: 선반 칸 → 기록상 SKU (불일치 측정용)
+```
+
+`robots`는 `{"id", "role", "pos", "task", "holding", "phase"}` 목록입니다. WES는 실제 상태를 읽을 수 없고 이벤트만 받습니다.
+
+### Decision
+
+```python
+{"robot_id": 3, "task_id": "T00012", "action": "EXECUTE", "task": {
+    "task_id": "T00012", "task_type": "PICK", "item_id": "8N10W9-10.5",
+    "source": "r1s05", "destination": "LR3-2", "order": "99515", ...}}
+{"robot_id": 3, "task_id": "T00012", "action": "REROUTE", "source": "r1s07", "destination": "LR3-2"}
+```
+
+| action | 로봇 동작 |
+| --- | --- |
+| `EXECUTE` | 작업 시작. `task_type`은 PUTAWAY, PICK, RELOCATE, VERIFY |
+| `REROUTE` | 출발지나 목적지를 바꿔 계속 |
+| `WAIT` | 그 자리에서 다음 지시를 기다림 |
+| `CANCEL`, `REASSIGN` | 작업 종료. 상자를 들고 있으면 거부하고 `TASK_FAILED` 보고 |
+
+### 이벤트
+
+모든 이벤트에 `event_id`, `t`, `type`이 붙고, 로봇 이벤트에는 `robot_id`, `task_id`, `slot`, `item_id`가 들어갑니다.
+
+| 이벤트 | 보내는 곳 | 뜻 |
+| --- | --- | --- |
+| `ORDER_RELEASED` | 환경 | 웨이브 릴리스(주문 줄 목록) |
+| `TRUCK_ARRIVED`, `TRUCK_DEPARTED` | 환경 | 입고 트럭 도착(ASN 포함)·출발 |
+| `INBOUND_STAGED` | 환경 | 상자가 대기 칸에 정지(스캐너가 읽은 SKU, 못 읽었으면 null) |
+| `INBOUND_READ_FAIL` | 환경 | 판독 실패 상자가 예외 칸으로 감 |
+| `OUTBOUND_DEPARTED`, `OUTBOUND_TRUCK_ARRIVED` | 환경 | 지역 트럭 출발(실린 상자)·복귀 |
+| `TASK_COMPLETED` | 로봇 | 작업 완료(로봇이 믿는 칸 기준) |
+| `TASK_FAILED` | 로봇 | 집기 실패, 바쁨 등 |
+| `SHORT_PICK` | 로봇 | 출발지 칸이 비어 있음 |
+| `ITEM_MISMATCH` | 로봇 | 출발지에 다른 SKU가 있음(`observed`) |
+| `DESTINATION_OCCUPIED` | 로봇 | 목적지가 차 있음(`observed`). 놓기가 거부되면 `UNKNOWN`, 닿지 못하면 `UNREACHABLE` |
+| `OBSERVATION_RESULT` | 로봇 | 칸 관측 결과(`observed`: SKU, `EMPTY`, `UNREADABLE`) |
+
+## 결과 파일
+
+`webots/logs/<날짜>_<WES>_seed<시드>_<faults|nofaults>[_sweep]_<batch|gui>/`에 저장되며 Git에는 올리지 않습니다.
 
 | 파일 | 내용 |
 | --- | --- |
-| `summary_*.json` | 실험 요약 |
-| `comm_*.csv` | 메시지별 통신 기록 |
-| `accuracy_*.csv` | 시간별 정확도 |
-| `anomalies_*.csv` | 이상 상황 기록 |
+| `events.jsonl` | WES가 받은 모든 이벤트와 내린 모든 Decision |
+| `truth.jsonl` | 실제로 주입된 오류(S1~S3 원인, 스캐너 실패). 진단용으로 거부된 집기·놓기(`ACT_REJECTED`), 실제 상태 일관성 오류(`INVARIANT_VIOLATION`), 60초 넘게 제자리인 로봇(`ROBOT_STUCK`)도 기록 |
+| `poses.csv` | 2초마다 로봇 위치, 작업, 단계, 들고 있는 SKU |
+| `timeseries.csv` | 10초마다 선반 재고, 벨트·대기 칸·예외 칸, 출고 레인, 릴리스·출하 수량, 바쁜 로봇 수, 기록 불일치 칸 수 |
+| `summary.json` | 주문 완료 수, 평균 주문 처리 시간, 출하·오출하, 트럭 수, 이벤트·오류·진단 횟수, 로봇별 이동 거리와 가동률 |
+| `view_<시각>.png`, `persp_<시각>.png` | `SNAPSHOT_AT`을 줬을 때만 |
 
-## 데이터셋
+## 확인한 실행 결과
 
-주문 패턴 참고 자료로 아래 데이터셋을 사용할 예정입니다. 저장소에는 포함하지 않았으며, 아직 시뮬레이터에 연결되어 있지 않습니다.
+2023-03-09, 1시간, 순찰 2대·운반 6대, 시드 0, 임시 WES 기준입니다. 이 PC(Ryzen 5 5600)에서 배치 실행은 한 번에 약 8분(약 7배속) 걸렸습니다.
 
-- de Assis, R. F., de Paula Ferreira, W., & Ouhimmou, M. (2024). *Order Picking Dataset from a Warehouse of a Footwear Manufacturing Company*. Mendeley Data, V1.
-- DOI: [10.17632/pf2w725pw3.1](https://doi.org/10.17632/pf2w725pw3.1)
-- 라이선스: CC BY 4.0
+| 항목 | 오류 주입 켬(기본) | `--no-faults` |
+| --- | --- | --- |
+| 출고 수량 / 출하 수량 | 133 / 127 | 133 / 127 |
+| 완료 주문 / 릴리스 주문 | 17 / 19 | 16 / 19 |
+| 평균 주문 처리 시간 | 673초 | 691초 |
+| 피킹 / 적치 / 확인 작업 완료 | 133 / 108 / 5 | 133 / 108 / 0 |
+| 주입된 원인: S1 / S2 / S3 / 스캐너 실패 | 6 / 6 / 8 / 5 | 0 |
+| `SHORT_PICK` / `DESTINATION_OCCUPIED` | 4 / 13 | 0 / 0 |
+| 기록 불일치 칸(끝) | 8 | 0 |
+| 오출하, 진단 기록(정체·거부·불일치) | 0, 0 | 0, 0 |
+| 운반 로봇 가동률 | 88~91% | 87~90% |
+
+로그로 따로 확인한 내용입니다.
+
+- **작업 종료:** 끝나지 않은 작업이 없고, 가장 오래 걸린 작업은 161초입니다. 20초 넘게 멈춘 경우는 대기 칸과 출고 레인 앞에서 서로 비켜 주며 기다린 것이었습니다.
+- **S3 재현성:** 상자·작업 ID 해시로 정한 S3가 그대로 주입됐습니다. 1건은 목적지에 이미 오적치(S1) 상자가 있어서 주입 없이 S3가 됐습니다.
+- **오적치에서 S2로:** 오적치와 반출이 생긴 칸에서 이후 `SHORT_PICK`이 났습니다.
+- **입고 병목:** 운반 로봇이 바빠서 적치가 입고를 따라가지 못합니다. 트럭 도착부터 대기 칸까지 중앙값 418초가 걸렸고, 벨트에는 평균 8개가 줄을 섭니다. 로봇을 늘리거나 입고량을 줄이면 달라집니다.
+- **순찰 순회:** 이전 버전 코드로 순회를 켜고 돌렸을 때는 순찰 로봇이 피킹 전에 기록을 대부분 고쳐서 `SHORT_PICK`이 1건, 끝의 기록 불일치가 0칸이었습니다. 어느 칸을 언제 확인할지는 WES가 정할 문제라서 기본값은 끔입니다.
+- **`ITEM_MISMATCH`:** 출발지에 다른 상자가 있는 경우는 나오지 않았습니다. 작업자가 빈칸으로만 상자를 옮기기 때문입니다.
+- **화면:** 위에서 찍은 스냅샷으로 배치와 상자 위치는 확인했지만, GUI 창으로 직접 조작해 보지는 않았습니다.
+
+## 이전 버전
+
+로봇 간 통신량을 다루던 이전 시뮬레이터(통신 정책 비교)는 커밋 `b95d68e`에 있습니다.

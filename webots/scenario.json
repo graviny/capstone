@@ -1,4790 +1,6717 @@
 {
-  "seed": 0,
-  "world": {
-    "x_min": -10.0,
-    "x_max": 10.0,
-    "y_min": -7.0,
-    "y_max": 7.0
+ "seed": 0,
+ "world": {
+  "x_min": -12.0,
+  "x_max": 12.0,
+  "y_min": -7.0,
+  "y_max": 7.0
+ },
+ "racks": [
+  {
+   "y": -4.5,
+   "x_min": -3.0,
+   "x_max": 7.0,
+   "half_depth": 0.3
   },
-  "racks": [
-    {
-      "y": -4.5,
-      "x_min": -3.0,
-      "x_max": 7.0,
-      "half_depth": 0.3
-    },
-    {
-      "y": -1.5,
-      "x_min": -3.0,
-      "x_max": 7.0,
-      "half_depth": 0.3
-    },
-    {
-      "y": 1.5,
-      "x_min": -3.0,
-      "x_max": 7.0,
-      "half_depth": 0.3
-    },
-    {
-      "y": 4.5,
-      "x_min": -3.0,
-      "x_max": 7.0,
-      "half_depth": 0.3
-    }
-  ],
-  "obstacles": [
-    {
-      "x_min": -7.5,
-      "x_max": -6.95,
-      "y_min": -6.15,
-      "y_max": 6.15
-    }
-  ],
-  "pile": {
-    "zone": {
-      "x_min": -7.5,
-      "x_max": -6.95,
-      "y_min": -6.15,
-      "y_max": 6.15
-    },
-    "lane_x": -6.2
+  {
+   "y": -1.5,
+   "x_min": -3.0,
+   "x_max": 7.0,
+   "half_depth": 0.3
   },
-  "item_size": [
-    0.1,
-    0.1,
-    0.3
-  ],
-  "rack_top": 0.12,
-  "slots": [
-    {
-      "id": "r0s00",
-      "kind": "rack",
-      "pos": [
-        -2.75,
-        -4.67
-      ],
-      "approach": [
-        -2.75,
-        -5.1
-      ],
-      "type": "blue",
-      "home_of": "blue_00"
-    },
-    {
-      "id": "r0s01",
-      "kind": "rack",
-      "pos": [
-        -2.25,
-        -4.67
-      ],
-      "approach": [
-        -2.25,
-        -5.1
-      ],
-      "type": "blue",
-      "home_of": "blue_01"
-    },
-    {
-      "id": "r0s02",
-      "kind": "rack",
-      "pos": [
-        -1.75,
-        -4.67
-      ],
-      "approach": [
-        -1.75,
-        -5.1
-      ],
-      "type": "blue",
-      "home_of": "blue_02"
-    },
-    {
-      "id": "r0s03",
-      "kind": "rack",
-      "pos": [
-        -1.25,
-        -4.67
-      ],
-      "approach": [
-        -1.25,
-        -5.1
-      ],
-      "type": "blue",
-      "home_of": null
-    },
-    {
-      "id": "r0s04",
-      "kind": "rack",
-      "pos": [
-        -0.75,
-        -4.67
-      ],
-      "approach": [
-        -0.75,
-        -5.1
-      ],
-      "type": "red",
-      "home_of": "red_00"
-    },
-    {
-      "id": "r0s05",
-      "kind": "rack",
-      "pos": [
-        -0.25,
-        -4.67
-      ],
-      "approach": [
-        -0.25,
-        -5.1
-      ],
-      "type": "red",
-      "home_of": "red_01"
-    },
-    {
-      "id": "r0s06",
-      "kind": "rack",
-      "pos": [
-        0.25,
-        -4.67
-      ],
-      "approach": [
-        0.25,
-        -5.1
-      ],
-      "type": "red",
-      "home_of": "red_02"
-    },
-    {
-      "id": "r0s07",
-      "kind": "rack",
-      "pos": [
-        0.75,
-        -4.67
-      ],
-      "approach": [
-        0.75,
-        -5.1
-      ],
-      "type": "red",
-      "home_of": null
-    },
-    {
-      "id": "r0s08",
-      "kind": "rack",
-      "pos": [
-        1.25,
-        -4.67
-      ],
-      "approach": [
-        1.25,
-        -5.1
-      ],
-      "type": "brown",
-      "home_of": "brown_00"
-    },
-    {
-      "id": "r0s09",
-      "kind": "rack",
-      "pos": [
-        1.75,
-        -4.67
-      ],
-      "approach": [
-        1.75,
-        -5.1
-      ],
-      "type": "brown",
-      "home_of": "brown_01"
-    },
-    {
-      "id": "r0s10",
-      "kind": "rack",
-      "pos": [
-        2.25,
-        -4.67
-      ],
-      "approach": [
-        2.25,
-        -5.1
-      ],
-      "type": "brown",
-      "home_of": "brown_02"
-    },
-    {
-      "id": "r0s11",
-      "kind": "rack",
-      "pos": [
-        2.75,
-        -4.67
-      ],
-      "approach": [
-        2.75,
-        -5.1
-      ],
-      "type": "brown",
-      "home_of": null
-    },
-    {
-      "id": "r0s12",
-      "kind": "rack",
-      "pos": [
-        3.25,
-        -4.67
-      ],
-      "approach": [
-        3.25,
-        -5.1
-      ],
-      "type": "green",
-      "home_of": "green_00"
-    },
-    {
-      "id": "r0s13",
-      "kind": "rack",
-      "pos": [
-        3.75,
-        -4.67
-      ],
-      "approach": [
-        3.75,
-        -5.1
-      ],
-      "type": "green",
-      "home_of": "green_01"
-    },
-    {
-      "id": "r0s14",
-      "kind": "rack",
-      "pos": [
-        4.25,
-        -4.67
-      ],
-      "approach": [
-        4.25,
-        -5.1
-      ],
-      "type": "green",
-      "home_of": "green_02"
-    },
-    {
-      "id": "r0s15",
-      "kind": "rack",
-      "pos": [
-        4.75,
-        -4.67
-      ],
-      "approach": [
-        4.75,
-        -5.1
-      ],
-      "type": "green",
-      "home_of": null
-    },
-    {
-      "id": "r0s16",
-      "kind": "rack",
-      "pos": [
-        5.25,
-        -4.67
-      ],
-      "approach": [
-        5.25,
-        -5.1
-      ],
-      "type": "blue",
-      "home_of": "blue_03"
-    },
-    {
-      "id": "r0s17",
-      "kind": "rack",
-      "pos": [
-        5.75,
-        -4.67
-      ],
-      "approach": [
-        5.75,
-        -5.1
-      ],
-      "type": "blue",
-      "home_of": "blue_04"
-    },
-    {
-      "id": "r0s18",
-      "kind": "rack",
-      "pos": [
-        6.25,
-        -4.67
-      ],
-      "approach": [
-        6.25,
-        -5.1
-      ],
-      "type": "blue",
-      "home_of": "blue_05"
-    },
-    {
-      "id": "r0s19",
-      "kind": "rack",
-      "pos": [
-        6.75,
-        -4.67
-      ],
-      "approach": [
-        6.75,
-        -5.1
-      ],
-      "type": "blue",
-      "home_of": null
-    },
-    {
-      "id": "r0n00",
-      "kind": "rack",
-      "pos": [
-        -2.75,
-        -4.33
-      ],
-      "approach": [
-        -2.75,
-        -3.9
-      ],
-      "type": "red",
-      "home_of": "red_03"
-    },
-    {
-      "id": "r0n01",
-      "kind": "rack",
-      "pos": [
-        -2.25,
-        -4.33
-      ],
-      "approach": [
-        -2.25,
-        -3.9
-      ],
-      "type": "red",
-      "home_of": "red_04"
-    },
-    {
-      "id": "r0n02",
-      "kind": "rack",
-      "pos": [
-        -1.75,
-        -4.33
-      ],
-      "approach": [
-        -1.75,
-        -3.9
-      ],
-      "type": "red",
-      "home_of": "red_05"
-    },
-    {
-      "id": "r0n03",
-      "kind": "rack",
-      "pos": [
-        -1.25,
-        -4.33
-      ],
-      "approach": [
-        -1.25,
-        -3.9
-      ],
-      "type": "red",
-      "home_of": null
-    },
-    {
-      "id": "r0n04",
-      "kind": "rack",
-      "pos": [
-        -0.75,
-        -4.33
-      ],
-      "approach": [
-        -0.75,
-        -3.9
-      ],
-      "type": "brown",
-      "home_of": "brown_03"
-    },
-    {
-      "id": "r0n05",
-      "kind": "rack",
-      "pos": [
-        -0.25,
-        -4.33
-      ],
-      "approach": [
-        -0.25,
-        -3.9
-      ],
-      "type": "brown",
-      "home_of": "brown_04"
-    },
-    {
-      "id": "r0n06",
-      "kind": "rack",
-      "pos": [
-        0.25,
-        -4.33
-      ],
-      "approach": [
-        0.25,
-        -3.9
-      ],
-      "type": "brown",
-      "home_of": "brown_05"
-    },
-    {
-      "id": "r0n07",
-      "kind": "rack",
-      "pos": [
-        0.75,
-        -4.33
-      ],
-      "approach": [
-        0.75,
-        -3.9
-      ],
-      "type": "brown",
-      "home_of": null
-    },
-    {
-      "id": "r0n08",
-      "kind": "rack",
-      "pos": [
-        1.25,
-        -4.33
-      ],
-      "approach": [
-        1.25,
-        -3.9
-      ],
-      "type": "green",
-      "home_of": "green_03"
-    },
-    {
-      "id": "r0n09",
-      "kind": "rack",
-      "pos": [
-        1.75,
-        -4.33
-      ],
-      "approach": [
-        1.75,
-        -3.9
-      ],
-      "type": "green",
-      "home_of": "green_04"
-    },
-    {
-      "id": "r0n10",
-      "kind": "rack",
-      "pos": [
-        2.25,
-        -4.33
-      ],
-      "approach": [
-        2.25,
-        -3.9
-      ],
-      "type": "green",
-      "home_of": "green_05"
-    },
-    {
-      "id": "r0n11",
-      "kind": "rack",
-      "pos": [
-        2.75,
-        -4.33
-      ],
-      "approach": [
-        2.75,
-        -3.9
-      ],
-      "type": "green",
-      "home_of": null
-    },
-    {
-      "id": "r0n12",
-      "kind": "rack",
-      "pos": [
-        3.25,
-        -4.33
-      ],
-      "approach": [
-        3.25,
-        -3.9
-      ],
-      "type": "blue",
-      "home_of": "blue_06"
-    },
-    {
-      "id": "r0n13",
-      "kind": "rack",
-      "pos": [
-        3.75,
-        -4.33
-      ],
-      "approach": [
-        3.75,
-        -3.9
-      ],
-      "type": "blue",
-      "home_of": "blue_07"
-    },
-    {
-      "id": "r0n14",
-      "kind": "rack",
-      "pos": [
-        4.25,
-        -4.33
-      ],
-      "approach": [
-        4.25,
-        -3.9
-      ],
-      "type": "blue",
-      "home_of": "blue_08"
-    },
-    {
-      "id": "r0n15",
-      "kind": "rack",
-      "pos": [
-        4.75,
-        -4.33
-      ],
-      "approach": [
-        4.75,
-        -3.9
-      ],
-      "type": "blue",
-      "home_of": null
-    },
-    {
-      "id": "r0n16",
-      "kind": "rack",
-      "pos": [
-        5.25,
-        -4.33
-      ],
-      "approach": [
-        5.25,
-        -3.9
-      ],
-      "type": "red",
-      "home_of": "red_06"
-    },
-    {
-      "id": "r0n17",
-      "kind": "rack",
-      "pos": [
-        5.75,
-        -4.33
-      ],
-      "approach": [
-        5.75,
-        -3.9
-      ],
-      "type": "red",
-      "home_of": "red_07"
-    },
-    {
-      "id": "r0n18",
-      "kind": "rack",
-      "pos": [
-        6.25,
-        -4.33
-      ],
-      "approach": [
-        6.25,
-        -3.9
-      ],
-      "type": "red",
-      "home_of": "red_08"
-    },
-    {
-      "id": "r0n19",
-      "kind": "rack",
-      "pos": [
-        6.75,
-        -4.33
-      ],
-      "approach": [
-        6.75,
-        -3.9
-      ],
-      "type": "red",
-      "home_of": null
-    },
-    {
-      "id": "r1s00",
-      "kind": "rack",
-      "pos": [
-        -2.75,
-        -1.67
-      ],
-      "approach": [
-        -2.75,
-        -2.1
-      ],
-      "type": "brown",
-      "home_of": "brown_06"
-    },
-    {
-      "id": "r1s01",
-      "kind": "rack",
-      "pos": [
-        -2.25,
-        -1.67
-      ],
-      "approach": [
-        -2.25,
-        -2.1
-      ],
-      "type": "brown",
-      "home_of": "brown_07"
-    },
-    {
-      "id": "r1s02",
-      "kind": "rack",
-      "pos": [
-        -1.75,
-        -1.67
-      ],
-      "approach": [
-        -1.75,
-        -2.1
-      ],
-      "type": "brown",
-      "home_of": "brown_08"
-    },
-    {
-      "id": "r1s03",
-      "kind": "rack",
-      "pos": [
-        -1.25,
-        -1.67
-      ],
-      "approach": [
-        -1.25,
-        -2.1
-      ],
-      "type": "brown",
-      "home_of": null
-    },
-    {
-      "id": "r1s04",
-      "kind": "rack",
-      "pos": [
-        -0.75,
-        -1.67
-      ],
-      "approach": [
-        -0.75,
-        -2.1
-      ],
-      "type": "green",
-      "home_of": "green_06"
-    },
-    {
-      "id": "r1s05",
-      "kind": "rack",
-      "pos": [
-        -0.25,
-        -1.67
-      ],
-      "approach": [
-        -0.25,
-        -2.1
-      ],
-      "type": "green",
-      "home_of": "green_07"
-    },
-    {
-      "id": "r1s06",
-      "kind": "rack",
-      "pos": [
-        0.25,
-        -1.67
-      ],
-      "approach": [
-        0.25,
-        -2.1
-      ],
-      "type": "green",
-      "home_of": "green_08"
-    },
-    {
-      "id": "r1s07",
-      "kind": "rack",
-      "pos": [
-        0.75,
-        -1.67
-      ],
-      "approach": [
-        0.75,
-        -2.1
-      ],
-      "type": "green",
-      "home_of": null
-    },
-    {
-      "id": "r1s08",
-      "kind": "rack",
-      "pos": [
-        1.25,
-        -1.67
-      ],
-      "approach": [
-        1.25,
-        -2.1
-      ],
-      "type": "blue",
-      "home_of": "blue_09"
-    },
-    {
-      "id": "r1s09",
-      "kind": "rack",
-      "pos": [
-        1.75,
-        -1.67
-      ],
-      "approach": [
-        1.75,
-        -2.1
-      ],
-      "type": "blue",
-      "home_of": "blue_10"
-    },
-    {
-      "id": "r1s10",
-      "kind": "rack",
-      "pos": [
-        2.25,
-        -1.67
-      ],
-      "approach": [
-        2.25,
-        -2.1
-      ],
-      "type": "blue",
-      "home_of": "blue_11"
-    },
-    {
-      "id": "r1s11",
-      "kind": "rack",
-      "pos": [
-        2.75,
-        -1.67
-      ],
-      "approach": [
-        2.75,
-        -2.1
-      ],
-      "type": "blue",
-      "home_of": null
-    },
-    {
-      "id": "r1s12",
-      "kind": "rack",
-      "pos": [
-        3.25,
-        -1.67
-      ],
-      "approach": [
-        3.25,
-        -2.1
-      ],
-      "type": "red",
-      "home_of": "red_09"
-    },
-    {
-      "id": "r1s13",
-      "kind": "rack",
-      "pos": [
-        3.75,
-        -1.67
-      ],
-      "approach": [
-        3.75,
-        -2.1
-      ],
-      "type": "red",
-      "home_of": "red_10"
-    },
-    {
-      "id": "r1s14",
-      "kind": "rack",
-      "pos": [
-        4.25,
-        -1.67
-      ],
-      "approach": [
-        4.25,
-        -2.1
-      ],
-      "type": "red",
-      "home_of": "red_11"
-    },
-    {
-      "id": "r1s15",
-      "kind": "rack",
-      "pos": [
-        4.75,
-        -1.67
-      ],
-      "approach": [
-        4.75,
-        -2.1
-      ],
-      "type": "red",
-      "home_of": null
-    },
-    {
-      "id": "r1s16",
-      "kind": "rack",
-      "pos": [
-        5.25,
-        -1.67
-      ],
-      "approach": [
-        5.25,
-        -2.1
-      ],
-      "type": "brown",
-      "home_of": "brown_09"
-    },
-    {
-      "id": "r1s17",
-      "kind": "rack",
-      "pos": [
-        5.75,
-        -1.67
-      ],
-      "approach": [
-        5.75,
-        -2.1
-      ],
-      "type": "brown",
-      "home_of": "brown_10"
-    },
-    {
-      "id": "r1s18",
-      "kind": "rack",
-      "pos": [
-        6.25,
-        -1.67
-      ],
-      "approach": [
-        6.25,
-        -2.1
-      ],
-      "type": "brown",
-      "home_of": "brown_11"
-    },
-    {
-      "id": "r1s19",
-      "kind": "rack",
-      "pos": [
-        6.75,
-        -1.67
-      ],
-      "approach": [
-        6.75,
-        -2.1
-      ],
-      "type": "brown",
-      "home_of": null
-    },
-    {
-      "id": "r1n00",
-      "kind": "rack",
-      "pos": [
-        -2.75,
-        -1.33
-      ],
-      "approach": [
-        -2.75,
-        -0.9
-      ],
-      "type": "green",
-      "home_of": "green_09"
-    },
-    {
-      "id": "r1n01",
-      "kind": "rack",
-      "pos": [
-        -2.25,
-        -1.33
-      ],
-      "approach": [
-        -2.25,
-        -0.9
-      ],
-      "type": "green",
-      "home_of": "green_10"
-    },
-    {
-      "id": "r1n02",
-      "kind": "rack",
-      "pos": [
-        -1.75,
-        -1.33
-      ],
-      "approach": [
-        -1.75,
-        -0.9
-      ],
-      "type": "green",
-      "home_of": "green_11"
-    },
-    {
-      "id": "r1n03",
-      "kind": "rack",
-      "pos": [
-        -1.25,
-        -1.33
-      ],
-      "approach": [
-        -1.25,
-        -0.9
-      ],
-      "type": "green",
-      "home_of": null
-    },
-    {
-      "id": "r1n04",
-      "kind": "rack",
-      "pos": [
-        -0.75,
-        -1.33
-      ],
-      "approach": [
-        -0.75,
-        -0.9
-      ],
-      "type": "blue",
-      "home_of": "blue_12"
-    },
-    {
-      "id": "r1n05",
-      "kind": "rack",
-      "pos": [
-        -0.25,
-        -1.33
-      ],
-      "approach": [
-        -0.25,
-        -0.9
-      ],
-      "type": "blue",
-      "home_of": "blue_13"
-    },
-    {
-      "id": "r1n06",
-      "kind": "rack",
-      "pos": [
-        0.25,
-        -1.33
-      ],
-      "approach": [
-        0.25,
-        -0.9
-      ],
-      "type": "blue",
-      "home_of": "blue_14"
-    },
-    {
-      "id": "r1n07",
-      "kind": "rack",
-      "pos": [
-        0.75,
-        -1.33
-      ],
-      "approach": [
-        0.75,
-        -0.9
-      ],
-      "type": "blue",
-      "home_of": null
-    },
-    {
-      "id": "r1n08",
-      "kind": "rack",
-      "pos": [
-        1.25,
-        -1.33
-      ],
-      "approach": [
-        1.25,
-        -0.9
-      ],
-      "type": "red",
-      "home_of": "red_12"
-    },
-    {
-      "id": "r1n09",
-      "kind": "rack",
-      "pos": [
-        1.75,
-        -1.33
-      ],
-      "approach": [
-        1.75,
-        -0.9
-      ],
-      "type": "red",
-      "home_of": "red_13"
-    },
-    {
-      "id": "r1n10",
-      "kind": "rack",
-      "pos": [
-        2.25,
-        -1.33
-      ],
-      "approach": [
-        2.25,
-        -0.9
-      ],
-      "type": "red",
-      "home_of": "red_14"
-    },
-    {
-      "id": "r1n11",
-      "kind": "rack",
-      "pos": [
-        2.75,
-        -1.33
-      ],
-      "approach": [
-        2.75,
-        -0.9
-      ],
-      "type": "red",
-      "home_of": null
-    },
-    {
-      "id": "r1n12",
-      "kind": "rack",
-      "pos": [
-        3.25,
-        -1.33
-      ],
-      "approach": [
-        3.25,
-        -0.9
-      ],
-      "type": "brown",
-      "home_of": "brown_12"
-    },
-    {
-      "id": "r1n13",
-      "kind": "rack",
-      "pos": [
-        3.75,
-        -1.33
-      ],
-      "approach": [
-        3.75,
-        -0.9
-      ],
-      "type": "brown",
-      "home_of": "brown_13"
-    },
-    {
-      "id": "r1n14",
-      "kind": "rack",
-      "pos": [
-        4.25,
-        -1.33
-      ],
-      "approach": [
-        4.25,
-        -0.9
-      ],
-      "type": "brown",
-      "home_of": "brown_14"
-    },
-    {
-      "id": "r1n15",
-      "kind": "rack",
-      "pos": [
-        4.75,
-        -1.33
-      ],
-      "approach": [
-        4.75,
-        -0.9
-      ],
-      "type": "brown",
-      "home_of": null
-    },
-    {
-      "id": "r1n16",
-      "kind": "rack",
-      "pos": [
-        5.25,
-        -1.33
-      ],
-      "approach": [
-        5.25,
-        -0.9
-      ],
-      "type": "green",
-      "home_of": "green_12"
-    },
-    {
-      "id": "r1n17",
-      "kind": "rack",
-      "pos": [
-        5.75,
-        -1.33
-      ],
-      "approach": [
-        5.75,
-        -0.9
-      ],
-      "type": "green",
-      "home_of": "green_13"
-    },
-    {
-      "id": "r1n18",
-      "kind": "rack",
-      "pos": [
-        6.25,
-        -1.33
-      ],
-      "approach": [
-        6.25,
-        -0.9
-      ],
-      "type": "green",
-      "home_of": "green_14"
-    },
-    {
-      "id": "r1n19",
-      "kind": "rack",
-      "pos": [
-        6.75,
-        -1.33
-      ],
-      "approach": [
-        6.75,
-        -0.9
-      ],
-      "type": "green",
-      "home_of": null
-    },
-    {
-      "id": "r2s00",
-      "kind": "rack",
-      "pos": [
-        -2.75,
-        1.33
-      ],
-      "approach": [
-        -2.75,
-        0.9
-      ],
-      "type": "blue",
-      "home_of": "blue_15"
-    },
-    {
-      "id": "r2s01",
-      "kind": "rack",
-      "pos": [
-        -2.25,
-        1.33
-      ],
-      "approach": [
-        -2.25,
-        0.9
-      ],
-      "type": "blue",
-      "home_of": "blue_16"
-    },
-    {
-      "id": "r2s02",
-      "kind": "rack",
-      "pos": [
-        -1.75,
-        1.33
-      ],
-      "approach": [
-        -1.75,
-        0.9
-      ],
-      "type": "blue",
-      "home_of": "blue_17"
-    },
-    {
-      "id": "r2s03",
-      "kind": "rack",
-      "pos": [
-        -1.25,
-        1.33
-      ],
-      "approach": [
-        -1.25,
-        0.9
-      ],
-      "type": "blue",
-      "home_of": null
-    },
-    {
-      "id": "r2s04",
-      "kind": "rack",
-      "pos": [
-        -0.75,
-        1.33
-      ],
-      "approach": [
-        -0.75,
-        0.9
-      ],
-      "type": "red",
-      "home_of": "red_15"
-    },
-    {
-      "id": "r2s05",
-      "kind": "rack",
-      "pos": [
-        -0.25,
-        1.33
-      ],
-      "approach": [
-        -0.25,
-        0.9
-      ],
-      "type": "red",
-      "home_of": "red_16"
-    },
-    {
-      "id": "r2s06",
-      "kind": "rack",
-      "pos": [
-        0.25,
-        1.33
-      ],
-      "approach": [
-        0.25,
-        0.9
-      ],
-      "type": "red",
-      "home_of": "red_17"
-    },
-    {
-      "id": "r2s07",
-      "kind": "rack",
-      "pos": [
-        0.75,
-        1.33
-      ],
-      "approach": [
-        0.75,
-        0.9
-      ],
-      "type": "red",
-      "home_of": null
-    },
-    {
-      "id": "r2s08",
-      "kind": "rack",
-      "pos": [
-        1.25,
-        1.33
-      ],
-      "approach": [
-        1.25,
-        0.9
-      ],
-      "type": "brown",
-      "home_of": "brown_15"
-    },
-    {
-      "id": "r2s09",
-      "kind": "rack",
-      "pos": [
-        1.75,
-        1.33
-      ],
-      "approach": [
-        1.75,
-        0.9
-      ],
-      "type": "brown",
-      "home_of": "brown_16"
-    },
-    {
-      "id": "r2s10",
-      "kind": "rack",
-      "pos": [
-        2.25,
-        1.33
-      ],
-      "approach": [
-        2.25,
-        0.9
-      ],
-      "type": "brown",
-      "home_of": "brown_17"
-    },
-    {
-      "id": "r2s11",
-      "kind": "rack",
-      "pos": [
-        2.75,
-        1.33
-      ],
-      "approach": [
-        2.75,
-        0.9
-      ],
-      "type": "brown",
-      "home_of": null
-    },
-    {
-      "id": "r2s12",
-      "kind": "rack",
-      "pos": [
-        3.25,
-        1.33
-      ],
-      "approach": [
-        3.25,
-        0.9
-      ],
-      "type": "green",
-      "home_of": "green_15"
-    },
-    {
-      "id": "r2s13",
-      "kind": "rack",
-      "pos": [
-        3.75,
-        1.33
-      ],
-      "approach": [
-        3.75,
-        0.9
-      ],
-      "type": "green",
-      "home_of": "green_16"
-    },
-    {
-      "id": "r2s14",
-      "kind": "rack",
-      "pos": [
-        4.25,
-        1.33
-      ],
-      "approach": [
-        4.25,
-        0.9
-      ],
-      "type": "green",
-      "home_of": "green_17"
-    },
-    {
-      "id": "r2s15",
-      "kind": "rack",
-      "pos": [
-        4.75,
-        1.33
-      ],
-      "approach": [
-        4.75,
-        0.9
-      ],
-      "type": "green",
-      "home_of": null
-    },
-    {
-      "id": "r2s16",
-      "kind": "rack",
-      "pos": [
-        5.25,
-        1.33
-      ],
-      "approach": [
-        5.25,
-        0.9
-      ],
-      "type": "blue",
-      "home_of": "blue_18"
-    },
-    {
-      "id": "r2s17",
-      "kind": "rack",
-      "pos": [
-        5.75,
-        1.33
-      ],
-      "approach": [
-        5.75,
-        0.9
-      ],
-      "type": "blue",
-      "home_of": "blue_19"
-    },
-    {
-      "id": "r2s18",
-      "kind": "rack",
-      "pos": [
-        6.25,
-        1.33
-      ],
-      "approach": [
-        6.25,
-        0.9
-      ],
-      "type": "blue",
-      "home_of": "blue_20"
-    },
-    {
-      "id": "r2s19",
-      "kind": "rack",
-      "pos": [
-        6.75,
-        1.33
-      ],
-      "approach": [
-        6.75,
-        0.9
-      ],
-      "type": "blue",
-      "home_of": null
-    },
-    {
-      "id": "r2n00",
-      "kind": "rack",
-      "pos": [
-        -2.75,
-        1.67
-      ],
-      "approach": [
-        -2.75,
-        2.1
-      ],
-      "type": "red",
-      "home_of": "red_18"
-    },
-    {
-      "id": "r2n01",
-      "kind": "rack",
-      "pos": [
-        -2.25,
-        1.67
-      ],
-      "approach": [
-        -2.25,
-        2.1
-      ],
-      "type": "red",
-      "home_of": "red_19"
-    },
-    {
-      "id": "r2n02",
-      "kind": "rack",
-      "pos": [
-        -1.75,
-        1.67
-      ],
-      "approach": [
-        -1.75,
-        2.1
-      ],
-      "type": "red",
-      "home_of": "red_20"
-    },
-    {
-      "id": "r2n03",
-      "kind": "rack",
-      "pos": [
-        -1.25,
-        1.67
-      ],
-      "approach": [
-        -1.25,
-        2.1
-      ],
-      "type": "red",
-      "home_of": null
-    },
-    {
-      "id": "r2n04",
-      "kind": "rack",
-      "pos": [
-        -0.75,
-        1.67
-      ],
-      "approach": [
-        -0.75,
-        2.1
-      ],
-      "type": "brown",
-      "home_of": "brown_18"
-    },
-    {
-      "id": "r2n05",
-      "kind": "rack",
-      "pos": [
-        -0.25,
-        1.67
-      ],
-      "approach": [
-        -0.25,
-        2.1
-      ],
-      "type": "brown",
-      "home_of": "brown_19"
-    },
-    {
-      "id": "r2n06",
-      "kind": "rack",
-      "pos": [
-        0.25,
-        1.67
-      ],
-      "approach": [
-        0.25,
-        2.1
-      ],
-      "type": "brown",
-      "home_of": "brown_20"
-    },
-    {
-      "id": "r2n07",
-      "kind": "rack",
-      "pos": [
-        0.75,
-        1.67
-      ],
-      "approach": [
-        0.75,
-        2.1
-      ],
-      "type": "brown",
-      "home_of": null
-    },
-    {
-      "id": "r2n08",
-      "kind": "rack",
-      "pos": [
-        1.25,
-        1.67
-      ],
-      "approach": [
-        1.25,
-        2.1
-      ],
-      "type": "green",
-      "home_of": "green_18"
-    },
-    {
-      "id": "r2n09",
-      "kind": "rack",
-      "pos": [
-        1.75,
-        1.67
-      ],
-      "approach": [
-        1.75,
-        2.1
-      ],
-      "type": "green",
-      "home_of": "green_19"
-    },
-    {
-      "id": "r2n10",
-      "kind": "rack",
-      "pos": [
-        2.25,
-        1.67
-      ],
-      "approach": [
-        2.25,
-        2.1
-      ],
-      "type": "green",
-      "home_of": "green_20"
-    },
-    {
-      "id": "r2n11",
-      "kind": "rack",
-      "pos": [
-        2.75,
-        1.67
-      ],
-      "approach": [
-        2.75,
-        2.1
-      ],
-      "type": "green",
-      "home_of": null
-    },
-    {
-      "id": "r2n12",
-      "kind": "rack",
-      "pos": [
-        3.25,
-        1.67
-      ],
-      "approach": [
-        3.25,
-        2.1
-      ],
-      "type": "blue",
-      "home_of": "blue_21"
-    },
-    {
-      "id": "r2n13",
-      "kind": "rack",
-      "pos": [
-        3.75,
-        1.67
-      ],
-      "approach": [
-        3.75,
-        2.1
-      ],
-      "type": "blue",
-      "home_of": "blue_22"
-    },
-    {
-      "id": "r2n14",
-      "kind": "rack",
-      "pos": [
-        4.25,
-        1.67
-      ],
-      "approach": [
-        4.25,
-        2.1
-      ],
-      "type": "blue",
-      "home_of": "blue_23"
-    },
-    {
-      "id": "r2n15",
-      "kind": "rack",
-      "pos": [
-        4.75,
-        1.67
-      ],
-      "approach": [
-        4.75,
-        2.1
-      ],
-      "type": "blue",
-      "home_of": null
-    },
-    {
-      "id": "r2n16",
-      "kind": "rack",
-      "pos": [
-        5.25,
-        1.67
-      ],
-      "approach": [
-        5.25,
-        2.1
-      ],
-      "type": "red",
-      "home_of": "red_21"
-    },
-    {
-      "id": "r2n17",
-      "kind": "rack",
-      "pos": [
-        5.75,
-        1.67
-      ],
-      "approach": [
-        5.75,
-        2.1
-      ],
-      "type": "red",
-      "home_of": "red_22"
-    },
-    {
-      "id": "r2n18",
-      "kind": "rack",
-      "pos": [
-        6.25,
-        1.67
-      ],
-      "approach": [
-        6.25,
-        2.1
-      ],
-      "type": "red",
-      "home_of": "red_23"
-    },
-    {
-      "id": "r2n19",
-      "kind": "rack",
-      "pos": [
-        6.75,
-        1.67
-      ],
-      "approach": [
-        6.75,
-        2.1
-      ],
-      "type": "red",
-      "home_of": null
-    },
-    {
-      "id": "r3s00",
-      "kind": "rack",
-      "pos": [
-        -2.75,
-        4.33
-      ],
-      "approach": [
-        -2.75,
-        3.9
-      ],
-      "type": "brown",
-      "home_of": "brown_21"
-    },
-    {
-      "id": "r3s01",
-      "kind": "rack",
-      "pos": [
-        -2.25,
-        4.33
-      ],
-      "approach": [
-        -2.25,
-        3.9
-      ],
-      "type": "brown",
-      "home_of": "brown_22"
-    },
-    {
-      "id": "r3s02",
-      "kind": "rack",
-      "pos": [
-        -1.75,
-        4.33
-      ],
-      "approach": [
-        -1.75,
-        3.9
-      ],
-      "type": "brown",
-      "home_of": "brown_23"
-    },
-    {
-      "id": "r3s03",
-      "kind": "rack",
-      "pos": [
-        -1.25,
-        4.33
-      ],
-      "approach": [
-        -1.25,
-        3.9
-      ],
-      "type": "brown",
-      "home_of": null
-    },
-    {
-      "id": "r3s04",
-      "kind": "rack",
-      "pos": [
-        -0.75,
-        4.33
-      ],
-      "approach": [
-        -0.75,
-        3.9
-      ],
-      "type": "green",
-      "home_of": "green_21"
-    },
-    {
-      "id": "r3s05",
-      "kind": "rack",
-      "pos": [
-        -0.25,
-        4.33
-      ],
-      "approach": [
-        -0.25,
-        3.9
-      ],
-      "type": "green",
-      "home_of": "green_22"
-    },
-    {
-      "id": "r3s06",
-      "kind": "rack",
-      "pos": [
-        0.25,
-        4.33
-      ],
-      "approach": [
-        0.25,
-        3.9
-      ],
-      "type": "green",
-      "home_of": "green_23"
-    },
-    {
-      "id": "r3s07",
-      "kind": "rack",
-      "pos": [
-        0.75,
-        4.33
-      ],
-      "approach": [
-        0.75,
-        3.9
-      ],
-      "type": "green",
-      "home_of": null
-    },
-    {
-      "id": "r3s08",
-      "kind": "rack",
-      "pos": [
-        1.25,
-        4.33
-      ],
-      "approach": [
-        1.25,
-        3.9
-      ],
-      "type": "blue",
-      "home_of": "blue_24"
-    },
-    {
-      "id": "r3s09",
-      "kind": "rack",
-      "pos": [
-        1.75,
-        4.33
-      ],
-      "approach": [
-        1.75,
-        3.9
-      ],
-      "type": "blue",
-      "home_of": "blue_25"
-    },
-    {
-      "id": "r3s10",
-      "kind": "rack",
-      "pos": [
-        2.25,
-        4.33
-      ],
-      "approach": [
-        2.25,
-        3.9
-      ],
-      "type": "blue",
-      "home_of": "blue_26"
-    },
-    {
-      "id": "r3s11",
-      "kind": "rack",
-      "pos": [
-        2.75,
-        4.33
-      ],
-      "approach": [
-        2.75,
-        3.9
-      ],
-      "type": "blue",
-      "home_of": null
-    },
-    {
-      "id": "r3s12",
-      "kind": "rack",
-      "pos": [
-        3.25,
-        4.33
-      ],
-      "approach": [
-        3.25,
-        3.9
-      ],
-      "type": "red",
-      "home_of": "red_24"
-    },
-    {
-      "id": "r3s13",
-      "kind": "rack",
-      "pos": [
-        3.75,
-        4.33
-      ],
-      "approach": [
-        3.75,
-        3.9
-      ],
-      "type": "red",
-      "home_of": "red_25"
-    },
-    {
-      "id": "r3s14",
-      "kind": "rack",
-      "pos": [
-        4.25,
-        4.33
-      ],
-      "approach": [
-        4.25,
-        3.9
-      ],
-      "type": "red",
-      "home_of": "red_26"
-    },
-    {
-      "id": "r3s15",
-      "kind": "rack",
-      "pos": [
-        4.75,
-        4.33
-      ],
-      "approach": [
-        4.75,
-        3.9
-      ],
-      "type": "red",
-      "home_of": null
-    },
-    {
-      "id": "r3s16",
-      "kind": "rack",
-      "pos": [
-        5.25,
-        4.33
-      ],
-      "approach": [
-        5.25,
-        3.9
-      ],
-      "type": "brown",
-      "home_of": "brown_24"
-    },
-    {
-      "id": "r3s17",
-      "kind": "rack",
-      "pos": [
-        5.75,
-        4.33
-      ],
-      "approach": [
-        5.75,
-        3.9
-      ],
-      "type": "brown",
-      "home_of": "brown_25"
-    },
-    {
-      "id": "r3s18",
-      "kind": "rack",
-      "pos": [
-        6.25,
-        4.33
-      ],
-      "approach": [
-        6.25,
-        3.9
-      ],
-      "type": "brown",
-      "home_of": "brown_26"
-    },
-    {
-      "id": "r3s19",
-      "kind": "rack",
-      "pos": [
-        6.75,
-        4.33
-      ],
-      "approach": [
-        6.75,
-        3.9
-      ],
-      "type": "brown",
-      "home_of": null
-    },
-    {
-      "id": "r3n00",
-      "kind": "rack",
-      "pos": [
-        -2.75,
-        4.67
-      ],
-      "approach": [
-        -2.75,
-        5.1
-      ],
-      "type": "green",
-      "home_of": "green_24"
-    },
-    {
-      "id": "r3n01",
-      "kind": "rack",
-      "pos": [
-        -2.25,
-        4.67
-      ],
-      "approach": [
-        -2.25,
-        5.1
-      ],
-      "type": "green",
-      "home_of": "green_25"
-    },
-    {
-      "id": "r3n02",
-      "kind": "rack",
-      "pos": [
-        -1.75,
-        4.67
-      ],
-      "approach": [
-        -1.75,
-        5.1
-      ],
-      "type": "green",
-      "home_of": "green_26"
-    },
-    {
-      "id": "r3n03",
-      "kind": "rack",
-      "pos": [
-        -1.25,
-        4.67
-      ],
-      "approach": [
-        -1.25,
-        5.1
-      ],
-      "type": "green",
-      "home_of": null
-    },
-    {
-      "id": "r3n04",
-      "kind": "rack",
-      "pos": [
-        -0.75,
-        4.67
-      ],
-      "approach": [
-        -0.75,
-        5.1
-      ],
-      "type": "blue",
-      "home_of": "blue_27"
-    },
-    {
-      "id": "r3n05",
-      "kind": "rack",
-      "pos": [
-        -0.25,
-        4.67
-      ],
-      "approach": [
-        -0.25,
-        5.1
-      ],
-      "type": "blue",
-      "home_of": "blue_28"
-    },
-    {
-      "id": "r3n06",
-      "kind": "rack",
-      "pos": [
-        0.25,
-        4.67
-      ],
-      "approach": [
-        0.25,
-        5.1
-      ],
-      "type": "blue",
-      "home_of": "blue_29"
-    },
-    {
-      "id": "r3n07",
-      "kind": "rack",
-      "pos": [
-        0.75,
-        4.67
-      ],
-      "approach": [
-        0.75,
-        5.1
-      ],
-      "type": "blue",
-      "home_of": null
-    },
-    {
-      "id": "r3n08",
-      "kind": "rack",
-      "pos": [
-        1.25,
-        4.67
-      ],
-      "approach": [
-        1.25,
-        5.1
-      ],
-      "type": "red",
-      "home_of": "red_27"
-    },
-    {
-      "id": "r3n09",
-      "kind": "rack",
-      "pos": [
-        1.75,
-        4.67
-      ],
-      "approach": [
-        1.75,
-        5.1
-      ],
-      "type": "red",
-      "home_of": "red_28"
-    },
-    {
-      "id": "r3n10",
-      "kind": "rack",
-      "pos": [
-        2.25,
-        4.67
-      ],
-      "approach": [
-        2.25,
-        5.1
-      ],
-      "type": "red",
-      "home_of": "red_29"
-    },
-    {
-      "id": "r3n11",
-      "kind": "rack",
-      "pos": [
-        2.75,
-        4.67
-      ],
-      "approach": [
-        2.75,
-        5.1
-      ],
-      "type": "red",
-      "home_of": null
-    },
-    {
-      "id": "r3n12",
-      "kind": "rack",
-      "pos": [
-        3.25,
-        4.67
-      ],
-      "approach": [
-        3.25,
-        5.1
-      ],
-      "type": "brown",
-      "home_of": "brown_27"
-    },
-    {
-      "id": "r3n13",
-      "kind": "rack",
-      "pos": [
-        3.75,
-        4.67
-      ],
-      "approach": [
-        3.75,
-        5.1
-      ],
-      "type": "brown",
-      "home_of": "brown_28"
-    },
-    {
-      "id": "r3n14",
-      "kind": "rack",
-      "pos": [
-        4.25,
-        4.67
-      ],
-      "approach": [
-        4.25,
-        5.1
-      ],
-      "type": "brown",
-      "home_of": "brown_29"
-    },
-    {
-      "id": "r3n15",
-      "kind": "rack",
-      "pos": [
-        4.75,
-        4.67
-      ],
-      "approach": [
-        4.75,
-        5.1
-      ],
-      "type": "brown",
-      "home_of": null
-    },
-    {
-      "id": "r3n16",
-      "kind": "rack",
-      "pos": [
-        5.25,
-        4.67
-      ],
-      "approach": [
-        5.25,
-        5.1
-      ],
-      "type": "green",
-      "home_of": "green_27"
-    },
-    {
-      "id": "r3n17",
-      "kind": "rack",
-      "pos": [
-        5.75,
-        4.67
-      ],
-      "approach": [
-        5.75,
-        5.1
-      ],
-      "type": "green",
-      "home_of": "green_28"
-    },
-    {
-      "id": "r3n18",
-      "kind": "rack",
-      "pos": [
-        6.25,
-        4.67
-      ],
-      "approach": [
-        6.25,
-        5.1
-      ],
-      "type": "green",
-      "home_of": "green_29"
-    },
-    {
-      "id": "r3n19",
-      "kind": "rack",
-      "pos": [
-        6.75,
-        4.67
-      ],
-      "approach": [
-        6.75,
-        5.1
-      ],
-      "type": "green",
-      "home_of": null
-    },
-    {
-      "id": "p0x00",
-      "kind": "pile",
-      "pos": [
-        -7.1,
-        -6.0
-      ],
-      "approach": [
-        -6.45,
-        -6.0
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p0x01",
-      "kind": "pile",
-      "pos": [
-        -7.1,
-        -5.75
-      ],
-      "approach": [
-        -6.45,
-        -5.75
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p0x02",
-      "kind": "pile",
-      "pos": [
-        -7.1,
-        -5.5
-      ],
-      "approach": [
-        -6.45,
-        -5.5
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p0x03",
-      "kind": "pile",
-      "pos": [
-        -7.1,
-        -5.25
-      ],
-      "approach": [
-        -6.45,
-        -5.25
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p0x04",
-      "kind": "pile",
-      "pos": [
-        -7.1,
-        -5.0
-      ],
-      "approach": [
-        -6.45,
-        -5.0
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p0x05",
-      "kind": "pile",
-      "pos": [
-        -7.1,
-        -4.75
-      ],
-      "approach": [
-        -6.45,
-        -4.75
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p0x06",
-      "kind": "pile",
-      "pos": [
-        -7.1,
-        -4.5
-      ],
-      "approach": [
-        -6.45,
-        -4.5
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p0x07",
-      "kind": "pile",
-      "pos": [
-        -7.1,
-        -4.25
-      ],
-      "approach": [
-        -6.45,
-        -4.25
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p0x08",
-      "kind": "pile",
-      "pos": [
-        -7.1,
-        -4.0
-      ],
-      "approach": [
-        -6.45,
-        -4.0
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p0x09",
-      "kind": "pile",
-      "pos": [
-        -7.1,
-        -3.75
-      ],
-      "approach": [
-        -6.45,
-        -3.75
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p0x10",
-      "kind": "pile",
-      "pos": [
-        -7.1,
-        -3.5
-      ],
-      "approach": [
-        -6.45,
-        -3.5
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p0x11",
-      "kind": "pile",
-      "pos": [
-        -7.1,
-        -3.25
-      ],
-      "approach": [
-        -6.45,
-        -3.25
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p0x12",
-      "kind": "pile",
-      "pos": [
-        -7.1,
-        -3.0
-      ],
-      "approach": [
-        -6.45,
-        -3.0
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p0x13",
-      "kind": "pile",
-      "pos": [
-        -7.1,
-        -2.75
-      ],
-      "approach": [
-        -6.45,
-        -2.75
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p0x14",
-      "kind": "pile",
-      "pos": [
-        -7.1,
-        -2.5
-      ],
-      "approach": [
-        -6.45,
-        -2.5
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p0x15",
-      "kind": "pile",
-      "pos": [
-        -7.1,
-        -2.25
-      ],
-      "approach": [
-        -6.45,
-        -2.25
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p0x16",
-      "kind": "pile",
-      "pos": [
-        -7.1,
-        -2.0
-      ],
-      "approach": [
-        -6.45,
-        -2.0
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p0x17",
-      "kind": "pile",
-      "pos": [
-        -7.1,
-        -1.75
-      ],
-      "approach": [
-        -6.45,
-        -1.75
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p0x18",
-      "kind": "pile",
-      "pos": [
-        -7.1,
-        -1.5
-      ],
-      "approach": [
-        -6.45,
-        -1.5
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p0x19",
-      "kind": "pile",
-      "pos": [
-        -7.1,
-        -1.25
-      ],
-      "approach": [
-        -6.45,
-        -1.25
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p0x20",
-      "kind": "pile",
-      "pos": [
-        -7.1,
-        -1.0
-      ],
-      "approach": [
-        -6.45,
-        -1.0
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p0x21",
-      "kind": "pile",
-      "pos": [
-        -7.1,
-        -0.75
-      ],
-      "approach": [
-        -6.45,
-        -0.75
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p0x22",
-      "kind": "pile",
-      "pos": [
-        -7.1,
-        -0.5
-      ],
-      "approach": [
-        -6.45,
-        -0.5
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p0x23",
-      "kind": "pile",
-      "pos": [
-        -7.1,
-        -0.25
-      ],
-      "approach": [
-        -6.45,
-        -0.25
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p0x24",
-      "kind": "pile",
-      "pos": [
-        -7.1,
-        0.0
-      ],
-      "approach": [
-        -6.45,
-        0.0
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p0x25",
-      "kind": "pile",
-      "pos": [
-        -7.1,
-        0.25
-      ],
-      "approach": [
-        -6.45,
-        0.25
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p0x26",
-      "kind": "pile",
-      "pos": [
-        -7.1,
-        0.5
-      ],
-      "approach": [
-        -6.45,
-        0.5
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p0x27",
-      "kind": "pile",
-      "pos": [
-        -7.1,
-        0.75
-      ],
-      "approach": [
-        -6.45,
-        0.75
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p0x28",
-      "kind": "pile",
-      "pos": [
-        -7.1,
-        1.0
-      ],
-      "approach": [
-        -6.45,
-        1.0
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p0x29",
-      "kind": "pile",
-      "pos": [
-        -7.1,
-        1.25
-      ],
-      "approach": [
-        -6.45,
-        1.25
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p0x30",
-      "kind": "pile",
-      "pos": [
-        -7.1,
-        1.5
-      ],
-      "approach": [
-        -6.45,
-        1.5
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p0x31",
-      "kind": "pile",
-      "pos": [
-        -7.1,
-        1.75
-      ],
-      "approach": [
-        -6.45,
-        1.75
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p0x32",
-      "kind": "pile",
-      "pos": [
-        -7.1,
-        2.0
-      ],
-      "approach": [
-        -6.45,
-        2.0
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p0x33",
-      "kind": "pile",
-      "pos": [
-        -7.1,
-        2.25
-      ],
-      "approach": [
-        -6.45,
-        2.25
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p0x34",
-      "kind": "pile",
-      "pos": [
-        -7.1,
-        2.5
-      ],
-      "approach": [
-        -6.45,
-        2.5
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p0x35",
-      "kind": "pile",
-      "pos": [
-        -7.1,
-        2.75
-      ],
-      "approach": [
-        -6.45,
-        2.75
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p0x36",
-      "kind": "pile",
-      "pos": [
-        -7.1,
-        3.0
-      ],
-      "approach": [
-        -6.45,
-        3.0
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p0x37",
-      "kind": "pile",
-      "pos": [
-        -7.1,
-        3.25
-      ],
-      "approach": [
-        -6.45,
-        3.25
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p0x38",
-      "kind": "pile",
-      "pos": [
-        -7.1,
-        3.5
-      ],
-      "approach": [
-        -6.45,
-        3.5
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p0x39",
-      "kind": "pile",
-      "pos": [
-        -7.1,
-        3.75
-      ],
-      "approach": [
-        -6.45,
-        3.75
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p0x40",
-      "kind": "pile",
-      "pos": [
-        -7.1,
-        4.0
-      ],
-      "approach": [
-        -6.45,
-        4.0
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p0x41",
-      "kind": "pile",
-      "pos": [
-        -7.1,
-        4.25
-      ],
-      "approach": [
-        -6.45,
-        4.25
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p0x42",
-      "kind": "pile",
-      "pos": [
-        -7.1,
-        4.5
-      ],
-      "approach": [
-        -6.45,
-        4.5
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p0x43",
-      "kind": "pile",
-      "pos": [
-        -7.1,
-        4.75
-      ],
-      "approach": [
-        -6.45,
-        4.75
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p0x44",
-      "kind": "pile",
-      "pos": [
-        -7.1,
-        5.0
-      ],
-      "approach": [
-        -6.45,
-        5.0
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p0x45",
-      "kind": "pile",
-      "pos": [
-        -7.1,
-        5.25
-      ],
-      "approach": [
-        -6.45,
-        5.25
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p0x46",
-      "kind": "pile",
-      "pos": [
-        -7.1,
-        5.5
-      ],
-      "approach": [
-        -6.45,
-        5.5
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p0x47",
-      "kind": "pile",
-      "pos": [
-        -7.1,
-        5.75
-      ],
-      "approach": [
-        -6.45,
-        5.75
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p0x48",
-      "kind": "pile",
-      "pos": [
-        -7.1,
-        6.0
-      ],
-      "approach": [
-        -6.45,
-        6.0
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p1x00",
-      "kind": "pile",
-      "pos": [
-        -7.35,
-        -6.0
-      ],
-      "approach": [
-        -6.45,
-        -6.0
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p1x01",
-      "kind": "pile",
-      "pos": [
-        -7.35,
-        -5.75
-      ],
-      "approach": [
-        -6.45,
-        -5.75
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p1x02",
-      "kind": "pile",
-      "pos": [
-        -7.35,
-        -5.5
-      ],
-      "approach": [
-        -6.45,
-        -5.5
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p1x03",
-      "kind": "pile",
-      "pos": [
-        -7.35,
-        -5.25
-      ],
-      "approach": [
-        -6.45,
-        -5.25
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p1x04",
-      "kind": "pile",
-      "pos": [
-        -7.35,
-        -5.0
-      ],
-      "approach": [
-        -6.45,
-        -5.0
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p1x05",
-      "kind": "pile",
-      "pos": [
-        -7.35,
-        -4.75
-      ],
-      "approach": [
-        -6.45,
-        -4.75
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p1x06",
-      "kind": "pile",
-      "pos": [
-        -7.35,
-        -4.5
-      ],
-      "approach": [
-        -6.45,
-        -4.5
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p1x07",
-      "kind": "pile",
-      "pos": [
-        -7.35,
-        -4.25
-      ],
-      "approach": [
-        -6.45,
-        -4.25
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p1x08",
-      "kind": "pile",
-      "pos": [
-        -7.35,
-        -4.0
-      ],
-      "approach": [
-        -6.45,
-        -4.0
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p1x09",
-      "kind": "pile",
-      "pos": [
-        -7.35,
-        -3.75
-      ],
-      "approach": [
-        -6.45,
-        -3.75
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p1x10",
-      "kind": "pile",
-      "pos": [
-        -7.35,
-        -3.5
-      ],
-      "approach": [
-        -6.45,
-        -3.5
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p1x11",
-      "kind": "pile",
-      "pos": [
-        -7.35,
-        -3.25
-      ],
-      "approach": [
-        -6.45,
-        -3.25
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p1x12",
-      "kind": "pile",
-      "pos": [
-        -7.35,
-        -3.0
-      ],
-      "approach": [
-        -6.45,
-        -3.0
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p1x13",
-      "kind": "pile",
-      "pos": [
-        -7.35,
-        -2.75
-      ],
-      "approach": [
-        -6.45,
-        -2.75
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p1x14",
-      "kind": "pile",
-      "pos": [
-        -7.35,
-        -2.5
-      ],
-      "approach": [
-        -6.45,
-        -2.5
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p1x15",
-      "kind": "pile",
-      "pos": [
-        -7.35,
-        -2.25
-      ],
-      "approach": [
-        -6.45,
-        -2.25
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p1x16",
-      "kind": "pile",
-      "pos": [
-        -7.35,
-        -2.0
-      ],
-      "approach": [
-        -6.45,
-        -2.0
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p1x17",
-      "kind": "pile",
-      "pos": [
-        -7.35,
-        -1.75
-      ],
-      "approach": [
-        -6.45,
-        -1.75
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p1x18",
-      "kind": "pile",
-      "pos": [
-        -7.35,
-        -1.5
-      ],
-      "approach": [
-        -6.45,
-        -1.5
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p1x19",
-      "kind": "pile",
-      "pos": [
-        -7.35,
-        -1.25
-      ],
-      "approach": [
-        -6.45,
-        -1.25
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p1x20",
-      "kind": "pile",
-      "pos": [
-        -7.35,
-        -1.0
-      ],
-      "approach": [
-        -6.45,
-        -1.0
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p1x21",
-      "kind": "pile",
-      "pos": [
-        -7.35,
-        -0.75
-      ],
-      "approach": [
-        -6.45,
-        -0.75
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p1x22",
-      "kind": "pile",
-      "pos": [
-        -7.35,
-        -0.5
-      ],
-      "approach": [
-        -6.45,
-        -0.5
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p1x23",
-      "kind": "pile",
-      "pos": [
-        -7.35,
-        -0.25
-      ],
-      "approach": [
-        -6.45,
-        -0.25
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p1x24",
-      "kind": "pile",
-      "pos": [
-        -7.35,
-        0.0
-      ],
-      "approach": [
-        -6.45,
-        0.0
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p1x25",
-      "kind": "pile",
-      "pos": [
-        -7.35,
-        0.25
-      ],
-      "approach": [
-        -6.45,
-        0.25
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p1x26",
-      "kind": "pile",
-      "pos": [
-        -7.35,
-        0.5
-      ],
-      "approach": [
-        -6.45,
-        0.5
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p1x27",
-      "kind": "pile",
-      "pos": [
-        -7.35,
-        0.75
-      ],
-      "approach": [
-        -6.45,
-        0.75
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p1x28",
-      "kind": "pile",
-      "pos": [
-        -7.35,
-        1.0
-      ],
-      "approach": [
-        -6.45,
-        1.0
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p1x29",
-      "kind": "pile",
-      "pos": [
-        -7.35,
-        1.25
-      ],
-      "approach": [
-        -6.45,
-        1.25
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p1x30",
-      "kind": "pile",
-      "pos": [
-        -7.35,
-        1.5
-      ],
-      "approach": [
-        -6.45,
-        1.5
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p1x31",
-      "kind": "pile",
-      "pos": [
-        -7.35,
-        1.75
-      ],
-      "approach": [
-        -6.45,
-        1.75
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p1x32",
-      "kind": "pile",
-      "pos": [
-        -7.35,
-        2.0
-      ],
-      "approach": [
-        -6.45,
-        2.0
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p1x33",
-      "kind": "pile",
-      "pos": [
-        -7.35,
-        2.25
-      ],
-      "approach": [
-        -6.45,
-        2.25
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p1x34",
-      "kind": "pile",
-      "pos": [
-        -7.35,
-        2.5
-      ],
-      "approach": [
-        -6.45,
-        2.5
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p1x35",
-      "kind": "pile",
-      "pos": [
-        -7.35,
-        2.75
-      ],
-      "approach": [
-        -6.45,
-        2.75
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p1x36",
-      "kind": "pile",
-      "pos": [
-        -7.35,
-        3.0
-      ],
-      "approach": [
-        -6.45,
-        3.0
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p1x37",
-      "kind": "pile",
-      "pos": [
-        -7.35,
-        3.25
-      ],
-      "approach": [
-        -6.45,
-        3.25
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p1x38",
-      "kind": "pile",
-      "pos": [
-        -7.35,
-        3.5
-      ],
-      "approach": [
-        -6.45,
-        3.5
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p1x39",
-      "kind": "pile",
-      "pos": [
-        -7.35,
-        3.75
-      ],
-      "approach": [
-        -6.45,
-        3.75
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p1x40",
-      "kind": "pile",
-      "pos": [
-        -7.35,
-        4.0
-      ],
-      "approach": [
-        -6.45,
-        4.0
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p1x41",
-      "kind": "pile",
-      "pos": [
-        -7.35,
-        4.25
-      ],
-      "approach": [
-        -6.45,
-        4.25
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p1x42",
-      "kind": "pile",
-      "pos": [
-        -7.35,
-        4.5
-      ],
-      "approach": [
-        -6.45,
-        4.5
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p1x43",
-      "kind": "pile",
-      "pos": [
-        -7.35,
-        4.75
-      ],
-      "approach": [
-        -6.45,
-        4.75
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p1x44",
-      "kind": "pile",
-      "pos": [
-        -7.35,
-        5.0
-      ],
-      "approach": [
-        -6.45,
-        5.0
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p1x45",
-      "kind": "pile",
-      "pos": [
-        -7.35,
-        5.25
-      ],
-      "approach": [
-        -6.45,
-        5.25
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p1x46",
-      "kind": "pile",
-      "pos": [
-        -7.35,
-        5.5
-      ],
-      "approach": [
-        -6.45,
-        5.5
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p1x47",
-      "kind": "pile",
-      "pos": [
-        -7.35,
-        5.75
-      ],
-      "approach": [
-        -6.45,
-        5.75
-      ],
-      "type": null,
-      "home_of": null
-    },
-    {
-      "id": "p1x48",
-      "kind": "pile",
-      "pos": [
-        -7.35,
-        6.0
-      ],
-      "approach": [
-        -6.45,
-        6.0
-      ],
-      "type": null,
-      "home_of": null
-    }
-  ],
-  "items": [
-    {
-      "id": "blue_00",
-      "type": "blue",
-      "home": "r0s00"
-    },
-    {
-      "id": "blue_01",
-      "type": "blue",
-      "home": "r0s01"
-    },
-    {
-      "id": "blue_02",
-      "type": "blue",
-      "home": "r0s02"
-    },
-    {
-      "id": "red_00",
-      "type": "red",
-      "home": "r0s04"
-    },
-    {
-      "id": "red_01",
-      "type": "red",
-      "home": "r0s05"
-    },
-    {
-      "id": "red_02",
-      "type": "red",
-      "home": "r0s06"
-    },
-    {
-      "id": "brown_00",
-      "type": "brown",
-      "home": "r0s08"
-    },
-    {
-      "id": "brown_01",
-      "type": "brown",
-      "home": "r0s09"
-    },
-    {
-      "id": "brown_02",
-      "type": "brown",
-      "home": "r0s10"
-    },
-    {
-      "id": "green_00",
-      "type": "green",
-      "home": "r0s12"
-    },
-    {
-      "id": "green_01",
-      "type": "green",
-      "home": "r0s13"
-    },
-    {
-      "id": "green_02",
-      "type": "green",
-      "home": "r0s14"
-    },
-    {
-      "id": "blue_03",
-      "type": "blue",
-      "home": "r0s16"
-    },
-    {
-      "id": "blue_04",
-      "type": "blue",
-      "home": "r0s17"
-    },
-    {
-      "id": "blue_05",
-      "type": "blue",
-      "home": "r0s18"
-    },
-    {
-      "id": "red_03",
-      "type": "red",
-      "home": "r0n00"
-    },
-    {
-      "id": "red_04",
-      "type": "red",
-      "home": "r0n01"
-    },
-    {
-      "id": "red_05",
-      "type": "red",
-      "home": "r0n02"
-    },
-    {
-      "id": "brown_03",
-      "type": "brown",
-      "home": "r0n04"
-    },
-    {
-      "id": "brown_04",
-      "type": "brown",
-      "home": "r0n05"
-    },
-    {
-      "id": "brown_05",
-      "type": "brown",
-      "home": "r0n06"
-    },
-    {
-      "id": "green_03",
-      "type": "green",
-      "home": "r0n08"
-    },
-    {
-      "id": "green_04",
-      "type": "green",
-      "home": "r0n09"
-    },
-    {
-      "id": "green_05",
-      "type": "green",
-      "home": "r0n10"
-    },
-    {
-      "id": "blue_06",
-      "type": "blue",
-      "home": "r0n12"
-    },
-    {
-      "id": "blue_07",
-      "type": "blue",
-      "home": "r0n13"
-    },
-    {
-      "id": "blue_08",
-      "type": "blue",
-      "home": "r0n14"
-    },
-    {
-      "id": "red_06",
-      "type": "red",
-      "home": "r0n16"
-    },
-    {
-      "id": "red_07",
-      "type": "red",
-      "home": "r0n17"
-    },
-    {
-      "id": "red_08",
-      "type": "red",
-      "home": "r0n18"
-    },
-    {
-      "id": "brown_06",
-      "type": "brown",
-      "home": "r1s00"
-    },
-    {
-      "id": "brown_07",
-      "type": "brown",
-      "home": "r1s01"
-    },
-    {
-      "id": "brown_08",
-      "type": "brown",
-      "home": "r1s02"
-    },
-    {
-      "id": "green_06",
-      "type": "green",
-      "home": "r1s04"
-    },
-    {
-      "id": "green_07",
-      "type": "green",
-      "home": "r1s05"
-    },
-    {
-      "id": "green_08",
-      "type": "green",
-      "home": "r1s06"
-    },
-    {
-      "id": "blue_09",
-      "type": "blue",
-      "home": "r1s08"
-    },
-    {
-      "id": "blue_10",
-      "type": "blue",
-      "home": "r1s09"
-    },
-    {
-      "id": "blue_11",
-      "type": "blue",
-      "home": "r1s10"
-    },
-    {
-      "id": "red_09",
-      "type": "red",
-      "home": "r1s12"
-    },
-    {
-      "id": "red_10",
-      "type": "red",
-      "home": "r1s13"
-    },
-    {
-      "id": "red_11",
-      "type": "red",
-      "home": "r1s14"
-    },
-    {
-      "id": "brown_09",
-      "type": "brown",
-      "home": "r1s16"
-    },
-    {
-      "id": "brown_10",
-      "type": "brown",
-      "home": "r1s17"
-    },
-    {
-      "id": "brown_11",
-      "type": "brown",
-      "home": "r1s18"
-    },
-    {
-      "id": "green_09",
-      "type": "green",
-      "home": "r1n00"
-    },
-    {
-      "id": "green_10",
-      "type": "green",
-      "home": "r1n01"
-    },
-    {
-      "id": "green_11",
-      "type": "green",
-      "home": "r1n02"
-    },
-    {
-      "id": "blue_12",
-      "type": "blue",
-      "home": "r1n04"
-    },
-    {
-      "id": "blue_13",
-      "type": "blue",
-      "home": "r1n05"
-    },
-    {
-      "id": "blue_14",
-      "type": "blue",
-      "home": "r1n06"
-    },
-    {
-      "id": "red_12",
-      "type": "red",
-      "home": "r1n08"
-    },
-    {
-      "id": "red_13",
-      "type": "red",
-      "home": "r1n09"
-    },
-    {
-      "id": "red_14",
-      "type": "red",
-      "home": "r1n10"
-    },
-    {
-      "id": "brown_12",
-      "type": "brown",
-      "home": "r1n12"
-    },
-    {
-      "id": "brown_13",
-      "type": "brown",
-      "home": "r1n13"
-    },
-    {
-      "id": "brown_14",
-      "type": "brown",
-      "home": "r1n14"
-    },
-    {
-      "id": "green_12",
-      "type": "green",
-      "home": "r1n16"
-    },
-    {
-      "id": "green_13",
-      "type": "green",
-      "home": "r1n17"
-    },
-    {
-      "id": "green_14",
-      "type": "green",
-      "home": "r1n18"
-    },
-    {
-      "id": "blue_15",
-      "type": "blue",
-      "home": "r2s00"
-    },
-    {
-      "id": "blue_16",
-      "type": "blue",
-      "home": "r2s01"
-    },
-    {
-      "id": "blue_17",
-      "type": "blue",
-      "home": "r2s02"
-    },
-    {
-      "id": "red_15",
-      "type": "red",
-      "home": "r2s04"
-    },
-    {
-      "id": "red_16",
-      "type": "red",
-      "home": "r2s05"
-    },
-    {
-      "id": "red_17",
-      "type": "red",
-      "home": "r2s06"
-    },
-    {
-      "id": "brown_15",
-      "type": "brown",
-      "home": "r2s08"
-    },
-    {
-      "id": "brown_16",
-      "type": "brown",
-      "home": "r2s09"
-    },
-    {
-      "id": "brown_17",
-      "type": "brown",
-      "home": "r2s10"
-    },
-    {
-      "id": "green_15",
-      "type": "green",
-      "home": "r2s12"
-    },
-    {
-      "id": "green_16",
-      "type": "green",
-      "home": "r2s13"
-    },
-    {
-      "id": "green_17",
-      "type": "green",
-      "home": "r2s14"
-    },
-    {
-      "id": "blue_18",
-      "type": "blue",
-      "home": "r2s16"
-    },
-    {
-      "id": "blue_19",
-      "type": "blue",
-      "home": "r2s17"
-    },
-    {
-      "id": "blue_20",
-      "type": "blue",
-      "home": "r2s18"
-    },
-    {
-      "id": "red_18",
-      "type": "red",
-      "home": "r2n00"
-    },
-    {
-      "id": "red_19",
-      "type": "red",
-      "home": "r2n01"
-    },
-    {
-      "id": "red_20",
-      "type": "red",
-      "home": "r2n02"
-    },
-    {
-      "id": "brown_18",
-      "type": "brown",
-      "home": "r2n04"
-    },
-    {
-      "id": "brown_19",
-      "type": "brown",
-      "home": "r2n05"
-    },
-    {
-      "id": "brown_20",
-      "type": "brown",
-      "home": "r2n06"
-    },
-    {
-      "id": "green_18",
-      "type": "green",
-      "home": "r2n08"
-    },
-    {
-      "id": "green_19",
-      "type": "green",
-      "home": "r2n09"
-    },
-    {
-      "id": "green_20",
-      "type": "green",
-      "home": "r2n10"
-    },
-    {
-      "id": "blue_21",
-      "type": "blue",
-      "home": "r2n12"
-    },
-    {
-      "id": "blue_22",
-      "type": "blue",
-      "home": "r2n13"
-    },
-    {
-      "id": "blue_23",
-      "type": "blue",
-      "home": "r2n14"
-    },
-    {
-      "id": "red_21",
-      "type": "red",
-      "home": "r2n16"
-    },
-    {
-      "id": "red_22",
-      "type": "red",
-      "home": "r2n17"
-    },
-    {
-      "id": "red_23",
-      "type": "red",
-      "home": "r2n18"
-    },
-    {
-      "id": "brown_21",
-      "type": "brown",
-      "home": "r3s00"
-    },
-    {
-      "id": "brown_22",
-      "type": "brown",
-      "home": "r3s01"
-    },
-    {
-      "id": "brown_23",
-      "type": "brown",
-      "home": "r3s02"
-    },
-    {
-      "id": "green_21",
-      "type": "green",
-      "home": "r3s04"
-    },
-    {
-      "id": "green_22",
-      "type": "green",
-      "home": "r3s05"
-    },
-    {
-      "id": "green_23",
-      "type": "green",
-      "home": "r3s06"
-    },
-    {
-      "id": "blue_24",
-      "type": "blue",
-      "home": "r3s08"
-    },
-    {
-      "id": "blue_25",
-      "type": "blue",
-      "home": "r3s09"
-    },
-    {
-      "id": "blue_26",
-      "type": "blue",
-      "home": "r3s10"
-    },
-    {
-      "id": "red_24",
-      "type": "red",
-      "home": "r3s12"
-    },
-    {
-      "id": "red_25",
-      "type": "red",
-      "home": "r3s13"
-    },
-    {
-      "id": "red_26",
-      "type": "red",
-      "home": "r3s14"
-    },
-    {
-      "id": "brown_24",
-      "type": "brown",
-      "home": "r3s16"
-    },
-    {
-      "id": "brown_25",
-      "type": "brown",
-      "home": "r3s17"
-    },
-    {
-      "id": "brown_26",
-      "type": "brown",
-      "home": "r3s18"
-    },
-    {
-      "id": "green_24",
-      "type": "green",
-      "home": "r3n00"
-    },
-    {
-      "id": "green_25",
-      "type": "green",
-      "home": "r3n01"
-    },
-    {
-      "id": "green_26",
-      "type": "green",
-      "home": "r3n02"
-    },
-    {
-      "id": "blue_27",
-      "type": "blue",
-      "home": "r3n04"
-    },
-    {
-      "id": "blue_28",
-      "type": "blue",
-      "home": "r3n05"
-    },
-    {
-      "id": "blue_29",
-      "type": "blue",
-      "home": "r3n06"
-    },
-    {
-      "id": "red_27",
-      "type": "red",
-      "home": "r3n08"
-    },
-    {
-      "id": "red_28",
-      "type": "red",
-      "home": "r3n09"
-    },
-    {
-      "id": "red_29",
-      "type": "red",
-      "home": "r3n10"
-    },
-    {
-      "id": "brown_27",
-      "type": "brown",
-      "home": "r3n12"
-    },
-    {
-      "id": "brown_28",
-      "type": "brown",
-      "home": "r3n13"
-    },
-    {
-      "id": "brown_29",
-      "type": "brown",
-      "home": "r3n14"
-    },
-    {
-      "id": "green_27",
-      "type": "green",
-      "home": "r3n16"
-    },
-    {
-      "id": "green_28",
-      "type": "green",
-      "home": "r3n17"
-    },
-    {
-      "id": "green_29",
-      "type": "green",
-      "home": "r3n18"
-    }
-  ],
-  "robots": [
-    {
-      "id": 0,
-      "def": "R0",
-      "name": "robot_0",
-      "role": "patrol",
-      "start": [
-        -4.85,
-        -6.2
-      ],
-      "home": [
-        -4.85,
-        -6.2
-      ],
-      "faces": [
-        "pile",
-        "pile_w"
-      ]
-    },
-    {
-      "id": 1,
-      "def": "R1",
-      "name": "robot_1",
-      "role": "patrol",
-      "start": [
-        -4.85,
-        6.2
-      ],
-      "home": [
-        -4.85,
-        6.2
-      ],
-      "faces": [
-        "r0s",
-        "r0n",
-        "r1s",
-        "r1n",
-        "r2s",
-        "r2n",
-        "r3s",
-        "r3n"
-      ]
-    },
-    {
-      "id": 2,
-      "def": "R2",
-      "name": "robot_2",
-      "role": "patrol",
-      "start": [
-        8.4,
-        0.0
-      ],
-      "home": [
-        8.4,
-        0.0
-      ],
-      "faces": [
-        "r0s",
-        "r0n",
-        "r1s",
-        "r1n",
-        "r2s",
-        "r2n",
-        "r3s",
-        "r3n"
-      ]
-    },
-    {
-      "id": 3,
-      "def": "R3",
-      "name": "robot_3",
-      "role": "recovery",
-      "start": [
-        -4.3,
-        -0.6
-      ],
-      "home": [
-        -4.3,
-        -0.6
-      ]
-    },
-    {
-      "id": 4,
-      "def": "R4",
-      "name": "robot_4",
-      "role": "recovery",
-      "start": [
-        -4.3,
-        0.6
-      ],
-      "home": [
-        -4.3,
-        0.6
-      ]
-    },
-    {
-      "id": 5,
-      "def": "R5",
-      "name": "robot_5",
-      "role": "recovery",
-      "start": [
-        -4.3,
-        -1.8
-      ],
-      "home": [
-        -4.3,
-        -1.8
-      ]
-    },
-    {
-      "id": 6,
-      "def": "R6",
-      "name": "robot_6",
-      "role": "recovery",
-      "start": [
-        -4.3,
-        1.8
-      ],
-      "home": [
-        -4.3,
-        1.8
-      ]
-    },
-    {
-      "id": 7,
-      "def": "R7",
-      "name": "robot_7",
-      "role": "recovery",
-      "start": [
-        -4.3,
-        -3.0
-      ],
-      "home": [
-        -4.3,
-        -3.0
-      ]
-    },
-    {
-      "id": 8,
-      "def": "R8",
-      "name": "robot_8",
-      "role": "recovery",
-      "start": [
-        -4.3,
-        3.0
-      ],
-      "home": [
-        -4.3,
-        3.0
-      ]
-    },
-    {
-      "id": 9,
-      "def": "R9",
-      "name": "robot_9",
-      "role": "recovery",
-      "start": [
-        -4.3,
-        -4.2
-      ],
-      "home": [
-        -4.3,
-        -4.2
-      ]
-    },
-    {
-      "id": 10,
-      "def": "R10",
-      "name": "robot_10",
-      "role": "recovery",
-      "start": [
-        -4.3,
-        4.2
-      ],
-      "home": [
-        -4.3,
-        4.2
-      ]
-    },
-    {
-      "id": 11,
-      "def": "R11",
-      "name": "robot_11",
-      "role": "transport",
-      "start": [
-        9.3,
-        -6.0
-      ],
-      "home": [
-        9.3,
-        -6.0
-      ]
-    },
-    {
-      "id": 12,
-      "def": "R12",
-      "name": "robot_12",
-      "role": "transport",
-      "start": [
-        9.3,
-        -4.8
-      ],
-      "home": [
-        9.3,
-        -4.8
-      ]
-    },
-    {
-      "id": 13,
-      "def": "R13",
-      "name": "robot_13",
-      "role": "transport",
-      "start": [
-        9.3,
-        -3.6
-      ],
-      "home": [
-        9.3,
-        -3.6
-      ]
-    },
-    {
-      "id": 14,
-      "def": "R14",
-      "name": "robot_14",
-      "role": "transport",
-      "start": [
-        9.3,
-        -2.4
-      ],
-      "home": [
-        9.3,
-        -2.4
-      ]
-    },
-    {
-      "id": 15,
-      "def": "R15",
-      "name": "robot_15",
-      "role": "transport",
-      "start": [
-        9.3,
-        -1.2
-      ],
-      "home": [
-        9.3,
-        -1.2
-      ]
-    },
-    {
-      "id": 16,
-      "def": "R16",
-      "name": "robot_16",
-      "role": "transport",
-      "start": [
-        9.3,
-        0.0
-      ],
-      "home": [
-        9.3,
-        0.0
-      ]
-    }
-  ],
-  "faces": [
-    {
-      "id": "pile",
-      "start": [
-        -6.2,
-        -6.3
-      ],
-      "end": [
-        -6.2,
-        6.3
-      ],
-      "interval_s": 40.0
-    },
-    {
-      "id": "pile_w",
-      "start": [
-        -7.95,
-        6.3
-      ],
-      "end": [
-        -7.95,
-        -6.3
-      ],
-      "interval_s": 40.0
-    },
-    {
-      "id": "r0s",
-      "start": [
-        -3.6,
-        -5.45
-      ],
-      "end": [
-        7.6,
-        -5.45
-      ],
-      "interval_s": 240.0
-    },
-    {
-      "id": "r0n",
-      "start": [
-        7.6,
-        -3.55
-      ],
-      "end": [
-        -3.6,
-        -3.55
-      ],
-      "interval_s": 240.0
-    },
-    {
-      "id": "r1s",
-      "start": [
-        -3.6,
-        -2.45
-      ],
-      "end": [
-        7.6,
-        -2.45
-      ],
-      "interval_s": 240.0
-    },
-    {
-      "id": "r1n",
-      "start": [
-        7.6,
-        -0.55
-      ],
-      "end": [
-        -3.6,
-        -0.55
-      ],
-      "interval_s": 240.0
-    },
-    {
-      "id": "r2s",
-      "start": [
-        -3.6,
-        0.55
-      ],
-      "end": [
-        7.6,
-        0.55
-      ],
-      "interval_s": 240.0
-    },
-    {
-      "id": "r2n",
-      "start": [
-        7.6,
-        2.45
-      ],
-      "end": [
-        -3.6,
-        2.45
-      ],
-      "interval_s": 240.0
-    },
-    {
-      "id": "r3s",
-      "start": [
-        -3.6,
-        3.55
-      ],
-      "end": [
-        7.6,
-        3.55
-      ],
-      "interval_s": 240.0
-    },
-    {
-      "id": "r3n",
-      "start": [
-        7.6,
-        5.45
-      ],
-      "end": [
-        -3.6,
-        5.45
-      ],
-      "interval_s": 240.0
-    }
-  ],
-  "stations": [
-    [
-      8.4,
-      -6.0
-    ],
-    [
-      8.4,
-      -3.0
-    ],
-    [
-      8.4,
-      0.0
-    ],
-    [
-      8.4,
-      3.0
-    ],
-    [
-      8.4,
-      6.0
-    ],
-    [
-      -4.85,
-      -6.3
-    ],
-    [
-      -4.85,
-      6.3
-    ],
-    [
-      2.0,
-      -5.9
-    ],
-    [
-      2.0,
-      -3.0
-    ],
-    [
-      2.0,
-      0.0
-    ],
-    [
-      2.0,
-      3.0
-    ],
-    [
-      2.0,
-      5.9
-    ]
-  ],
-  "episode": {
-    "duration_s": 600,
-    "initial_inbound": 12,
-    "inbound_period_s": 50.0,
-    "inbound_batch": 4,
-    "anomaly_rate_per_s": 0.011111111111111112,
-    "p_fallen": 0.3,
-    "p_swap": 0.3,
-    "p_next_to_lookalike": 0.6,
-    "p_place_error": 0.03
+  {
+   "y": 1.5,
+   "x_min": -3.0,
+   "x_max": 7.0,
+   "half_depth": 0.3
   },
-  "perception": {
-    "patrol_read_label_m": 1.0,
-    "slot_match_m": 0.2,
-    "fallen_tilt_cos": 0.7,
-    "candidate_radius_m": 0.6,
-    "c_noise_m": 0.25
-  },
-  "comm": {
-    "bandwidth_bps": 22000000,
-    "per_attempt_overhead_s": 0.0003,
-    "bg_util": 0.6,
-    "bg_packet_bytes": 1500,
-    "max_retries": 3,
-    "base_latency_s": 0.007,
-    "range_m": 14.0,
-    "ber_good": 2e-06,
-    "ber_bad": 3e-05,
-    "ber_factor_per_rack": 3.0,
-    "p_good_to_bad_per_s": 0.02,
-    "p_bad_to_good_per_s": 0.2,
-    "ap_pos": [
-      1.0,
-      0.0
-    ],
-    "max_queue_s": 2.0
-  },
-  "fleet": {
-    "status_hz": 2.0,
-    "status_bytes": 1500,
-    "task_req_bytes": 200,
-    "task_bytes": 800,
-    "task_timeout_s": 3.0,
-    "dwell_s": 2.0
-  },
-  "traffic": {
-    "policy": "proposed",
-    "header_bytes": 160,
-    "evidence_bytes": {
-      "none": 0,
-      "thumb": 1800,
-      "crop": 4200,
-      "frame": 138000
-    },
-    "ack_bytes": 40,
-    "req_bytes": 60,
-    "report_timeout_s": 90.0,
-    "evidence_timeout_s": 4.0,
-    "act_s": 2.0
-  },
-  "proposed": {
-    "wrong_pick_cost_s": 60.0,
-    "task_s": 40.0,
-    "externality": 50,
-    "service_s": 0.00085,
-    "p_detect_per_frame": 0.15,
-    "p_remember": 0.97,
-    "seen_range_m": 2.0,
-    "claim_range_m": 6.0,
-    "undetected_delay_s": 120.0
-  },
-  "nav": {
-    "speed_mps": 0.3,
-    "wheel_radius": 0.033,
-    "reach_m": 0.2,
-    "goal_reach_m": 0.1,
-    "avoid_dist_m": 0.6,
-    "stop_dist_m": 0.3,
-    "replan_after_s": 2.0
+  {
+   "y": 4.5,
+   "x_min": -3.0,
+   "x_max": 7.0,
+   "half_depth": 0.3
   }
+ ],
+ "obstacles": [
+  {
+   "name": "belt",
+   "x_min": -10.6,
+   "x_max": -5.25,
+   "y_min": 2.7,
+   "y_max": 3.3
+  },
+  {
+   "name": "staging_table",
+   "x_min": -8.350000000000001,
+   "x_max": -5.25,
+   "y_min": 2.1500000000000004,
+   "y_max": 3.0
+  },
+  {
+   "name": "exception_table",
+   "x_min": -9.9,
+   "x_max": -8.8,
+   "y_min": 1.9,
+   "y_max": 2.4
+  },
+  {
+   "name": "inbound_dock",
+   "x_min": -12.0,
+   "x_max": -10.6,
+   "y_min": 2.0,
+   "y_max": 4.0
+  },
+  {
+   "name": "lane_R1",
+   "x_min": 9.15,
+   "x_max": 9.95,
+   "y_min": 3.7,
+   "y_max": 5.3
+  },
+  {
+   "name": "lane_R2",
+   "x_min": 9.15,
+   "x_max": 9.95,
+   "y_min": 0.7,
+   "y_max": 2.3
+  },
+  {
+   "name": "lane_R3",
+   "x_min": 9.15,
+   "x_max": 9.95,
+   "y_min": -2.3,
+   "y_max": -0.7
+  },
+  {
+   "name": "lane_R4",
+   "x_min": 9.15,
+   "x_max": 9.95,
+   "y_min": -5.3,
+   "y_max": -3.7
+  },
+  {
+   "name": "dock_R1",
+   "x_min": 10.4,
+   "x_max": 12.0,
+   "y_min": 3.7,
+   "y_max": 5.3
+  },
+  {
+   "name": "dock_R2",
+   "x_min": 10.4,
+   "x_max": 12.0,
+   "y_min": 0.7,
+   "y_max": 2.3
+  },
+  {
+   "name": "dock_R3",
+   "x_min": 10.4,
+   "x_max": 12.0,
+   "y_min": -2.3,
+   "y_max": -0.7
+  },
+  {
+   "name": "dock_R4",
+   "x_min": 10.4,
+   "x_max": 12.0,
+   "y_min": -5.3,
+   "y_max": -3.7
+  }
+ ],
+ "box_size": [
+  0.3,
+  0.2,
+  0.14
+ ],
+ "slots": [
+  {
+   "id": "r0s00",
+   "kind": "rack",
+   "face": "r0s",
+   "pos": [
+    -2.75,
+    -4.67
+   ],
+   "approach": [
+    -2.75,
+    -5.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r0s01",
+   "kind": "rack",
+   "face": "r0s",
+   "pos": [
+    -2.25,
+    -4.67
+   ],
+   "approach": [
+    -2.25,
+    -5.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r0s02",
+   "kind": "rack",
+   "face": "r0s",
+   "pos": [
+    -1.75,
+    -4.67
+   ],
+   "approach": [
+    -1.75,
+    -5.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r0s03",
+   "kind": "rack",
+   "face": "r0s",
+   "pos": [
+    -1.25,
+    -4.67
+   ],
+   "approach": [
+    -1.25,
+    -5.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r0s04",
+   "kind": "rack",
+   "face": "r0s",
+   "pos": [
+    -0.75,
+    -4.67
+   ],
+   "approach": [
+    -0.75,
+    -5.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r0s05",
+   "kind": "rack",
+   "face": "r0s",
+   "pos": [
+    -0.25,
+    -4.67
+   ],
+   "approach": [
+    -0.25,
+    -5.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r0s06",
+   "kind": "rack",
+   "face": "r0s",
+   "pos": [
+    0.25,
+    -4.67
+   ],
+   "approach": [
+    0.25,
+    -5.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r0s07",
+   "kind": "rack",
+   "face": "r0s",
+   "pos": [
+    0.75,
+    -4.67
+   ],
+   "approach": [
+    0.75,
+    -5.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r0s08",
+   "kind": "rack",
+   "face": "r0s",
+   "pos": [
+    1.25,
+    -4.67
+   ],
+   "approach": [
+    1.25,
+    -5.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r0s09",
+   "kind": "rack",
+   "face": "r0s",
+   "pos": [
+    1.75,
+    -4.67
+   ],
+   "approach": [
+    1.75,
+    -5.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r0s10",
+   "kind": "rack",
+   "face": "r0s",
+   "pos": [
+    2.25,
+    -4.67
+   ],
+   "approach": [
+    2.25,
+    -5.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r0s11",
+   "kind": "rack",
+   "face": "r0s",
+   "pos": [
+    2.75,
+    -4.67
+   ],
+   "approach": [
+    2.75,
+    -5.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r0s12",
+   "kind": "rack",
+   "face": "r0s",
+   "pos": [
+    3.25,
+    -4.67
+   ],
+   "approach": [
+    3.25,
+    -5.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r0s13",
+   "kind": "rack",
+   "face": "r0s",
+   "pos": [
+    3.75,
+    -4.67
+   ],
+   "approach": [
+    3.75,
+    -5.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r0s14",
+   "kind": "rack",
+   "face": "r0s",
+   "pos": [
+    4.25,
+    -4.67
+   ],
+   "approach": [
+    4.25,
+    -5.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r0s15",
+   "kind": "rack",
+   "face": "r0s",
+   "pos": [
+    4.75,
+    -4.67
+   ],
+   "approach": [
+    4.75,
+    -5.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r0s16",
+   "kind": "rack",
+   "face": "r0s",
+   "pos": [
+    5.25,
+    -4.67
+   ],
+   "approach": [
+    5.25,
+    -5.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r0s17",
+   "kind": "rack",
+   "face": "r0s",
+   "pos": [
+    5.75,
+    -4.67
+   ],
+   "approach": [
+    5.75,
+    -5.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r0s18",
+   "kind": "rack",
+   "face": "r0s",
+   "pos": [
+    6.25,
+    -4.67
+   ],
+   "approach": [
+    6.25,
+    -5.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r0s19",
+   "kind": "rack",
+   "face": "r0s",
+   "pos": [
+    6.75,
+    -4.67
+   ],
+   "approach": [
+    6.75,
+    -5.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r0n00",
+   "kind": "rack",
+   "face": "r0n",
+   "pos": [
+    -2.75,
+    -4.33
+   ],
+   "approach": [
+    -2.75,
+    -3.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r0n01",
+   "kind": "rack",
+   "face": "r0n",
+   "pos": [
+    -2.25,
+    -4.33
+   ],
+   "approach": [
+    -2.25,
+    -3.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r0n02",
+   "kind": "rack",
+   "face": "r0n",
+   "pos": [
+    -1.75,
+    -4.33
+   ],
+   "approach": [
+    -1.75,
+    -3.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r0n03",
+   "kind": "rack",
+   "face": "r0n",
+   "pos": [
+    -1.25,
+    -4.33
+   ],
+   "approach": [
+    -1.25,
+    -3.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r0n04",
+   "kind": "rack",
+   "face": "r0n",
+   "pos": [
+    -0.75,
+    -4.33
+   ],
+   "approach": [
+    -0.75,
+    -3.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r0n05",
+   "kind": "rack",
+   "face": "r0n",
+   "pos": [
+    -0.25,
+    -4.33
+   ],
+   "approach": [
+    -0.25,
+    -3.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r0n06",
+   "kind": "rack",
+   "face": "r0n",
+   "pos": [
+    0.25,
+    -4.33
+   ],
+   "approach": [
+    0.25,
+    -3.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r0n07",
+   "kind": "rack",
+   "face": "r0n",
+   "pos": [
+    0.75,
+    -4.33
+   ],
+   "approach": [
+    0.75,
+    -3.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r0n08",
+   "kind": "rack",
+   "face": "r0n",
+   "pos": [
+    1.25,
+    -4.33
+   ],
+   "approach": [
+    1.25,
+    -3.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r0n09",
+   "kind": "rack",
+   "face": "r0n",
+   "pos": [
+    1.75,
+    -4.33
+   ],
+   "approach": [
+    1.75,
+    -3.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r0n10",
+   "kind": "rack",
+   "face": "r0n",
+   "pos": [
+    2.25,
+    -4.33
+   ],
+   "approach": [
+    2.25,
+    -3.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r0n11",
+   "kind": "rack",
+   "face": "r0n",
+   "pos": [
+    2.75,
+    -4.33
+   ],
+   "approach": [
+    2.75,
+    -3.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r0n12",
+   "kind": "rack",
+   "face": "r0n",
+   "pos": [
+    3.25,
+    -4.33
+   ],
+   "approach": [
+    3.25,
+    -3.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r0n13",
+   "kind": "rack",
+   "face": "r0n",
+   "pos": [
+    3.75,
+    -4.33
+   ],
+   "approach": [
+    3.75,
+    -3.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r0n14",
+   "kind": "rack",
+   "face": "r0n",
+   "pos": [
+    4.25,
+    -4.33
+   ],
+   "approach": [
+    4.25,
+    -3.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r0n15",
+   "kind": "rack",
+   "face": "r0n",
+   "pos": [
+    4.75,
+    -4.33
+   ],
+   "approach": [
+    4.75,
+    -3.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r0n16",
+   "kind": "rack",
+   "face": "r0n",
+   "pos": [
+    5.25,
+    -4.33
+   ],
+   "approach": [
+    5.25,
+    -3.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r0n17",
+   "kind": "rack",
+   "face": "r0n",
+   "pos": [
+    5.75,
+    -4.33
+   ],
+   "approach": [
+    5.75,
+    -3.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r0n18",
+   "kind": "rack",
+   "face": "r0n",
+   "pos": [
+    6.25,
+    -4.33
+   ],
+   "approach": [
+    6.25,
+    -3.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r0n19",
+   "kind": "rack",
+   "face": "r0n",
+   "pos": [
+    6.75,
+    -4.33
+   ],
+   "approach": [
+    6.75,
+    -3.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r1s00",
+   "kind": "rack",
+   "face": "r1s",
+   "pos": [
+    -2.75,
+    -1.67
+   ],
+   "approach": [
+    -2.75,
+    -2.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r1s01",
+   "kind": "rack",
+   "face": "r1s",
+   "pos": [
+    -2.25,
+    -1.67
+   ],
+   "approach": [
+    -2.25,
+    -2.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r1s02",
+   "kind": "rack",
+   "face": "r1s",
+   "pos": [
+    -1.75,
+    -1.67
+   ],
+   "approach": [
+    -1.75,
+    -2.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r1s03",
+   "kind": "rack",
+   "face": "r1s",
+   "pos": [
+    -1.25,
+    -1.67
+   ],
+   "approach": [
+    -1.25,
+    -2.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r1s04",
+   "kind": "rack",
+   "face": "r1s",
+   "pos": [
+    -0.75,
+    -1.67
+   ],
+   "approach": [
+    -0.75,
+    -2.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r1s05",
+   "kind": "rack",
+   "face": "r1s",
+   "pos": [
+    -0.25,
+    -1.67
+   ],
+   "approach": [
+    -0.25,
+    -2.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r1s06",
+   "kind": "rack",
+   "face": "r1s",
+   "pos": [
+    0.25,
+    -1.67
+   ],
+   "approach": [
+    0.25,
+    -2.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r1s07",
+   "kind": "rack",
+   "face": "r1s",
+   "pos": [
+    0.75,
+    -1.67
+   ],
+   "approach": [
+    0.75,
+    -2.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r1s08",
+   "kind": "rack",
+   "face": "r1s",
+   "pos": [
+    1.25,
+    -1.67
+   ],
+   "approach": [
+    1.25,
+    -2.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r1s09",
+   "kind": "rack",
+   "face": "r1s",
+   "pos": [
+    1.75,
+    -1.67
+   ],
+   "approach": [
+    1.75,
+    -2.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r1s10",
+   "kind": "rack",
+   "face": "r1s",
+   "pos": [
+    2.25,
+    -1.67
+   ],
+   "approach": [
+    2.25,
+    -2.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r1s11",
+   "kind": "rack",
+   "face": "r1s",
+   "pos": [
+    2.75,
+    -1.67
+   ],
+   "approach": [
+    2.75,
+    -2.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r1s12",
+   "kind": "rack",
+   "face": "r1s",
+   "pos": [
+    3.25,
+    -1.67
+   ],
+   "approach": [
+    3.25,
+    -2.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r1s13",
+   "kind": "rack",
+   "face": "r1s",
+   "pos": [
+    3.75,
+    -1.67
+   ],
+   "approach": [
+    3.75,
+    -2.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r1s14",
+   "kind": "rack",
+   "face": "r1s",
+   "pos": [
+    4.25,
+    -1.67
+   ],
+   "approach": [
+    4.25,
+    -2.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r1s15",
+   "kind": "rack",
+   "face": "r1s",
+   "pos": [
+    4.75,
+    -1.67
+   ],
+   "approach": [
+    4.75,
+    -2.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r1s16",
+   "kind": "rack",
+   "face": "r1s",
+   "pos": [
+    5.25,
+    -1.67
+   ],
+   "approach": [
+    5.25,
+    -2.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r1s17",
+   "kind": "rack",
+   "face": "r1s",
+   "pos": [
+    5.75,
+    -1.67
+   ],
+   "approach": [
+    5.75,
+    -2.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r1s18",
+   "kind": "rack",
+   "face": "r1s",
+   "pos": [
+    6.25,
+    -1.67
+   ],
+   "approach": [
+    6.25,
+    -2.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r1s19",
+   "kind": "rack",
+   "face": "r1s",
+   "pos": [
+    6.75,
+    -1.67
+   ],
+   "approach": [
+    6.75,
+    -2.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r1n00",
+   "kind": "rack",
+   "face": "r1n",
+   "pos": [
+    -2.75,
+    -1.33
+   ],
+   "approach": [
+    -2.75,
+    -0.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r1n01",
+   "kind": "rack",
+   "face": "r1n",
+   "pos": [
+    -2.25,
+    -1.33
+   ],
+   "approach": [
+    -2.25,
+    -0.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r1n02",
+   "kind": "rack",
+   "face": "r1n",
+   "pos": [
+    -1.75,
+    -1.33
+   ],
+   "approach": [
+    -1.75,
+    -0.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r1n03",
+   "kind": "rack",
+   "face": "r1n",
+   "pos": [
+    -1.25,
+    -1.33
+   ],
+   "approach": [
+    -1.25,
+    -0.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r1n04",
+   "kind": "rack",
+   "face": "r1n",
+   "pos": [
+    -0.75,
+    -1.33
+   ],
+   "approach": [
+    -0.75,
+    -0.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r1n05",
+   "kind": "rack",
+   "face": "r1n",
+   "pos": [
+    -0.25,
+    -1.33
+   ],
+   "approach": [
+    -0.25,
+    -0.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r1n06",
+   "kind": "rack",
+   "face": "r1n",
+   "pos": [
+    0.25,
+    -1.33
+   ],
+   "approach": [
+    0.25,
+    -0.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r1n07",
+   "kind": "rack",
+   "face": "r1n",
+   "pos": [
+    0.75,
+    -1.33
+   ],
+   "approach": [
+    0.75,
+    -0.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r1n08",
+   "kind": "rack",
+   "face": "r1n",
+   "pos": [
+    1.25,
+    -1.33
+   ],
+   "approach": [
+    1.25,
+    -0.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r1n09",
+   "kind": "rack",
+   "face": "r1n",
+   "pos": [
+    1.75,
+    -1.33
+   ],
+   "approach": [
+    1.75,
+    -0.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r1n10",
+   "kind": "rack",
+   "face": "r1n",
+   "pos": [
+    2.25,
+    -1.33
+   ],
+   "approach": [
+    2.25,
+    -0.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r1n11",
+   "kind": "rack",
+   "face": "r1n",
+   "pos": [
+    2.75,
+    -1.33
+   ],
+   "approach": [
+    2.75,
+    -0.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r1n12",
+   "kind": "rack",
+   "face": "r1n",
+   "pos": [
+    3.25,
+    -1.33
+   ],
+   "approach": [
+    3.25,
+    -0.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r1n13",
+   "kind": "rack",
+   "face": "r1n",
+   "pos": [
+    3.75,
+    -1.33
+   ],
+   "approach": [
+    3.75,
+    -0.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r1n14",
+   "kind": "rack",
+   "face": "r1n",
+   "pos": [
+    4.25,
+    -1.33
+   ],
+   "approach": [
+    4.25,
+    -0.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r1n15",
+   "kind": "rack",
+   "face": "r1n",
+   "pos": [
+    4.75,
+    -1.33
+   ],
+   "approach": [
+    4.75,
+    -0.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r1n16",
+   "kind": "rack",
+   "face": "r1n",
+   "pos": [
+    5.25,
+    -1.33
+   ],
+   "approach": [
+    5.25,
+    -0.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r1n17",
+   "kind": "rack",
+   "face": "r1n",
+   "pos": [
+    5.75,
+    -1.33
+   ],
+   "approach": [
+    5.75,
+    -0.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r1n18",
+   "kind": "rack",
+   "face": "r1n",
+   "pos": [
+    6.25,
+    -1.33
+   ],
+   "approach": [
+    6.25,
+    -0.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r1n19",
+   "kind": "rack",
+   "face": "r1n",
+   "pos": [
+    6.75,
+    -1.33
+   ],
+   "approach": [
+    6.75,
+    -0.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r2s00",
+   "kind": "rack",
+   "face": "r2s",
+   "pos": [
+    -2.75,
+    1.33
+   ],
+   "approach": [
+    -2.75,
+    0.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r2s01",
+   "kind": "rack",
+   "face": "r2s",
+   "pos": [
+    -2.25,
+    1.33
+   ],
+   "approach": [
+    -2.25,
+    0.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r2s02",
+   "kind": "rack",
+   "face": "r2s",
+   "pos": [
+    -1.75,
+    1.33
+   ],
+   "approach": [
+    -1.75,
+    0.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r2s03",
+   "kind": "rack",
+   "face": "r2s",
+   "pos": [
+    -1.25,
+    1.33
+   ],
+   "approach": [
+    -1.25,
+    0.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r2s04",
+   "kind": "rack",
+   "face": "r2s",
+   "pos": [
+    -0.75,
+    1.33
+   ],
+   "approach": [
+    -0.75,
+    0.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r2s05",
+   "kind": "rack",
+   "face": "r2s",
+   "pos": [
+    -0.25,
+    1.33
+   ],
+   "approach": [
+    -0.25,
+    0.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r2s06",
+   "kind": "rack",
+   "face": "r2s",
+   "pos": [
+    0.25,
+    1.33
+   ],
+   "approach": [
+    0.25,
+    0.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r2s07",
+   "kind": "rack",
+   "face": "r2s",
+   "pos": [
+    0.75,
+    1.33
+   ],
+   "approach": [
+    0.75,
+    0.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r2s08",
+   "kind": "rack",
+   "face": "r2s",
+   "pos": [
+    1.25,
+    1.33
+   ],
+   "approach": [
+    1.25,
+    0.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r2s09",
+   "kind": "rack",
+   "face": "r2s",
+   "pos": [
+    1.75,
+    1.33
+   ],
+   "approach": [
+    1.75,
+    0.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r2s10",
+   "kind": "rack",
+   "face": "r2s",
+   "pos": [
+    2.25,
+    1.33
+   ],
+   "approach": [
+    2.25,
+    0.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r2s11",
+   "kind": "rack",
+   "face": "r2s",
+   "pos": [
+    2.75,
+    1.33
+   ],
+   "approach": [
+    2.75,
+    0.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r2s12",
+   "kind": "rack",
+   "face": "r2s",
+   "pos": [
+    3.25,
+    1.33
+   ],
+   "approach": [
+    3.25,
+    0.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r2s13",
+   "kind": "rack",
+   "face": "r2s",
+   "pos": [
+    3.75,
+    1.33
+   ],
+   "approach": [
+    3.75,
+    0.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r2s14",
+   "kind": "rack",
+   "face": "r2s",
+   "pos": [
+    4.25,
+    1.33
+   ],
+   "approach": [
+    4.25,
+    0.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r2s15",
+   "kind": "rack",
+   "face": "r2s",
+   "pos": [
+    4.75,
+    1.33
+   ],
+   "approach": [
+    4.75,
+    0.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r2s16",
+   "kind": "rack",
+   "face": "r2s",
+   "pos": [
+    5.25,
+    1.33
+   ],
+   "approach": [
+    5.25,
+    0.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r2s17",
+   "kind": "rack",
+   "face": "r2s",
+   "pos": [
+    5.75,
+    1.33
+   ],
+   "approach": [
+    5.75,
+    0.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r2s18",
+   "kind": "rack",
+   "face": "r2s",
+   "pos": [
+    6.25,
+    1.33
+   ],
+   "approach": [
+    6.25,
+    0.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r2s19",
+   "kind": "rack",
+   "face": "r2s",
+   "pos": [
+    6.75,
+    1.33
+   ],
+   "approach": [
+    6.75,
+    0.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r2n00",
+   "kind": "rack",
+   "face": "r2n",
+   "pos": [
+    -2.75,
+    1.67
+   ],
+   "approach": [
+    -2.75,
+    2.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r2n01",
+   "kind": "rack",
+   "face": "r2n",
+   "pos": [
+    -2.25,
+    1.67
+   ],
+   "approach": [
+    -2.25,
+    2.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r2n02",
+   "kind": "rack",
+   "face": "r2n",
+   "pos": [
+    -1.75,
+    1.67
+   ],
+   "approach": [
+    -1.75,
+    2.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r2n03",
+   "kind": "rack",
+   "face": "r2n",
+   "pos": [
+    -1.25,
+    1.67
+   ],
+   "approach": [
+    -1.25,
+    2.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r2n04",
+   "kind": "rack",
+   "face": "r2n",
+   "pos": [
+    -0.75,
+    1.67
+   ],
+   "approach": [
+    -0.75,
+    2.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r2n05",
+   "kind": "rack",
+   "face": "r2n",
+   "pos": [
+    -0.25,
+    1.67
+   ],
+   "approach": [
+    -0.25,
+    2.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r2n06",
+   "kind": "rack",
+   "face": "r2n",
+   "pos": [
+    0.25,
+    1.67
+   ],
+   "approach": [
+    0.25,
+    2.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r2n07",
+   "kind": "rack",
+   "face": "r2n",
+   "pos": [
+    0.75,
+    1.67
+   ],
+   "approach": [
+    0.75,
+    2.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r2n08",
+   "kind": "rack",
+   "face": "r2n",
+   "pos": [
+    1.25,
+    1.67
+   ],
+   "approach": [
+    1.25,
+    2.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r2n09",
+   "kind": "rack",
+   "face": "r2n",
+   "pos": [
+    1.75,
+    1.67
+   ],
+   "approach": [
+    1.75,
+    2.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r2n10",
+   "kind": "rack",
+   "face": "r2n",
+   "pos": [
+    2.25,
+    1.67
+   ],
+   "approach": [
+    2.25,
+    2.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r2n11",
+   "kind": "rack",
+   "face": "r2n",
+   "pos": [
+    2.75,
+    1.67
+   ],
+   "approach": [
+    2.75,
+    2.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r2n12",
+   "kind": "rack",
+   "face": "r2n",
+   "pos": [
+    3.25,
+    1.67
+   ],
+   "approach": [
+    3.25,
+    2.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r2n13",
+   "kind": "rack",
+   "face": "r2n",
+   "pos": [
+    3.75,
+    1.67
+   ],
+   "approach": [
+    3.75,
+    2.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r2n14",
+   "kind": "rack",
+   "face": "r2n",
+   "pos": [
+    4.25,
+    1.67
+   ],
+   "approach": [
+    4.25,
+    2.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r2n15",
+   "kind": "rack",
+   "face": "r2n",
+   "pos": [
+    4.75,
+    1.67
+   ],
+   "approach": [
+    4.75,
+    2.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r2n16",
+   "kind": "rack",
+   "face": "r2n",
+   "pos": [
+    5.25,
+    1.67
+   ],
+   "approach": [
+    5.25,
+    2.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r2n17",
+   "kind": "rack",
+   "face": "r2n",
+   "pos": [
+    5.75,
+    1.67
+   ],
+   "approach": [
+    5.75,
+    2.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r2n18",
+   "kind": "rack",
+   "face": "r2n",
+   "pos": [
+    6.25,
+    1.67
+   ],
+   "approach": [
+    6.25,
+    2.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r2n19",
+   "kind": "rack",
+   "face": "r2n",
+   "pos": [
+    6.75,
+    1.67
+   ],
+   "approach": [
+    6.75,
+    2.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r3s00",
+   "kind": "rack",
+   "face": "r3s",
+   "pos": [
+    -2.75,
+    4.33
+   ],
+   "approach": [
+    -2.75,
+    3.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r3s01",
+   "kind": "rack",
+   "face": "r3s",
+   "pos": [
+    -2.25,
+    4.33
+   ],
+   "approach": [
+    -2.25,
+    3.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r3s02",
+   "kind": "rack",
+   "face": "r3s",
+   "pos": [
+    -1.75,
+    4.33
+   ],
+   "approach": [
+    -1.75,
+    3.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r3s03",
+   "kind": "rack",
+   "face": "r3s",
+   "pos": [
+    -1.25,
+    4.33
+   ],
+   "approach": [
+    -1.25,
+    3.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r3s04",
+   "kind": "rack",
+   "face": "r3s",
+   "pos": [
+    -0.75,
+    4.33
+   ],
+   "approach": [
+    -0.75,
+    3.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r3s05",
+   "kind": "rack",
+   "face": "r3s",
+   "pos": [
+    -0.25,
+    4.33
+   ],
+   "approach": [
+    -0.25,
+    3.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r3s06",
+   "kind": "rack",
+   "face": "r3s",
+   "pos": [
+    0.25,
+    4.33
+   ],
+   "approach": [
+    0.25,
+    3.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r3s07",
+   "kind": "rack",
+   "face": "r3s",
+   "pos": [
+    0.75,
+    4.33
+   ],
+   "approach": [
+    0.75,
+    3.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r3s08",
+   "kind": "rack",
+   "face": "r3s",
+   "pos": [
+    1.25,
+    4.33
+   ],
+   "approach": [
+    1.25,
+    3.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r3s09",
+   "kind": "rack",
+   "face": "r3s",
+   "pos": [
+    1.75,
+    4.33
+   ],
+   "approach": [
+    1.75,
+    3.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r3s10",
+   "kind": "rack",
+   "face": "r3s",
+   "pos": [
+    2.25,
+    4.33
+   ],
+   "approach": [
+    2.25,
+    3.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r3s11",
+   "kind": "rack",
+   "face": "r3s",
+   "pos": [
+    2.75,
+    4.33
+   ],
+   "approach": [
+    2.75,
+    3.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r3s12",
+   "kind": "rack",
+   "face": "r3s",
+   "pos": [
+    3.25,
+    4.33
+   ],
+   "approach": [
+    3.25,
+    3.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r3s13",
+   "kind": "rack",
+   "face": "r3s",
+   "pos": [
+    3.75,
+    4.33
+   ],
+   "approach": [
+    3.75,
+    3.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r3s14",
+   "kind": "rack",
+   "face": "r3s",
+   "pos": [
+    4.25,
+    4.33
+   ],
+   "approach": [
+    4.25,
+    3.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r3s15",
+   "kind": "rack",
+   "face": "r3s",
+   "pos": [
+    4.75,
+    4.33
+   ],
+   "approach": [
+    4.75,
+    3.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r3s16",
+   "kind": "rack",
+   "face": "r3s",
+   "pos": [
+    5.25,
+    4.33
+   ],
+   "approach": [
+    5.25,
+    3.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r3s17",
+   "kind": "rack",
+   "face": "r3s",
+   "pos": [
+    5.75,
+    4.33
+   ],
+   "approach": [
+    5.75,
+    3.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r3s18",
+   "kind": "rack",
+   "face": "r3s",
+   "pos": [
+    6.25,
+    4.33
+   ],
+   "approach": [
+    6.25,
+    3.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r3s19",
+   "kind": "rack",
+   "face": "r3s",
+   "pos": [
+    6.75,
+    4.33
+   ],
+   "approach": [
+    6.75,
+    3.85
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r3n00",
+   "kind": "rack",
+   "face": "r3n",
+   "pos": [
+    -2.75,
+    4.67
+   ],
+   "approach": [
+    -2.75,
+    5.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r3n01",
+   "kind": "rack",
+   "face": "r3n",
+   "pos": [
+    -2.25,
+    4.67
+   ],
+   "approach": [
+    -2.25,
+    5.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r3n02",
+   "kind": "rack",
+   "face": "r3n",
+   "pos": [
+    -1.75,
+    4.67
+   ],
+   "approach": [
+    -1.75,
+    5.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r3n03",
+   "kind": "rack",
+   "face": "r3n",
+   "pos": [
+    -1.25,
+    4.67
+   ],
+   "approach": [
+    -1.25,
+    5.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r3n04",
+   "kind": "rack",
+   "face": "r3n",
+   "pos": [
+    -0.75,
+    4.67
+   ],
+   "approach": [
+    -0.75,
+    5.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r3n05",
+   "kind": "rack",
+   "face": "r3n",
+   "pos": [
+    -0.25,
+    4.67
+   ],
+   "approach": [
+    -0.25,
+    5.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r3n06",
+   "kind": "rack",
+   "face": "r3n",
+   "pos": [
+    0.25,
+    4.67
+   ],
+   "approach": [
+    0.25,
+    5.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r3n07",
+   "kind": "rack",
+   "face": "r3n",
+   "pos": [
+    0.75,
+    4.67
+   ],
+   "approach": [
+    0.75,
+    5.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r3n08",
+   "kind": "rack",
+   "face": "r3n",
+   "pos": [
+    1.25,
+    4.67
+   ],
+   "approach": [
+    1.25,
+    5.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r3n09",
+   "kind": "rack",
+   "face": "r3n",
+   "pos": [
+    1.75,
+    4.67
+   ],
+   "approach": [
+    1.75,
+    5.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r3n10",
+   "kind": "rack",
+   "face": "r3n",
+   "pos": [
+    2.25,
+    4.67
+   ],
+   "approach": [
+    2.25,
+    5.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r3n11",
+   "kind": "rack",
+   "face": "r3n",
+   "pos": [
+    2.75,
+    4.67
+   ],
+   "approach": [
+    2.75,
+    5.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r3n12",
+   "kind": "rack",
+   "face": "r3n",
+   "pos": [
+    3.25,
+    4.67
+   ],
+   "approach": [
+    3.25,
+    5.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r3n13",
+   "kind": "rack",
+   "face": "r3n",
+   "pos": [
+    3.75,
+    4.67
+   ],
+   "approach": [
+    3.75,
+    5.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r3n14",
+   "kind": "rack",
+   "face": "r3n",
+   "pos": [
+    4.25,
+    4.67
+   ],
+   "approach": [
+    4.25,
+    5.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r3n15",
+   "kind": "rack",
+   "face": "r3n",
+   "pos": [
+    4.75,
+    4.67
+   ],
+   "approach": [
+    4.75,
+    5.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r3n16",
+   "kind": "rack",
+   "face": "r3n",
+   "pos": [
+    5.25,
+    4.67
+   ],
+   "approach": [
+    5.25,
+    5.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r3n17",
+   "kind": "rack",
+   "face": "r3n",
+   "pos": [
+    5.75,
+    4.67
+   ],
+   "approach": [
+    5.75,
+    5.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r3n18",
+   "kind": "rack",
+   "face": "r3n",
+   "pos": [
+    6.25,
+    4.67
+   ],
+   "approach": [
+    6.25,
+    5.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "r3n19",
+   "kind": "rack",
+   "face": "r3n",
+   "pos": [
+    6.75,
+    4.67
+   ],
+   "approach": [
+    6.75,
+    5.15
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "B0",
+   "kind": "buffer",
+   "pos": [
+    -5.55,
+    2.45
+   ],
+   "approach": [
+    -5.55,
+    1.7
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "B1",
+   "kind": "buffer",
+   "pos": [
+    -6.05,
+    2.45
+   ],
+   "approach": [
+    -6.05,
+    1.7
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "B2",
+   "kind": "buffer",
+   "pos": [
+    -6.55,
+    2.45
+   ],
+   "approach": [
+    -6.55,
+    1.7
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "B3",
+   "kind": "buffer",
+   "pos": [
+    -7.05,
+    2.45
+   ],
+   "approach": [
+    -7.05,
+    1.7
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "B4",
+   "kind": "buffer",
+   "pos": [
+    -7.55,
+    2.45
+   ],
+   "approach": [
+    -7.55,
+    1.7
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "B5",
+   "kind": "buffer",
+   "pos": [
+    -8.05,
+    2.45
+   ],
+   "approach": [
+    -8.05,
+    1.7
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "X0",
+   "kind": "exception",
+   "pos": [
+    -9.6,
+    2.15
+   ],
+   "approach": [
+    -9.6,
+    1.4
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "X1",
+   "kind": "exception",
+   "pos": [
+    -9.1,
+    2.15
+   ],
+   "approach": [
+    -9.1,
+    1.4
+   ],
+   "z": 0.12
+  },
+  {
+   "id": "LR1-0",
+   "kind": "outbound",
+   "lane": "R1",
+   "pos": [
+    9.35,
+    3.9
+   ],
+   "approach": [
+    8.75,
+    3.9
+   ],
+   "z": 0.0
+  },
+  {
+   "id": "LR1-1",
+   "kind": "outbound",
+   "lane": "R1",
+   "pos": [
+    9.35,
+    4.3
+   ],
+   "approach": [
+    8.75,
+    4.3
+   ],
+   "z": 0.0
+  },
+  {
+   "id": "LR1-2",
+   "kind": "outbound",
+   "lane": "R1",
+   "pos": [
+    9.35,
+    4.7
+   ],
+   "approach": [
+    8.75,
+    4.7
+   ],
+   "z": 0.0
+  },
+  {
+   "id": "LR1-3",
+   "kind": "outbound",
+   "lane": "R1",
+   "pos": [
+    9.35,
+    5.1
+   ],
+   "approach": [
+    8.75,
+    5.1
+   ],
+   "z": 0.0
+  },
+  {
+   "id": "LR1-4",
+   "kind": "outbound",
+   "lane": "R1",
+   "pos": [
+    9.75,
+    3.9
+   ],
+   "approach": [
+    8.75,
+    3.9
+   ],
+   "z": 0.0
+  },
+  {
+   "id": "LR1-5",
+   "kind": "outbound",
+   "lane": "R1",
+   "pos": [
+    9.75,
+    4.3
+   ],
+   "approach": [
+    8.75,
+    4.3
+   ],
+   "z": 0.0
+  },
+  {
+   "id": "LR1-6",
+   "kind": "outbound",
+   "lane": "R1",
+   "pos": [
+    9.75,
+    4.7
+   ],
+   "approach": [
+    8.75,
+    4.7
+   ],
+   "z": 0.0
+  },
+  {
+   "id": "LR1-7",
+   "kind": "outbound",
+   "lane": "R1",
+   "pos": [
+    9.75,
+    5.1
+   ],
+   "approach": [
+    8.75,
+    5.1
+   ],
+   "z": 0.0
+  },
+  {
+   "id": "LR2-0",
+   "kind": "outbound",
+   "lane": "R2",
+   "pos": [
+    9.35,
+    0.9
+   ],
+   "approach": [
+    8.75,
+    0.9
+   ],
+   "z": 0.0
+  },
+  {
+   "id": "LR2-1",
+   "kind": "outbound",
+   "lane": "R2",
+   "pos": [
+    9.35,
+    1.3
+   ],
+   "approach": [
+    8.75,
+    1.3
+   ],
+   "z": 0.0
+  },
+  {
+   "id": "LR2-2",
+   "kind": "outbound",
+   "lane": "R2",
+   "pos": [
+    9.35,
+    1.7
+   ],
+   "approach": [
+    8.75,
+    1.7
+   ],
+   "z": 0.0
+  },
+  {
+   "id": "LR2-3",
+   "kind": "outbound",
+   "lane": "R2",
+   "pos": [
+    9.35,
+    2.1
+   ],
+   "approach": [
+    8.75,
+    2.1
+   ],
+   "z": 0.0
+  },
+  {
+   "id": "LR2-4",
+   "kind": "outbound",
+   "lane": "R2",
+   "pos": [
+    9.75,
+    0.9
+   ],
+   "approach": [
+    8.75,
+    0.9
+   ],
+   "z": 0.0
+  },
+  {
+   "id": "LR2-5",
+   "kind": "outbound",
+   "lane": "R2",
+   "pos": [
+    9.75,
+    1.3
+   ],
+   "approach": [
+    8.75,
+    1.3
+   ],
+   "z": 0.0
+  },
+  {
+   "id": "LR2-6",
+   "kind": "outbound",
+   "lane": "R2",
+   "pos": [
+    9.75,
+    1.7
+   ],
+   "approach": [
+    8.75,
+    1.7
+   ],
+   "z": 0.0
+  },
+  {
+   "id": "LR2-7",
+   "kind": "outbound",
+   "lane": "R2",
+   "pos": [
+    9.75,
+    2.1
+   ],
+   "approach": [
+    8.75,
+    2.1
+   ],
+   "z": 0.0
+  },
+  {
+   "id": "LR3-0",
+   "kind": "outbound",
+   "lane": "R3",
+   "pos": [
+    9.35,
+    -2.1
+   ],
+   "approach": [
+    8.75,
+    -2.1
+   ],
+   "z": 0.0
+  },
+  {
+   "id": "LR3-1",
+   "kind": "outbound",
+   "lane": "R3",
+   "pos": [
+    9.35,
+    -1.7
+   ],
+   "approach": [
+    8.75,
+    -1.7
+   ],
+   "z": 0.0
+  },
+  {
+   "id": "LR3-2",
+   "kind": "outbound",
+   "lane": "R3",
+   "pos": [
+    9.35,
+    -1.3
+   ],
+   "approach": [
+    8.75,
+    -1.3
+   ],
+   "z": 0.0
+  },
+  {
+   "id": "LR3-3",
+   "kind": "outbound",
+   "lane": "R3",
+   "pos": [
+    9.35,
+    -0.9
+   ],
+   "approach": [
+    8.75,
+    -0.9
+   ],
+   "z": 0.0
+  },
+  {
+   "id": "LR3-4",
+   "kind": "outbound",
+   "lane": "R3",
+   "pos": [
+    9.75,
+    -2.1
+   ],
+   "approach": [
+    8.75,
+    -2.1
+   ],
+   "z": 0.0
+  },
+  {
+   "id": "LR3-5",
+   "kind": "outbound",
+   "lane": "R3",
+   "pos": [
+    9.75,
+    -1.7
+   ],
+   "approach": [
+    8.75,
+    -1.7
+   ],
+   "z": 0.0
+  },
+  {
+   "id": "LR3-6",
+   "kind": "outbound",
+   "lane": "R3",
+   "pos": [
+    9.75,
+    -1.3
+   ],
+   "approach": [
+    8.75,
+    -1.3
+   ],
+   "z": 0.0
+  },
+  {
+   "id": "LR3-7",
+   "kind": "outbound",
+   "lane": "R3",
+   "pos": [
+    9.75,
+    -0.9
+   ],
+   "approach": [
+    8.75,
+    -0.9
+   ],
+   "z": 0.0
+  },
+  {
+   "id": "LR4-0",
+   "kind": "outbound",
+   "lane": "R4",
+   "pos": [
+    9.35,
+    -5.1
+   ],
+   "approach": [
+    8.75,
+    -5.1
+   ],
+   "z": 0.0
+  },
+  {
+   "id": "LR4-1",
+   "kind": "outbound",
+   "lane": "R4",
+   "pos": [
+    9.35,
+    -4.7
+   ],
+   "approach": [
+    8.75,
+    -4.7
+   ],
+   "z": 0.0
+  },
+  {
+   "id": "LR4-2",
+   "kind": "outbound",
+   "lane": "R4",
+   "pos": [
+    9.35,
+    -4.3
+   ],
+   "approach": [
+    8.75,
+    -4.3
+   ],
+   "z": 0.0
+  },
+  {
+   "id": "LR4-3",
+   "kind": "outbound",
+   "lane": "R4",
+   "pos": [
+    9.35,
+    -3.9
+   ],
+   "approach": [
+    8.75,
+    -3.9
+   ],
+   "z": 0.0
+  },
+  {
+   "id": "LR4-4",
+   "kind": "outbound",
+   "lane": "R4",
+   "pos": [
+    9.75,
+    -5.1
+   ],
+   "approach": [
+    8.75,
+    -5.1
+   ],
+   "z": 0.0
+  },
+  {
+   "id": "LR4-5",
+   "kind": "outbound",
+   "lane": "R4",
+   "pos": [
+    9.75,
+    -4.7
+   ],
+   "approach": [
+    8.75,
+    -4.7
+   ],
+   "z": 0.0
+  },
+  {
+   "id": "LR4-6",
+   "kind": "outbound",
+   "lane": "R4",
+   "pos": [
+    9.75,
+    -4.3
+   ],
+   "approach": [
+    8.75,
+    -4.3
+   ],
+   "z": 0.0
+  },
+  {
+   "id": "LR4-7",
+   "kind": "outbound",
+   "lane": "R4",
+   "pos": [
+    9.75,
+    -3.9
+   ],
+   "approach": [
+    8.75,
+    -3.9
+   ],
+   "z": 0.0
+  }
+ ],
+ "skus": [
+  {
+   "sku": "8N10W9-11",
+   "ref": "8N10W9",
+   "size_us": 11.0,
+   "abc": "B",
+   "units": 2951,
+   "share": 0.01293,
+   "color": [
+    0.85,
+    0.7,
+    0.15
+   ]
+  },
+  {
+   "sku": "8N10W9-10",
+   "ref": "8N10W9",
+   "size_us": 10.0,
+   "abc": "B",
+   "units": 2931,
+   "share": 0.01285,
+   "color": [
+    0.85,
+    0.7,
+    0.15
+   ]
+  },
+  {
+   "sku": "PY5UPB-26",
+   "ref": "PY5UPB",
+   "size_us": 26.0,
+   "abc": "C",
+   "units": 2340,
+   "share": 0.01026,
+   "color": [
+    0.95,
+    0.55,
+    0.2
+   ]
+  },
+  {
+   "sku": "PY5UPB-26.5",
+   "ref": "PY5UPB",
+   "size_us": 26.5,
+   "abc": "C",
+   "units": 2275,
+   "share": 0.00997,
+   "color": [
+    0.95,
+    0.55,
+    0.2
+   ]
+  },
+  {
+   "sku": "8N10W9-12",
+   "ref": "8N10W9",
+   "size_us": 12.0,
+   "abc": "B",
+   "units": 2214,
+   "share": 0.0097,
+   "color": [
+    0.85,
+    0.7,
+    0.15
+   ]
+  },
+  {
+   "sku": "8N10W9-10.5",
+   "ref": "8N10W9",
+   "size_us": 10.5,
+   "abc": "B",
+   "units": 2190,
+   "share": 0.0096,
+   "color": [
+    0.85,
+    0.7,
+    0.15
+   ]
+  },
+  {
+   "sku": "8N10W9-9",
+   "ref": "8N10W9",
+   "size_us": 9.0,
+   "abc": "B",
+   "units": 1965,
+   "share": 0.00861,
+   "color": [
+    0.85,
+    0.7,
+    0.15
+   ]
+  },
+  {
+   "sku": "8N10W9-9.5",
+   "ref": "8N10W9",
+   "size_us": 9.5,
+   "abc": "B",
+   "units": 1832,
+   "share": 0.00803,
+   "color": [
+    0.85,
+    0.7,
+    0.15
+   ]
+  },
+  {
+   "sku": "I1KDJ0-10",
+   "ref": "I1KDJ0",
+   "size_us": 10.0,
+   "abc": "A",
+   "units": 1608,
+   "share": 0.00705,
+   "color": [
+    0.55,
+    0.25,
+    0.65
+   ]
+  },
+  {
+   "sku": "PY5UPB-27",
+   "ref": "PY5UPB",
+   "size_us": 27.0,
+   "abc": "C",
+   "units": 1580,
+   "share": 0.00692,
+   "color": [
+    0.95,
+    0.55,
+    0.2
+   ]
+  },
+  {
+   "sku": "I1KDJ0-11",
+   "ref": "I1KDJ0",
+   "size_us": 11.0,
+   "abc": "A",
+   "units": 1546,
+   "share": 0.00678,
+   "color": [
+    0.55,
+    0.25,
+    0.65
+   ]
+  },
+  {
+   "sku": "I1KDJ0-9",
+   "ref": "I1KDJ0",
+   "size_us": 9.0,
+   "abc": "A",
+   "units": 1430,
+   "share": 0.00627,
+   "color": [
+    0.55,
+    0.25,
+    0.65
+   ]
+  },
+  {
+   "sku": "WRRW1W-10",
+   "ref": "WRRW1W",
+   "size_us": 10.0,
+   "abc": "A",
+   "units": 1389,
+   "share": 0.00609,
+   "color": [
+    0.45,
+    0.15,
+    0.2
+   ]
+  },
+  {
+   "sku": "05W6TK-9",
+   "ref": "05W6TK",
+   "size_us": 9.0,
+   "abc": "A",
+   "units": 1383,
+   "share": 0.00606,
+   "color": [
+    0.8,
+    0.2,
+    0.15
+   ]
+  },
+  {
+   "sku": "WRRW1W-9",
+   "ref": "WRRW1W",
+   "size_us": 9.0,
+   "abc": "A",
+   "units": 1344,
+   "share": 0.00589,
+   "color": [
+    0.45,
+    0.15,
+    0.2
+   ]
+  },
+  {
+   "sku": "PY5UPB-27.5",
+   "ref": "PY5UPB",
+   "size_us": 27.5,
+   "abc": "C",
+   "units": 1120,
+   "share": 0.00491,
+   "color": [
+    0.95,
+    0.55,
+    0.2
+   ]
+  },
+  {
+   "sku": "SMMRK3-10",
+   "ref": "SMMRK3",
+   "size_us": 10.0,
+   "abc": "C",
+   "units": 1109,
+   "share": 0.00486,
+   "color": [
+    0.25,
+    0.25,
+    0.6
+   ]
+  },
+  {
+   "sku": "I1KDJ0-12",
+   "ref": "I1KDJ0",
+   "size_us": 12.0,
+   "abc": "A",
+   "units": 1103,
+   "share": 0.00483,
+   "color": [
+    0.55,
+    0.25,
+    0.65
+   ]
+  },
+  {
+   "sku": "05W6TK-9.5",
+   "ref": "05W6TK",
+   "size_us": 9.5,
+   "abc": "A",
+   "units": 1090,
+   "share": 0.00478,
+   "color": [
+    0.8,
+    0.2,
+    0.15
+   ]
+  },
+  {
+   "sku": "SMMRK3-11",
+   "ref": "SMMRK3",
+   "size_us": 11.0,
+   "abc": "C",
+   "units": 1064,
+   "share": 0.00466,
+   "color": [
+    0.25,
+    0.25,
+    0.6
+   ]
+  },
+  {
+   "sku": "05W6TK-10",
+   "ref": "05W6TK",
+   "size_us": 10.0,
+   "abc": "A",
+   "units": 1051,
+   "share": 0.00461,
+   "color": [
+    0.8,
+    0.2,
+    0.15
+   ]
+  },
+  {
+   "sku": "WRRW1W-11",
+   "ref": "WRRW1W",
+   "size_us": 11.0,
+   "abc": "A",
+   "units": 1048,
+   "share": 0.00459,
+   "color": [
+    0.45,
+    0.15,
+    0.2
+   ]
+  },
+  {
+   "sku": "WRRW1W-9.5",
+   "ref": "WRRW1W",
+   "size_us": 9.5,
+   "abc": "A",
+   "units": 1027,
+   "share": 0.0045,
+   "color": [
+    0.45,
+    0.15,
+    0.2
+   ]
+  },
+  {
+   "sku": "I1KDJ0-10.5",
+   "ref": "I1KDJ0",
+   "size_us": 10.5,
+   "abc": "A",
+   "units": 1013,
+   "share": 0.00444,
+   "color": [
+    0.55,
+    0.25,
+    0.65
+   ]
+  },
+  {
+   "sku": "8N10W9-13",
+   "ref": "8N10W9",
+   "size_us": 13.0,
+   "abc": "B",
+   "units": 995,
+   "share": 0.00436,
+   "color": [
+    0.85,
+    0.7,
+    0.15
+   ]
+  },
+  {
+   "sku": "I1KDJ0-9.5",
+   "ref": "I1KDJ0",
+   "size_us": 9.5,
+   "abc": "A",
+   "units": 974,
+   "share": 0.00427,
+   "color": [
+    0.55,
+    0.25,
+    0.65
+   ]
+  },
+  {
+   "sku": "WRRW1W-10.5",
+   "ref": "WRRW1W",
+   "size_us": 10.5,
+   "abc": "A",
+   "units": 874,
+   "share": 0.00383,
+   "color": [
+    0.45,
+    0.15,
+    0.2
+   ]
+  },
+  {
+   "sku": "SMMRK3-9",
+   "ref": "SMMRK3",
+   "size_us": 9.0,
+   "abc": "C",
+   "units": 872,
+   "share": 0.00382,
+   "color": [
+    0.25,
+    0.25,
+    0.6
+   ]
+  },
+  {
+   "sku": "8N10W9-8",
+   "ref": "8N10W9",
+   "size_us": 8.0,
+   "abc": "B",
+   "units": 868,
+   "share": 0.0038,
+   "color": [
+    0.85,
+    0.7,
+    0.15
+   ]
+  },
+  {
+   "sku": "05W6TK-8.5",
+   "ref": "05W6TK",
+   "size_us": 8.5,
+   "abc": "A",
+   "units": 858,
+   "share": 0.00376,
+   "color": [
+    0.8,
+    0.2,
+    0.15
+   ]
+  },
+  {
+   "sku": "PY5UPB-23.5",
+   "ref": "PY5UPB",
+   "size_us": 23.5,
+   "abc": "C",
+   "units": 855,
+   "share": 0.00375,
+   "color": [
+    0.95,
+    0.55,
+    0.2
+   ]
+  },
+  {
+   "sku": "05W6TK-8",
+   "ref": "05W6TK",
+   "size_us": 8.0,
+   "abc": "A",
+   "units": 843,
+   "share": 0.00369,
+   "color": [
+    0.8,
+    0.2,
+    0.15
+   ]
+  },
+  {
+   "sku": "SMMRK3-10.5",
+   "ref": "SMMRK3",
+   "size_us": 10.5,
+   "abc": "C",
+   "units": 837,
+   "share": 0.00367,
+   "color": [
+    0.25,
+    0.25,
+    0.6
+   ]
+  },
+  {
+   "sku": "05W6TK-10.5",
+   "ref": "05W6TK",
+   "size_us": 10.5,
+   "abc": "A",
+   "units": 831,
+   "share": 0.00364,
+   "color": [
+    0.8,
+    0.2,
+    0.15
+   ]
+  },
+  {
+   "sku": "8N10W9-8.5",
+   "ref": "8N10W9",
+   "size_us": 8.5,
+   "abc": "B",
+   "units": 808,
+   "share": 0.00354,
+   "color": [
+    0.85,
+    0.7,
+    0.15
+   ]
+  },
+  {
+   "sku": "PY5UPB-24.5",
+   "ref": "PY5UPB",
+   "size_us": 24.5,
+   "abc": "C",
+   "units": 800,
+   "share": 0.00351,
+   "color": [
+    0.95,
+    0.55,
+    0.2
+   ]
+  },
+  {
+   "sku": "PY5UPB-25.5",
+   "ref": "PY5UPB",
+   "size_us": 25.5,
+   "abc": "C",
+   "units": 800,
+   "share": 0.00351,
+   "color": [
+    0.95,
+    0.55,
+    0.2
+   ]
+  },
+  {
+   "sku": "I2B1FH-9",
+   "ref": "I2B1FH",
+   "size_us": 9.0,
+   "abc": "A",
+   "units": 775,
+   "share": 0.0034,
+   "color": [
+    0.1,
+    0.6,
+    0.65
+   ]
+  },
+  {
+   "sku": "WRRW1W-12",
+   "ref": "WRRW1W",
+   "size_us": 12.0,
+   "abc": "A",
+   "units": 774,
+   "share": 0.00339,
+   "color": [
+    0.45,
+    0.15,
+    0.2
+   ]
+  },
+  {
+   "sku": "8D9SAW-10",
+   "ref": "8D9SAW",
+   "size_us": 10.0,
+   "abc": "B",
+   "units": 770,
+   "share": 0.00337,
+   "color": [
+    0.55,
+    0.38,
+    0.2
+   ]
+  },
+  {
+   "sku": "I2B1FH-10",
+   "ref": "I2B1FH",
+   "size_us": 10.0,
+   "abc": "A",
+   "units": 756,
+   "share": 0.00331,
+   "color": [
+    0.1,
+    0.6,
+    0.65
+   ]
+  },
+  {
+   "sku": "8D9SAW-9",
+   "ref": "8D9SAW",
+   "size_us": 9.0,
+   "abc": "B",
+   "units": 749,
+   "share": 0.00328,
+   "color": [
+    0.55,
+    0.38,
+    0.2
+   ]
+  },
+  {
+   "sku": "6M2FJM-9",
+   "ref": "6M2FJM",
+   "size_us": 9.0,
+   "abc": "C",
+   "units": 747,
+   "share": 0.00327,
+   "color": [
+    0.2,
+    0.6,
+    0.25
+   ]
+  },
+  {
+   "sku": "SMMRK3-12",
+   "ref": "SMMRK3",
+   "size_us": 12.0,
+   "abc": "C",
+   "units": 741,
+   "share": 0.00325,
+   "color": [
+    0.25,
+    0.25,
+    0.6
+   ]
+  },
+  {
+   "sku": "WRRW1W-8.5",
+   "ref": "WRRW1W",
+   "size_us": 8.5,
+   "abc": "A",
+   "units": 737,
+   "share": 0.00323,
+   "color": [
+    0.45,
+    0.15,
+    0.2
+   ]
+  },
+  {
+   "sku": "WRRW1W-8",
+   "ref": "WRRW1W",
+   "size_us": 8.0,
+   "abc": "A",
+   "units": 727,
+   "share": 0.00319,
+   "color": [
+    0.45,
+    0.15,
+    0.2
+   ]
+  },
+  {
+   "sku": "JEGRCL-9",
+   "ref": "JEGRCL",
+   "size_us": 9.0,
+   "abc": "A",
+   "units": 716,
+   "share": 0.00314,
+   "color": [
+    0.9,
+    0.45,
+    0.6
+   ]
+  },
+  {
+   "sku": "PY5UPB-25",
+   "ref": "PY5UPB",
+   "size_us": 25.0,
+   "abc": "C",
+   "units": 705,
+   "share": 0.00309,
+   "color": [
+    0.95,
+    0.55,
+    0.2
+   ]
+  },
+  {
+   "sku": "2T1DJM-10",
+   "ref": "2T1DJM",
+   "size_us": 10.0,
+   "abc": "C",
+   "units": 687,
+   "share": 0.00301,
+   "color": [
+    0.15,
+    0.35,
+    0.8
+   ]
+  },
+  {
+   "sku": "JEGRCL-10",
+   "ref": "JEGRCL",
+   "size_us": 10.0,
+   "abc": "A",
+   "units": 685,
+   "share": 0.003,
+   "color": [
+    0.9,
+    0.45,
+    0.6
+   ]
+  },
+  {
+   "sku": "2T1DJM-11",
+   "ref": "2T1DJM",
+   "size_us": 11.0,
+   "abc": "C",
+   "units": 654,
+   "share": 0.00287,
+   "color": [
+    0.15,
+    0.35,
+    0.8
+   ]
+  },
+  {
+   "sku": "SMMRK3-9.5",
+   "ref": "SMMRK3",
+   "size_us": 9.5,
+   "abc": "C",
+   "units": 653,
+   "share": 0.00286,
+   "color": [
+    0.25,
+    0.25,
+    0.6
+   ]
+  },
+  {
+   "sku": "LXJQVG-10",
+   "ref": "LXJQVG",
+   "size_us": 10.0,
+   "abc": "A",
+   "units": 653,
+   "share": 0.00286,
+   "color": [
+    0.6,
+    0.75,
+    0.3
+   ]
+  },
+  {
+   "sku": "U95NWB-12",
+   "ref": "U95NWB",
+   "size_us": 12.0,
+   "abc": "B",
+   "units": 653,
+   "share": 0.00286,
+   "color": [
+    0.7,
+    0.55,
+    0.45
+   ]
+  },
+  {
+   "sku": "8D9SAW-9.5",
+   "ref": "8D9SAW",
+   "size_us": 9.5,
+   "abc": "B",
+   "units": 646,
+   "share": 0.00283,
+   "color": [
+    0.55,
+    0.38,
+    0.2
+   ]
+  },
+  {
+   "sku": "8D9SAW-10.5",
+   "ref": "8D9SAW",
+   "size_us": 10.5,
+   "abc": "B",
+   "units": 630,
+   "share": 0.00276,
+   "color": [
+    0.55,
+    0.38,
+    0.2
+   ]
+  },
+  {
+   "sku": "PY5UPB-28",
+   "ref": "PY5UPB",
+   "size_us": 28.0,
+   "abc": "C",
+   "units": 625,
+   "share": 0.00274,
+   "color": [
+    0.95,
+    0.55,
+    0.2
+   ]
+  },
+  {
+   "sku": "8D9SAW-11",
+   "ref": "8D9SAW",
+   "size_us": 11.0,
+   "abc": "B",
+   "units": 613,
+   "share": 0.00269,
+   "color": [
+    0.55,
+    0.38,
+    0.2
+   ]
+  },
+  {
+   "sku": "KUFVRI-11",
+   "ref": "KUFVRI",
+   "size_us": 11.0,
+   "abc": "B",
+   "units": 609,
+   "share": 0.00267,
+   "color": [
+    0.35,
+    0.35,
+    0.35
+   ]
+  },
+  {
+   "sku": "PY5UPB-24",
+   "ref": "PY5UPB",
+   "size_us": 24.0,
+   "abc": "C",
+   "units": 600,
+   "share": 0.00263,
+   "color": [
+    0.95,
+    0.55,
+    0.2
+   ]
+  }
+ ],
+ "cartons": [
+  {
+   "lpn": "ST0001",
+   "sku": "I1KDJ0-10"
+  },
+  {
+   "lpn": "ST0002",
+   "sku": "I1KDJ0-11"
+  },
+  {
+   "lpn": "ST0003",
+   "sku": "I1KDJ0-11"
+  },
+  {
+   "lpn": "ST0004",
+   "sku": "I1KDJ0-11"
+  },
+  {
+   "lpn": "ST0005",
+   "sku": "I1KDJ0-11"
+  },
+  {
+   "lpn": "ST0006",
+   "sku": "I1KDJ0-11"
+  },
+  {
+   "lpn": "ST0007",
+   "sku": "I1KDJ0-11"
+  },
+  {
+   "lpn": "ST0008",
+   "sku": "I1KDJ0-11"
+  },
+  {
+   "lpn": "ST0009",
+   "sku": "I1KDJ0-11"
+  },
+  {
+   "lpn": "ST0010",
+   "sku": "I1KDJ0-9"
+  },
+  {
+   "lpn": "ST0011",
+   "sku": "I1KDJ0-9"
+  },
+  {
+   "lpn": "ST0012",
+   "sku": "I1KDJ0-9"
+  },
+  {
+   "lpn": "ST0013",
+   "sku": "I1KDJ0-9"
+  },
+  {
+   "lpn": "ST0014",
+   "sku": "I1KDJ0-9"
+  },
+  {
+   "lpn": "ST0015",
+   "sku": "I1KDJ0-9"
+  },
+  {
+   "lpn": "ST0016",
+   "sku": "I1KDJ0-9"
+  },
+  {
+   "lpn": "ST0017",
+   "sku": "I1KDJ0-9"
+  },
+  {
+   "lpn": "ST0018",
+   "sku": "WRRW1W-10"
+  },
+  {
+   "lpn": "ST0019",
+   "sku": "05W6TK-9"
+  },
+  {
+   "lpn": "ST0020",
+   "sku": "WRRW1W-9"
+  },
+  {
+   "lpn": "ST0021",
+   "sku": "I1KDJ0-12"
+  },
+  {
+   "lpn": "ST0022",
+   "sku": "05W6TK-9.5"
+  },
+  {
+   "lpn": "ST0023",
+   "sku": "05W6TK-10"
+  },
+  {
+   "lpn": "ST0024",
+   "sku": "WRRW1W-11"
+  },
+  {
+   "lpn": "ST0025",
+   "sku": "WRRW1W-9.5"
+  },
+  {
+   "lpn": "ST0026",
+   "sku": "WRRW1W-9.5"
+  },
+  {
+   "lpn": "ST0027",
+   "sku": "I1KDJ0-10.5"
+  },
+  {
+   "lpn": "ST0028",
+   "sku": "I1KDJ0-10.5"
+  },
+  {
+   "lpn": "ST0029",
+   "sku": "I1KDJ0-10.5"
+  },
+  {
+   "lpn": "ST0030",
+   "sku": "I1KDJ0-10.5"
+  },
+  {
+   "lpn": "ST0031",
+   "sku": "I1KDJ0-10.5"
+  },
+  {
+   "lpn": "ST0032",
+   "sku": "I1KDJ0-10.5"
+  },
+  {
+   "lpn": "ST0033",
+   "sku": "I1KDJ0-10.5"
+  },
+  {
+   "lpn": "ST0034",
+   "sku": "I1KDJ0-10.5"
+  },
+  {
+   "lpn": "ST0035",
+   "sku": "I1KDJ0-9.5"
+  },
+  {
+   "lpn": "ST0036",
+   "sku": "I1KDJ0-9.5"
+  },
+  {
+   "lpn": "ST0037",
+   "sku": "I1KDJ0-9.5"
+  },
+  {
+   "lpn": "ST0038",
+   "sku": "I1KDJ0-9.5"
+  },
+  {
+   "lpn": "ST0039",
+   "sku": "I1KDJ0-9.5"
+  },
+  {
+   "lpn": "ST0040",
+   "sku": "I1KDJ0-9.5"
+  },
+  {
+   "lpn": "ST0041",
+   "sku": "I1KDJ0-9.5"
+  },
+  {
+   "lpn": "ST0042",
+   "sku": "WRRW1W-10.5"
+  },
+  {
+   "lpn": "ST0043",
+   "sku": "05W6TK-8.5"
+  },
+  {
+   "lpn": "ST0044",
+   "sku": "05W6TK-8"
+  },
+  {
+   "lpn": "ST0045",
+   "sku": "05W6TK-10.5"
+  },
+  {
+   "lpn": "ST0046",
+   "sku": "I2B1FH-9"
+  },
+  {
+   "lpn": "ST0047",
+   "sku": "WRRW1W-12"
+  },
+  {
+   "lpn": "ST0048",
+   "sku": "I2B1FH-10"
+  },
+  {
+   "lpn": "ST0049",
+   "sku": "WRRW1W-8.5"
+  },
+  {
+   "lpn": "ST0050",
+   "sku": "WRRW1W-8"
+  },
+  {
+   "lpn": "ST0051",
+   "sku": "JEGRCL-9"
+  },
+  {
+   "lpn": "ST0052",
+   "sku": "JEGRCL-10"
+  },
+  {
+   "lpn": "ST0053",
+   "sku": "LXJQVG-10"
+  },
+  {
+   "lpn": "ST0054",
+   "sku": "8N10W9-11"
+  },
+  {
+   "lpn": "ST0055",
+   "sku": "8N10W9-11"
+  },
+  {
+   "lpn": "ST0056",
+   "sku": "8N10W9-10"
+  },
+  {
+   "lpn": "ST0057",
+   "sku": "8N10W9-12"
+  },
+  {
+   "lpn": "ST0058",
+   "sku": "8N10W9-10.5"
+  },
+  {
+   "lpn": "ST0059",
+   "sku": "8N10W9-10.5"
+  },
+  {
+   "lpn": "ST0060",
+   "sku": "8N10W9-10.5"
+  },
+  {
+   "lpn": "ST0061",
+   "sku": "8N10W9-9"
+  },
+  {
+   "lpn": "ST0062",
+   "sku": "8N10W9-9.5"
+  },
+  {
+   "lpn": "ST0063",
+   "sku": "8N10W9-9.5"
+  },
+  {
+   "lpn": "ST0064",
+   "sku": "8N10W9-13"
+  },
+  {
+   "lpn": "ST0065",
+   "sku": "8N10W9-8"
+  },
+  {
+   "lpn": "ST0066",
+   "sku": "8N10W9-8.5"
+  },
+  {
+   "lpn": "ST0067",
+   "sku": "8D9SAW-10"
+  },
+  {
+   "lpn": "ST0068",
+   "sku": "8D9SAW-9"
+  },
+  {
+   "lpn": "ST0069",
+   "sku": "U95NWB-12"
+  },
+  {
+   "lpn": "ST0070",
+   "sku": "8D9SAW-9.5"
+  },
+  {
+   "lpn": "ST0071",
+   "sku": "8D9SAW-10.5"
+  },
+  {
+   "lpn": "ST0072",
+   "sku": "8D9SAW-10.5"
+  },
+  {
+   "lpn": "ST0073",
+   "sku": "8D9SAW-11"
+  },
+  {
+   "lpn": "ST0074",
+   "sku": "KUFVRI-11"
+  },
+  {
+   "lpn": "ST0075",
+   "sku": "PY5UPB-26"
+  },
+  {
+   "lpn": "ST0076",
+   "sku": "PY5UPB-26.5"
+  },
+  {
+   "lpn": "ST0077",
+   "sku": "PY5UPB-27"
+  },
+  {
+   "lpn": "ST0078",
+   "sku": "PY5UPB-27.5"
+  },
+  {
+   "lpn": "ST0079",
+   "sku": "SMMRK3-10"
+  },
+  {
+   "lpn": "ST0080",
+   "sku": "SMMRK3-10"
+  },
+  {
+   "lpn": "ST0081",
+   "sku": "SMMRK3-11"
+  },
+  {
+   "lpn": "ST0082",
+   "sku": "SMMRK3-9"
+  },
+  {
+   "lpn": "ST0083",
+   "sku": "SMMRK3-9"
+  },
+  {
+   "lpn": "ST0084",
+   "sku": "SMMRK3-9"
+  },
+  {
+   "lpn": "ST0085",
+   "sku": "PY5UPB-23.5"
+  },
+  {
+   "lpn": "ST0086",
+   "sku": "SMMRK3-10.5"
+  },
+  {
+   "lpn": "ST0087",
+   "sku": "PY5UPB-24.5"
+  },
+  {
+   "lpn": "ST0088",
+   "sku": "PY5UPB-25.5"
+  },
+  {
+   "lpn": "ST0089",
+   "sku": "6M2FJM-9"
+  },
+  {
+   "lpn": "ST0090",
+   "sku": "SMMRK3-12"
+  },
+  {
+   "lpn": "ST0091",
+   "sku": "PY5UPB-25"
+  },
+  {
+   "lpn": "ST0092",
+   "sku": "2T1DJM-10"
+  },
+  {
+   "lpn": "ST0093",
+   "sku": "2T1DJM-11"
+  },
+  {
+   "lpn": "ST0094",
+   "sku": "SMMRK3-9.5"
+  },
+  {
+   "lpn": "ST0095",
+   "sku": "PY5UPB-28"
+  },
+  {
+   "lpn": "ST0096",
+   "sku": "PY5UPB-24"
+  },
+  {
+   "lpn": "IN0001",
+   "sku": "I1KDJ0-11"
+  },
+  {
+   "lpn": "IN0002",
+   "sku": "I1KDJ0-11"
+  },
+  {
+   "lpn": "IN0003",
+   "sku": "I1KDJ0-9"
+  },
+  {
+   "lpn": "IN0004",
+   "sku": "I1KDJ0-9"
+  },
+  {
+   "lpn": "IN0005",
+   "sku": "I1KDJ0-11"
+  },
+  {
+   "lpn": "IN0006",
+   "sku": "8N10W9-8.5"
+  },
+  {
+   "lpn": "IN0007",
+   "sku": "8N10W9-9"
+  },
+  {
+   "lpn": "IN0008",
+   "sku": "I1KDJ0-11"
+  },
+  {
+   "lpn": "IN0009",
+   "sku": "8N10W9-11"
+  },
+  {
+   "lpn": "IN0010",
+   "sku": "I1KDJ0-11"
+  },
+  {
+   "lpn": "IN0011",
+   "sku": "8N10W9-12"
+  },
+  {
+   "lpn": "IN0012",
+   "sku": "I1KDJ0-9"
+  },
+  {
+   "lpn": "IN0013",
+   "sku": "I1KDJ0-9"
+  },
+  {
+   "lpn": "IN0014",
+   "sku": "I1KDJ0-10.5"
+  },
+  {
+   "lpn": "IN0015",
+   "sku": "I1KDJ0-10.5"
+  },
+  {
+   "lpn": "IN0016",
+   "sku": "I1KDJ0-9"
+  },
+  {
+   "lpn": "IN0017",
+   "sku": "I1KDJ0-9"
+  },
+  {
+   "lpn": "IN0018",
+   "sku": "I1KDJ0-9"
+  },
+  {
+   "lpn": "IN0019",
+   "sku": "I1KDJ0-10.5"
+  },
+  {
+   "lpn": "IN0020",
+   "sku": "I1KDJ0-9.5"
+  },
+  {
+   "lpn": "IN0021",
+   "sku": "I1KDJ0-9"
+  },
+  {
+   "lpn": "IN0022",
+   "sku": "I1KDJ0-10.5"
+  },
+  {
+   "lpn": "IN0023",
+   "sku": "I1KDJ0-9"
+  },
+  {
+   "lpn": "IN0024",
+   "sku": "I1KDJ0-9"
+  },
+  {
+   "lpn": "IN0025",
+   "sku": "I1KDJ0-9"
+  },
+  {
+   "lpn": "IN0026",
+   "sku": "I1KDJ0-9"
+  },
+  {
+   "lpn": "IN0027",
+   "sku": "I1KDJ0-9"
+  },
+  {
+   "lpn": "IN0028",
+   "sku": "I1KDJ0-9"
+  },
+  {
+   "lpn": "IN0029",
+   "sku": "I1KDJ0-9"
+  },
+  {
+   "lpn": "IN0030",
+   "sku": "I1KDJ0-9"
+  },
+  {
+   "lpn": "IN0031",
+   "sku": "I1KDJ0-9"
+  },
+  {
+   "lpn": "IN0032",
+   "sku": "I1KDJ0-9"
+  },
+  {
+   "lpn": "IN0033",
+   "sku": "I1KDJ0-9"
+  },
+  {
+   "lpn": "IN0034",
+   "sku": "I1KDJ0-9"
+  },
+  {
+   "lpn": "IN0035",
+   "sku": "I1KDJ0-9"
+  },
+  {
+   "lpn": "IN0036",
+   "sku": "I1KDJ0-9"
+  },
+  {
+   "lpn": "IN0037",
+   "sku": "I1KDJ0-10.5"
+  },
+  {
+   "lpn": "IN0038",
+   "sku": "I1KDJ0-9.5"
+  },
+  {
+   "lpn": "IN0039",
+   "sku": "I1KDJ0-9.5"
+  },
+  {
+   "lpn": "IN0040",
+   "sku": "I1KDJ0-10.5"
+  },
+  {
+   "lpn": "IN0041",
+   "sku": "I1KDJ0-9.5"
+  },
+  {
+   "lpn": "IN0042",
+   "sku": "I1KDJ0-10.5"
+  },
+  {
+   "lpn": "IN0043",
+   "sku": "I1KDJ0-9.5"
+  },
+  {
+   "lpn": "IN0044",
+   "sku": "I1KDJ0-9.5"
+  },
+  {
+   "lpn": "IN0045",
+   "sku": "I1KDJ0-10.5"
+  },
+  {
+   "lpn": "IN0046",
+   "sku": "I1KDJ0-9.5"
+  },
+  {
+   "lpn": "IN0047",
+   "sku": "I1KDJ0-10.5"
+  },
+  {
+   "lpn": "IN0048",
+   "sku": "I1KDJ0-10.5"
+  },
+  {
+   "lpn": "IN0049",
+   "sku": "I1KDJ0-11"
+  },
+  {
+   "lpn": "IN0050",
+   "sku": "I1KDJ0-11"
+  },
+  {
+   "lpn": "IN0051",
+   "sku": "I1KDJ0-11"
+  },
+  {
+   "lpn": "IN0052",
+   "sku": "I1KDJ0-11"
+  },
+  {
+   "lpn": "IN0053",
+   "sku": "I1KDJ0-11"
+  },
+  {
+   "lpn": "IN0054",
+   "sku": "I1KDJ0-11"
+  },
+  {
+   "lpn": "IN0055",
+   "sku": "I1KDJ0-11"
+  },
+  {
+   "lpn": "IN0056",
+   "sku": "I1KDJ0-11"
+  },
+  {
+   "lpn": "IN0057",
+   "sku": "I1KDJ0-11"
+  },
+  {
+   "lpn": "IN0058",
+   "sku": "I1KDJ0-11"
+  },
+  {
+   "lpn": "IN0059",
+   "sku": "I1KDJ0-11"
+  },
+  {
+   "lpn": "IN0060",
+   "sku": "I1KDJ0-11"
+  },
+  {
+   "lpn": "IN0061",
+   "sku": "8N10W9-10.5"
+  },
+  {
+   "lpn": "IN0062",
+   "sku": "8D9SAW-10.5"
+  },
+  {
+   "lpn": "IN0063",
+   "sku": "I1KDJ0-10.5"
+  },
+  {
+   "lpn": "IN0064",
+   "sku": "8N10W9-10.5"
+  },
+  {
+   "lpn": "IN0065",
+   "sku": "I1KDJ0-11"
+  },
+  {
+   "lpn": "IN0066",
+   "sku": "I1KDJ0-11"
+  },
+  {
+   "lpn": "IN0067",
+   "sku": "I1KDJ0-10.5"
+  },
+  {
+   "lpn": "IN0068",
+   "sku": "WRRW1W-9.5"
+  },
+  {
+   "lpn": "IN0069",
+   "sku": "I1KDJ0-11"
+  },
+  {
+   "lpn": "IN0070",
+   "sku": "8N10W9-10"
+  },
+  {
+   "lpn": "IN0071",
+   "sku": "8N10W9-10.5"
+  },
+  {
+   "lpn": "IN0072",
+   "sku": "I1KDJ0-10.5"
+  },
+  {
+   "lpn": "IN0073",
+   "sku": "8N10W9-8.5"
+  },
+  {
+   "lpn": "IN0074",
+   "sku": "8N10W9-12"
+  },
+  {
+   "lpn": "IN0075",
+   "sku": "8D9SAW-10.5"
+  },
+  {
+   "lpn": "IN0076",
+   "sku": "2T1DJM-10"
+  },
+  {
+   "lpn": "IN0077",
+   "sku": "I1KDJ0-10"
+  },
+  {
+   "lpn": "IN0078",
+   "sku": "8N10W9-9.5"
+  },
+  {
+   "lpn": "IN0079",
+   "sku": "8D9SAW-10"
+  },
+  {
+   "lpn": "IN0080",
+   "sku": "8N10W9-10"
+  },
+  {
+   "lpn": "IN0081",
+   "sku": "8D9SAW-9"
+  },
+  {
+   "lpn": "IN0082",
+   "sku": "8N10W9-10.5"
+  },
+  {
+   "lpn": "IN0083",
+   "sku": "8N10W9-11"
+  },
+  {
+   "lpn": "IN0084",
+   "sku": "8N10W9-9"
+  },
+  {
+   "lpn": "IN0085",
+   "sku": "LXJQVG-10"
+  },
+  {
+   "lpn": "IN0086",
+   "sku": "SMMRK3-9"
+  },
+  {
+   "lpn": "IN0087",
+   "sku": "WRRW1W-10"
+  },
+  {
+   "lpn": "IN0088",
+   "sku": "I1KDJ0-9.5"
+  },
+  {
+   "lpn": "IN0089",
+   "sku": "I1KDJ0-9.5"
+  },
+  {
+   "lpn": "IN0090",
+   "sku": "SMMRK3-10"
+  },
+  {
+   "lpn": "IN0091",
+   "sku": "I1KDJ0-9"
+  },
+  {
+   "lpn": "IN0092",
+   "sku": "SMMRK3-12"
+  },
+  {
+   "lpn": "IN0093",
+   "sku": "I1KDJ0-9.5"
+  },
+  {
+   "lpn": "IN0094",
+   "sku": "SMMRK3-9.5"
+  },
+  {
+   "lpn": "IN0095",
+   "sku": "I1KDJ0-9"
+  },
+  {
+   "lpn": "IN0096",
+   "sku": "SMMRK3-10.5"
+  },
+  {
+   "lpn": "IN0097",
+   "sku": "SMMRK3-9"
+  },
+  {
+   "lpn": "IN0098",
+   "sku": "SMMRK3-10"
+  },
+  {
+   "lpn": "IN0099",
+   "sku": "WRRW1W-9.5"
+  },
+  {
+   "lpn": "IN0100",
+   "sku": "WRRW1W-11"
+  },
+  {
+   "lpn": "IN0101",
+   "sku": "8D9SAW-10.5"
+  },
+  {
+   "lpn": "IN0102",
+   "sku": "SMMRK3-9.5"
+  },
+  {
+   "lpn": "IN0103",
+   "sku": "SMMRK3-12"
+  },
+  {
+   "lpn": "IN0104",
+   "sku": "2T1DJM-10"
+  },
+  {
+   "lpn": "IN0105",
+   "sku": "SMMRK3-10.5"
+  },
+  {
+   "lpn": "IN0106",
+   "sku": "SMMRK3-9"
+  },
+  {
+   "lpn": "IN0107",
+   "sku": "8N10W9-9.5"
+  },
+  {
+   "lpn": "IN0108",
+   "sku": "WRRW1W-10"
+  },
+  {
+   "lpn": "RT001",
+   "sku": "I1KDJ0-12"
+  },
+  {
+   "lpn": "RT002",
+   "sku": "WRRW1W-10.5"
+  },
+  {
+   "lpn": "RT003",
+   "sku": "WRRW1W-8.5"
+  },
+  {
+   "lpn": "RT004",
+   "sku": "8N10W9-9"
+  },
+  {
+   "lpn": "RT005",
+   "sku": "8N10W9-8.5"
+  },
+  {
+   "lpn": "RT006",
+   "sku": "PY5UPB-26"
+  },
+  {
+   "lpn": "RT007",
+   "sku": "8N10W9-10.5"
+  },
+  {
+   "lpn": "RT008",
+   "sku": "I2B1FH-10"
+  },
+  {
+   "lpn": "RT009",
+   "sku": "PY5UPB-27"
+  },
+  {
+   "lpn": "RT010",
+   "sku": "8D9SAW-9"
+  },
+  {
+   "lpn": "RT011",
+   "sku": "PY5UPB-26"
+  },
+  {
+   "lpn": "RT012",
+   "sku": "PY5UPB-26.5"
+  },
+  {
+   "lpn": "RT013",
+   "sku": "SMMRK3-10.5"
+  },
+  {
+   "lpn": "RT014",
+   "sku": "8N10W9-10"
+  },
+  {
+   "lpn": "RT015",
+   "sku": "I1KDJ0-10.5"
+  },
+  {
+   "lpn": "RT016",
+   "sku": "2T1DJM-11"
+  },
+  {
+   "lpn": "RT017",
+   "sku": "05W6TK-10"
+  },
+  {
+   "lpn": "RT018",
+   "sku": "PY5UPB-23.5"
+  },
+  {
+   "lpn": "RT019",
+   "sku": "8N10W9-11"
+  },
+  {
+   "lpn": "RT020",
+   "sku": "SMMRK3-9"
+  },
+  {
+   "lpn": "RT021",
+   "sku": "I1KDJ0-9.5"
+  },
+  {
+   "lpn": "RT022",
+   "sku": "I1KDJ0-10.5"
+  },
+  {
+   "lpn": "RT023",
+   "sku": "WRRW1W-10"
+  },
+  {
+   "lpn": "RT024",
+   "sku": "I1KDJ0-9"
+  },
+  {
+   "lpn": "RT025",
+   "sku": "8D9SAW-11"
+  },
+  {
+   "lpn": "RT026",
+   "sku": "8N10W9-11"
+  },
+  {
+   "lpn": "RT027",
+   "sku": "8N10W9-11"
+  },
+  {
+   "lpn": "RT028",
+   "sku": "8D9SAW-10.5"
+  },
+  {
+   "lpn": "RT029",
+   "sku": "8N10W9-12"
+  },
+  {
+   "lpn": "RT030",
+   "sku": "PY5UPB-26"
+  },
+  {
+   "lpn": "RT031",
+   "sku": "8N10W9-10.5"
+  },
+  {
+   "lpn": "RT032",
+   "sku": "I2B1FH-10"
+  },
+  {
+   "lpn": "RT033",
+   "sku": "U95NWB-12"
+  },
+  {
+   "lpn": "RT034",
+   "sku": "8N10W9-11"
+  },
+  {
+   "lpn": "RT035",
+   "sku": "WRRW1W-9"
+  },
+  {
+   "lpn": "RT036",
+   "sku": "PY5UPB-26"
+  },
+  {
+   "lpn": "RT037",
+   "sku": "8N10W9-9.5"
+  },
+  {
+   "lpn": "RT038",
+   "sku": "8N10W9-10.5"
+  },
+  {
+   "lpn": "RT039",
+   "sku": "8N10W9-8"
+  },
+  {
+   "lpn": "RT040",
+   "sku": "I1KDJ0-11"
+  }
+ ],
+ "initial_stock": [
+  {
+   "slot": "r1n18",
+   "sku": "I1KDJ0-10",
+   "lpn": "ST0001"
+  },
+  {
+   "slot": "r2s18",
+   "sku": "I1KDJ0-11",
+   "lpn": "ST0002"
+  },
+  {
+   "slot": "r1s18",
+   "sku": "I1KDJ0-11",
+   "lpn": "ST0003"
+  },
+  {
+   "slot": "r2n18",
+   "sku": "I1KDJ0-11",
+   "lpn": "ST0004"
+  },
+  {
+   "slot": "r0n18",
+   "sku": "I1KDJ0-11",
+   "lpn": "ST0005"
+  },
+  {
+   "slot": "r3s18",
+   "sku": "I1KDJ0-11",
+   "lpn": "ST0006"
+  },
+  {
+   "slot": "r0s18",
+   "sku": "I1KDJ0-11",
+   "lpn": "ST0007"
+  },
+  {
+   "slot": "r3n18",
+   "sku": "I1KDJ0-11",
+   "lpn": "ST0008"
+  },
+  {
+   "slot": "r1n17",
+   "sku": "I1KDJ0-11",
+   "lpn": "ST0009"
+  },
+  {
+   "slot": "r2s17",
+   "sku": "I1KDJ0-9",
+   "lpn": "ST0010"
+  },
+  {
+   "slot": "r1s17",
+   "sku": "I1KDJ0-9",
+   "lpn": "ST0011"
+  },
+  {
+   "slot": "r2n17",
+   "sku": "I1KDJ0-9",
+   "lpn": "ST0012"
+  },
+  {
+   "slot": "r0n17",
+   "sku": "I1KDJ0-9",
+   "lpn": "ST0013"
+  },
+  {
+   "slot": "r3s17",
+   "sku": "I1KDJ0-9",
+   "lpn": "ST0014"
+  },
+  {
+   "slot": "r0s17",
+   "sku": "I1KDJ0-9",
+   "lpn": "ST0015"
+  },
+  {
+   "slot": "r3n17",
+   "sku": "I1KDJ0-9",
+   "lpn": "ST0016"
+  },
+  {
+   "slot": "r1n16",
+   "sku": "I1KDJ0-9",
+   "lpn": "ST0017"
+  },
+  {
+   "slot": "r2s16",
+   "sku": "WRRW1W-10",
+   "lpn": "ST0018"
+  },
+  {
+   "slot": "r1s16",
+   "sku": "05W6TK-9",
+   "lpn": "ST0019"
+  },
+  {
+   "slot": "r2n16",
+   "sku": "WRRW1W-9",
+   "lpn": "ST0020"
+  },
+  {
+   "slot": "r0n16",
+   "sku": "I1KDJ0-12",
+   "lpn": "ST0021"
+  },
+  {
+   "slot": "r3s16",
+   "sku": "05W6TK-9.5",
+   "lpn": "ST0022"
+  },
+  {
+   "slot": "r0s16",
+   "sku": "05W6TK-10",
+   "lpn": "ST0023"
+  },
+  {
+   "slot": "r3n16",
+   "sku": "WRRW1W-11",
+   "lpn": "ST0024"
+  },
+  {
+   "slot": "r1n14",
+   "sku": "WRRW1W-9.5",
+   "lpn": "ST0025"
+  },
+  {
+   "slot": "r2s14",
+   "sku": "WRRW1W-9.5",
+   "lpn": "ST0026"
+  },
+  {
+   "slot": "r1s14",
+   "sku": "I1KDJ0-10.5",
+   "lpn": "ST0027"
+  },
+  {
+   "slot": "r2n14",
+   "sku": "I1KDJ0-10.5",
+   "lpn": "ST0028"
+  },
+  {
+   "slot": "r0n14",
+   "sku": "I1KDJ0-10.5",
+   "lpn": "ST0029"
+  },
+  {
+   "slot": "r3s14",
+   "sku": "I1KDJ0-10.5",
+   "lpn": "ST0030"
+  },
+  {
+   "slot": "r0s14",
+   "sku": "I1KDJ0-10.5",
+   "lpn": "ST0031"
+  },
+  {
+   "slot": "r3n14",
+   "sku": "I1KDJ0-10.5",
+   "lpn": "ST0032"
+  },
+  {
+   "slot": "r1n13",
+   "sku": "I1KDJ0-10.5",
+   "lpn": "ST0033"
+  },
+  {
+   "slot": "r2s13",
+   "sku": "I1KDJ0-10.5",
+   "lpn": "ST0034"
+  },
+  {
+   "slot": "r1s13",
+   "sku": "I1KDJ0-9.5",
+   "lpn": "ST0035"
+  },
+  {
+   "slot": "r2n13",
+   "sku": "I1KDJ0-9.5",
+   "lpn": "ST0036"
+  },
+  {
+   "slot": "r0n13",
+   "sku": "I1KDJ0-9.5",
+   "lpn": "ST0037"
+  },
+  {
+   "slot": "r3s13",
+   "sku": "I1KDJ0-9.5",
+   "lpn": "ST0038"
+  },
+  {
+   "slot": "r0s13",
+   "sku": "I1KDJ0-9.5",
+   "lpn": "ST0039"
+  },
+  {
+   "slot": "r3n13",
+   "sku": "I1KDJ0-9.5",
+   "lpn": "ST0040"
+  },
+  {
+   "slot": "r1n12",
+   "sku": "I1KDJ0-9.5",
+   "lpn": "ST0041"
+  },
+  {
+   "slot": "r2s12",
+   "sku": "WRRW1W-10.5",
+   "lpn": "ST0042"
+  },
+  {
+   "slot": "r1s12",
+   "sku": "05W6TK-8.5",
+   "lpn": "ST0043"
+  },
+  {
+   "slot": "r2n12",
+   "sku": "05W6TK-8",
+   "lpn": "ST0044"
+  },
+  {
+   "slot": "r0n12",
+   "sku": "05W6TK-10.5",
+   "lpn": "ST0045"
+  },
+  {
+   "slot": "r3s12",
+   "sku": "I2B1FH-9",
+   "lpn": "ST0046"
+  },
+  {
+   "slot": "r0s12",
+   "sku": "WRRW1W-12",
+   "lpn": "ST0047"
+  },
+  {
+   "slot": "r3n12",
+   "sku": "I2B1FH-10",
+   "lpn": "ST0048"
+  },
+  {
+   "slot": "r1n10",
+   "sku": "WRRW1W-8.5",
+   "lpn": "ST0049"
+  },
+  {
+   "slot": "r2s10",
+   "sku": "WRRW1W-8",
+   "lpn": "ST0050"
+  },
+  {
+   "slot": "r1s10",
+   "sku": "JEGRCL-9",
+   "lpn": "ST0051"
+  },
+  {
+   "slot": "r2n10",
+   "sku": "JEGRCL-10",
+   "lpn": "ST0052"
+  },
+  {
+   "slot": "r0n10",
+   "sku": "LXJQVG-10",
+   "lpn": "ST0053"
+  },
+  {
+   "slot": "r3s10",
+   "sku": "8N10W9-11",
+   "lpn": "ST0054"
+  },
+  {
+   "slot": "r0s10",
+   "sku": "8N10W9-11",
+   "lpn": "ST0055"
+  },
+  {
+   "slot": "r3n10",
+   "sku": "8N10W9-10",
+   "lpn": "ST0056"
+  },
+  {
+   "slot": "r1n09",
+   "sku": "8N10W9-12",
+   "lpn": "ST0057"
+  },
+  {
+   "slot": "r2s09",
+   "sku": "8N10W9-10.5",
+   "lpn": "ST0058"
+  },
+  {
+   "slot": "r1s09",
+   "sku": "8N10W9-10.5",
+   "lpn": "ST0059"
+  },
+  {
+   "slot": "r2n09",
+   "sku": "8N10W9-10.5",
+   "lpn": "ST0060"
+  },
+  {
+   "slot": "r0n09",
+   "sku": "8N10W9-9",
+   "lpn": "ST0061"
+  },
+  {
+   "slot": "r3s09",
+   "sku": "8N10W9-9.5",
+   "lpn": "ST0062"
+  },
+  {
+   "slot": "r0s09",
+   "sku": "8N10W9-9.5",
+   "lpn": "ST0063"
+  },
+  {
+   "slot": "r3n09",
+   "sku": "8N10W9-13",
+   "lpn": "ST0064"
+  },
+  {
+   "slot": "r1n08",
+   "sku": "8N10W9-8",
+   "lpn": "ST0065"
+  },
+  {
+   "slot": "r2s08",
+   "sku": "8N10W9-8.5",
+   "lpn": "ST0066"
+  },
+  {
+   "slot": "r1s08",
+   "sku": "8D9SAW-10",
+   "lpn": "ST0067"
+  },
+  {
+   "slot": "r2n08",
+   "sku": "8D9SAW-9",
+   "lpn": "ST0068"
+  },
+  {
+   "slot": "r0n08",
+   "sku": "U95NWB-12",
+   "lpn": "ST0069"
+  },
+  {
+   "slot": "r3s08",
+   "sku": "8D9SAW-9.5",
+   "lpn": "ST0070"
+  },
+  {
+   "slot": "r0s08",
+   "sku": "8D9SAW-10.5",
+   "lpn": "ST0071"
+  },
+  {
+   "slot": "r3n08",
+   "sku": "8D9SAW-10.5",
+   "lpn": "ST0072"
+  },
+  {
+   "slot": "r1n06",
+   "sku": "8D9SAW-11",
+   "lpn": "ST0073"
+  },
+  {
+   "slot": "r2s06",
+   "sku": "KUFVRI-11",
+   "lpn": "ST0074"
+  },
+  {
+   "slot": "r1s06",
+   "sku": "PY5UPB-26",
+   "lpn": "ST0075"
+  },
+  {
+   "slot": "r2n06",
+   "sku": "PY5UPB-26.5",
+   "lpn": "ST0076"
+  },
+  {
+   "slot": "r0n06",
+   "sku": "PY5UPB-27",
+   "lpn": "ST0077"
+  },
+  {
+   "slot": "r3s06",
+   "sku": "PY5UPB-27.5",
+   "lpn": "ST0078"
+  },
+  {
+   "slot": "r0s06",
+   "sku": "SMMRK3-10",
+   "lpn": "ST0079"
+  },
+  {
+   "slot": "r3n06",
+   "sku": "SMMRK3-10",
+   "lpn": "ST0080"
+  },
+  {
+   "slot": "r1n05",
+   "sku": "SMMRK3-11",
+   "lpn": "ST0081"
+  },
+  {
+   "slot": "r2s05",
+   "sku": "SMMRK3-9",
+   "lpn": "ST0082"
+  },
+  {
+   "slot": "r1s05",
+   "sku": "SMMRK3-9",
+   "lpn": "ST0083"
+  },
+  {
+   "slot": "r2n05",
+   "sku": "SMMRK3-9",
+   "lpn": "ST0084"
+  },
+  {
+   "slot": "r0n05",
+   "sku": "PY5UPB-23.5",
+   "lpn": "ST0085"
+  },
+  {
+   "slot": "r3s05",
+   "sku": "SMMRK3-10.5",
+   "lpn": "ST0086"
+  },
+  {
+   "slot": "r0s05",
+   "sku": "PY5UPB-24.5",
+   "lpn": "ST0087"
+  },
+  {
+   "slot": "r3n05",
+   "sku": "PY5UPB-25.5",
+   "lpn": "ST0088"
+  },
+  {
+   "slot": "r1n04",
+   "sku": "6M2FJM-9",
+   "lpn": "ST0089"
+  },
+  {
+   "slot": "r2s04",
+   "sku": "SMMRK3-12",
+   "lpn": "ST0090"
+  },
+  {
+   "slot": "r1s04",
+   "sku": "PY5UPB-25",
+   "lpn": "ST0091"
+  },
+  {
+   "slot": "r2n04",
+   "sku": "2T1DJM-10",
+   "lpn": "ST0092"
+  },
+  {
+   "slot": "r0n04",
+   "sku": "2T1DJM-11",
+   "lpn": "ST0093"
+  },
+  {
+   "slot": "r3s04",
+   "sku": "SMMRK3-9.5",
+   "lpn": "ST0094"
+  },
+  {
+   "slot": "r0s04",
+   "sku": "PY5UPB-28",
+   "lpn": "ST0095"
+  },
+  {
+   "slot": "r3n04",
+   "sku": "PY5UPB-24",
+   "lpn": "ST0096"
+  }
+ ],
+ "robots": [
+  {
+   "id": 0,
+   "def": "R0",
+   "name": "robot_0",
+   "role": "patrol",
+   "home": [
+    -6.0,
+    5.8
+   ]
+  },
+  {
+   "id": 1,
+   "def": "R1",
+   "name": "robot_1",
+   "role": "patrol",
+   "home": [
+    -7.2,
+    5.8
+   ]
+  },
+  {
+   "id": 2,
+   "def": "R2",
+   "name": "robot_2",
+   "role": "transport",
+   "home": [
+    -10.5,
+    -6.3
+   ]
+  },
+  {
+   "id": 3,
+   "def": "R3",
+   "name": "robot_3",
+   "role": "transport",
+   "home": [
+    -9.7,
+    -6.3
+   ]
+  },
+  {
+   "id": 4,
+   "def": "R4",
+   "name": "robot_4",
+   "role": "transport",
+   "home": [
+    -8.9,
+    -6.3
+   ]
+  },
+  {
+   "id": 5,
+   "def": "R5",
+   "name": "robot_5",
+   "role": "transport",
+   "home": [
+    -8.1,
+    -6.3
+   ]
+  },
+  {
+   "id": 6,
+   "def": "R6",
+   "name": "robot_6",
+   "role": "transport",
+   "home": [
+    -7.3,
+    -6.3
+   ]
+  },
+  {
+   "id": 7,
+   "def": "R7",
+   "name": "robot_7",
+   "role": "transport",
+   "home": [
+    -6.5,
+    -6.3
+   ]
+  }
+ ],
+ "faces": [
+  {
+   "id": "r0s",
+   "start": [
+    -3.6,
+    -5.45
+   ],
+   "end": [
+    7.6,
+    -5.45
+   ]
+  },
+  {
+   "id": "r0n",
+   "start": [
+    7.6,
+    -3.55
+   ],
+   "end": [
+    -3.6,
+    -3.55
+   ]
+  },
+  {
+   "id": "r1s",
+   "start": [
+    -3.6,
+    -2.45
+   ],
+   "end": [
+    7.6,
+    -2.45
+   ]
+  },
+  {
+   "id": "r1n",
+   "start": [
+    7.6,
+    -0.55
+   ],
+   "end": [
+    -3.6,
+    -0.55
+   ]
+  },
+  {
+   "id": "r2s",
+   "start": [
+    -3.6,
+    0.55
+   ],
+   "end": [
+    7.6,
+    0.55
+   ]
+  },
+  {
+   "id": "r2n",
+   "start": [
+    7.6,
+    2.45
+   ],
+   "end": [
+    -3.6,
+    2.45
+   ]
+  },
+  {
+   "id": "r3s",
+   "start": [
+    -3.6,
+    3.55
+   ],
+   "end": [
+    7.6,
+    3.55
+   ]
+  },
+  {
+   "id": "r3n",
+   "start": [
+    7.6,
+    5.45
+   ],
+   "end": [
+    -3.6,
+    5.45
+   ]
+  }
+ ],
+ "belt": {
+  "y": 3.0,
+  "x_entry": -10.3,
+  "x_end": -5.55,
+  "gate_x": -9.5,
+  "top": 0.12,
+  "speed_mps": 0.25,
+  "gap_m": 0.45,
+  "zones": [
+   "B0",
+   "B1",
+   "B2",
+   "B3",
+   "B4",
+   "B5"
+  ],
+  "exception": [
+   "X0",
+   "X1"
+  ],
+  "unload_s": 3.0,
+  "truck_pos": [
+   -11.4,
+   3.0
+  ]
+ },
+ "inbound": {
+  "source": "synthetic (covers the day's demand)",
+  "trucks": [
+   {
+    "truck": "T01",
+    "arrive_t": 60.0,
+    "cartons": [
+     {
+      "lpn": "IN0001",
+      "sku": "I1KDJ0-11"
+     },
+     {
+      "lpn": "IN0002",
+      "sku": "I1KDJ0-11"
+     },
+     {
+      "lpn": "IN0003",
+      "sku": "I1KDJ0-9"
+     },
+     {
+      "lpn": "IN0004",
+      "sku": "I1KDJ0-9"
+     },
+     {
+      "lpn": "IN0005",
+      "sku": "I1KDJ0-11"
+     },
+     {
+      "lpn": "IN0006",
+      "sku": "8N10W9-8.5"
+     },
+     {
+      "lpn": "IN0007",
+      "sku": "8N10W9-9"
+     },
+     {
+      "lpn": "IN0008",
+      "sku": "I1KDJ0-11"
+     },
+     {
+      "lpn": "IN0009",
+      "sku": "8N10W9-11"
+     },
+     {
+      "lpn": "IN0010",
+      "sku": "I1KDJ0-11"
+     },
+     {
+      "lpn": "IN0011",
+      "sku": "8N10W9-12"
+     },
+     {
+      "lpn": "IN0012",
+      "sku": "I1KDJ0-9"
+     }
+    ]
+   },
+   {
+    "truck": "T02",
+    "arrive_t": 342.8,
+    "cartons": [
+     {
+      "lpn": "IN0013",
+      "sku": "I1KDJ0-9"
+     },
+     {
+      "lpn": "IN0014",
+      "sku": "I1KDJ0-10.5"
+     },
+     {
+      "lpn": "IN0015",
+      "sku": "I1KDJ0-10.5"
+     },
+     {
+      "lpn": "IN0016",
+      "sku": "I1KDJ0-9"
+     },
+     {
+      "lpn": "IN0017",
+      "sku": "I1KDJ0-9"
+     },
+     {
+      "lpn": "IN0018",
+      "sku": "I1KDJ0-9"
+     },
+     {
+      "lpn": "IN0019",
+      "sku": "I1KDJ0-10.5"
+     },
+     {
+      "lpn": "IN0020",
+      "sku": "I1KDJ0-9.5"
+     },
+     {
+      "lpn": "IN0021",
+      "sku": "I1KDJ0-9"
+     },
+     {
+      "lpn": "IN0022",
+      "sku": "I1KDJ0-10.5"
+     },
+     {
+      "lpn": "IN0023",
+      "sku": "I1KDJ0-9"
+     },
+     {
+      "lpn": "IN0024",
+      "sku": "I1KDJ0-9"
+     }
+    ]
+   },
+   {
+    "truck": "T03",
+    "arrive_t": 578.7,
+    "cartons": [
+     {
+      "lpn": "IN0025",
+      "sku": "I1KDJ0-9"
+     },
+     {
+      "lpn": "IN0026",
+      "sku": "I1KDJ0-9"
+     },
+     {
+      "lpn": "IN0027",
+      "sku": "I1KDJ0-9"
+     },
+     {
+      "lpn": "IN0028",
+      "sku": "I1KDJ0-9"
+     },
+     {
+      "lpn": "IN0029",
+      "sku": "I1KDJ0-9"
+     },
+     {
+      "lpn": "IN0030",
+      "sku": "I1KDJ0-9"
+     },
+     {
+      "lpn": "IN0031",
+      "sku": "I1KDJ0-9"
+     },
+     {
+      "lpn": "IN0032",
+      "sku": "I1KDJ0-9"
+     },
+     {
+      "lpn": "IN0033",
+      "sku": "I1KDJ0-9"
+     },
+     {
+      "lpn": "IN0034",
+      "sku": "I1KDJ0-9"
+     },
+     {
+      "lpn": "IN0035",
+      "sku": "I1KDJ0-9"
+     },
+     {
+      "lpn": "IN0036",
+      "sku": "I1KDJ0-9"
+     }
+    ]
+   },
+   {
+    "truck": "T04",
+    "arrive_t": 828.5,
+    "cartons": [
+     {
+      "lpn": "IN0037",
+      "sku": "I1KDJ0-10.5"
+     },
+     {
+      "lpn": "IN0038",
+      "sku": "I1KDJ0-9.5"
+     },
+     {
+      "lpn": "IN0039",
+      "sku": "I1KDJ0-9.5"
+     },
+     {
+      "lpn": "IN0040",
+      "sku": "I1KDJ0-10.5"
+     },
+     {
+      "lpn": "IN0041",
+      "sku": "I1KDJ0-9.5"
+     },
+     {
+      "lpn": "IN0042",
+      "sku": "I1KDJ0-10.5"
+     },
+     {
+      "lpn": "IN0043",
+      "sku": "I1KDJ0-9.5"
+     },
+     {
+      "lpn": "IN0044",
+      "sku": "I1KDJ0-9.5"
+     },
+     {
+      "lpn": "IN0045",
+      "sku": "I1KDJ0-10.5"
+     },
+     {
+      "lpn": "IN0046",
+      "sku": "I1KDJ0-9.5"
+     },
+     {
+      "lpn": "IN0047",
+      "sku": "I1KDJ0-10.5"
+     },
+     {
+      "lpn": "IN0048",
+      "sku": "I1KDJ0-10.5"
+     }
+    ]
+   },
+   {
+    "truck": "T05",
+    "arrive_t": 1110.9,
+    "cartons": [
+     {
+      "lpn": "IN0049",
+      "sku": "I1KDJ0-11"
+     },
+     {
+      "lpn": "IN0050",
+      "sku": "I1KDJ0-11"
+     },
+     {
+      "lpn": "IN0051",
+      "sku": "I1KDJ0-11"
+     },
+     {
+      "lpn": "IN0052",
+      "sku": "I1KDJ0-11"
+     },
+     {
+      "lpn": "IN0053",
+      "sku": "I1KDJ0-11"
+     },
+     {
+      "lpn": "IN0054",
+      "sku": "I1KDJ0-11"
+     },
+     {
+      "lpn": "IN0055",
+      "sku": "I1KDJ0-11"
+     },
+     {
+      "lpn": "IN0056",
+      "sku": "I1KDJ0-11"
+     },
+     {
+      "lpn": "IN0057",
+      "sku": "I1KDJ0-11"
+     },
+     {
+      "lpn": "IN0058",
+      "sku": "I1KDJ0-11"
+     },
+     {
+      "lpn": "IN0059",
+      "sku": "I1KDJ0-11"
+     },
+     {
+      "lpn": "IN0060",
+      "sku": "I1KDJ0-11"
+     }
+    ]
+   },
+   {
+    "truck": "T06",
+    "arrive_t": 1365.0,
+    "cartons": [
+     {
+      "lpn": "IN0061",
+      "sku": "8N10W9-10.5"
+     },
+     {
+      "lpn": "IN0062",
+      "sku": "8D9SAW-10.5"
+     },
+     {
+      "lpn": "IN0063",
+      "sku": "I1KDJ0-10.5"
+     },
+     {
+      "lpn": "IN0064",
+      "sku": "8N10W9-10.5"
+     },
+     {
+      "lpn": "IN0065",
+      "sku": "I1KDJ0-11"
+     },
+     {
+      "lpn": "IN0066",
+      "sku": "I1KDJ0-11"
+     },
+     {
+      "lpn": "IN0067",
+      "sku": "I1KDJ0-10.5"
+     },
+     {
+      "lpn": "IN0068",
+      "sku": "WRRW1W-9.5"
+     },
+     {
+      "lpn": "IN0069",
+      "sku": "I1KDJ0-11"
+     },
+     {
+      "lpn": "IN0070",
+      "sku": "8N10W9-10"
+     },
+     {
+      "lpn": "IN0071",
+      "sku": "8N10W9-10.5"
+     },
+     {
+      "lpn": "IN0072",
+      "sku": "I1KDJ0-10.5"
+     }
+    ]
+   },
+   {
+    "truck": "T07",
+    "arrive_t": 1657.3,
+    "cartons": [
+     {
+      "lpn": "IN0073",
+      "sku": "8N10W9-8.5"
+     },
+     {
+      "lpn": "IN0074",
+      "sku": "8N10W9-12"
+     },
+     {
+      "lpn": "IN0075",
+      "sku": "8D9SAW-10.5"
+     },
+     {
+      "lpn": "IN0076",
+      "sku": "2T1DJM-10"
+     },
+     {
+      "lpn": "IN0077",
+      "sku": "I1KDJ0-10"
+     },
+     {
+      "lpn": "IN0078",
+      "sku": "8N10W9-9.5"
+     },
+     {
+      "lpn": "IN0079",
+      "sku": "8D9SAW-10"
+     },
+     {
+      "lpn": "IN0080",
+      "sku": "8N10W9-10"
+     },
+     {
+      "lpn": "IN0081",
+      "sku": "8D9SAW-9"
+     },
+     {
+      "lpn": "IN0082",
+      "sku": "8N10W9-10.5"
+     },
+     {
+      "lpn": "IN0083",
+      "sku": "8N10W9-11"
+     },
+     {
+      "lpn": "IN0084",
+      "sku": "8N10W9-9"
+     }
+    ]
+   },
+   {
+    "truck": "T08",
+    "arrive_t": 1882.0,
+    "cartons": [
+     {
+      "lpn": "IN0085",
+      "sku": "LXJQVG-10"
+     },
+     {
+      "lpn": "IN0086",
+      "sku": "SMMRK3-9"
+     },
+     {
+      "lpn": "IN0087",
+      "sku": "WRRW1W-10"
+     },
+     {
+      "lpn": "IN0088",
+      "sku": "I1KDJ0-9.5"
+     },
+     {
+      "lpn": "IN0089",
+      "sku": "I1KDJ0-9.5"
+     },
+     {
+      "lpn": "IN0090",
+      "sku": "SMMRK3-10"
+     },
+     {
+      "lpn": "IN0091",
+      "sku": "I1KDJ0-9"
+     },
+     {
+      "lpn": "IN0092",
+      "sku": "SMMRK3-12"
+     },
+     {
+      "lpn": "IN0093",
+      "sku": "I1KDJ0-9.5"
+     },
+     {
+      "lpn": "IN0094",
+      "sku": "SMMRK3-9.5"
+     },
+     {
+      "lpn": "IN0095",
+      "sku": "I1KDJ0-9"
+     },
+     {
+      "lpn": "IN0096",
+      "sku": "SMMRK3-10.5"
+     }
+    ]
+   },
+   {
+    "truck": "T09",
+    "arrive_t": 2158.2,
+    "cartons": [
+     {
+      "lpn": "IN0097",
+      "sku": "SMMRK3-9"
+     },
+     {
+      "lpn": "IN0098",
+      "sku": "SMMRK3-10"
+     },
+     {
+      "lpn": "IN0099",
+      "sku": "WRRW1W-9.5"
+     },
+     {
+      "lpn": "IN0100",
+      "sku": "WRRW1W-11"
+     },
+     {
+      "lpn": "IN0101",
+      "sku": "8D9SAW-10.5"
+     },
+     {
+      "lpn": "IN0102",
+      "sku": "SMMRK3-9.5"
+     },
+     {
+      "lpn": "IN0103",
+      "sku": "SMMRK3-12"
+     },
+     {
+      "lpn": "IN0104",
+      "sku": "2T1DJM-10"
+     },
+     {
+      "lpn": "IN0105",
+      "sku": "SMMRK3-10.5"
+     },
+     {
+      "lpn": "IN0106",
+      "sku": "SMMRK3-9"
+     },
+     {
+      "lpn": "IN0107",
+      "sku": "8N10W9-9.5"
+     },
+     {
+      "lpn": "IN0108",
+      "sku": "WRRW1W-10"
+     }
+    ]
+   }
+  ]
+ },
+ "outbound": {
+  "source": "real (Customer_Order.csv), filtered to skus.json",
+  "date": "2023-03-09",
+  "synthetic_fields": [
+   "region"
+  ],
+  "time_scale": 6.08,
+  "wave_interval_s": 90.0,
+  "order_sample": 1.0,
+  "max_line_qty": 6,
+  "units_capped": 97,
+  "units": 133,
+  "waves": [
+   {
+    "wave": "35491",
+    "release_s": 25740,
+    "lines": [
+     {
+      "order": "99515",
+      "customer": "C0000786",
+      "region": "R1",
+      "sku": "SMMRK3-12",
+      "qty": 1
+     },
+     {
+      "order": "99515",
+      "customer": "C0000786",
+      "region": "R1",
+      "sku": "SMMRK3-10",
+      "qty": 1
+     },
+     {
+      "order": "99515",
+      "customer": "C0000786",
+      "region": "R1",
+      "sku": "SMMRK3-9",
+      "qty": 1
+     },
+     {
+      "order": "99515",
+      "customer": "C0000786",
+      "region": "R1",
+      "sku": "I1KDJ0-10",
+      "qty": 1
+     },
+     {
+      "order": "99515",
+      "customer": "C0000786",
+      "region": "R1",
+      "sku": "I1KDJ0-9.5",
+      "qty": 2
+     },
+     {
+      "order": "99515",
+      "customer": "C0000786",
+      "region": "R1",
+      "sku": "I1KDJ0-9",
+      "qty": 1
+     }
+    ],
+    "created_t": 30.0,
+    "release_t": 30.0
+   },
+   {
+    "wave": "35493",
+    "release_s": 25800,
+    "lines": [
+     {
+      "order": "99524",
+      "customer": "C0000009",
+      "region": "R1",
+      "sku": "8N10W9-11",
+      "qty": 1
+     }
+    ],
+    "created_t": 39.9,
+    "release_t": 120.0
+   },
+   {
+    "wave": "35494",
+    "release_s": 25860,
+    "lines": [
+     {
+      "order": "99530",
+      "customer": "C0000041",
+      "region": "R3",
+      "sku": "8N10W9-9.5",
+      "qty": 1
+     },
+     {
+      "order": "99530",
+      "customer": "C0000041",
+      "region": "R3",
+      "sku": "8N10W9-9",
+      "qty": 2
+     },
+     {
+      "order": "99530",
+      "customer": "C0000041",
+      "region": "R3",
+      "sku": "8N10W9-8.5",
+      "qty": 2
+     },
+     {
+      "order": "99527",
+      "customer": "C0000017",
+      "region": "R3",
+      "sku": "SMMRK3-9",
+      "qty": 1
+     },
+     {
+      "order": "99527",
+      "customer": "C0000017",
+      "region": "R3",
+      "sku": "2T1DJM-10",
+      "qty": 1
+     }
+    ],
+    "created_t": 49.7,
+    "release_t": 210.0
+   },
+   {
+    "wave": "35495",
+    "release_s": 25860,
+    "lines": [
+     {
+      "order": "99530",
+      "customer": "C0000041",
+      "region": "R3",
+      "sku": "8N10W9-12",
+      "qty": 2
+     },
+     {
+      "order": "99530",
+      "customer": "C0000041",
+      "region": "R3",
+      "sku": "8N10W9-11",
+      "qty": 2
+     },
+     {
+      "order": "99530",
+      "customer": "C0000041",
+      "region": "R3",
+      "sku": "8N10W9-10.5",
+      "qty": 3
+     },
+     {
+      "order": "99530",
+      "customer": "C0000041",
+      "region": "R3",
+      "sku": "8N10W9-9.5",
+      "qty": 1
+     }
+    ],
+    "created_t": 49.7,
+    "release_t": 300.0
+   },
+   {
+    "wave": "35496",
+    "release_s": 25860,
+    "lines": [
+     {
+      "order": "99539",
+      "customer": "C0000299",
+      "region": "R4",
+      "sku": "8D9SAW-10.5",
+      "qty": 1
+     },
+     {
+      "order": "99536",
+      "customer": "C0000289",
+      "region": "R3",
+      "sku": "LXJQVG-10",
+      "qty": 1
+     }
+    ],
+    "created_t": 49.7,
+    "release_t": 390.0
+   },
+   {
+    "wave": "35497",
+    "release_s": 25860,
+    "lines": [
+     {
+      "order": "99549",
+      "customer": "C0000568",
+      "region": "R4",
+      "sku": "8D9SAW-10.5",
+      "qty": 1
+     },
+     {
+      "order": "99549",
+      "customer": "C0000568",
+      "region": "R4",
+      "sku": "8D9SAW-10",
+      "qty": 1
+     },
+     {
+      "order": "99549",
+      "customer": "C0000568",
+      "region": "R4",
+      "sku": "8D9SAW-9",
+      "qty": 1
+     }
+    ],
+    "created_t": 49.7,
+    "release_t": 480.0
+   },
+   {
+    "wave": "35498",
+    "release_s": 25860,
+    "lines": [
+     {
+      "order": "99554",
+      "customer": "C0000721",
+      "region": "R2",
+      "sku": "I1KDJ0-9",
+      "qty": 1
+     },
+     {
+      "order": "99553",
+      "customer": "C0000721",
+      "region": "R2",
+      "sku": "I1KDJ0-11",
+      "qty": 6
+     },
+     {
+      "order": "99553",
+      "customer": "C0000721",
+      "region": "R2",
+      "sku": "I1KDJ0-9",
+      "qty": 6
+     }
+    ],
+    "created_t": 49.7,
+    "release_t": 570.0
+   },
+   {
+    "wave": "35499",
+    "release_s": 25860,
+    "lines": [
+     {
+      "order": "99554",
+      "customer": "C0000721",
+      "region": "R2",
+      "sku": "I1KDJ0-9",
+      "qty": 1
+     }
+    ],
+    "created_t": 49.7,
+    "release_t": 660.0
+   },
+   {
+    "wave": "35505",
+    "release_s": 25920,
+    "lines": [
+     {
+      "order": "99574",
+      "customer": "C0000016",
+      "region": "R1",
+      "sku": "I1KDJ0-9",
+      "qty": 6
+     }
+    ],
+    "created_t": 59.6,
+    "release_t": 750.0
+   },
+   {
+    "wave": "35506",
+    "release_s": 25920,
+    "lines": [
+     {
+      "order": "99574",
+      "customer": "C0000016",
+      "region": "R1",
+      "sku": "I1KDJ0-9",
+      "qty": 6
+     }
+    ],
+    "created_t": 59.6,
+    "release_t": 840.0
+   },
+   {
+    "wave": "35507",
+    "release_s": 25920,
+    "lines": [
+     {
+      "order": "99574",
+      "customer": "C0000016",
+      "region": "R1",
+      "sku": "I1KDJ0-9",
+      "qty": 6
+     }
+    ],
+    "created_t": 59.6,
+    "release_t": 930.0
+   },
+   {
+    "wave": "35511",
+    "release_s": 25920,
+    "lines": [
+     {
+      "order": "99574",
+      "customer": "C0000016",
+      "region": "R1",
+      "sku": "I1KDJ0-9.5",
+      "qty": 6
+     }
+    ],
+    "created_t": 59.6,
+    "release_t": 1020.0
+   },
+   {
+    "wave": "35512",
+    "release_s": 25920,
+    "lines": [
+     {
+      "order": "99574",
+      "customer": "C0000016",
+      "region": "R1",
+      "sku": "I1KDJ0-10.5",
+      "qty": 6
+     },
+     {
+      "order": "99574",
+      "customer": "C0000016",
+      "region": "R1",
+      "sku": "I1KDJ0-9.5",
+      "qty": 6
+     }
+    ],
+    "created_t": 59.6,
+    "release_t": 1110.0
+   },
+   {
+    "wave": "35513",
+    "release_s": 25920,
+    "lines": [
+     {
+      "order": "99574",
+      "customer": "C0000016",
+      "region": "R1",
+      "sku": "I1KDJ0-10.5",
+      "qty": 6
+     }
+    ],
+    "created_t": 59.6,
+    "release_t": 1200.0
+   },
+   {
+    "wave": "35514",
+    "release_s": 25920,
+    "lines": [
+     {
+      "order": "99574",
+      "customer": "C0000016",
+      "region": "R1",
+      "sku": "I1KDJ0-10.5",
+      "qty": 6
+     }
+    ],
+    "created_t": 59.6,
+    "release_t": 1290.0
+   },
+   {
+    "wave": "35516",
+    "release_s": 25920,
+    "lines": [
+     {
+      "order": "99574",
+      "customer": "C0000016",
+      "region": "R1",
+      "sku": "I1KDJ0-11",
+      "qty": 6
+     }
+    ],
+    "created_t": 59.6,
+    "release_t": 1380.0
+   },
+   {
+    "wave": "35517",
+    "release_s": 25920,
+    "lines": [
+     {
+      "order": "99574",
+      "customer": "C0000016",
+      "region": "R1",
+      "sku": "I1KDJ0-11",
+      "qty": 6
+     }
+    ],
+    "created_t": 59.6,
+    "release_t": 1470.0
+   },
+   {
+    "wave": "35518",
+    "release_s": 25920,
+    "lines": [
+     {
+      "order": "99574",
+      "customer": "C0000016",
+      "region": "R1",
+      "sku": "I1KDJ0-11",
+      "qty": 6
+     }
+    ],
+    "created_t": 59.6,
+    "release_t": 1560.0
+   },
+   {
+    "wave": "35529",
+    "release_s": 25920,
+    "lines": [
+     {
+      "order": "99606",
+      "customer": "C0000016",
+      "region": "R1",
+      "sku": "8D9SAW-10.5",
+      "qty": 1
+     }
+    ],
+    "created_t": 59.6,
+    "release_t": 1650.0
+   },
+   {
+    "wave": "35531",
+    "release_s": 25920,
+    "lines": [
+     {
+      "order": "99607",
+      "customer": "C0000016",
+      "region": "R1",
+      "sku": "SMMRK3-9",
+      "qty": 1
+     }
+    ],
+    "created_t": 59.6,
+    "release_t": 1740.0
+   },
+   {
+    "wave": "35534",
+    "release_s": 25920,
+    "lines": [
+     {
+      "order": "99614",
+      "customer": "C0000016",
+      "region": "R1",
+      "sku": "SMMRK3-10",
+      "qty": 1
+     },
+     {
+      "order": "99614",
+      "customer": "C0000016",
+      "region": "R1",
+      "sku": "8N10W9-10.5",
+      "qty": 3
+     },
+     {
+      "order": "99614",
+      "customer": "C0000016",
+      "region": "R1",
+      "sku": "8N10W9-10",
+      "qty": 2
+     },
+     {
+      "order": "99614",
+      "customer": "C0000016",
+      "region": "R1",
+      "sku": "WRRW1W-9.5",
+      "qty": 3
+     }
+    ],
+    "created_t": 59.6,
+    "release_t": 1830.0
+   },
+   {
+    "wave": "35535",
+    "release_s": 38760,
+    "lines": [
+     {
+      "order": "99619",
+      "customer": "C0000747",
+      "region": "R3",
+      "sku": "8D9SAW-10.5",
+      "qty": 1
+     },
+     {
+      "order": "99618",
+      "customer": "C0000747",
+      "region": "R3",
+      "sku": "WRRW1W-11",
+      "qty": 1
+     },
+     {
+      "order": "99617",
+      "customer": "C0000747",
+      "region": "R3",
+      "sku": "8N10W9-9.5",
+      "qty": 1
+     }
+    ],
+    "created_t": 2170.3,
+    "release_t": 2170.3
+   },
+   {
+    "wave": "35536",
+    "release_s": 38820,
+    "lines": [
+     {
+      "order": "99632",
+      "customer": "C0000009",
+      "region": "R1",
+      "sku": "2T1DJM-10",
+      "qty": 1
+     }
+    ],
+    "created_t": 2180.1,
+    "release_t": 2260.3
+   },
+   {
+    "wave": "35537",
+    "release_s": 38880,
+    "lines": [
+     {
+      "order": "99637",
+      "customer": "C0000412",
+      "region": "R2",
+      "sku": "WRRW1W-10",
+      "qty": 2
+     },
+     {
+      "order": "99634",
+      "customer": "C0000028",
+      "region": "R1",
+      "sku": "SMMRK3-10.5",
+      "qty": 2
+     },
+     {
+      "order": "99634",
+      "customer": "C0000028",
+      "region": "R1",
+      "sku": "SMMRK3-10",
+      "qty": 1
+     },
+     {
+      "order": "99634",
+      "customer": "C0000028",
+      "region": "R1",
+      "sku": "SMMRK3-9.5",
+      "qty": 1
+     },
+     {
+      "order": "99634",
+      "customer": "C0000028",
+      "region": "R1",
+      "sku": "SMMRK3-9",
+      "qty": 1
+     }
+    ],
+    "created_t": 2190.0,
+    "release_t": 2350.3
+   },
+   {
+    "wave": "35538",
+    "release_s": 38880,
+    "lines": [
+     {
+      "order": "99637",
+      "customer": "C0000412",
+      "region": "R2",
+      "sku": "SMMRK3-12",
+      "qty": 1
+     },
+     {
+      "order": "99637",
+      "customer": "C0000412",
+      "region": "R2",
+      "sku": "SMMRK3-9.5",
+      "qty": 1
+     },
+     {
+      "order": "99637",
+      "customer": "C0000412",
+      "region": "R2",
+      "sku": "SMMRK3-9",
+      "qty": 1
+     }
+    ],
+    "created_t": 2190.0,
+    "release_t": 2440.3
+   }
+  ],
+  "regions": [
+   "R1",
+   "R2",
+   "R3",
+   "R4"
+  ],
+  "lanes": {
+   "R1": {
+    "y": 4.5,
+    "slots": [
+     "LR1-0",
+     "LR1-1",
+     "LR1-2",
+     "LR1-3",
+     "LR1-4",
+     "LR1-5",
+     "LR1-6",
+     "LR1-7"
+    ],
+    "truck_pos": [
+     12.05,
+     4.5
+    ]
+   },
+   "R2": {
+    "y": 1.5,
+    "slots": [
+     "LR2-0",
+     "LR2-1",
+     "LR2-2",
+     "LR2-3",
+     "LR2-4",
+     "LR2-5",
+     "LR2-6",
+     "LR2-7"
+    ],
+    "truck_pos": [
+     12.05,
+     1.5
+    ]
+   },
+   "R3": {
+    "y": -1.5,
+    "slots": [
+     "LR3-0",
+     "LR3-1",
+     "LR3-2",
+     "LR3-3",
+     "LR3-4",
+     "LR3-5",
+     "LR3-6",
+     "LR3-7"
+    ],
+    "truck_pos": [
+     12.05,
+     -1.5
+    ]
+   },
+   "R4": {
+    "y": -4.5,
+    "slots": [
+     "LR4-0",
+     "LR4-1",
+     "LR4-2",
+     "LR4-3",
+     "LR4-4",
+     "LR4-5",
+     "LR4-6",
+     "LR4-7"
+    ],
+    "truck_pos": [
+     12.05,
+     -4.5
+    ]
+   }
+  },
+  "dispatch_cartons": 6,
+  "cutoff_period_s": 900.0,
+  "load_s": 15.0,
+  "turnaround_s": 180.0
+ },
+ "returns": [
+  {
+   "lpn": "RT001",
+   "sku": "I1KDJ0-12"
+  },
+  {
+   "lpn": "RT002",
+   "sku": "WRRW1W-10.5"
+  },
+  {
+   "lpn": "RT003",
+   "sku": "WRRW1W-8.5"
+  },
+  {
+   "lpn": "RT004",
+   "sku": "8N10W9-9"
+  },
+  {
+   "lpn": "RT005",
+   "sku": "8N10W9-8.5"
+  },
+  {
+   "lpn": "RT006",
+   "sku": "PY5UPB-26"
+  },
+  {
+   "lpn": "RT007",
+   "sku": "8N10W9-10.5"
+  },
+  {
+   "lpn": "RT008",
+   "sku": "I2B1FH-10"
+  },
+  {
+   "lpn": "RT009",
+   "sku": "PY5UPB-27"
+  },
+  {
+   "lpn": "RT010",
+   "sku": "8D9SAW-9"
+  },
+  {
+   "lpn": "RT011",
+   "sku": "PY5UPB-26"
+  },
+  {
+   "lpn": "RT012",
+   "sku": "PY5UPB-26.5"
+  },
+  {
+   "lpn": "RT013",
+   "sku": "SMMRK3-10.5"
+  },
+  {
+   "lpn": "RT014",
+   "sku": "8N10W9-10"
+  },
+  {
+   "lpn": "RT015",
+   "sku": "I1KDJ0-10.5"
+  },
+  {
+   "lpn": "RT016",
+   "sku": "2T1DJM-11"
+  },
+  {
+   "lpn": "RT017",
+   "sku": "05W6TK-10"
+  },
+  {
+   "lpn": "RT018",
+   "sku": "PY5UPB-23.5"
+  },
+  {
+   "lpn": "RT019",
+   "sku": "8N10W9-11"
+  },
+  {
+   "lpn": "RT020",
+   "sku": "SMMRK3-9"
+  },
+  {
+   "lpn": "RT021",
+   "sku": "I1KDJ0-9.5"
+  },
+  {
+   "lpn": "RT022",
+   "sku": "I1KDJ0-10.5"
+  },
+  {
+   "lpn": "RT023",
+   "sku": "WRRW1W-10"
+  },
+  {
+   "lpn": "RT024",
+   "sku": "I1KDJ0-9"
+  },
+  {
+   "lpn": "RT025",
+   "sku": "8D9SAW-11"
+  },
+  {
+   "lpn": "RT026",
+   "sku": "8N10W9-11"
+  },
+  {
+   "lpn": "RT027",
+   "sku": "8N10W9-11"
+  },
+  {
+   "lpn": "RT028",
+   "sku": "8D9SAW-10.5"
+  },
+  {
+   "lpn": "RT029",
+   "sku": "8N10W9-12"
+  },
+  {
+   "lpn": "RT030",
+   "sku": "PY5UPB-26"
+  },
+  {
+   "lpn": "RT031",
+   "sku": "8N10W9-10.5"
+  },
+  {
+   "lpn": "RT032",
+   "sku": "I2B1FH-10"
+  },
+  {
+   "lpn": "RT033",
+   "sku": "U95NWB-12"
+  },
+  {
+   "lpn": "RT034",
+   "sku": "8N10W9-11"
+  },
+  {
+   "lpn": "RT035",
+   "sku": "WRRW1W-9"
+  },
+  {
+   "lpn": "RT036",
+   "sku": "PY5UPB-26"
+  },
+  {
+   "lpn": "RT037",
+   "sku": "8N10W9-9.5"
+  },
+  {
+   "lpn": "RT038",
+   "sku": "8N10W9-10.5"
+  },
+  {
+   "lpn": "RT039",
+   "sku": "8N10W9-8"
+  },
+  {
+   "lpn": "RT040",
+   "sku": "I1KDJ0-11"
+  }
+ ],
+ "faults": {
+  "place_error_p": 0.05,
+  "worker_move_per_h": 8.0,
+  "worker_move_max_slots": 3,
+  "worker_remove_per_h": 3.0,
+  "dest_taken_p": 0.1,
+  "scanner_fail_p": 0.03
+ },
+ "episode": {
+  "duration_s": 3600.0
+ },
+ "patrol": {
+  "idle_sweep": false
+ },
+ "perception": {
+  "read_m": 1.2,
+  "slot_match_m": 0.2,
+  "carried_z": 0.35,
+  "look_s": 1.0
+ },
+ "nav": {
+  "speed_mps": 0.3,
+  "wheel_radius": 0.033,
+  "reach_m": 0.2,
+  "goal_reach_m": 0.1,
+  "avoid_dist_m": 0.6,
+  "stop_dist_m": 0.3,
+  "replan_after_s": 2.0,
+  "act_s": 2.0,
+  "reach_act_m": 1.3
+ }
 }

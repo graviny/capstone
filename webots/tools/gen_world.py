@@ -1,283 +1,508 @@
 """Generate the warehouse world (worlds/warehouse.wbt) and scenario.json.
 
-Task: inbound putaway plus shelf upkeep. Trucks drop batches of parcels on an
-inbound pile; scanner robots (patrol role) read their labels and tell sorter
-robots (recovery role) which parcel to take to which shelf slot. Parcels of one
-color look identical; only the label (ID) tells them apart, so in a dense pile
-the sorter needs evidence to pick the right one. Shelf anomalies (misplaced,
-tipped, swapped) still happen at a lower rate, and sorters occasionally put a
-parcel into the wrong slot themselves.
+Layout (24 x 14 m)
+  west  inbound: truck dock -> belt -> fixed scanner -> 6 buffer zones; unread
+        cartons are diverted to 2 exception slots
+  mid   4 rack rows, 8 faces x 20 slots (one carton per slot)
+  east  outbound: one staging lane (8 slots) and one truck dock per region
 
-Transport AMRs share the wireless channel (fleet status / task messages).
+Work comes from data/ (tools/prep_dataset.py): one real day of waves, time-
+compressed into the episode. Inbound trucks are synthetic: each carton is put on
+a truck that arrives before the demand it covers (plus safety stock), and the
+initial stock covers part of the day's demand. Real and synthetic inputs are
+labelled in scenario.json.
 
-Usage: python tools/gen_world.py --patrols 3 --recoveries 8 --transports 6 --seed 0 [--policy proposed]
+Faults that make S1-S3 happen are set in scenario.json "faults" (all on by
+default, --no-faults turns them off for the fault-free experiment).
+
+Usage: python tools/gen_world.py [--date 2023-03-09] [--duration 3600] [--patrols 2] [--transports 6] [--seed 0]
 """
 import argparse
 import json
 import math
+import random
 import stat
+import sys
+import zlib
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import make_textures  # noqa: E402
+import world_visuals as wv  # noqa: E402
 
-FLOOR_X, FLOOR_Y = 20.0, 14.0
+FLOOR_X, FLOOR_Y = 24.0, 14.0
 ROW_YS = [-4.5, -1.5, 1.5, 4.5]    # rack row centers
 RACK_X0, RACK_X1 = -3.0, 7.0
 ROW_HALF_DEPTH = 0.3
 RACK_TOP = 0.12
-PANEL_HEIGHT = 0.7                 # center panel blocks view into the next aisle
+PANEL_HEIGHT = 0.7                 # center panel blocks the view into the next aisle
 SLOT_PITCH = 0.5
-SLOTS_PER_SIDE = 20                # 5 blocks of 4 slots, one color per block
-BLOCK = 4
-ITEMS_PER_BLOCK = 3                # last slot of each block stays free
-ITEM_SIZE = (0.10, 0.10, 0.30)         # tall and thin: a tipped item lies clearly sideways
-APPROACH_OFFSET = 0.6              # where a sorter stops to handle a rack slot
+SLOTS_PER_SIDE = 20
+BOX_SIZE = (0.30, 0.20, 0.14)      # shoe carton
+APPROACH_OFFSET = 0.65             # where a robot stops to handle a rack slot
 PATROL_LANE = 0.95                 # inspection passes run this far from the rack center
-AISLE_YS = [-5.9, -3.0, 0.0, 3.0, 5.9]
+CAMERA_FOV = 1.08                  # Pi camera, 62 deg
 
-# Inbound pile: two columns of floor cells west of the racks, scanned northbound from
-# PILE_LANE_X (east side) and southbound from PILE_WEST_LANE_X.
-PILE_XS = [-7.1, -7.35]
-PILE_Y0, PILE_Y1, PILE_PITCH = -6.0, 6.0, 0.25
-PILE_ZONE = {"x_min": -7.5, "x_max": -6.95, "y_min": -6.15, "y_max": 6.15}
-PILE_APPROACH_X = -6.45
-PILE_LANE_X = -6.2
-PILE_WEST_LANE_X = -7.95
+# Inbound: belt along y = BELT_Y, cartons flow east (+x).
+BELT_Y, BELT_X0, BELT_X1 = 3.0, -10.5, -5.3
+BELT_TOP = 0.12
+GATE_X = -9.5                      # fixed scanner
+# Buffer zones B0 (east end) .. B5 on a staging table along the south side of the belt: a
+# pusher moves a carton off the belt into a free zone, so staged cartons never block the belt.
+ZONE_XS = [-5.55 - 0.5 * k for k in range(6)]
+ZONE_Y = BELT_Y - 0.55
+EXC_POS = [(-9.6, 2.15), (-9.1, 2.15)]          # exception slots X0, X1
+STAGE_APPROACH = 0.75
 
-PATROL_HOMES = [(-4.85, -6.2), (-4.85, 6.2), (8.4, 0.0), (8.4, -3.0), (8.4, 3.0)]
-RECOVERY_HOMES = [(x, y) for x in (-4.3, -5.4) for y in (-0.6, 0.6, -1.8, 1.8, -3.0, 3.0, -4.2, 4.2, -5.4, 5.4)]
-TRANSPORT_STARTS = [(9.3, y) for y in (-6.0, -4.8, -3.6, -2.4, -1.2, 0.0, 1.2, 2.4, 3.6, 4.8, 6.0)]
-STATIONS = ([[8.4, y] for y in (-6.0, -3.0, 0.0, 3.0, 6.0)]
-            + [[-4.85, y] for y in (-6.3, 6.3)] + [[2.0, y] for y in AISLE_YS])
-CAMERA_FOV = 1.08                  # OV5647 Pi camera, 62 deg
+# Outbound: per region a staging lane (2 x 4 floor slots) and a truck dock.
+LANE_YC = [4.5, 1.5, -1.5, -4.5]
+LANE_XS = [9.35, 9.75]
+LANE_DY = [-0.6, -0.2, 0.2, 0.6]
+LANE_APPROACH_X = 8.75
+OUT_TRUCK_X = 12.05                # rear of a docked truck, just outside the east wall
 
-# Items of one type look identical; only the label (ID) differs.
-ITEM_TYPES = {
-    "blue":  (0.15, 0.35, 0.8),
-    "red":   (0.8, 0.2, 0.15),
-    "brown": (0.55, 0.38, 0.2),
-    "green": (0.2, 0.6, 0.25),
-}
+TRANSPORT_HOMES = [(-10.5 + 0.8 * k, -6.3) for k in range(8)]
+PATROL_HOMES = [(-6.0, 5.8), (-7.2, 5.8), (-8.4, 5.8)]
+ROBOT_COLORS = {"patrol": (0.9, 0.6, 0.1), "transport": (0.2, 0.4, 0.9)}
 
-ROBOT_COLORS = {"patrol": (0.9, 0.6, 0.1), "recovery": (0.2, 0.4, 0.9), "transport": (0.55, 0.55, 0.55)}
+PALETTE = [(0.8, 0.2, 0.15), (0.15, 0.35, 0.8), (0.2, 0.6, 0.25), (0.55, 0.38, 0.2), (0.85, 0.7, 0.15),
+           (0.55, 0.25, 0.65), (0.1, 0.6, 0.65), (0.9, 0.45, 0.6), (0.35, 0.35, 0.35), (0.6, 0.75, 0.3),
+           (0.95, 0.55, 0.2), (0.25, 0.25, 0.6), (0.7, 0.55, 0.45), (0.45, 0.15, 0.2), (0.3, 0.5, 0.45),
+           (0.75, 0.75, 0.75)]
 
 
-def box_solid(name, pos, size, color, model="", recog=False, bounding=True, def_name=""):
-    x, y, z = pos
-    sx, sy, sz = size
-    r, g, b = color
-    geom = f"Box {{ size {sx} {sy} {sz} }}"
-    s = f"DEF {def_name} " if def_name else ""
-    s += (
-        f"Solid {{\n  translation {x:.3f} {y:.3f} {z:.3f}\n  name \"{name}\"\n"
-        f"  children [ Shape {{ appearance PBRAppearance {{ baseColor {r} {g} {b} roughness 0.8 metalness 0 }} "
-        f"geometry {geom} }} ]\n"
-    )
-    if model:
-        s += f"  model \"{model}\"\n"
-    if recog:
-        s += f"  recognitionColors [ {r} {g} {b} ]\n"
-    if bounding:
-        s += f"  boundingObject {geom}\n"
-    return s + "}\n"
+def look_at(eye, target):
+    """Axis-angle rotation of a camera at eye looking at target (x forward, z up)."""
+    fx, fy, fz = (t - e for t, e in zip(target, eye))
+    n = math.sqrt(fx * fx + fy * fy + fz * fz)
+    fx, fy, fz = fx / n, fy / n, fz / n
+    lx, ly, lz = -fy, fx, 0.0                         # left = up x forward
+    n = math.hypot(lx, ly)
+    lx, ly = lx / n, ly / n
+    ux, uy, uz = fy * lz - fz * ly, fz * lx - fx * lz, fx * ly - fy * lx
+    r = [[fx, lx, ux], [fy, ly, uy], [fz, lz, uz]]
+    angle = math.acos(max(-1.0, min(1.0, (r[0][0] + r[1][1] + r[2][2] - 1) / 2)))
+    s = 2 * math.sin(angle)
+    axis = ((r[2][1] - r[1][2]) / s, (r[0][2] - r[2][0]) / s, (r[1][0] - r[0][1]) / s)
+    return (*axis, angle)
+
+
+def unit_hash(*parts):
+    return zlib.crc32("-".join(str(p) for p in parts).encode()) / 2 ** 32
+
+
+def build_orders(args, skus):
+    """Real waves of one day, sampled and time-compressed into the episode."""
+    data = json.loads((ROOT / "data" / f"orders_{args.date}.json").read_text(encoding="utf-8"))
+    known = {s["sku"] for s in skus}
+    waves, capped = [], 0
+    for w in data["waves"]:
+        lines = []
+        for ln in w["lines"]:
+            if ln["sku"] not in known or unit_hash(args.date, ln["order"]) >= args.order_sample:
+                continue
+            q = min(ln["qty"], args.max_line_qty)
+            capped += ln["qty"] - q
+            lines.append({**ln, "qty": q})
+        if lines:
+            waves.append({"wave": w["wave"], "release_s": w["release_s"], "lines": lines})
+    if not waves:
+        raise SystemExit("no waves left after sampling")
+    t0 = waves[0]["release_s"]
+    span = waves[-1]["release_s"] - t0
+    scale = args.time_scale or max(1.0, span / (args.release_frac * args.duration))
+    # Waves are released one at a time on a fixed cadence (wave picking), never before
+    # their orders exist (creation time, compressed).
+    prev = -1e9
+    for w in waves:
+        created = args.warmup + (w["release_s"] - t0) / scale
+        w["created_t"] = round(created, 1)
+        w["release_t"] = round(max(created, prev + args.wave_interval), 1)
+        prev = w["release_t"]
+    meta = {"date": args.date, "source": data["source"], "synthetic_fields": data["synthetic_fields"],
+            "time_scale": round(scale, 2), "wave_interval_s": args.wave_interval, "order_sample": args.order_sample,
+            "max_line_qty": args.max_line_qty, "units_capped": capped,
+            "units": sum(ln["qty"] for w in waves for ln in w["lines"]), "waves": len(waves)}
+    return waves, data["regions"], meta
+
+
+def plan_stock(args, skus, waves, rack_slots, rng):
+    """Initial stock (on the shelves at t=0) and synthetic inbound trucks."""
+    demand = []                                     # (t, sku) per unit, in release order
+    for w in waves:
+        for ln in w["lines"]:
+            demand += [(w["release_t"], ln["sku"])] * ln["qty"]
+    per_sku = {}
+    for _, s in demand:
+        per_sku[s] = per_sku.get(s, 0) + 1
+
+    # Every SKU has a carton on the shelf; SKUs with demand get part of it up front.
+    init = {s["sku"]: 1 for s in skus}
+    for s, d in per_sku.items():
+        init[s] = max(1, math.ceil(args.initial_cover * d))
+    usable = [s for k, s in enumerate(rack_slots) if k % 4 != 3]   # every 4th slot stays free
+    cap = int(args.initial_fill * len(rack_slots))
+    while sum(init.values()) > min(cap, len(usable)):
+        s = max(init, key=lambda k: init[k] - per_sku.get(k, 0) * 0.01)
+        init[s] -= 1
+        if init[s] == 0:
+            del init[s]
+
+    # Fastest movers (class A first) nearest the outbound side.
+    rank = {"A": 0, "B": 1, "C": 2}
+    share = {s["sku"]: s["share"] for s in skus}
+    abc = {s["sku"]: s["abc"] for s in skus}
+    order = sorted(init, key=lambda s: (rank[abc[s]], -share[s]))
+    near_out = sorted(usable, key=lambda s: (-s["pos"][0], abs(s["pos"][1])))
+    stock, k = [], 0
+    for s in order:
+        for _ in range(init[s]):
+            stock.append({"slot": near_out[k]["id"], "sku": s})
+            k += 1
+
+    # Inbound: demand the initial stock does not cover, plus safety stock.
+    covered = dict(init)
+    need = []
+    for t, s in demand:
+        if covered.get(s, 0) > 0:
+            covered[s] -= 1
+        else:
+            need.append((t - args.inbound_lead, s))
+    for s, d in per_sku.items():
+        need += [(args.duration * 0.5, s)] * math.ceil(args.safety_stock * d)
+    need.sort()
+    n_trucks = max(1, math.ceil(len(need) / args.truck_cartons))
+    last = max(args.truck_first + 1, min(args.duration * args.release_frac, need[-1][0] if need else 0))
+    gap = max(args.truck_min_gap, (last - args.truck_first) / max(1, n_trucks - 1))
+    times = [round(args.truck_first + k * gap + rng.uniform(-0.15, 0.15) * gap * (k > 0), 1) for k in range(n_trucks)]
+    while times[-1] > args.duration * 0.85 and len(times) > 1:
+        times.pop()
+    loads = [[] for _ in times]
+    for due, s in need:
+        # Latest truck that still arrives in time; if none can, the earliest one with room.
+        ok = [k for k, tt in enumerate(times) if tt <= due and len(loads[k]) < args.truck_cartons]
+        if ok:
+            k = ok[-1]
+        else:
+            room = [k for k in range(len(times)) if len(loads[k]) < args.truck_cartons]
+            if not room:
+                times.append(times[-1] + args.truck_min_gap)
+                loads.append([])
+                room = [len(times) - 1]
+            k = room[0]
+        loads[k].append(s)
+    trucks = []
+    lpn = 0
+    for k, (tt, load) in enumerate(zip(times, loads)):
+        if not load:
+            continue
+        rng.shuffle(load)
+        cartons = []
+        for s in load:
+            lpn += 1
+            cartons.append({"lpn": f"IN{lpn:04d}", "sku": s})
+        trucks.append({"truck": f"T{k + 1:02d}", "arrive_t": tt, "cartons": cartons})
+    return stock, trucks, per_sku
 
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--patrols", type=int, default=3)
-    ap.add_argument("--recoveries", type=int, default=8)
+    ap.add_argument("--date", default="2023-03-09")
+    ap.add_argument("--duration", type=float, default=3600.0, help="episode length, s")
+    ap.add_argument("--patrols", type=int, default=2)
     ap.add_argument("--transports", type=int, default=6)
     ap.add_argument("--seed", type=int, default=0)
-    ap.add_argument("--policy", default="proposed", choices=["full", "none", "pull", "cache", "proposed"])
+    ap.add_argument("--order-sample", type=float, default=1.0, help="share of orders kept (whole orders)")
+    ap.add_argument("--max-line-qty", type=int, default=6)
+    ap.add_argument("--time-scale", type=float, default=0.0, help="real s per sim s (0: fit releases)")
+    ap.add_argument("--release-frac", type=float, default=0.6, help="releases spread over this share")
+    ap.add_argument("--warmup", type=float, default=30.0)
+    ap.add_argument("--wave-interval", type=float, default=90.0, help="min gap between wave releases, s")
+    ap.add_argument("--initial-cover", type=float, default=0.5, help="share of demand on the shelf at t=0")
+    ap.add_argument("--initial-fill", type=float, default=0.6, help="max share of rack slots filled at t=0")
+    ap.add_argument("--safety-stock", type=float, default=0.15)
+    ap.add_argument("--truck-cartons", type=int, default=12)
+    ap.add_argument("--truck-first", type=float, default=60.0)
+    ap.add_argument("--truck-min-gap", type=float, default=120.0)
+    ap.add_argument("--inbound-lead", type=float, default=240.0, help="carton should arrive this long before demand")
+    ap.add_argument("--no-faults", action="store_true")
+    ap.add_argument("--plain", action="store_true", help="no decoration (faster batch experiments)")
+    ap.add_argument("--patrol-sweep", action="store_true",
+                    help="idle patrols sweep the rack faces (periodic cycle count)")
     args = ap.parse_args()
-    for name, n, cap in (("patrols", args.patrols, PATROL_HOMES), ("recoveries", args.recoveries, RECOVERY_HOMES),
-                         ("transports", args.transports, TRANSPORT_STARTS)):
-        if not 0 <= n <= len(cap):
-            raise SystemExit(f"--{name} must be between 0 and {len(cap)}")
+    if not 0 <= args.patrols <= len(PATROL_HOMES) or not 1 <= args.transports <= len(TRANSPORT_HOMES):
+        raise SystemExit(f"patrols 0..{len(PATROL_HOMES)}, transports 1..{len(TRANSPORT_HOMES)}")
+    rng = random.Random(args.seed)
 
+    sku_data = json.loads((ROOT / "data" / "skus.json").read_text(encoding="utf-8"))
+    skus = sku_data["skus"]
+    refs = sorted({s["ref"] for s in skus})
+    color_of_ref = {r: PALETTE[k % len(PALETTE)] for k, r in enumerate(refs)}
+    for s in skus:
+        s["color"] = color_of_ref[s["ref"]]       # same model, other size: looks alike
+
+    # ---- slots ----
+    slots, rack_slots = [], []
+    for ri, ry in enumerate(ROW_YS):
+        for side, sy, ay in (("s", ry - 0.17, ry - APPROACH_OFFSET), ("n", ry + 0.17, ry + APPROACH_OFFSET)):
+            for si in range(SLOTS_PER_SIDE):
+                sx = RACK_X0 + SLOT_PITCH * (si + 0.5)
+                s = {"id": f"r{ri}{side}{si:02d}", "kind": "rack", "face": f"r{ri}{side}",
+                     "pos": [round(sx, 3), round(sy, 3)], "approach": [round(sx, 3), round(ay, 3)], "z": RACK_TOP}
+                slots.append(s)
+                rack_slots.append(s)
+    for k, zx in enumerate(ZONE_XS):
+        slots.append({"id": f"B{k}", "kind": "buffer", "pos": [zx, ZONE_Y],
+                      "approach": [zx, round(ZONE_Y - STAGE_APPROACH, 3)], "z": BELT_TOP})
+    for k, (ex, ey) in enumerate(EXC_POS):
+        slots.append({"id": f"X{k}", "kind": "exception", "pos": [ex, ey],
+                      "approach": [ex, round(ey - STAGE_APPROACH, 3)], "z": BELT_TOP})
+
+    waves, regions, order_meta = build_orders(args, skus)
+    if len(regions) > len(LANE_YC):
+        raise SystemExit(f"{len(regions)} regions in the data, the layout has {len(LANE_YC)} outbound lanes")
+    lanes = {}
+    for k, region in enumerate(regions):
+        yc = LANE_YC[k]
+        ids = []
+        for lx in LANE_XS:
+            for dy in LANE_DY:
+                sid = f"L{region}-{len(ids)}"
+                slots.append({"id": sid, "kind": "outbound", "lane": region, "pos": [lx, round(yc + dy, 3)],
+                              "approach": [LANE_APPROACH_X, round(yc + dy, 3)], "z": 0.0})
+                ids.append(sid)
+        lanes[region] = {"y": yc, "slots": ids, "truck_pos": [OUT_TRUCK_X, yc]}
+
+    stock, trucks, per_sku = plan_stock(args, skus, waves, rack_slots, rng)
+    # Unrecorded cartons a worker may put into a slot (returns): S3 and S1 sources.
+    returns = [{"lpn": f"RT{k + 1:03d}", "sku": rng.choices([s["sku"] for s in skus],
+                                                          weights=[s["share"] for s in skus])[0]}
+               for k in range(40)]
+
+    # ---- world ----
+    hx, hy = FLOOR_X / 2, FLOOR_Y / 2
+    make_textures.make_all(ROOT / "textures" / "gen", [s["id"] for s in rack_slots], regions)
+    looks = wv.Looks()
+    # --plain leaves out the decoration (lights, markings, rack structure, rollers, signs, cages):
+    # same behavior, faster batch runs.
+    deco = not args.plain
+    deco_rng = random.Random(1000 + args.seed)
+    slot_of_id = {s["id"]: s for s in slots}
+    eye, target = (1.0, -13.0, 20.0), (1.0, 0.0, 0.0)
     parts = [
         "#VRML_SIM R2025a utf8\n",
         'EXTERNPROTO "../protos/SimpleBot.proto"\n\n',
         "WorldInfo {\n  basicTimeStep 32\n"
         '  contactProperties [ ContactProperties { material2 "slippery" coulombFriction [ 0 ] } ]\n}\n',
-        "Viewpoint {\n  orientation -0.45 0.45 0.77 1.82\n  position 1 -15 17\n}\n",
-        "Background { skyColor [ 0.75 0.8 0.85 ] }\n",
-        "DirectionalLight { direction -0.3 0.4 -1 intensity 2.5 castShadows TRUE }\n",
-        "DirectionalLight { direction 0.4 -0.3 -1 intensity 1 }\n",
-        f"Solid {{\n  name \"floor\"\n  children [ Shape {{ appearance PBRAppearance {{ baseColor 0.55 0.55 0.52 roughness 1 metalness 0 }} "
-        f"geometry Plane {{ size {FLOOR_X} {FLOOR_Y} }} }} ]\n  boundingObject Plane {{ size {FLOOR_X} {FLOOR_Y} }}\n}}\n",
-        # Inbound area marking (visual only).
-        f"Solid {{\n  name \"inbound_mark\"\n  translation -7.22 0 0.001\n  children [ Shape {{ appearance PBRAppearance "
-        f"{{ baseColor 0.85 0.75 0.3 roughness 1 metalness 0 }} geometry Plane {{ size 0.7 12.4 }} }} ]\n}}\n",
+        f"Viewpoint {{\n  orientation {wv.vec(*look_at(eye, target))}\n  position {wv.vec(*eye)}\n}}\n",
+        "Background { skyColor [ 0.62 0.72 0.82 ] }\n",
+        "DirectionalLight { direction -0.3 0.4 -1 intensity 2.2 castShadows TRUE }\n",
+        "DirectionalLight { direction 0.4 -0.3 -1 intensity 0.9 }\n",
+        wv.floor(looks, FLOOR_X, FLOOR_Y),
+        wv.yard(looks),
+        wv.walls(looks, hx, hy, west_doors=[(BELT_Y - 1.0, BELT_Y + 1.0)],
+                 east_doors=[(yc - 0.9, yc + 0.9) for yc in LANE_YC[:len(regions)]]),
     ]
+    if deco:
+        parts.append(wv.ceiling_lights(looks, [-9.0, -5.0, -1.0, 3.0, 7.0, 10.5], [-6.0, -3.0, 0.0, 3.0, 6.0]))
 
-    hx, hy, wall_c = FLOOR_X / 2, FLOOR_Y / 2, (0.75, 0.75, 0.7)
-    parts += [
-        box_solid("wall_n", (0, hy, 0.25), (FLOOR_X, 0.1, 0.5), wall_c),
-        box_solid("wall_s", (0, -hy, 0.25), (FLOOR_X, 0.1, 0.5), wall_c),
-        box_solid("wall_e", (hx, 0, 0.25), (0.1, FLOOR_Y, 0.5), wall_c),
-        box_solid("wall_w", (-hx, 0, 0.25), (0.1, FLOOR_Y, 0.5), wall_c),
-    ]
+    # Floor markings: aisle edges, AMR lanes, parking bays, dock safety zones, lanes.
+    white = looks.color("PAINT_W", (0.92, 0.92, 0.9), rough=0.9)
+    yellow = looks.color("PAINT_Y", (0.95, 0.78, 0.1), rough=0.9)
+    green = looks.color("PAINT_G", (0.25, 0.65, 0.3), rough=0.9)
+    red = looks.color("PAINT_R", (0.85, 0.2, 0.15), rough=0.9)
+    for ry in ROW_YS:
+        for side in (-1, 1):
+            if deco:
+                parts.append(wv.line(looks, white, RACK_X0 - 0.1, ry + side * 0.42, RACK_X1 + 0.1, ry + side * 0.42))
+    for x in (-4.2, 8.1):
+        if deco:
+            parts.append(wv.dashed(looks, yellow, x, -6.6, x, 6.6))
+    for hxy in TRANSPORT_HOMES + PATROL_HOMES:
+        if deco:
+            parts.append(wv.outline(looks, white, hxy[0], hxy[1], 0.55, 0.55))
+    if deco:
+        parts.append(wv.hatch(looks, -hx + 0.02, -10.65, BELT_Y - 0.95, BELT_Y + 0.95))
+    for yc in LANE_YC[:len(regions)]:
+        if deco:
+            parts.append(wv.hatch(looks, 10.45, hx - 0.02, yc - 0.8, yc + 0.8))
+    if deco:
+        parts.append(wv.outline(looks, red, -9.35, 2.15, 1.3, 0.75, w=0.06))
 
-    slots, items = [], []
-    type_names = list(ITEM_TYPES)
-    item_z = RACK_TOP + ITEM_SIZE[2] / 2
+    # Racks: base and back panel keep their solids; uprights, beams, upper pallets and labels are looks.
     rack_cx, rack_len = (RACK_X0 + RACK_X1) / 2, RACK_X1 - RACK_X0
     for ri, ry in enumerate(ROW_YS):
-        parts.append(box_solid(f"rack{ri}_base", (rack_cx, ry, RACK_TOP / 2),
-                               (rack_len, 2 * ROW_HALF_DEPTH, RACK_TOP), (0.45, 0.45, 0.5)))
-        parts.append(box_solid(f"rack{ri}_panel", (rack_cx, ry, PANEL_HEIGHT / 2),
-                               (rack_len, 0.04, PANEL_HEIGHT), (0.35, 0.4, 0.5)))
-        for side, sy, ay in (("s", ry - 0.17, ry - APPROACH_OFFSET), ("n", ry + 0.17, ry + APPROACH_OFFSET)):
-            for si in range(SLOTS_PER_SIDE):
-                sx = RACK_X0 + SLOT_PITCH * (si + 0.5)
-                block = si // BLOCK
-                block_type = type_names[(ri * 2 + (side == "n") + block) % len(type_names)]
-                slot_id = f"r{ri}{side}{si:02d}"
-                home_of = None
-                if si % BLOCK < ITEMS_PER_BLOCK:
-                    home_of = f"{block_type}_{len([i for i in items if i['type'] == block_type]):02d}"
-                    items.append({"id": home_of, "type": block_type, "home": slot_id})
-                    parts.append(box_solid(home_of, (sx, sy, item_z), ITEM_SIZE, ITEM_TYPES[block_type],
-                                           model=home_of, recog=True, def_name=f"ITEM_{home_of}"))
-                slots.append({"id": slot_id, "kind": "rack", "pos": [round(sx, 3), round(sy, 3)],
-                              "approach": [round(sx, 3), round(ay, 3)],
-                              "type": block_type, "home_of": home_of})
+        base = (rack_len, 2 * ROW_HALF_DEPTH, RACK_TOP)
+        panel = (rack_len, 0.04, PANEL_HEIGHT)
+        parts.append(f"Solid {{ name \"rack{ri}_base\" translation {wv.vec(rack_cx, ry, RACK_TOP / 2)} children [ "
+                     f"{wv.shape(wv.rack_base_app(looks), wv.box(*base))} ] boundingObject {wv.box(*base)} }}\n")
+        parts.append(f"Solid {{ name \"rack{ri}_panel\" translation {wv.vec(rack_cx, ry, PANEL_HEIGHT / 2)} children [ "
+                     f"{wv.shape(wv.rack_panel_app(looks), wv.box(*panel))} ] boundingObject {wv.box(*panel)} }}\n")
+        row_slots = [s for s in rack_slots if s["face"].startswith(f"r{ri}")]
+        if deco:
+            parts.append(wv.rack(looks, ri, ry, RACK_X0, RACK_X1, ROW_HALF_DEPTH, RACK_TOP, row_slots, deco_rng))
 
-    n_pile_rows = int(round((PILE_Y1 - PILE_Y0) / PILE_PITCH)) + 1
-    for ci, px in enumerate(PILE_XS):
-        for k in range(n_pile_rows):
-            py = PILE_Y0 + k * PILE_PITCH
-            # Id layout "p<col>x<row>" keeps neighbors at row +-1, like rack slots.
-            slots.append({"id": f"p{ci}x{k:02d}", "kind": "pile", "pos": [px, round(py, 3)],
-                          "approach": [PILE_APPROACH_X, round(py, 3)], "type": None, "home_of": None})
+    # Inbound: roller conveyor, scanner gate, pushers, staging and exception tables, signs.
+    stage_x0, stage_x1 = ZONE_XS[-1] - 0.25, ZONE_XS[0] + 0.25
+    for name, cx, cy, sx in (("belt", (BELT_X0 + BELT_X1) / 2, BELT_Y, BELT_X1 - BELT_X0),
+                             ("staging_table", (stage_x0 + stage_x1) / 2, ZONE_Y, stage_x1 - stage_x0)):
+        parts.append(f"Solid {{ name \"{name}\" translation {wv.vec(cx, cy, BELT_TOP / 2)} "
+                     f"boundingObject {wv.box(sx, 0.5, BELT_TOP)} }}\n")
+    if deco:
+        parts.append(wv.roller_bed(looks, BELT_X0, BELT_X1, BELT_Y, 0.5, BELT_TOP))
+    if deco:
+        parts.append(wv.roller_bed(looks, stage_x0, stage_x1, ZONE_Y, 0.44, BELT_TOP, pitch=0.1))
+    for zx in ZONE_XS:
+        if deco:
+            parts.append(wv.outline(looks, green, zx, ZONE_Y, 0.44, 0.4, w=0.03, z=BELT_TOP + 0.003))
+        if deco:
+            parts.append(wv.pusher(looks, zx, BELT_Y + 0.34))
+    if deco:
+        parts.append(wv.scanner_gate(looks, GATE_X, BELT_Y))
+    exc_app = looks.color("EXCTABLE", (0.75, 0.2, 0.18), rough=0.6)
+    parts.append(f"Solid {{ name \"exception_table\" translation {wv.vec(-9.35, 2.15, BELT_TOP / 2)} children [ "
+                 f"{wv.shape(exc_app, wv.box(1.0, 0.5, BELT_TOP))} ] boundingObject {wv.box(1.0, 0.5, BELT_TOP)} }}\n")
+    if deco:
+        parts.append(wv.sign(looks, "inbound", (-8.0, BELT_Y + 0.9, 2.5), size=(1.6, 0.8), facing="y"))
+    if deco:
+        parts.append(wv.sign(looks, "exception", (-9.35, 1.55, 1.6), size=(0.9, 0.45), facing="y"))
+    if deco:
+        parts.append(wv.sign(looks, "parking", (-7.7, -6.8, 1.6), size=(1.2, 0.6), facing="-y"))
+    parts.append(wv.truck(looks, "TRUCK_IN", -hx - 0.05, BELT_Y, -1, (0.75, 0.15, 0.12)))
+
+    # Outbound: lane marks, roll cages, region signs, trucks.
+    cab_colors = [(0.15, 0.35, 0.7), (0.1, 0.5, 0.3), (0.55, 0.3, 0.6), (0.8, 0.45, 0.1)]
+    for k, (region, lane) in enumerate(lanes.items()):
+        yc = lane["y"]
+        if deco:
+            parts.append(wv.outline(looks, white, sum(LANE_XS) / 2, yc, 0.9, 1.7, w=0.05))
+        for sid in lane["slots"]:
+            sp = slot_of_id[sid]["pos"]
+            if deco:
+                parts.append(wv.outline(looks, white, sp[0], sp[1], 0.34, 0.34, w=0.02))
+        for dy in (-0.45, 0.45):
+            if deco:
+                parts.append(wv.roll_cage(looks, 10.75, yc + dy))
+        if deco:
+            parts.append(wv.sign(looks, region, (sum(LANE_XS) / 2, yc, 2.6), size=(1.2, 0.6), facing="x"))
+        parts.append(wv.truck(looks, f"TRUCK_{region}", hx + 0.05, yc, 1, cab_colors[k % len(cab_colors)]))
+
+    # Workers who cause the unrecorded changes (shown by the supervisor where it happens).
+    for k in range(2):
+        parts.append(wv.worker(looks, f"WORKER_{k}", (0, -40 - 2 * k, -5)))
+
+    # Cartons: shelf stock at its slot, inbound and return cartons parked out of sight.
+    color = {s["sku"]: s["color"] for s in skus}
+    ref_of = {s["sku"]: s["ref"] for s in skus}
+    box_z = BOX_SIZE[2] / 2
+    cartons = []
+
+    def carton(lpn, sku, pos):
+        parts.append(wv.carton(looks, lpn, pos, wv.carton_size(ref_of[sku], BOX_SIZE), sku, ref_of[sku], color[sku],
+                               plain=args.plain))
+
+    for k, st in enumerate(stock):
+        lpn = f"ST{k + 1:04d}"
+        s = slot_of_id[st["slot"]]
+        cartons.append({"lpn": lpn, "sku": st["sku"]})
+        carton(lpn, st["sku"], (s["pos"][0], s["pos"][1], s["z"] + box_z))
+        st["lpn"] = lpn
+    hidden = [c for tr in trucks for c in tr["cartons"]] + returns
+    for k, c in enumerate(hidden):
+        cartons.append(c)
+        carton(c["lpn"], c["sku"], (100 + (k % 40) * 0.4, 100 + (k // 40) * 0.4, box_z))
 
     roster = ([("patrol", PATROL_HOMES[k], 0.0) for k in range(args.patrols)]
-              + [("recovery", RECOVERY_HOMES[k], 0.0) for k in range(args.recoveries)]
-              + [("transport", TRANSPORT_STARTS[k], math.pi) for k in range(args.transports)])
-    # Inspection passes: drive along a face with it on the camera (left) side.
-    # interval_s: how often a face should be looked at.
-    faces = [{"id": "pile", "start": [PILE_LANE_X, PILE_Y0 - 0.3], "end": [PILE_LANE_X, PILE_Y1 + 0.3],
-              "interval_s": 40.0},
-             {"id": "pile_w", "start": [PILE_WEST_LANE_X, PILE_Y1 + 0.3], "end": [PILE_WEST_LANE_X, PILE_Y0 - 0.3],
-              "interval_s": 40.0}]
+              + [("transport", TRANSPORT_HOMES[k], math.pi / 2) for k in range(args.transports)])
+    faces = []
     for ri, ry in enumerate(ROW_YS):
-        faces.append({"id": f"r{ri}s", "start": [RACK_X0 - 0.6, ry - PATROL_LANE],
-                      "end": [RACK_X1 + 0.6, ry - PATROL_LANE], "interval_s": 240.0})
-        faces.append({"id": f"r{ri}n", "start": [RACK_X1 + 0.6, ry + PATROL_LANE],
-                      "end": [RACK_X0 - 0.6, ry + PATROL_LANE], "interval_s": 240.0})
-    pile_faces = [f["id"] for f in faces if f["id"].startswith("pile")]
-    rack_faces = [f["id"] for f in faces if f["id"] not in pile_faces]
-
+        faces.append({"id": f"r{ri}s", "start": [RACK_X0 - 0.6, ry - PATROL_LANE], "end": [RACK_X1 + 0.6, ry - PATROL_LANE]})
+        faces.append({"id": f"r{ri}n", "start": [RACK_X1 + 0.6, ry + PATROL_LANE], "end": [RACK_X0 - 0.6, ry + PATROL_LANE]})
     robots = []
     for i, (role, start, yaw) in enumerate(roster):
-        robots.append({"id": i, "def": f"R{i}", "name": f"robot_{i}", "role": role,
-                       "start": list(start), "home": list(start)})
-        if role == "patrol":
-            # The first scanner is dedicated to the inbound pile; the rest share the racks.
-            alone = args.patrols == 1
-            robots[-1]["faces"] = pile_faces + rack_faces if alone else (pile_faces if i == 0 else rack_faces)
+        robots.append({"id": i, "def": f"R{i}", "name": f"robot_{i}", "role": role, "home": list(start)})
         c = ROBOT_COLORS[role]
         parts.append(
             f"DEF R{i} SimpleBot {{\n  translation {start[0]} {start[1]} 0\n  rotation 0 0 1 {yaw:.4f}\n"
             f"  name \"robot_{i}\"\n  controller \"agent\"\n  controllerArgs [ \"--id\" \"{i}\" ]\n"
-            f"  color {c[0]} {c[1]} {c[2]}\n  receiverChannel {100 + i}\n  cameraFov {CAMERA_FOV}\n}}\n"
+            f"  color {c[0]} {c[1]} {c[2]}\n  receiverChannel {100 + i}\n  cameraFov {CAMERA_FOV}\n"
+            f"  detailed {'FALSE' if args.plain else 'TRUE'}\n}}\n"
         )
-
+    # The supervisor also carries two cameras for snapshots (SNAPSHOT_AT): top-down (north up)
+    # and a perspective view from the south-west.
+    persp_eye, persp_target = (-6.0, -12.0, 17.0), (1.0, 0.5, 0.0)
     parts.append(
         "Robot {\n  name \"supervisor\"\n  supervisor TRUE\n  controller \"supervisor\"\n"
-        "  children [ Emitter { name \"emitter\" channel 100 range -1 } Receiver { name \"receiver\" channel 0 } ]\n}\n"
+        "  children [ Emitter { name \"emitter\" channel 100 range -1 } Receiver { name \"receiver\" channel 0 }\n"
+        "    Camera { name \"overview\" translation 0 0 22 rotation -0.57735 0.57735 0.57735 2.0944\n"
+        "      width 1200 height 700 fieldOfView 1.0 }\n"
+        f"    Camera {{ name \"overview_persp\" translation {wv.vec(*persp_eye)} "
+        f"rotation {wv.vec(*look_at(persp_eye, persp_target))}\n"
+        "      width 1200 height 700 fieldOfView 1.1 } ]\n}\n"
     )
+
+    faults = {
+        # S1 execution error: a carton lands in the next free slot of the face instead of the target.
+        "place_error_p": 0.05,
+        # S1/S2 unobserved changes: a worker moves (nearby) or removes a carton without recording it.
+        "worker_move_per_h": 8.0,
+        "worker_move_max_slots": 3,
+        "worker_remove_per_h": 3.0,
+        # S3: while a robot carries a carton to a rack slot, a worker puts a returned carton there.
+        "dest_taken_p": 0.1,
+        # Inbound: the fixed scanner cannot read a label -> carton diverted to an exception slot.
+        "scanner_fail_p": 0.03,
+    }
+    if args.no_faults:
+        faults = {k: 0 if not k.endswith("max_slots") else v for k, v in faults.items()}
 
     scenario = {
         "seed": args.seed,
-        "world": {"x_min": -FLOOR_X / 2, "x_max": FLOOR_X / 2, "y_min": -FLOOR_Y / 2, "y_max": FLOOR_Y / 2},
+        "world": {"x_min": -hx, "x_max": hx, "y_min": -hy, "y_max": hy},
         "racks": [{"y": y, "x_min": RACK_X0, "x_max": RACK_X1, "half_depth": ROW_HALF_DEPTH} for y in ROW_YS],
-        "obstacles": [PILE_ZONE],
-        "pile": {"zone": PILE_ZONE, "lane_x": PILE_LANE_X},
-        "item_size": list(ITEM_SIZE),
-        "rack_top": RACK_TOP,
+        "obstacles": [
+            {"name": "belt", "x_min": BELT_X0 - 0.1, "x_max": BELT_X1 + 0.05, "y_min": BELT_Y - 0.3, "y_max": BELT_Y + 0.3},
+            {"name": "staging_table", "x_min": ZONE_XS[-1] - 0.3, "x_max": ZONE_XS[0] + 0.3,
+             "y_min": ZONE_Y - 0.3, "y_max": BELT_Y},
+            {"name": "exception_table", "x_min": -9.9, "x_max": -8.8, "y_min": 1.9, "y_max": 2.4},
+            {"name": "inbound_dock", "x_min": -12.0, "x_max": -10.6, "y_min": 2.0, "y_max": 4.0},
+        ] + [{"name": f"lane_{r}", "x_min": 9.15, "x_max": 9.95, "y_min": l["y"] - 0.8, "y_max": l["y"] + 0.8}
+             for r, l in lanes.items()]
+          + [{"name": f"dock_{r}", "x_min": 10.4, "x_max": 12.0, "y_min": l["y"] - 0.8, "y_max": l["y"] + 0.8}
+             for r, l in lanes.items()],
+        "box_size": list(BOX_SIZE),
         "slots": slots,
-        "items": items,
+        "skus": skus,
+        "cartons": cartons,
+        "initial_stock": stock,
         "robots": robots,
         "faces": faces,
-        "stations": STATIONS,
-        "episode": {
-            "duration_s": 600,
-            "initial_inbound": 12,
-            "inbound_period_s": 50.0,       # a truck drops a batch this often
-            "inbound_batch": 4,
-            "anomaly_rate_per_s": 1 / 90,   # shelf anomalies (Poisson)
-            "p_fallen": 0.3,
-            "p_swap": 0.3,                  # two lookalikes in one block trade places
-            "p_next_to_lookalike": 0.6,     # misplaced: into a free slot of a same-color block
-            "p_place_error": 0.03,          # sorter puts a parcel next to / tipped in the target slot
+        "belt": {"y": BELT_Y, "x_entry": BELT_X0 + 0.2, "x_end": ZONE_XS[0], "gate_x": GATE_X, "top": BELT_TOP,
+                 "speed_mps": 0.25, "gap_m": 0.45, "zones": [f"B{k}" for k in range(len(ZONE_XS))],
+                 "exception": [f"X{k}" for k in range(len(EXC_POS))], "unload_s": 3.0, "truck_pos": [-11.4, BELT_Y]},
+        "inbound": {"source": "synthetic (covers the day's demand)", "trucks": trucks},
+        "outbound": {
+            "source": "real waves; regions synthetic",
+            **order_meta,
+            "regions": regions,
+            "lanes": lanes,
+            # A region truck leaves when its lane holds dispatch_cartons, or at each cutoff with
+            # whatever is staged; it is back after turnaround_s.
+            "dispatch_cartons": 6,
+            "cutoff_period_s": 900.0,
+            "load_s": 15.0,
+            "turnaround_s": 180.0,
+            "waves": waves,
         },
-        "perception": {
-            # Labels are ~1 cm tags: 20 px needed (7 cm tag measured at 2.6 m). Scanner 5 MP stills
-            # (2592 px, 62 deg) -> ~1.0 m; sorter 480p video -> ~0.33 m, i.e. it cannot read them.
-            "patrol_read_label_m": 1.0,
-            "slot_match_m": 0.2,
-            "fallen_tilt_cos": 0.7,
-            "candidate_radius_m": 0.6,      # sorter: same-color items this close to C are candidates
-            "c_noise_m": 0.25,              # along-face error of the reported position
-        },
-        "comm": {
-            # Measured on the Pi <-> laptop link (phone hotspot, 2.4 GHz): 22-28 Mbit/s,
-            # 0-2 % loss, 14-18 ms ping through the access point.
-            "bandwidth_bps": 22_000_000,    # shared by every robot and the fleet server
-            "per_attempt_overhead_s": 0.0003,   # preamble, backoff, MAC ACK
-            "bg_util": 0.6,                 # other stations' airtime share (BG_UTIL env var overrides)
-            "bg_packet_bytes": 1500,
-            "max_retries": 3,               # MAC retransmissions after a corrupted attempt
-            "base_latency_s": 0.007,         # half the measured ping
-            "range_m": 14.0,
-            "ber_good": 2e-6,               # bit error rate; packet error = 1-(1-ber)^bits
-            "ber_bad": 3e-5,
-            "ber_factor_per_rack": 3.0,     # each rack panel on the link multiplies the BER
-            "p_good_to_bad_per_s": 0.02,
-            "p_bad_to_good_per_s": 0.2,
-            "ap_pos": [1.0, 0.0],           # fleet server access point, ceiling-mounted (racks don't block it)
-            "max_queue_s": 2.0,             # transmit buffer: drop if it would wait longer
-        },
-        "fleet": {                          # transport AMR traffic, VDA 5050-like sizes
-            "status_hz": 2.0,
-            "status_bytes": 1500,
-            "task_req_bytes": 200,
-            "task_bytes": 800,
-            "task_timeout_s": 3.0,
-            "dwell_s": 2.0,
-        },
-        "traffic": {
-            "policy": args.policy,
-            # Evidence sizes: Pi camera (OV5647) 1280x720 frames taken 0.78 m from the shelf
-            # (~1370 px/m), JPEG q80 at ~1.2 bit/pixel.
-            "header_bytes": 160,            # E + N + C
-            "evidence_bytes": {
-                "none": 0,
-                "thumb": 1_800,             # 1.0 x 0.3 m strip (target + neighbors), 200x60 px
-                "crop": 4_200,              # target only, label legible, 137x205 px
-                "frame": 138_000,           # full 1280x720 frame (reference only)
-            },
-            "ack_bytes": 40,
-            "req_bytes": 60,                # sorter asks for evidence (pull)
-            "report_timeout_s": 90.0,       # re-report if no DONE by then
-            "evidence_timeout_s": 4.0,      # pull: give up waiting and guess
-            "act_s": 2.0,                   # pick / place / upright duration
-        },
-        "proposed": {
-            "wrong_pick_cost_s": 60.0,      # redo + the anomaly a wrong pick creates
-            "task_s": 40.0,                 # typical time one sorter task takes
-            "externality": 50,              # stations that wait behind our airtime
-            "service_s": 0.00085,           # airtime of a typical 1500 B packet (congestion = 1 + wait / this)
-            "p_detect_per_frame": 0.15,     # chance a sorter notices the target in one frame
-            "p_remember": 0.97,
-            "seen_range_m": 2.0,
-            "claim_range_m": 6.0,           # tell scanners this close that an item is taken
-            "undetected_delay_s": 120.0,    # how long a misplacement stays unnoticed without a photo
-        },
+        "returns": returns,
+        "faults": faults,
+        "episode": {"duration_s": args.duration},
+        # Off by default: which slots to check is the WES's decision (VERIFY tasks).
+        "patrol": {"idle_sweep": args.patrol_sweep},
+        "perception": {"read_m": 1.2, "slot_match_m": 0.2, "carried_z": 0.35, "look_s": 1.0},
         "nav": {"speed_mps": 0.3, "wheel_radius": 0.033, "reach_m": 0.2, "goal_reach_m": 0.1,
-                "avoid_dist_m": 0.6, "stop_dist_m": 0.3, "replan_after_s": 2.0},
+                "avoid_dist_m": 0.6, "stop_dist_m": 0.3, "replan_after_s": 2.0, "act_s": 2.0, "reach_act_m": 1.3},
     }
 
     (ROOT / "worlds").mkdir(exist_ok=True)
@@ -287,9 +512,13 @@ def main():
         world.chmod(stat.S_IWRITE | stat.S_IREAD)
     world.write_text("".join(parts), encoding="utf-8")
     world.chmod(stat.S_IREAD)
-    (ROOT / "scenario.json").write_text(json.dumps(scenario, indent=2), encoding="utf-8")
-    print(f"wrote warehouse.wbt: {args.patrols} patrol + {args.recoveries} recovery + {args.transports} transport, "
-          f"{len(items)} items, {len(slots)} slots, policy={args.policy}")
+    (ROOT / "scenario.json").write_text(json.dumps(scenario, indent=1), encoding="utf-8")
+    n_in = sum(len(t["cartons"]) for t in trucks)
+    print(f"wrote warehouse.wbt: {args.patrols} patrol + {args.transports} transport robots; "
+          f"{args.date}: {order_meta['waves']} waves, {order_meta['units']} units, time x{order_meta['time_scale']}; "
+          f"stock {len(stock)}/{len(rack_slots)} slots, {len(trucks)} trucks / {n_in} cartons; "
+          f"faults {'off' if args.no_faults else 'on'}, patrol sweep {'on' if args.patrol_sweep else 'off'}, "
+          f"{'plain' if args.plain else 'decorated'}")
 
 
 if __name__ == "__main__":
