@@ -29,6 +29,11 @@ from nav import GridMap  # noqa: E402
 CAM_Z = 0.24
 CAM_YAW = math.pi / 2      # camera looks left
 NEAR_GOAL_M = 0.7          # this close to the goal only the hard stop distance applies
+ALONGSIDE_M = 0.4          # a yielding robot waits for a moving robot this close beside / ahead of it
+ALONGSIDE_RAD = 0.8        # ... going in about the same direction
+PASS_M = 0.4               # robots this close beside the way are passed slowly, steering away
+PASS_TURN = 1.5
+MOVING_M = 0.01            # a robot that moved this far between two pose broadcasts is moving
 SWEEP_ANGLE = 0.3          # patrol reports a slot when it is this close to the camera axis
 IDLE_PARK_S = 20.0
 ARRIVE_M = 0.35            # a path that ends farther than this from the goal is replanned
@@ -110,7 +115,7 @@ def main():
                 and math.hypot(o["pos"][0] - s["pos"][0], o["pos"][1] - s["pos"][1]) <= per["slot_match_m"]]
         return min(hits, key=lambda o: o["dist"])["item"] if hits else "EMPTY"
 
-    poses = {}
+    poses, moving = {}, set()
     path, goal = [], None
     blocked_since = None
     task, phase, holding = None, None, None
@@ -176,7 +181,10 @@ def main():
             receiver.nextPacket()
             kind = msg["kind"]
             if kind == "POSES":
-                poses = {int(k): v for k, v in msg["poses"].items()}
+                new_poses = {int(k): v for k, v in msg["poses"].items()}
+                moving = {j for j, p in new_poses.items()
+                          if j in poses and math.hypot(p[0] - poses[j][0], p[1] - poses[j][1]) > MOVING_M}
+                poses = new_poses
             elif kind == "DECISION":
                 action = msg["action"]
                 if action == "EXECUTE":
@@ -332,16 +340,27 @@ def main():
             continue
 
         # Collision avoidance: the lower id has priority; yield to robots in the way.
+        # Side by side in the same direction the yielding robot also waits, so the one
+        # with priority pulls ahead instead of the two rubbing along together.
         near_goal = goal is not None and math.hypot(goal[0] - x, goal[1] - y) < NEAR_GOAL_M
-        must_stop, back_off = False, False
-        for j, (px, py, _) in poses.items():
+        must_stop, back_off, steer, slow = False, False, 0.0, False
+        for j, (px, py, pyaw) in poses.items():
             if j == rid:
                 continue
             d = math.hypot(px - x, py - y)
-            in_way = abs(wrap(math.atan2(py - y, px - x) - heading_to_wp)) < 0.8
+            bearing = abs(wrap(math.atan2(py - y, px - x) - heading_to_wp))
+            in_way = bearing < 0.8
             if in_way and (d < nav["stop_dist_m"] or (d < nav["avoid_dist_m"] and rid > j and not near_goal)):
                 must_stop = True
                 back_off |= d < nav["stop_dist_m"] and rid > j
+            elif (rid > j and j in moving and d < ALONGSIDE_M and bearing < math.pi / 2
+                  and abs(wrap(pyaw - heading_to_wp)) < ALONGSIDE_RAD):
+                must_stop = True
+            elif d < PASS_M and bearing < math.pi / 2:
+                # Passing close by (the path ignores other robots): slow down and keep away.
+                rel = wrap(math.atan2(py - y, px - x) - heading_to_wp)
+                steer -= math.copysign(PASS_TURN * (PASS_M - d) / PASS_M, rel)
+                slow = True
         if must_stop:
             # Too close: the yielding robot backs up to open a gap.
             drive(-0.4 if back_off else 0.0, 0.0)
@@ -351,7 +370,7 @@ def main():
                 blocked_since = None
             continue
         blocked_since = None
-        drive(1.0, 1.5 * err)
+        drive(0.5 if slow else 1.0, 1.5 * err + steer)
 
 
 if __name__ == "__main__":
