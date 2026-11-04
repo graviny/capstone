@@ -39,7 +39,7 @@ class WES:
         self.out = []
         self.seq = 0
         self.t = 0.0
-        self.out_xy = (8.7, 0.0)
+        self.out_xy = tuple(cfg["outbound"].get("center", (8.7, 0.0)))
 
     # ---- helpers ----
     def new_task(self, task_type, item, priority, source=None, destination=None, **extra):

@@ -68,6 +68,11 @@ def sticker(path):
 def make_all(out_dir, slot_ids, regions):
     out = Path(out_dir)
     out.mkdir(parents=True, exist_ok=True)
+    # Labels of slots the current layout does not have (e.g. after --layout large) go.
+    keep = {f"slot_{sid}.png" for sid in slot_ids}
+    for old in out.glob("slot_*.png"):
+        if old.name not in keep:
+            old.unlink()
     for sid in slot_ids:
         slot_label(sid, out / f"slot_{sid}.png")
     palette = [(200, 60, 40), (40, 110, 190), (40, 150, 80), (150, 80, 170)]

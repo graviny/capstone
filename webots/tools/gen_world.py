@@ -64,12 +64,34 @@ OUT_TRUCK_X = 12.05                # rear of a docked truck, just outside the ea
 
 TRANSPORT_HOMES = [(-10.5 + 0.8 * k, -6.3) for k in range(8)]
 PATROL_HOMES = [(-6.0, 5.8), (-7.2, 5.8), (-8.4, 5.8)]
+# West / east shift of the inbound / outbound areas (0 for the base layout).
+WX, EX = 0.0, 0.0
 ROBOT_COLORS = {"patrol": (0.9, 0.6, 0.1), "transport": (0.2, 0.4, 0.9)}
 
 PALETTE = [(0.8, 0.2, 0.15), (0.15, 0.35, 0.8), (0.2, 0.6, 0.25), (0.55, 0.38, 0.2), (0.85, 0.7, 0.15),
            (0.55, 0.25, 0.65), (0.1, 0.6, 0.65), (0.9, 0.45, 0.6), (0.35, 0.35, 0.35), (0.6, 0.75, 0.3),
            (0.95, 0.55, 0.2), (0.25, 0.25, 0.6), (0.7, 0.55, 0.45), (0.45, 0.15, 0.2), (0.3, 0.5, 0.45),
            (0.75, 0.75, 0.75)]
+
+
+def use_large_layout():
+    """--layout large: 34 x 20 m (about 2x the floor), 6 rack rows x 2 faces x 40 slots;
+    inbound moved 5 m west, outbound 5 m east, room for 14 transports and 5 patrols."""
+    global FLOOR_X, FLOOR_Y, ROW_YS, RACK_X0, RACK_X1, SLOTS_PER_SIDE, BELT_X0, BELT_X1, GATE_X, ZONE_XS
+    global EXC_POS, LANE_YC, LANE_XS, LANE_APPROACH_X, OUT_TRUCK_X, TRANSPORT_HOMES, PATROL_HOMES, WX, EX
+    WX, EX = -5.0, 5.0
+    FLOOR_X, FLOOR_Y = 34.0, 20.0
+    ROW_YS = [-7.5, -4.5, -1.5, 1.5, 4.5, 7.5]
+    RACK_X0, RACK_X1 = -3.0 + WX, 7.0 + EX
+    SLOTS_PER_SIDE = 40
+    BELT_X0, BELT_X1, GATE_X = BELT_X0 + WX, BELT_X1 + WX, GATE_X + WX
+    ZONE_XS = [x + WX for x in ZONE_XS]
+    EXC_POS = [(x + WX, y) for x, y in EXC_POS]
+    LANE_YC = [4.5, 1.5, -1.5, -4.5, 7.5, -7.5]      # the first regions get the middle docks
+    LANE_XS = [x + EX for x in LANE_XS]
+    LANE_APPROACH_X, OUT_TRUCK_X = LANE_APPROACH_X + EX, OUT_TRUCK_X + EX
+    TRANSPORT_HOMES = [(-10.5 + WX + 0.8 * k, -FLOOR_Y / 2 + 0.7) for k in range(14)]
+    PATROL_HOMES = [(-6.0 + WX - 1.2 * k, FLOOR_Y / 2 - 1.2) for k in range(5)]
 
 
 def look_at(eye, target):
@@ -228,9 +250,13 @@ def main():
     ap.add_argument("--inbound-lead", type=float, default=240.0, help="carton should arrive this long before demand")
     ap.add_argument("--no-faults", action="store_true")
     ap.add_argument("--plain", action="store_true", help="no decoration (faster batch experiments)")
+    ap.add_argument("--layout", choices=["base", "large"], default="base",
+                    help="base: 24 x 14 m, 160 rack slots; large: 34 x 20 m, 480 rack slots")
     ap.add_argument("--patrol-sweep", action="store_true",
                     help="idle patrols sweep the rack faces (periodic cycle count)")
     args = ap.parse_args()
+    if args.layout == "large":
+        use_large_layout()
     if not 0 <= args.patrols <= len(PATROL_HOMES) or not 1 <= args.transports <= len(TRANSPORT_HOMES):
         raise SystemExit(f"patrols 0..{len(PATROL_HOMES)}, transports 1..{len(TRANSPORT_HOMES)}")
     rng = random.Random(args.seed)
@@ -289,7 +315,8 @@ def main():
     deco = not args.plain
     deco_rng = random.Random(1000 + args.seed)
     slot_of_id = {s["id"]: s for s in slots}
-    eye, target = (1.0, -13.0, 20.0), (1.0, 0.0, 0.0)
+    k_view = FLOOR_X / 24.0
+    eye, target = (1.0, -13.0 * k_view, 20.0 * k_view), (1.0, 0.0, 0.0)
     parts = [
         "#VRML_SIM R2025a utf8\n",
         'EXTERNPROTO "../protos/SimpleBot.proto"\n\n',
@@ -305,7 +332,12 @@ def main():
                  east_doors=[(yc - 0.9, yc + 0.9) for yc in LANE_YC[:len(regions)]]),
     ]
     if deco:
-        parts.append(wv.ceiling_lights(looks, [-9.0, -5.0, -1.0, 3.0, 7.0, 10.5], [-6.0, -3.0, 0.0, 3.0, 6.0]))
+        if args.layout == "base":
+            light_xs, light_ys = [-9.0, -5.0, -1.0, 3.0, 7.0, 10.5], [-6.0, -3.0, 0.0, 3.0, 6.0]
+        else:
+            light_xs = [-hx + 3.0 + 4.0 * k for k in range(int((2 * hx - 4.5) // 4) + 1)]
+            light_ys = [-hy + 1.0 + 3.0 * k for k in range(int((2 * hy - 2.0) // 3) + 1)]
+        parts.append(wv.ceiling_lights(looks, light_xs, light_ys))
 
     # Floor markings: aisle edges, AMR lanes, parking bays, dock safety zones, lanes.
     white = looks.color("PAINT_W", (0.92, 0.92, 0.9), rough=0.9)
@@ -316,19 +348,19 @@ def main():
         for side in (-1, 1):
             if deco:
                 parts.append(wv.line(looks, white, RACK_X0 - 0.1, ry + side * 0.42, RACK_X1 + 0.1, ry + side * 0.42))
-    for x in (-4.2, 8.1):
+    for x in (-4.2 + WX, 8.1 + EX):
         if deco:
-            parts.append(wv.dashed(looks, yellow, x, -6.6, x, 6.6))
+            parts.append(wv.dashed(looks, yellow, x, -hy + 0.4, x, hy - 0.4))
     for hxy in TRANSPORT_HOMES + PATROL_HOMES:
         if deco:
             parts.append(wv.outline(looks, white, hxy[0], hxy[1], 0.55, 0.55))
     if deco:
-        parts.append(wv.hatch(looks, -hx + 0.02, -10.65, BELT_Y - 0.95, BELT_Y + 0.95))
+        parts.append(wv.hatch(looks, -hx + 0.02, -10.65 + WX, BELT_Y - 0.95, BELT_Y + 0.95))
     for yc in LANE_YC[:len(regions)]:
         if deco:
-            parts.append(wv.hatch(looks, 10.45, hx - 0.02, yc - 0.8, yc + 0.8))
+            parts.append(wv.hatch(looks, 10.45 + EX, hx - 0.02, yc - 0.8, yc + 0.8))
     if deco:
-        parts.append(wv.outline(looks, red, -9.35, 2.15, 1.3, 0.75, w=0.06))
+        parts.append(wv.outline(looks, red, -9.35 + WX, 2.15, 1.3, 0.75, w=0.06))
 
     # Racks: base and back panel keep their solids; uprights, beams, upper pallets and labels are looks.
     rack_cx, rack_len = (RACK_X0 + RACK_X1) / 2, RACK_X1 - RACK_X0
@@ -361,14 +393,14 @@ def main():
     if deco:
         parts.append(wv.scanner_gate(looks, GATE_X, BELT_Y))
     exc_app = looks.color("EXCTABLE", (0.75, 0.2, 0.18), rough=0.6)
-    parts.append(f"Solid {{ name \"exception_table\" translation {wv.vec(-9.35, 2.15, BELT_TOP / 2)} children [ "
+    parts.append(f"Solid {{ name \"exception_table\" translation {wv.vec(-9.35 + WX, 2.15, BELT_TOP / 2)} children [ "
                  f"{wv.shape(exc_app, wv.box(1.0, 0.5, BELT_TOP))} ] boundingObject {wv.box(1.0, 0.5, BELT_TOP)} }}\n")
     if deco:
-        parts.append(wv.sign(looks, "inbound", (-8.0, BELT_Y + 0.9, 2.5), size=(1.6, 0.8), facing="y"))
+        parts.append(wv.sign(looks, "inbound", (-8.0 + WX, BELT_Y + 0.9, 2.5), size=(1.6, 0.8), facing="y"))
     if deco:
-        parts.append(wv.sign(looks, "exception", (-9.35, 1.55, 1.6), size=(0.9, 0.45), facing="y"))
+        parts.append(wv.sign(looks, "exception", (-9.35 + WX, 1.55, 1.6), size=(0.9, 0.45), facing="y"))
     if deco:
-        parts.append(wv.sign(looks, "parking", (-7.7, -6.8, 1.6), size=(1.2, 0.6), facing="-y"))
+        parts.append(wv.sign(looks, "parking", (-7.7 + WX, -hy + 0.2, 1.6), size=(1.2, 0.6), facing="-y"))
     parts.append(wv.truck(looks, "TRUCK_IN", -hx - 0.05, BELT_Y, -1, (0.75, 0.15, 0.12)))
 
     # Outbound: lane marks, roll cages, region signs, trucks.
@@ -383,7 +415,7 @@ def main():
                 parts.append(wv.outline(looks, white, sp[0], sp[1], 0.34, 0.34, w=0.02))
         for dy in (-0.45, 0.45):
             if deco:
-                parts.append(wv.roll_cage(looks, 10.75, yc + dy))
+                parts.append(wv.roll_cage(looks, 10.75 + EX, yc + dy))
         if deco:
             parts.append(wv.sign(looks, region, (sum(LANE_XS) / 2, yc, 2.6), size=(1.2, 0.6), facing="x"))
         parts.append(wv.truck(looks, f"TRUCK_{region}", hx + 0.05, yc, 1, cab_colors[k % len(cab_colors)]))
@@ -431,11 +463,11 @@ def main():
         )
     # The supervisor also carries two cameras for snapshots (SNAPSHOT_AT): top-down (north up)
     # and a perspective view from the south-west.
-    persp_eye, persp_target = (-6.0, -12.0, 17.0), (1.0, 0.5, 0.0)
+    persp_eye, persp_target = (-6.0 * k_view, -12.0 * k_view, 17.0 * k_view), (1.0, 0.5, 0.0)
     parts.append(
         "Robot {\n  name \"supervisor\"\n  supervisor TRUE\n  controller \"supervisor\"\n"
         "  children [ Emitter { name \"emitter\" channel 100 range -1 } Receiver { name \"receiver\" channel 0 }\n"
-        "    Camera { name \"overview\" translation 0 0 22 rotation -0.57735 0.57735 0.57735 2.0944\n"
+        f"    Camera {{ name \"overview\" translation 0 0 {22 * k_view:g} rotation -0.57735 0.57735 0.57735 2.0944\n"
         "      width 1200 height 700 fieldOfView 1.0 }\n"
         f"    Camera {{ name \"overview_persp\" translation {wv.vec(*persp_eye)} "
         f"rotation {wv.vec(*look_at(persp_eye, persp_target))}\n"
@@ -465,11 +497,11 @@ def main():
             {"name": "belt", "x_min": BELT_X0 - 0.1, "x_max": BELT_X1 + 0.05, "y_min": BELT_Y - 0.3, "y_max": BELT_Y + 0.3},
             {"name": "staging_table", "x_min": ZONE_XS[-1] - 0.3, "x_max": ZONE_XS[0] + 0.3,
              "y_min": ZONE_Y - 0.3, "y_max": BELT_Y},
-            {"name": "exception_table", "x_min": -9.9, "x_max": -8.8, "y_min": 1.9, "y_max": 2.4},
-            {"name": "inbound_dock", "x_min": -12.0, "x_max": -10.6, "y_min": 2.0, "y_max": 4.0},
-        ] + [{"name": f"lane_{r}", "x_min": 9.15, "x_max": 9.95, "y_min": l["y"] - 0.8, "y_max": l["y"] + 0.8}
+            {"name": "exception_table", "x_min": -9.9 + WX, "x_max": -8.8 + WX, "y_min": 1.9, "y_max": 2.4},
+            {"name": "inbound_dock", "x_min": -hx, "x_max": -10.6 + WX, "y_min": 2.0, "y_max": 4.0},
+        ] + [{"name": f"lane_{r}", "x_min": 9.15 + EX, "x_max": 9.95 + EX, "y_min": l["y"] - 0.8, "y_max": l["y"] + 0.8}
              for r, l in lanes.items()]
-          + [{"name": f"dock_{r}", "x_min": 10.4, "x_max": 12.0, "y_min": l["y"] - 0.8, "y_max": l["y"] + 0.8}
+          + [{"name": f"dock_{r}", "x_min": 10.4 + EX, "x_max": hx, "y_min": l["y"] - 0.8, "y_max": l["y"] + 0.8}
              for r, l in lanes.items()],
         "box_size": list(BOX_SIZE),
         "slots": slots,
@@ -480,10 +512,12 @@ def main():
         "faces": faces,
         "belt": {"y": BELT_Y, "x_entry": BELT_X0 + 0.2, "x_end": ZONE_XS[0], "gate_x": GATE_X, "top": BELT_TOP,
                  "speed_mps": 0.25, "gap_m": 0.45, "zones": [f"B{k}" for k in range(len(ZONE_XS))],
-                 "exception": [f"X{k}" for k in range(len(EXC_POS))], "unload_s": 3.0, "truck_pos": [-11.4, BELT_Y]},
+                 "exception": [f"X{k}" for k in range(len(EXC_POS))], "unload_s": 3.0, "truck_pos": [-11.4 + WX, BELT_Y]},
         "inbound": {"source": "synthetic (covers the day's demand)", "trucks": trucks},
         "outbound": {
             "source": "real waves; regions synthetic",
+            # Where outbound work is: the stand-in WES keeps fast movers near it.
+            "center": [8.7 + EX, 0.0],
             **order_meta,
             "regions": regions,
             "lanes": lanes,

@@ -107,7 +107,8 @@ python tools/gen_world.py --date 2023-03-09 --duration 3600 --patrols 2 --transp
 | --- | --- | --- |
 | `--date` | 2023-03-09 | 사용할 날짜(`data/orders_<날짜>.json`) |
 | `--duration` | 3600 | 에피소드 길이(초) |
-| `--patrols`, `--transports` | 2, 6 | 순찰(최대 3)·운반(최대 8) 로봇 수 |
+| `--patrols`, `--transports` | 2, 6 | 순찰·운반 로봇 수(base 최대 3·8, large 최대 5·14) |
+| `--layout` | base | `base`: 24×14 m, 랙 4줄·160칸. `large`: 34×20 m, 랙 6줄·480칸(입고는 서쪽, 출고는 동쪽으로 5 m씩 이동) |
 | `--seed` | 0 | 난수 시드 |
 | `--order-sample` | 1.0 | 남길 주문 비율(주문 단위) |
 | `--wave-interval` | 90 | 웨이브 릴리스 최소 간격(초) |
