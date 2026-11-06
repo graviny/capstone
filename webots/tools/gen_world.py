@@ -171,11 +171,19 @@ def plan_stock(args, skus, waves, rack_slots, rng):
         if init[s] == 0:
             del init[s]
 
-    # Fastest movers (class A first) nearest the outbound side.
+    # Fastest movers (class A first) nearest the outbound side, or (--stock-layout dataset)
+    # the SKUs really stored closest to the front of the warehouse (tools/prep_locations.py).
     rank = {"A": 0, "B": 1, "C": 2}
     share = {s["sku"]: s["share"] for s in skus}
     abc = {s["sku"]: s["abc"] for s in skus}
     order = sorted(init, key=lambda s: (rank[abc[s]], -share[s]))
+    if args.stock_layout == "dataset":
+        path = ROOT / "data" / f"locations_{args.date}.json"
+        if not path.exists():
+            raise SystemExit(f"{path.name} not found: run tools/prep_locations.py --dates {args.date}")
+        real = {v["sku"]: v["front_dist"] for v in json.loads(path.read_text(encoding="utf-8"))["skus"]
+                if v["front_dist"] is not None}
+        order = sorted(order, key=lambda s: real.get(s, float("inf")))   # stable: ABC order breaks ties
     near_out = sorted(usable, key=lambda s: (-s["pos"][0], abs(s["pos"][1])))
     stock, k = [], 0
     for s in order:
@@ -254,6 +262,9 @@ def main():
                     help="base: 24 x 14 m, 160 rack slots; large: 34 x 20 m, 480 rack slots")
     ap.add_argument("--patrol-sweep", action="store_true",
                     help="idle patrols sweep the rack faces (periodic cycle count)")
+    ap.add_argument("--stock-layout", choices=["abc", "dataset"], default="abc",
+                    help="initial stock: abc = class A nearest the outbound side; dataset = in the order of "
+                         "the SKUs' real storage locations (data/locations_<date>.json)")
     args = ap.parse_args()
     if args.layout == "large":
         use_large_layout()
@@ -508,6 +519,7 @@ def main():
         "skus": skus,
         "cartons": cartons,
         "initial_stock": stock,
+        "initial_stock_layout": args.stock_layout,
         "robots": robots,
         "faces": faces,
         "belt": {"y": BELT_Y, "x_entry": BELT_X0 + 0.2, "x_end": ZONE_XS[0], "gate_x": GATE_X, "top": BELT_TOP,
