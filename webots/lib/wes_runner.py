@@ -21,9 +21,11 @@ A scheduler is a module with
         def on_event(self, ev, state): return [...]   # optional
 
 where state is the WMS view (lib/wms.py, WMSView). Details: webots/docs/wms.md.
-The WMS writes wms_log.jsonl next to the simulator's logs (or to WMS_LOG_DIR).
+The WMS writes wms_log.jsonl and a copy of scenario.json next to the simulator's logs
+(or to WMS_LOG_DIR).
 """
 import importlib
+import json
 import os
 from pathlib import Path
 
@@ -36,8 +38,10 @@ def log_dir_for(cfg, name):
     """The folder the supervisor writes this run's logs to (same rule as supervisor.py)."""
     faults_on = any(v for k, v in cfg["faults"].items() if not k.endswith("max_slots"))
     sweep = "_sweep" if cfg.get("patrol", {}).get("idle_sweep") else ""
+    run = f"_{cfg['run_name']}" if cfg.get("run_name") else ""
     mode = "batch" if os.environ.get("QUIT_AT_END") == "1" else "gui"
-    tag = f"{cfg['outbound']['date']}_{name}_seed{cfg['seed']}_{'faults' if faults_on else 'nofaults'}{sweep}_{mode}"
+    tag = (f"{cfg['outbound']['date']}_{name}_seed{cfg['seed']}_{'faults' if faults_on else 'nofaults'}"
+           f"{sweep}{run}_{mode}")
     return ROOT / "logs" / tag
 
 
@@ -50,6 +54,8 @@ class WES:
         if log_dir is None:
             log_dir = Path(os.environ["WMS_LOG_DIR"]) if os.environ.get("WMS_LOG_DIR") else log_dir_for(cfg, self.name)
         Path(log_dir).mkdir(parents=True, exist_ok=True)
+        # The scenario this run used: for tools/replay_wms.py and gen_world.py --config.
+        (Path(log_dir) / "scenario.json").write_text(json.dumps(cfg), encoding="utf-8")
         self.wms = MockWMS(cfg, log_path=Path(log_dir) / "wms_log.jsonl")
         self.out = []
 

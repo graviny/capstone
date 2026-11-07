@@ -13,14 +13,21 @@ initial stock covers part of the day's demand. Real and synthetic inputs are
 labelled in scenario.json.
 
 Faults that make S1-S3 happen are set in scenario.json "faults" (all on by
-default, --no-faults turns them off for the fault-free experiment).
+default, --no-faults turns them off for the fault-free experiment). Their rates
+are options too (--place-error-p ... --scanner-fail-p, all scaled by --fault-scale).
+
+Settings can come from a JSON file (--config): option names as keys, or a
+scenario.json, whose "generator" entry records every setting it was made with.
+Options given on the command line win. Same settings and seed -> same scenario.
 
 Usage: python tools/gen_world.py [--date 2023-03-09] [--duration 3600] [--patrols 2] [--transports 6] [--seed 0]
+       python tools/gen_world.py --config experiments/base.json [--seed 1]
 """
 import argparse
 import json
 import math
 import random
+import re
 import stat
 import sys
 import zlib
@@ -202,6 +209,21 @@ def plan_stock(args, skus, waves, rack_slots, rng):
     for s, d in per_sku.items():
         need += [(args.duration * 0.5, s)] * math.ceil(args.safety_stock * d)
     need.sort()
+    if args.inbound_scale != 1.0:
+        # More or fewer inbound cartons per SKU: the earliest-due ones are kept, extra ones
+        # arrive like safety stock (due mid-episode).
+        per = {}
+        for _, s in need:
+            per[s] = per.get(s, 0) + 1
+        want = {s: max(0, round(n * args.inbound_scale)) for s, n in per.items()}
+        kept, have = [], {}
+        for due, s in need:
+            if have.get(s, 0) < want[s]:
+                kept.append((due, s))
+                have[s] = have.get(s, 0) + 1
+        for s in sorted(want):
+            kept += [(args.duration * 0.5, s)] * (want[s] - have.get(s, 0))
+        need = sorted(kept)
     n_trucks = max(1, math.ceil(len(need) / args.truck_cartons))
     last = max(args.truck_first + 1, min(args.duration * args.release_frac, need[-1][0] if need else 0))
     gap = max(args.truck_min_gap, (last - args.truck_first) / max(1, n_trucks - 1))
@@ -265,7 +287,33 @@ def main():
     ap.add_argument("--stock-layout", choices=["abc", "dataset"], default="abc",
                     help="initial stock: abc = class A nearest the outbound side; dataset = in the order of "
                          "the SKUs' real storage locations (data/locations_<date>.json)")
+    ap.add_argument("--inbound-scale", type=float, default=1.0,
+                    help="inbound cartons per SKU x this (1: the day's uncovered demand + safety stock)")
+    # Fault rates (scenario.json "faults"); --fault-scale multiplies all of them.
+    ap.add_argument("--place-error-p", type=float, default=0.05, help="S1: share of rack placements off by a slot")
+    ap.add_argument("--worker-move-per-h", type=float, default=8.0, help="S1: unrecorded moves per hour")
+    ap.add_argument("--worker-move-max-slots", type=int, default=3, help="S1: how far a worker moves a carton")
+    ap.add_argument("--worker-remove-per-h", type=float, default=3.0, help="S2: unrecorded removals per hour")
+    ap.add_argument("--dest-taken-p", type=float, default=0.1, help="S3: share of putaways whose slot gets taken")
+    ap.add_argument("--scanner-fail-p", type=float, default=0.03, help="inbound: share of labels not read")
+    ap.add_argument("--fault-scale", type=float, default=1.0, help="multiplies every fault rate above")
+    ap.add_argument("--run-name", default="",
+                    help="added to the log folder name (logs/<date>_<WES>_seed<n>_<faults>_<run-name>_<mode>)")
+    ap.add_argument("--config", type=Path,
+                    help="JSON with option values (option names, - or _), or a scenario.json to repeat its settings")
+    pre, _ = ap.parse_known_args()
+    if pre.config:
+        conf = json.loads(pre.config.read_text(encoding="utf-8"))
+        conf = conf.get("generator", conf)            # a scenario.json carries its settings here
+        known = {a.dest for a in ap._actions}
+        conf = {k.replace("-", "_"): v for k, v in conf.items() if k not in ("config",)}
+        unknown = sorted(set(conf) - known)
+        if unknown:
+            raise SystemExit(f"{pre.config}: unknown settings {unknown}")
+        ap.set_defaults(**conf)                       # the command line still wins
     args = ap.parse_args()
+    if not re.fullmatch(r"[A-Za-z0-9_.-]*", args.run_name):
+        raise SystemExit("--run-name: letters, digits, _ . - only")
     if args.layout == "large":
         use_large_layout()
     if not 0 <= args.patrols <= len(PATROL_HOMES) or not 1 <= args.transports <= len(TRANSPORT_HOMES):
@@ -485,23 +533,27 @@ def main():
         "      width 1200 height 700 fieldOfView 1.1 } ]\n}\n"
     )
 
+    fs = args.fault_scale
     faults = {
         # S1 execution error: a carton lands in the next free slot of the face instead of the target.
-        "place_error_p": 0.05,
+        "place_error_p": min(1.0, args.place_error_p * fs),
         # S1/S2 unobserved changes: a worker moves (nearby) or removes a carton without recording it.
-        "worker_move_per_h": 8.0,
-        "worker_move_max_slots": 3,
-        "worker_remove_per_h": 3.0,
+        "worker_move_per_h": args.worker_move_per_h * fs,
+        "worker_move_max_slots": args.worker_move_max_slots,
+        "worker_remove_per_h": args.worker_remove_per_h * fs,
         # S3: while a robot carries a carton to a rack slot, a worker puts a returned carton there.
-        "dest_taken_p": 0.1,
+        "dest_taken_p": min(1.0, args.dest_taken_p * fs),
         # Inbound: the fixed scanner cannot read a label -> carton diverted to an exception slot.
-        "scanner_fail_p": 0.03,
+        "scanner_fail_p": min(1.0, args.scanner_fail_p * fs),
     }
     if args.no_faults:
         faults = {k: 0 if not k.endswith("max_slots") else v for k, v in faults.items()}
 
     scenario = {
         "seed": args.seed,
+        "run_name": args.run_name,
+        # Every setting this file was made with: gen_world.py --config scenario.json repeats it.
+        "generator": {k: v for k, v in vars(args).items() if k != "config"},
         "world": {"x_min": -hx, "x_max": hx, "y_min": -hy, "y_max": hy},
         "racks": [{"y": y, "x_min": RACK_X0, "x_max": RACK_X1, "half_depth": ROW_HALF_DEPTH} for y in ROW_YS],
         "obstacles": [
@@ -563,8 +615,9 @@ def main():
     print(f"wrote warehouse.wbt: {args.patrols} patrol + {args.transports} transport robots; "
           f"{args.date}: {order_meta['waves']} waves, {order_meta['units']} units, time x{order_meta['time_scale']}; "
           f"stock {len(stock)}/{len(rack_slots)} slots, {len(trucks)} trucks / {n_in} cartons; "
-          f"faults {'off' if args.no_faults else 'on'}, patrol sweep {'on' if args.patrol_sweep else 'off'}, "
-          f"{'plain' if args.plain else 'decorated'}")
+          f"faults {'off' if args.no_faults else ('on' if fs == 1 else f'x{fs:g}')}, "
+          f"patrol sweep {'on' if args.patrol_sweep else 'off'}, {'plain' if args.plain else 'decorated'}"
+          + (f", run name {args.run_name}" if args.run_name else ""))
 
 
 if __name__ == "__main__":

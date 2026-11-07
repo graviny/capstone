@@ -157,7 +157,8 @@ def main():
     mode = "batch" if os.environ.get("QUIT_AT_END") == "1" else "gui"
     faults_on = any(v for k, v in faults.items() if not k.endswith("max_slots"))
     sweep = "_sweep" if cfg.get("patrol", {}).get("idle_sweep") else ""
-    tag = f"{out_cfg['date']}_{wes.name}_seed{seed}_{'faults' if faults_on else 'nofaults'}{sweep}_{mode}"
+    run = f"_{cfg['run_name']}" if cfg.get("run_name") else ""      # gen_world.py --run-name
+    tag = f"{out_cfg['date']}_{wes.name}_seed{seed}_{'faults' if faults_on else 'nofaults'}{sweep}{run}_{mode}"
     log_dir = ROOT / "logs" / tag
     log_dir.mkdir(parents=True, exist_ok=True)
     ev_file = open(log_dir / "events.jsonl", "w", encoding="utf-8")

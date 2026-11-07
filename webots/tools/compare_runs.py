@@ -32,8 +32,9 @@ ROWS = [
 ]
 
 
-def decisions(log_dir):
-    c = Counter()
+def read_events(log_dir):
+    """Decision counts, and the order releases / truck arrivals the environment produced."""
+    c, orders, trucks = Counter(), [], []
     path = Path(log_dir) / "events.jsonl"
     if path.exists():
         with open(path, encoding="utf-8") as f:
@@ -41,20 +42,37 @@ def decisions(log_dir):
                 d = json.loads(line)
                 if d.get("kind") == "DECISION":
                     c[d["action"]] += 1
-    return c
+                elif d.get("type") == "ORDER_RELEASED":
+                    orders.append((d["t"], d["wave"], json.dumps(d["lines"], sort_keys=True)))
+                elif d.get("type") == "TRUCK_ARRIVED":
+                    trucks.append((d["t"], d["truck"]))
+    return c, orders, trucks
+
+
+def same_as_first(seqs, k):
+    if k == 0:
+        return "(base)"
+    a, b = seqs[0], seqs[k]
+    if a == b:
+        return "same"
+    n = next((i for i in range(min(len(a), len(b))) if a[i] != b[i]), min(len(a), len(b)))
+    return f"differs from #{n + 1}"
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("runs", nargs="+", type=Path)
     args = ap.parse_args()
-    sums, decs = [], []
+    sums, decs, orders, trucks = [], [], [], []
     for r in args.runs:
         p = r / "summary.json"
         if not p.exists():
             sys.exit(f"{p} not found (did the run reach the end?)")
         sums.append(json.loads(p.read_text(encoding="utf-8")))
-        decs.append(decisions(r))
+        c, o, t = read_events(r)
+        decs.append(c)
+        orders.append(o)
+        trucks.append(t)
     scen = json.loads((Path(__file__).resolve().parents[1] / "scenario.json").read_text(encoding="utf-8"))
     transports = [str(r["id"]) for r in scen["robots"] if r["role"] == "transport"]
     w = 34
@@ -70,6 +88,10 @@ def main():
         print(f"{name:{w}}" + "".join(f"{v:>22}" for v in vals))
     for action in sorted(set().union(*decs)):
         print(f"{'decisions ' + action:{w}}" + "".join(f"{d.get(action, 0):>22}" for d in decs))
+    # Same settings and seed should give the same order releases; truck arrivals can shift
+    # when a policy leaves the belt full (the next truck waits for the dock).
+    print(f"{'order releases vs 1st run':{w}}" + "".join(f"{same_as_first(orders, k):>22}" for k in range(len(orders))))
+    print(f"{'truck arrivals vs 1st run':{w}}" + "".join(f"{same_as_first(trucks, k):>22}" for k in range(len(trucks))))
 
 
 if __name__ == "__main__":

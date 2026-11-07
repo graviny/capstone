@@ -43,7 +43,7 @@ python tools/replay_wms.py logs/<날짜>_wms-standin_seed0_faults_batch
 python tools/compare_runs.py logs/<실행 A> logs/<실행 B>
 ```
 
-로그 폴더 이름의 WES 자리는 `wms-<스케줄러 name>`이 됩니다. WMS 로그 `wms_log.jsonl`은 시뮬레이터 로그와 같은 폴더에 생깁니다(`WMS_LOG_DIR`로 바꿀 수 있음).
+로그 폴더 이름의 WES 자리는 `wms-<스케줄러 name>`이 됩니다. WMS 로그 `wms_log.jsonl`과 그 실행이 쓴 `scenario.json` 사본은 시뮬레이터 로그와 같은 폴더에 생깁니다(`WMS_LOG_DIR`로 바꿀 수 있음). 오류율·입고량 같은 실험 설정은 [experiments.md](experiments.md)에 있습니다.
 
 ## 3. 작업 (Task)
 

@@ -7,6 +7,9 @@ they only tell IN_PROGRESS from ASSIGNED, which the check treats alike.
 
 Usage (from webots/):
   python tools/replay_wms.py logs/<run folder> [--scenario scenario.json]
+
+The run folder holds a copy of the scenario it used (written by wes_runner.py); that copy
+is used unless --scenario is given.
 """
 import argparse
 import json
@@ -98,9 +101,11 @@ def summary(wms):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("log_dir", type=Path)
-    ap.add_argument("--scenario", type=Path, default=ROOT / "scenario.json")
+    ap.add_argument("--scenario", type=Path,
+                    help="default: the run's own copy (<log_dir>/scenario.json), else webots/scenario.json")
     args = ap.parse_args()
-    cfg = json.loads(args.scenario.read_text(encoding="utf-8"))
+    scenario = args.scenario or next(p for p in (args.log_dir / "scenario.json", ROOT / "scenario.json") if p.exists())
+    cfg = json.loads(scenario.read_text(encoding="utf-8"))
     report = check(cfg, args.log_dir)
     if not report["scenario_ok"]:
         print("warning: scenario.json differs from the one this run used (regenerated since?)")
