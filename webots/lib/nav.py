@@ -4,6 +4,7 @@ import math
 from collections import deque
 
 SQRT2 = math.sqrt(2)
+START_FREE_M = 0.15
 NEIGHBORS = [(1, 0, 1), (-1, 0, 1), (0, 1, 1), (0, -1, 1),
              (1, 1, SQRT2), (1, -1, SQRT2), (-1, 1, SQRT2), (-1, -1, SQRT2)]
 
@@ -89,7 +90,11 @@ class GridMap:
         obstacles are other robots' positions, treated as discs for this plan only.
         """
         s0 = self.to_cell(start)
-        blocked = self._blocked_cells(obstacles, obstacle_radius, keep_free={s0})
+        # A robot standing inside another robot's disc must still be able to step out of it.
+        r0 = int(math.ceil(START_FREE_M / self.res))
+        keep = {(s0[0] + di, s0[1] + dj) for di in range(-r0, r0 + 1) for dj in range(-r0, r0 + 1)
+                if math.hypot(di, dj) * self.res <= START_FREE_M}
+        blocked = self._blocked_cells(obstacles, obstacle_radius, keep_free=keep)
         s = self.nearest_free(s0, blocked)
         g = self.nearest_free(self.to_cell(goal), blocked)
         if s is None or g is None:
