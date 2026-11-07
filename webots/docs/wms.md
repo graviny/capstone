@@ -1,6 +1,6 @@
 # Mock WMS와 WES 연결 규격 (v1)
 
-Mock WMS는 창고의 **기록**(재고·주문·입고·작업)을 관리하고, 입고 상자를 어디에 보관할지도 정합니다. Baseline과 Proposed WES(스케줄러)는 이 기록만 보고 판단하고, 시뮬레이터의 실제 상태(Ground Truth)는 보지 못합니다. 데이터 출처는 [dataset.md](dataset.md)에 정리돼 있습니다.
+Mock WMS는 창고의 **기록**(재고·주문·입고·작업)을 관리하고, 입고 상자를 어디에 보관할지도 정합니다. Baseline과 Proposed WES(스케줄러)는 이 기록만 보고 판단하고, 시뮬레이터의 실제 상태(Ground Truth)는 보지 못합니다. 데이터 출처는 [dataset.md](dataset.md)에 정리돼 있습니다. 형식과 규칙만 빠르게 찾으려면 [spec.md](spec.md)를 보세요.
 
 ## 1. 구조
 
