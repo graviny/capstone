@@ -15,6 +15,9 @@ labelled in scenario.json.
 Faults that make S1-S3 happen are set in scenario.json "faults" (all on by
 default, --no-faults turns them off for the fault-free experiment). Their rates
 are options too (--place-error-p ... --scanner-fail-p, all scaled by --fault-scale).
+Every default fault is caused by a person (worker moves, removals, returns);
+robots do not make mistakes and the inbound scanner reads every label. The robot
+placement error and scanner failures stay available but are off (0) by default.
 
 Settings can come from a JSON file (--config): option names as keys, or a
 scenario.json, whose "generator" entry records every setting it was made with.
@@ -290,12 +293,17 @@ def main():
     ap.add_argument("--inbound-scale", type=float, default=1.0,
                     help="inbound cartons per SKU x this (1: the day's uncovered demand + safety stock)")
     # Fault rates (scenario.json "faults"); --fault-scale multiplies all of them.
-    ap.add_argument("--place-error-p", type=float, default=0.05, help="S1: share of rack placements off by a slot")
+    # Off: faults are caused by people only (team decision); kept for later comparisons.
+    ap.add_argument("--place-error-p", type=float, default=0.0,
+                    help="S1 robot error: share of rack placements off by a slot (default off)")
     ap.add_argument("--worker-move-per-h", type=float, default=8.0, help="S1: unrecorded moves per hour")
     ap.add_argument("--worker-move-max-slots", type=int, default=3, help="S1: how far a worker moves a carton")
     ap.add_argument("--worker-remove-per-h", type=float, default=3.0, help="S2: unrecorded removals per hour")
     ap.add_argument("--dest-taken-p", type=float, default=0.1, help="S3: share of putaways whose slot gets taken")
-    ap.add_argument("--scanner-fail-p", type=float, default=0.03, help="inbound: share of labels not read")
+    # TODO: inbound label read failures are left out for now (default 0); the supervisor,
+    # the WMS (VERIFY of exception slots) and the stand-in policies still handle them.
+    ap.add_argument("--scanner-fail-p", type=float, default=0.0,
+                    help="inbound: share of labels not read (default off, TODO)")
     ap.add_argument("--fault-scale", type=float, default=1.0, help="multiplies every fault rate above")
     ap.add_argument("--run-name", default="",
                     help="added to the log folder name (logs/<date>_<WES>_seed<n>_<faults>_<run-name>_<mode>)")
@@ -535,7 +543,8 @@ def main():
 
     fs = args.fault_scale
     faults = {
-        # S1 execution error: a carton lands in the next free slot of the face instead of the target.
+        # S1 robot execution error: a carton lands in the next free slot of the face instead of
+        # the target. Off by default (faults come from people only).
         "place_error_p": min(1.0, args.place_error_p * fs),
         # S1/S2 unobserved changes: a worker moves (nearby) or removes a carton without recording it.
         "worker_move_per_h": args.worker_move_per_h * fs,
@@ -544,6 +553,7 @@ def main():
         # S3: while a robot carries a carton to a rack slot, a worker puts a returned carton there.
         "dest_taken_p": min(1.0, args.dest_taken_p * fs),
         # Inbound: the fixed scanner cannot read a label -> carton diverted to an exception slot.
+        # Off by default (TODO).
         "scanner_fail_p": min(1.0, args.scanner_fail_p * fs),
     }
     if args.no_faults:

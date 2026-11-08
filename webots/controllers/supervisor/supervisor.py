@@ -21,12 +21,15 @@ the carton is diverted to a free exception slot (or staged unread when both are 
 Outbound: each region's truck leaves when its lane holds dispatch_cartons or at
 every cutoff with whatever is staged, and is back after turnaround_s.
 
-Faults (scenario.json "faults"), the causes of S1-S3, logged to truth.jsonl only:
-  S1_PLACE_ERROR          a carton lands in the next free slot of the face
+Faults (scenario.json "faults"), the causes of S1-S3, logged to truth.jsonl only.
+By default every fault is caused by a person; the robot placement error and the
+scanner failure are off (rate 0) but still work when given a rate:
+  S1_PLACE_ERROR          (off) a robot puts a carton in the next free slot of the face
   S1_UNRECORDED_MOVE      a worker moves a carton a few slots, unrecorded
   S2_UNRECORDED_REMOVAL   a worker takes a carton away, unrecorded
   S3_DEST_TAKEN           while a robot carries a carton to a rack slot, a worker
                           puts a returned carton there
+  SCANNER_FAIL            (off, TODO) the inbound scanner cannot read a label
 Placement errors and S3 draws are keyed by carton / task, so they repeat across
 WES policies; worker events come from a seeded process.
 
@@ -41,6 +44,8 @@ are looks only and do not block the robots.
 
 Logs (logs/<tag>/): events.jsonl (events + decisions), truth.jsonl, poses.csv (every 2 s),
 timeseries.csv (every 10 s), summary.json. QUIT_AT_END=1 closes Webots at the end.
+Record quality ("record_mismatch_settled", summary "record_quality"): rack slots whose WES
+record differs from the truth while no robot works on them.
 """
 import csv
 import importlib
@@ -166,7 +171,7 @@ def main():
     ts_file = open(log_dir / "timeseries.csv", "w", newline="", encoding="utf-8")
     ts = csv.writer(ts_file)
     ts.writerow(["t", "rack_cartons", "belt", "buffer", "exception", "staged_out", "units_released",
-                 "units_shipped", "robots_busy", "record_mismatch"])
+                 "units_shipped", "robots_busy", "record_mismatch", "record_mismatch_settled"])
     pose_file = open(log_dir / "poses.csv", "w", newline="", encoding="utf-8")
     pose_log = csv.writer(pose_file)
     pose_log.writerow(["t", "robot", "x", "y", "task", "phase", "holding"])
@@ -231,6 +236,12 @@ def main():
     # ---- robots / tasks ----
     robot_state = {rid: {"task": None, "holding": None, "phase": None} for rid in robots}
     task_dest = {}                                     # task id -> destination (for S3)
+    task_src = {}                                      # task id -> source (record quality, below)
+    # Record quality: a rack slot whose record differs from the truth while no robot works on
+    # it ("settled" mismatch; a slot under a running task differs only until it completes).
+    mm_open = {}                                       # slot -> time the settled mismatch started
+    mm_closed = []                                     # durations of settled mismatches that ended
+    mm_area = [0.0]                                    # slot-seconds of settled mismatch
     place_count = {}
     s3_pending = []                                    # (time, slot, task)
     dist_m = {rid: 0.0 for rid in robots}
@@ -483,8 +494,10 @@ def main():
             task = d.get("task") or {}
             if d["action"] == "EXECUTE":
                 task_dest[d["task_id"]] = task.get("destination")
+                task_src[d["task_id"]] = task.get("source")
             elif d["action"] == "REROUTE":
                 task_dest[d["task_id"]] = d.get("destination")
+                task_src[d["task_id"]] = d.get("source", task_src.get(d["task_id"]))
             to_robot(d["robot_id"], {"kind": "DECISION", **d})
 
         # Carried cartons ride on their robot.
@@ -545,15 +558,26 @@ def main():
             bad += [l for l in carried if l in slot_of] + [b["lpn"] for b in belt if b["lpn"] in slot_of or b["lpn"] in carried]
             if bad:
                 truth("INVARIANT_VIOLATION", items=bad[:10])
-            mismatch = ""
+            mismatch, settled = "", ""
             if hasattr(wes, "record_snapshot"):
                 rec = wes.record_snapshot()
-                mismatch = sum(1 for s, v in rec.items() if v != gt_sku(s))
+                wrong = {s for s, v in rec.items() if v != gt_sku(s)}
+                mismatch = len(wrong)
+                busy = {x for st in robot_state.values() if st["task"]
+                        for x in (task_src.get(st["task"]), task_dest.get(st["task"])) if x}
+                cur = wrong - busy
+                for s in cur - mm_open.keys():
+                    mm_open[s] = t
+                for s in [s for s in mm_open if s not in cur]:
+                    mm_closed.append(t - mm_open.pop(s))
+                mm_area[0] += len(cur) * STATS_PERIOD_S
+                settled = len(cur)
             ts.writerow([f"{t:.0f}", sum(1 for s in slots if slots[s]["kind"] == "rack" and occupant[s]), len(belt),
                          sum(1 for z in zones if occupant[z]),
                          sum(1 for x in belt_cfg["exception"] if occupant[x]),
                          sum(1 for r in lanes for s in lanes[r]["slots"] if occupant[s]),
-                         units_released, units_shipped, sum(1 for r in robot_state.values() if r["task"]), mismatch])
+                         units_released, units_shipped, sum(1 for r in robot_state.values() if r["task"]), mismatch,
+                         settled])
             next_stats = t + STATS_PERIOD_S
         if t >= next_print:
             for f in (ev_file, truth_file, ts_file, pose_file):
@@ -582,6 +606,18 @@ def main():
                 "faults_injected": {k: v for k, v in truth_counts.items() if k not in DIAGNOSTICS},
                 "diagnostics": {k: v for k, v in truth_counts.items() if k in DIAGNOSTICS},
                 "record_mismatch_at_end": sum(1 for s, v in rec.items() if v != gt_sku(s)) if rec else None,
+                # Settled mismatches (no robot working on the slot), sampled every STATS_PERIOD_S:
+                # mean count over the run, how long the ones that got corrected lasted, and the
+                # ones still open at the end.
+                "record_quality": {
+                    "settled_mismatch_mean": round(mm_area[0] / t, 3) if rec else None,
+                    "corrected": len(mm_closed),
+                    "mean_time_to_correct_s": round(sum(mm_closed) / len(mm_closed), 1) if mm_closed else None,
+                    "open_at_end": len(mm_open),
+                    "mean_open_age_s": (round(sum(t - v for v in mm_open.values()) / len(mm_open), 1)
+                                        if mm_open else None),
+                } if rec else None,
+                "robot_roles": {r: robots[r]["role"] for r in robots},
                 "robot_distance_m": {r: round(d, 1) for r, d in dist_m.items()},
                 "robot_busy_share": {r: round(b / t, 3) for r, b in busy_s.items()},
                 "wes_stats": wes.stats() if hasattr(wes, "stats") else None,
