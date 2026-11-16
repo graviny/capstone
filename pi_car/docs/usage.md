@@ -1,5 +1,8 @@
 # 실차 자율주행 스택
 
+외부 MOVE/STOP 기반 멀티로봇 TCP와 Pi 실행기 사용법은
+[multi_robot_commands.md](multi_robot_commands.md)에 있다. 아래는 지도·좌표 검사 도구 안내를 포함한다.
+
 Adeept ADR036 + Raspberry Pi 4B + 천장 RealSense D455 + AprilTag 구성이다.
 현재 `feature/pi_car1`의 `pi_car/`에서 개발하며, `webots/`와 코드 의존성을 공유하지 않는다.
 
@@ -21,10 +24,10 @@ PC의 검사 도구에는 모터 실행이나 차량으로 주행 명령을 보�
 | Control | 규칙 기반 경유점 추종 계산, 위치/초음파 단절 시 정지 로직 | 실차 파라미터 조정, PID, Pure Pursuit |
 | Local Planning | 장애물 발견 시 정지하는 확장 지점 | 좌우 스캔 → 제한적 우회 → 충돌 검사 → 기존 경로 복귀 |
 | Hardware | 기본 비활성 모터, 명시적으로 주입하는 Adeept 어댑터 | 바퀴 방향 확인, 별도 모터 watchdog, 실차 통합 |
-| Communication | Pose 구조, JSON Lines 직렬화 | TCP 연결/재연결, heartbeat, 지도 전송, 목표 수신, 상태 전송 |
+| Communication | 다중 TCP·재연결·heartbeat·외부 목표·상태·영구 ID 기록 | 실험망 지연 평가, 지도 전송 자동화 |
 
-**차량 전체 자율주행은 아직 연결하지 않았다.** `runtime.py`는 제어 루프의 부품이며,
-실행 가능한 주행 데몬이 아니다. 회피·경로 복귀·동적 장애물 재탐색은 후속 구현이다.
+차량 전체 실차 주행은 아직 검증하지 않았다. `robot-client`는 Runtime을 사용하는
+실행기를 제공하며 CLI의 모터는 비활성이다. 회피·경로 복귀·동적 장애물 재탐색은 후속 구현이다.
 
 ## 폴더
 

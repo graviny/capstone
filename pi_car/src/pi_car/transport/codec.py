@@ -1,5 +1,6 @@
 import json
 from pi_car.common.messages import Pose
+from .protocol import encode_message, decode_message  # new versioned fleet protocol
 
 
 def encode_pose(pose):

@@ -1,1 +1,1 @@
-"""Wire schemas only for now; TCP session/heartbeat implementation is a later step."""
+"""Versioned messages, bounded TCP sessions, command gateway and durable ID journal."""

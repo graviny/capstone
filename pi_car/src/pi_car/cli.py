@@ -3,12 +3,15 @@ import argparse
 from dataclasses import asdict
 from pathlib import Path
 import json
+import asyncio
 from contextlib import nullcontext
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest="command", required=True)
+    from pi_car.fleet_cli import add_commands
+    add_commands(commands)
     capture = commands.add_parser("capture", help="Save one rectified RGB-D capture")
     capture.add_argument("--out", required=True)
     preview = commands.add_parser("preview", help="Check RGB/depth before calibration")
@@ -58,6 +61,13 @@ def main():
 
 
 def _run(args, parser):
+    if args.command in {"fleet-server", "robot-client", "send-command", "mock-fleet"}:
+        from pi_car.fleet_cli import run
+        try:
+            asyncio.run(run(args))
+        except KeyboardInterrupt:
+            pass
+        return
     from pi_car.pc.camera import RealSenseCamera, RGBDFrame
     from pi_car.pc.calibration import Calibration, calibrate
     if args.command == "capture":

@@ -87,7 +87,8 @@ class GeometryAndMapTests(unittest.TestCase):
         camera.maps, camera.scale, camera.serial = (None, None), .001, "test"
         camera.intrinsics = Intrinsics(3, 2, 2., 2., 1., 1.)
         frame = camera.read()
-        self.assertAlmostEqual(frame.timestamp, stamp)
+        # Epoch-sized doubles lose sub-microsecond precision in seconds↔ms.
+        self.assertAlmostEqual(frame.timestamp, stamp, delta=1e-6)
         np.testing.assert_allclose(frame.depth_m, 1.5)
         domain[0] = "hardware"
         with self.assertRaises(RuntimeError):

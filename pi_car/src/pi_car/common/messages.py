@@ -25,6 +25,10 @@ class Pose:
     valid: bool = True
 
     def __post_init__(self):
+        if type(self.valid) is not bool:
+            raise ValueError("Pose.valid must be boolean")
+        if any(type(v) not in (int, float) for v in (self.x, self.y, self.theta, self.timestamp)):
+            raise ValueError("Pose values must be numeric")
         if not all(math.isfinite(v) for v in (self.x, self.y, self.theta, self.timestamp)):
             raise ValueError("Pose values must be finite")
         if not self.robot_id or not self.frame_id:

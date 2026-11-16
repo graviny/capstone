@@ -25,6 +25,12 @@ class AprilTagLocalizer:
         if ids is None or np.count_nonzero(ids == self.tag_id) != 1:
             return None
         image_points = corners[list(ids.ravel()).index(self.tag_id)].reshape(4, 2)
+        return self.estimate_corners(frame, image_points)
+
+    def estimate_corners(self, frame, image_points):
+        """Shared pose solver; multi-robot detection calls this without re-detection."""
+        self.calibration.check_frame(frame)
+        cv2 = self.cv2
         s = self.tag_size_m / 2
         # IPPE_SQUARE order: top-left, top-right, bottom-right, bottom-left.
         obj = np.array([[-s, s, 0], [s, s, 0], [s, -s, 0], [-s, -s, 0]], dtype=float)
@@ -52,3 +58,46 @@ class AprilTagLocalizer:
             candidates.append((error, Pose(self.robot_id, float(center[0]), float(center[1]),
                                             heading, frame.timestamp, self.calibration.frame_id)))
         return min(candidates, key=lambda item: item[0])[1] if candidates else None
+
+
+class MultiRobotLocalizer:
+    """One detection per image, one independently validated pose per configured robot."""
+    def __init__(self, calibration, robots):
+        self.localizers = {}
+        tags = set()
+        for config in robots:
+            config = dict(config)
+            if not all(k in config for k in ("robot_id", "tag_id", "tag_size_m")):
+                raise ValueError("Each robot requires robot_id, tag_id, tag_size_m")
+            if type(config["tag_id"]) is not int or config["tag_id"] < 0:
+                raise ValueError("Tag ID must be a nonnegative integer")
+            config.pop("clearance_m", None)
+            localizer = AprilTagLocalizer(calibration, **config)
+            if localizer.robot_id in self.localizers or localizer.tag_id in tags:
+                raise ValueError("robot_id and tag_id must be unique")
+            if (localizer.offset.shape != (3,) or not np.isfinite(localizer.offset).all()
+                    or not math.isfinite(localizer.heading_offset)):
+                raise ValueError("Invalid robot center/heading offset")
+            self.localizers[localizer.robot_id] = localizer
+            tags.add(localizer.tag_id)
+        if not self.localizers:
+            raise ValueError("Configure at least one robot")
+        self.first = next(iter(self.localizers.values()))
+
+    def estimate(self, frame):
+        self.first.calibration.check_frame(frame)
+        cv2 = self.first.cv2
+        corners, ids, _ = self.first.detector.detectMarkers(
+            cv2.cvtColor(frame.rgb, cv2.COLOR_RGB2GRAY))
+        ids = [] if ids is None else list(ids.ravel())
+        results = {}
+        for robot_id, localizer in self.localizers.items():
+            pose = None
+            if ids.count(localizer.tag_id) == 1:
+                try:
+                    pose = localizer.estimate_corners(
+                        frame, corners[ids.index(localizer.tag_id)].reshape(4, 2))
+                except (ValueError, cv2.error):
+                    pass
+            results[robot_id] = pose
+        return results

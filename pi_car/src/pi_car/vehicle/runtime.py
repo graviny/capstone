@@ -4,10 +4,10 @@ from pi_car.vehicle.control.waypoint import WaypointFollower
 
 
 class VehicleRuntime:
-    """Control-loop building block, not a runnable hardware daemon yet.
+    """Control-loop building block shared by offline checks and RobotAgent.
 
-    A future receiver must invalidate pose on disconnect. A separate motor watchdog
-    must stop hardware when this loop hangs; a software tick alone is insufficient.
+    RobotAgent invalidates motion on disconnect and wraps the motor in an
+    independent thread watchdog. Hardware fail-off is still needed for OS stalls.
     """
     def __init__(self, motor, robot_id, frame_id, pose_timeout_s=.3,
                  stop_distance_m=.4, range_timeout_s=.2):
@@ -21,6 +21,13 @@ class VehicleRuntime:
         self.motor.stop()
         self.path = list(path)
         self.follower.reset()
+
+    def halt(self):
+        """Invalidate motion; reconnection or fresh sensors cannot restore this path."""
+        self.motor.stop()
+        self.path = []
+        self.follower.reset()
+        self.mode = Mode.IDLE
 
     def tick(self, pose, front_range, *, connected, now_unix=None, now_monotonic=None):
         now_unix = time.time() if now_unix is None else now_unix

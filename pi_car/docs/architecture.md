@@ -1,5 +1,8 @@
 # 역할과 확장 지점
 
+현재 외부 명령·다중 로봇 TCP·Pi 실행기의 상세 구조와 실행법은
+[multi_robot_commands.md](multi_robot_commands.md)에 정리했다.
+
 ## 데이터 흐름
 
 ```text
@@ -35,12 +38,13 @@ PnP는 태그→카메라 자세를 구하고 태그 좌표의 차량 중심 오
 raw 지도에는 팽창을 중복 적용하지 않는다. Pi도 동일한 차체 반경/여유로 nav grid를 만든다.
 최대 장애물 높이는 관측 환경에 맞춰 조절해야 하며 차량의 충돌 높이보다 낮게 두면 안 된다.
 
-## 통신 계약 (향후 구현)
+## 통신 계약
 
 초기에는 지도 폴더를 파일로 전달하고 PC와 Pi가 같은 metadata를 로딩한다.
-실시간 연결은 TCP + UTF-8 JSON Lines를 사용할 자리만 마련했다.
-현재 `transport/codec.py`는 pose encode/decode만 제공한다.
-분할 수신 버퍼, 최대 길이, 인증/접속 정책, reconnect, heartbeat, ack는 아직 구현하지 않았다.
+실시간 연결은 TCP + UTF-8 JSON Lines로 구현했다. 새 프로토콜은 대문자 POSE/GOAL/STOP과
+frame/map 검증·명령 ID·상태 보고를 사용한다. `codec.py`의 아래 소문자 pose 형식은 기존
+도구 호환용이며 Fleet wire 형식과 구분한다. 분할 수신·최대 길이·재연결·heartbeat와
+명령 중복 방지는 구현했고 인증/TLS는 제공하지 않는다.
 
 ```json
 {"type":"pose","schema_version":1,"robot_id":"B","x":1.2,"y":0.8,"theta":1.5708,"timestamp":1790000000.0,"frame_id":"calibration-uuid","valid":true}
