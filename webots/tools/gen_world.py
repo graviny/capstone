@@ -23,7 +23,7 @@ Settings can come from a JSON file (--config): option names as keys, or a
 scenario.json, whose "generator" entry records every setting it was made with.
 Options given on the command line win. Same settings and seed -> same scenario.
 
-Usage: python tools/gen_world.py [--date 2023-03-09] [--duration 3600] [--patrols 2] [--transports 6] [--seed 0]
+Usage: python tools/gen_world.py [--date 2023-03-09] [--duration 3600] [--patrols 0] [--transports 8] [--seed 42]
        python tools/gen_world.py --config experiments/base.json [--seed 1]
 """
 import argparse
@@ -265,9 +265,17 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--date", default="2023-03-09")
     ap.add_argument("--duration", type=float, default=3600.0, help="episode length, s")
-    ap.add_argument("--patrols", type=int, default=2)
-    ap.add_argument("--transports", type=int, default=6)
-    ap.add_argument("--seed", type=int, default=0)
+    # No patrol robots by default (team decision, docs/experiments_patrol.md): transports
+    # also do the VERIFY tasks. --patrols N brings them back.
+    ap.add_argument("--patrols", type=int, default=0)
+    ap.add_argument("--transports", type=int, default=8)
+    ap.add_argument("--robot-speed", type=float, default=0.8,
+                    help="robot top speed, m/s (motor limit 30 rad/s -> at most 0.99 m/s)")
+    ap.add_argument("--traffic-priority", choices=["task", "id"], default="task",
+                    help="who gives way when robots meet: task (loaded first, then task priority, deadline, id) "
+                         "or id (lower robot id first, the earlier rule)")
+    ap.add_argument("--seed", type=int, default=42,
+                    help="scenario and fault seed (initial stock, regions, inbound, worker faults); 0 before 2026-11-16")
     ap.add_argument("--order-sample", type=float, default=1.0, help="share of orders kept (whole orders)")
     ap.add_argument("--max-line-qty", type=int, default=6)
     ap.add_argument("--time-scale", type=float, default=0.0, help="real s per sim s (0: fit releases)")
@@ -609,8 +617,9 @@ def main():
         # Off by default: which slots to check is the WES's decision (VERIFY tasks).
         "patrol": {"idle_sweep": args.patrol_sweep},
         "perception": {"read_m": 1.2, "slot_match_m": 0.2, "carried_z": 0.35, "look_s": 1.0},
-        "nav": {"speed_mps": 0.3, "wheel_radius": 0.033, "reach_m": 0.2, "goal_reach_m": 0.1,
-                "avoid_dist_m": 0.6, "stop_dist_m": 0.3, "replan_after_s": 2.0, "act_s": 2.0, "reach_act_m": 1.3},
+        "nav": {"speed_mps": args.robot_speed, "wheel_radius": 0.033, "reach_m": 0.2, "goal_reach_m": 0.1,
+                "avoid_dist_m": 0.6, "stop_dist_m": 0.3, "replan_after_s": 2.0, "act_s": 2.0, "reach_act_m": 1.3,
+                "traffic_priority": args.traffic_priority},
     }
 
     (ROOT / "worlds").mkdir(exist_ok=True)

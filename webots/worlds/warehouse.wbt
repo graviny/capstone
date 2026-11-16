@@ -296,9 +296,6 @@ Pose { translation 7 -4.2 1.2 children [ Shape { appearance DEF UPRIGHT PBRAppea
 Pose { translation -1.75 -4.8 0.9 children [ Shape { appearance DEF BEAM PBRAppearance { baseColor 0.95 0.45 0.08 roughness 0.5 metalness 0.4 } geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation -1.75 -4.2 0.9 children [ Shape { appearance DEF BEAM PBRAppearance { baseColor 0.95 0.45 0.08 roughness 0.5 metalness 0.4 } geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation -1.75 -4.5 0.96 children [ Shape { appearance DEF DECK PBRAppearance { baseColor 0.6 0.62 0.65 roughness 0.5 metalness 0.7 transparency 0.25 } geometry Box { size 2.42 0.6 0.02 } } ] }
-Pose { translation -2.35 -4.5 1.03 children [ Shape { appearance DEF PINE PBRAppearance { baseColor 1 1 1 baseColorMap ImageTexture { url [ "../textures/webots/rough_pine_base_color.jpg" ] } roughness 0.9 metalness 0 } geometry Box { size 1 0.54 0.12 } } ] }
-Pose { translation -2.35 -4.5 1.365 children [ Shape { appearance DEF CARDBOARD PBRAppearance { baseColor 1 1 1 baseColorMap ImageTexture { url [ "../textures/webots/cardboard_top_base_color.jpg" ] } roughness 0.85 metalness 0 } geometry Box { size 0.92 0.48 0.55 } } ] }
-Pose { translation -2.35 -4.5 1.365 children [ Shape { appearance DEF STRETCHWRAP PBRAppearance { baseColor 0.9 0.92 0.95 roughness 0.2 metalness 0 transparency 0.85 } geometry Box { size 0.95 0.51 0.57 } } ] }
 Pose { translation -1.15 -4.5 1.03 children [ Shape { appearance DEF PINE PBRAppearance { baseColor 1 1 1 baseColorMap ImageTexture { url [ "../textures/webots/rough_pine_base_color.jpg" ] } roughness 0.9 metalness 0 } geometry Box { size 1 0.54 0.12 } } ] }
 Pose { translation -1.15 -4.5 1.315 children [ Shape { appearance DEF CARDBOARD PBRAppearance { baseColor 1 1 1 baseColorMap ImageTexture { url [ "../textures/webots/cardboard_top_base_color.jpg" ] } roughness 0.85 metalness 0 } geometry Box { size 0.92 0.48 0.45 } } ] }
 Pose { translation -1.15 -4.5 1.315 children [ Shape { appearance DEF STRETCHWRAP PBRAppearance { baseColor 0.9 0.92 0.95 roughness 0.2 metalness 0 transparency 0.85 } geometry Box { size 0.95 0.51 0.47 } } ] }
@@ -308,51 +305,54 @@ Pose { translation -1.75 -4.5 1.76 children [ Shape { appearance DEF DECK PBRApp
 Pose { translation -2.35 -4.5 1.83 children [ Shape { appearance DEF PINE PBRAppearance { baseColor 1 1 1 baseColorMap ImageTexture { url [ "../textures/webots/rough_pine_base_color.jpg" ] } roughness 0.9 metalness 0 } geometry Box { size 1 0.54 0.12 } } ] }
 Pose { translation -2.35 -4.5 2.115 children [ Shape { appearance DEF CARDBOARD PBRAppearance { baseColor 1 1 1 baseColorMap ImageTexture { url [ "../textures/webots/cardboard_top_base_color.jpg" ] } roughness 0.85 metalness 0 } geometry Box { size 0.92 0.48 0.45 } } ] }
 Pose { translation -2.35 -4.5 2.115 children [ Shape { appearance DEF STRETCHWRAP PBRAppearance { baseColor 0.9 0.92 0.95 roughness 0.2 metalness 0 transparency 0.85 } geometry Box { size 0.95 0.51 0.47 } } ] }
+Pose { translation -1.15 -4.5 1.83 children [ Shape { appearance DEF PINE PBRAppearance { baseColor 1 1 1 baseColorMap ImageTexture { url [ "../textures/webots/rough_pine_base_color.jpg" ] } roughness 0.9 metalness 0 } geometry Box { size 1 0.54 0.12 } } ] }
+Pose { translation -1.15 -4.5 2.115 children [ Shape { appearance DEF CARDBOARD PBRAppearance { baseColor 1 1 1 baseColorMap ImageTexture { url [ "../textures/webots/cardboard_top_base_color.jpg" ] } roughness 0.85 metalness 0 } geometry Box { size 0.92 0.48 0.45 } } ] }
+Pose { translation -1.15 -4.5 2.115 children [ Shape { appearance DEF STRETCHWRAP PBRAppearance { baseColor 0.9 0.92 0.95 roughness 0.2 metalness 0 transparency 0.85 } geometry Box { size 0.95 0.51 0.47 } } ] }
 Pose { translation 0.75 -4.8 0.9 children [ Shape { appearance DEF BEAM PBRAppearance { baseColor 0.95 0.45 0.08 roughness 0.5 metalness 0.4 } geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation 0.75 -4.2 0.9 children [ Shape { appearance DEF BEAM PBRAppearance { baseColor 0.95 0.45 0.08 roughness 0.5 metalness 0.4 } geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation 0.75 -4.5 0.96 children [ Shape { appearance DEF DECK PBRAppearance { baseColor 0.6 0.62 0.65 roughness 0.5 metalness 0.7 transparency 0.25 } geometry Box { size 2.42 0.6 0.02 } } ] }
 Pose { translation 0.15 -4.5 1.03 children [ Shape { appearance DEF PINE PBRAppearance { baseColor 1 1 1 baseColorMap ImageTexture { url [ "../textures/webots/rough_pine_base_color.jpg" ] } roughness 0.9 metalness 0 } geometry Box { size 1 0.54 0.12 } } ] }
 Pose { translation 0.15 -4.5 1.315 children [ Shape { appearance DEF CARDBOARD PBRAppearance { baseColor 1 1 1 baseColorMap ImageTexture { url [ "../textures/webots/cardboard_top_base_color.jpg" ] } roughness 0.85 metalness 0 } geometry Box { size 0.92 0.48 0.45 } } ] }
 Pose { translation 0.15 -4.5 1.315 children [ Shape { appearance DEF STRETCHWRAP PBRAppearance { baseColor 0.9 0.92 0.95 roughness 0.2 metalness 0 transparency 0.85 } geometry Box { size 0.95 0.51 0.47 } } ] }
+Pose { translation 1.35 -4.5 1.03 children [ Shape { appearance DEF PINE PBRAppearance { baseColor 1 1 1 baseColorMap ImageTexture { url [ "../textures/webots/rough_pine_base_color.jpg" ] } roughness 0.9 metalness 0 } geometry Box { size 1 0.54 0.12 } } ] }
+Pose { translation 1.35 -4.5 1.315 children [ Shape { appearance DEF CARDBOARD PBRAppearance { baseColor 1 1 1 baseColorMap ImageTexture { url [ "../textures/webots/cardboard_top_base_color.jpg" ] } roughness 0.85 metalness 0 } geometry Box { size 0.92 0.48 0.45 } } ] }
+Pose { translation 1.35 -4.5 1.315 children [ Shape { appearance DEF STRETCHWRAP PBRAppearance { baseColor 0.9 0.92 0.95 roughness 0.2 metalness 0 transparency 0.85 } geometry Box { size 0.95 0.51 0.47 } } ] }
 Pose { translation 0.75 -4.8 1.7 children [ Shape { appearance DEF BEAM PBRAppearance { baseColor 0.95 0.45 0.08 roughness 0.5 metalness 0.4 } geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation 0.75 -4.2 1.7 children [ Shape { appearance DEF BEAM PBRAppearance { baseColor 0.95 0.45 0.08 roughness 0.5 metalness 0.4 } geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation 0.75 -4.5 1.76 children [ Shape { appearance DEF DECK PBRAppearance { baseColor 0.6 0.62 0.65 roughness 0.5 metalness 0.7 transparency 0.25 } geometry Box { size 2.42 0.6 0.02 } } ] }
 Pose { translation 0.15 -4.5 1.83 children [ Shape { appearance DEF PINE PBRAppearance { baseColor 1 1 1 baseColorMap ImageTexture { url [ "../textures/webots/rough_pine_base_color.jpg" ] } roughness 0.9 metalness 0 } geometry Box { size 1 0.54 0.12 } } ] }
-Pose { translation 0.15 -4.5 2.115 children [ Shape { appearance DEF CARDBOARD PBRAppearance { baseColor 1 1 1 baseColorMap ImageTexture { url [ "../textures/webots/cardboard_top_base_color.jpg" ] } roughness 0.85 metalness 0 } geometry Box { size 0.92 0.48 0.45 } } ] }
-Pose { translation 0.15 -4.5 2.115 children [ Shape { appearance DEF STRETCHWRAP PBRAppearance { baseColor 0.9 0.92 0.95 roughness 0.2 metalness 0 transparency 0.85 } geometry Box { size 0.95 0.51 0.47 } } ] }
+Pose { translation 0.15 -4.5 2.165 children [ Shape { appearance DEF CARDBOARD PBRAppearance { baseColor 1 1 1 baseColorMap ImageTexture { url [ "../textures/webots/cardboard_top_base_color.jpg" ] } roughness 0.85 metalness 0 } geometry Box { size 0.92 0.48 0.55 } } ] }
+Pose { translation 0.15 -4.5 2.165 children [ Shape { appearance DEF STRETCHWRAP PBRAppearance { baseColor 0.9 0.92 0.95 roughness 0.2 metalness 0 transparency 0.85 } geometry Box { size 0.95 0.51 0.57 } } ] }
 Pose { translation 1.35 -4.5 1.83 children [ Shape { appearance DEF PINE PBRAppearance { baseColor 1 1 1 baseColorMap ImageTexture { url [ "../textures/webots/rough_pine_base_color.jpg" ] } roughness 0.9 metalness 0 } geometry Box { size 1 0.54 0.12 } } ] }
-Pose { translation 1.35 -4.5 2.065 children [ Shape { appearance DEF CARDBOARD PBRAppearance { baseColor 1 1 1 baseColorMap ImageTexture { url [ "../textures/webots/cardboard_top_base_color.jpg" ] } roughness 0.85 metalness 0 } geometry Box { size 0.92 0.48 0.35 } } ] }
-Pose { translation 1.35 -4.5 2.065 children [ Shape { appearance DEF STRETCHWRAP PBRAppearance { baseColor 0.9 0.92 0.95 roughness 0.2 metalness 0 transparency 0.85 } geometry Box { size 0.95 0.51 0.37 } } ] }
+Pose { translation 1.35 -4.5 2.115 children [ Shape { appearance DEF CARDBOARD PBRAppearance { baseColor 1 1 1 baseColorMap ImageTexture { url [ "../textures/webots/cardboard_top_base_color.jpg" ] } roughness 0.85 metalness 0 } geometry Box { size 0.92 0.48 0.45 } } ] }
+Pose { translation 1.35 -4.5 2.115 children [ Shape { appearance DEF STRETCHWRAP PBRAppearance { baseColor 0.9 0.92 0.95 roughness 0.2 metalness 0 transparency 0.85 } geometry Box { size 0.95 0.51 0.47 } } ] }
 Pose { translation 3.25 -4.8 0.9 children [ Shape { appearance DEF BEAM PBRAppearance { baseColor 0.95 0.45 0.08 roughness 0.5 metalness 0.4 } geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation 3.25 -4.2 0.9 children [ Shape { appearance DEF BEAM PBRAppearance { baseColor 0.95 0.45 0.08 roughness 0.5 metalness 0.4 } geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation 3.25 -4.5 0.96 children [ Shape { appearance DEF DECK PBRAppearance { baseColor 0.6 0.62 0.65 roughness 0.5 metalness 0.7 transparency 0.25 } geometry Box { size 2.42 0.6 0.02 } } ] }
 Pose { translation 2.65 -4.5 1.03 children [ Shape { appearance DEF PINE PBRAppearance { baseColor 1 1 1 baseColorMap ImageTexture { url [ "../textures/webots/rough_pine_base_color.jpg" ] } roughness 0.9 metalness 0 } geometry Box { size 1 0.54 0.12 } } ] }
-Pose { translation 2.65 -4.5 1.315 children [ Shape { appearance DEF CARDBOARD PBRAppearance { baseColor 1 1 1 baseColorMap ImageTexture { url [ "../textures/webots/cardboard_top_base_color.jpg" ] } roughness 0.85 metalness 0 } geometry Box { size 0.92 0.48 0.45 } } ] }
-Pose { translation 2.65 -4.5 1.315 children [ Shape { appearance DEF STRETCHWRAP PBRAppearance { baseColor 0.9 0.92 0.95 roughness 0.2 metalness 0 transparency 0.85 } geometry Box { size 0.95 0.51 0.47 } } ] }
+Pose { translation 2.65 -4.5 1.265 children [ Shape { appearance DEF CARDBOARD PBRAppearance { baseColor 1 1 1 baseColorMap ImageTexture { url [ "../textures/webots/cardboard_top_base_color.jpg" ] } roughness 0.85 metalness 0 } geometry Box { size 0.92 0.48 0.35 } } ] }
+Pose { translation 2.65 -4.5 1.265 children [ Shape { appearance DEF STRETCHWRAP PBRAppearance { baseColor 0.9 0.92 0.95 roughness 0.2 metalness 0 transparency 0.85 } geometry Box { size 0.95 0.51 0.37 } } ] }
+Pose { translation 3.85 -4.5 1.03 children [ Shape { appearance DEF PINE PBRAppearance { baseColor 1 1 1 baseColorMap ImageTexture { url [ "../textures/webots/rough_pine_base_color.jpg" ] } roughness 0.9 metalness 0 } geometry Box { size 1 0.54 0.12 } } ] }
+Pose { translation 3.85 -4.5 1.315 children [ Shape { appearance DEF CARDBOARD PBRAppearance { baseColor 1 1 1 baseColorMap ImageTexture { url [ "../textures/webots/cardboard_top_base_color.jpg" ] } roughness 0.85 metalness 0 } geometry Box { size 0.92 0.48 0.45 } } ] }
+Pose { translation 3.85 -4.5 1.315 children [ Shape { appearance DEF STRETCHWRAP PBRAppearance { baseColor 0.9 0.92 0.95 roughness 0.2 metalness 0 transparency 0.85 } geometry Box { size 0.95 0.51 0.47 } } ] }
 Pose { translation 3.25 -4.8 1.7 children [ Shape { appearance DEF BEAM PBRAppearance { baseColor 0.95 0.45 0.08 roughness 0.5 metalness 0.4 } geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation 3.25 -4.2 1.7 children [ Shape { appearance DEF BEAM PBRAppearance { baseColor 0.95 0.45 0.08 roughness 0.5 metalness 0.4 } geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation 3.25 -4.5 1.76 children [ Shape { appearance DEF DECK PBRAppearance { baseColor 0.6 0.62 0.65 roughness 0.5 metalness 0.7 transparency 0.25 } geometry Box { size 2.42 0.6 0.02 } } ] }
 Pose { translation 2.65 -4.5 1.83 children [ Shape { appearance DEF PINE PBRAppearance { baseColor 1 1 1 baseColorMap ImageTexture { url [ "../textures/webots/rough_pine_base_color.jpg" ] } roughness 0.9 metalness 0 } geometry Box { size 1 0.54 0.12 } } ] }
-Pose { translation 2.65 -4.5 2.065 children [ Shape { appearance DEF CARDBOARD PBRAppearance { baseColor 1 1 1 baseColorMap ImageTexture { url [ "../textures/webots/cardboard_top_base_color.jpg" ] } roughness 0.85 metalness 0 } geometry Box { size 0.92 0.48 0.35 } } ] }
-Pose { translation 2.65 -4.5 2.065 children [ Shape { appearance DEF STRETCHWRAP PBRAppearance { baseColor 0.9 0.92 0.95 roughness 0.2 metalness 0 transparency 0.85 } geometry Box { size 0.95 0.51 0.37 } } ] }
+Pose { translation 2.65 -4.5 2.165 children [ Shape { appearance DEF CARDBOARD PBRAppearance { baseColor 1 1 1 baseColorMap ImageTexture { url [ "../textures/webots/cardboard_top_base_color.jpg" ] } roughness 0.85 metalness 0 } geometry Box { size 0.92 0.48 0.55 } } ] }
+Pose { translation 2.65 -4.5 2.165 children [ Shape { appearance DEF STRETCHWRAP PBRAppearance { baseColor 0.9 0.92 0.95 roughness 0.2 metalness 0 transparency 0.85 } geometry Box { size 0.95 0.51 0.57 } } ] }
 Pose { translation 3.85 -4.5 1.83 children [ Shape { appearance DEF PINE PBRAppearance { baseColor 1 1 1 baseColorMap ImageTexture { url [ "../textures/webots/rough_pine_base_color.jpg" ] } roughness 0.9 metalness 0 } geometry Box { size 1 0.54 0.12 } } ] }
-Pose { translation 3.85 -4.5 2.165 children [ Shape { appearance DEF CARDBOARD PBRAppearance { baseColor 1 1 1 baseColorMap ImageTexture { url [ "../textures/webots/cardboard_top_base_color.jpg" ] } roughness 0.85 metalness 0 } geometry Box { size 0.92 0.48 0.55 } } ] }
-Pose { translation 3.85 -4.5 2.165 children [ Shape { appearance DEF STRETCHWRAP PBRAppearance { baseColor 0.9 0.92 0.95 roughness 0.2 metalness 0 transparency 0.85 } geometry Box { size 0.95 0.51 0.57 } } ] }
+Pose { translation 3.85 -4.5 2.115 children [ Shape { appearance DEF CARDBOARD PBRAppearance { baseColor 1 1 1 baseColorMap ImageTexture { url [ "../textures/webots/cardboard_top_base_color.jpg" ] } roughness 0.85 metalness 0 } geometry Box { size 0.92 0.48 0.45 } } ] }
+Pose { translation 3.85 -4.5 2.115 children [ Shape { appearance DEF STRETCHWRAP PBRAppearance { baseColor 0.9 0.92 0.95 roughness 0.2 metalness 0 transparency 0.85 } geometry Box { size 0.95 0.51 0.47 } } ] }
 Pose { translation 5.75 -4.8 0.9 children [ Shape { appearance DEF BEAM PBRAppearance { baseColor 0.95 0.45 0.08 roughness 0.5 metalness 0.4 } geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation 5.75 -4.2 0.9 children [ Shape { appearance DEF BEAM PBRAppearance { baseColor 0.95 0.45 0.08 roughness 0.5 metalness 0.4 } geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation 5.75 -4.5 0.96 children [ Shape { appearance DEF DECK PBRAppearance { baseColor 0.6 0.62 0.65 roughness 0.5 metalness 0.7 transparency 0.25 } geometry Box { size 2.42 0.6 0.02 } } ] }
 Pose { translation 5.15 -4.5 1.03 children [ Shape { appearance DEF PINE PBRAppearance { baseColor 1 1 1 baseColorMap ImageTexture { url [ "../textures/webots/rough_pine_base_color.jpg" ] } roughness 0.9 metalness 0 } geometry Box { size 1 0.54 0.12 } } ] }
-Pose { translation 5.15 -4.5 1.315 children [ Shape { appearance DEF CARDBOARD PBRAppearance { baseColor 1 1 1 baseColorMap ImageTexture { url [ "../textures/webots/cardboard_top_base_color.jpg" ] } roughness 0.85 metalness 0 } geometry Box { size 0.92 0.48 0.45 } } ] }
-Pose { translation 5.15 -4.5 1.315 children [ Shape { appearance DEF STRETCHWRAP PBRAppearance { baseColor 0.9 0.92 0.95 roughness 0.2 metalness 0 transparency 0.85 } geometry Box { size 0.95 0.51 0.47 } } ] }
-Pose { translation 6.35 -4.5 1.03 children [ Shape { appearance DEF PINE PBRAppearance { baseColor 1 1 1 baseColorMap ImageTexture { url [ "../textures/webots/rough_pine_base_color.jpg" ] } roughness 0.9 metalness 0 } geometry Box { size 1 0.54 0.12 } } ] }
-Pose { translation 6.35 -4.5 1.365 children [ Shape { appearance DEF CARDBOARD PBRAppearance { baseColor 1 1 1 baseColorMap ImageTexture { url [ "../textures/webots/cardboard_top_base_color.jpg" ] } roughness 0.85 metalness 0 } geometry Box { size 0.92 0.48 0.55 } } ] }
-Pose { translation 6.35 -4.5 1.365 children [ Shape { appearance DEF STRETCHWRAP PBRAppearance { baseColor 0.9 0.92 0.95 roughness 0.2 metalness 0 transparency 0.85 } geometry Box { size 0.95 0.51 0.57 } } ] }
+Pose { translation 5.15 -4.5 1.265 children [ Shape { appearance DEF CARDBOARD PBRAppearance { baseColor 1 1 1 baseColorMap ImageTexture { url [ "../textures/webots/cardboard_top_base_color.jpg" ] } roughness 0.85 metalness 0 } geometry Box { size 0.92 0.48 0.35 } } ] }
+Pose { translation 5.15 -4.5 1.265 children [ Shape { appearance DEF STRETCHWRAP PBRAppearance { baseColor 0.9 0.92 0.95 roughness 0.2 metalness 0 transparency 0.85 } geometry Box { size 0.95 0.51 0.37 } } ] }
 Pose { translation 5.75 -4.8 1.7 children [ Shape { appearance DEF BEAM PBRAppearance { baseColor 0.95 0.45 0.08 roughness 0.5 metalness 0.4 } geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation 5.75 -4.2 1.7 children [ Shape { appearance DEF BEAM PBRAppearance { baseColor 0.95 0.45 0.08 roughness 0.5 metalness 0.4 } geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation 5.75 -4.5 1.76 children [ Shape { appearance DEF DECK PBRAppearance { baseColor 0.6 0.62 0.65 roughness 0.5 metalness 0.7 transparency 0.25 } geometry Box { size 2.42 0.6 0.02 } } ] }
-Pose { translation 5.15 -4.5 1.83 children [ Shape { appearance DEF PINE PBRAppearance { baseColor 1 1 1 baseColorMap ImageTexture { url [ "../textures/webots/rough_pine_base_color.jpg" ] } roughness 0.9 metalness 0 } geometry Box { size 1 0.54 0.12 } } ] }
-Pose { translation 5.15 -4.5 2.065 children [ Shape { appearance DEF CARDBOARD PBRAppearance { baseColor 1 1 1 baseColorMap ImageTexture { url [ "../textures/webots/cardboard_top_base_color.jpg" ] } roughness 0.85 metalness 0 } geometry Box { size 0.92 0.48 0.35 } } ] }
-Pose { translation 5.15 -4.5 2.065 children [ Shape { appearance DEF STRETCHWRAP PBRAppearance { baseColor 0.9 0.92 0.95 roughness 0.2 metalness 0 transparency 0.85 } geometry Box { size 0.95 0.51 0.37 } } ] }
 Pose { translation -2.75 -4.804 0.06 children [ Shape { appearance DEF LBL_r0s00 PBRAppearance { baseColor 1 1 1 baseColorMap ImageTexture { url [ "../textures/gen/slot_r0s00.png" ] } roughness 0.6 metalness 0 } geometry Box { size 0.18 0.006 0.06 } } ] }
 Pose { translation -2.25 -4.804 0.06 children [ Shape { appearance DEF LBL_r0s01 PBRAppearance { baseColor 1 1 1 baseColorMap ImageTexture { url [ "../textures/gen/slot_r0s01.png" ] } roughness 0.6 metalness 0 } geometry Box { size 0.18 0.006 0.06 } } ] }
 Pose { translation -1.75 -4.804 0.06 children [ Shape { appearance DEF LBL_r0s02 PBRAppearance { baseColor 1 1 1 baseColorMap ImageTexture { url [ "../textures/gen/slot_r0s02.png" ] } roughness 0.6 metalness 0 } geometry Box { size 0.18 0.006 0.06 } } ] }
@@ -409,59 +409,62 @@ Pose { translation -1.75 -1.8 0.9 children [ Shape { appearance USE BEAM geometr
 Pose { translation -1.75 -1.2 0.9 children [ Shape { appearance USE BEAM geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation -1.75 -1.5 0.96 children [ Shape { appearance USE DECK geometry Box { size 2.42 0.6 0.02 } } ] }
 Pose { translation -2.35 -1.5 1.03 children [ Shape { appearance USE PINE geometry Box { size 1 0.54 0.12 } } ] }
-Pose { translation -2.35 -1.5 1.315 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.45 } } ] }
-Pose { translation -2.35 -1.5 1.315 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.47 } } ] }
+Pose { translation -2.35 -1.5 1.365 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.55 } } ] }
+Pose { translation -2.35 -1.5 1.365 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.57 } } ] }
 Pose { translation -1.15 -1.5 1.03 children [ Shape { appearance USE PINE geometry Box { size 1 0.54 0.12 } } ] }
 Pose { translation -1.15 -1.5 1.265 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.35 } } ] }
 Pose { translation -1.15 -1.5 1.265 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.37 } } ] }
 Pose { translation -1.75 -1.8 1.7 children [ Shape { appearance USE BEAM geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation -1.75 -1.2 1.7 children [ Shape { appearance USE BEAM geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation -1.75 -1.5 1.76 children [ Shape { appearance USE DECK geometry Box { size 2.42 0.6 0.02 } } ] }
-Pose { translation -2.35 -1.5 1.83 children [ Shape { appearance USE PINE geometry Box { size 1 0.54 0.12 } } ] }
-Pose { translation -2.35 -1.5 2.065 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.35 } } ] }
-Pose { translation -2.35 -1.5 2.065 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.37 } } ] }
 Pose { translation -1.15 -1.5 1.83 children [ Shape { appearance USE PINE geometry Box { size 1 0.54 0.12 } } ] }
 Pose { translation -1.15 -1.5 2.165 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.55 } } ] }
 Pose { translation -1.15 -1.5 2.165 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.57 } } ] }
 Pose { translation 0.75 -1.8 0.9 children [ Shape { appearance USE BEAM geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation 0.75 -1.2 0.9 children [ Shape { appearance USE BEAM geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation 0.75 -1.5 0.96 children [ Shape { appearance USE DECK geometry Box { size 2.42 0.6 0.02 } } ] }
+Pose { translation 0.15 -1.5 1.03 children [ Shape { appearance USE PINE geometry Box { size 1 0.54 0.12 } } ] }
+Pose { translation 0.15 -1.5 1.265 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.35 } } ] }
+Pose { translation 0.15 -1.5 1.265 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.37 } } ] }
+Pose { translation 1.35 -1.5 1.03 children [ Shape { appearance USE PINE geometry Box { size 1 0.54 0.12 } } ] }
+Pose { translation 1.35 -1.5 1.365 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.55 } } ] }
+Pose { translation 1.35 -1.5 1.365 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.57 } } ] }
 Pose { translation 0.75 -1.8 1.7 children [ Shape { appearance USE BEAM geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation 0.75 -1.2 1.7 children [ Shape { appearance USE BEAM geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation 0.75 -1.5 1.76 children [ Shape { appearance USE DECK geometry Box { size 2.42 0.6 0.02 } } ] }
+Pose { translation 0.15 -1.5 1.83 children [ Shape { appearance USE PINE geometry Box { size 1 0.54 0.12 } } ] }
+Pose { translation 0.15 -1.5 2.115 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.45 } } ] }
+Pose { translation 0.15 -1.5 2.115 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.47 } } ] }
 Pose { translation 1.35 -1.5 1.83 children [ Shape { appearance USE PINE geometry Box { size 1 0.54 0.12 } } ] }
 Pose { translation 1.35 -1.5 2.065 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.35 } } ] }
 Pose { translation 1.35 -1.5 2.065 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.37 } } ] }
 Pose { translation 3.25 -1.8 0.9 children [ Shape { appearance USE BEAM geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation 3.25 -1.2 0.9 children [ Shape { appearance USE BEAM geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation 3.25 -1.5 0.96 children [ Shape { appearance USE DECK geometry Box { size 2.42 0.6 0.02 } } ] }
-Pose { translation 2.65 -1.5 1.03 children [ Shape { appearance USE PINE geometry Box { size 1 0.54 0.12 } } ] }
-Pose { translation 2.65 -1.5 1.315 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.45 } } ] }
-Pose { translation 2.65 -1.5 1.315 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.47 } } ] }
 Pose { translation 3.85 -1.5 1.03 children [ Shape { appearance USE PINE geometry Box { size 1 0.54 0.12 } } ] }
-Pose { translation 3.85 -1.5 1.365 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.55 } } ] }
-Pose { translation 3.85 -1.5 1.365 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.57 } } ] }
+Pose { translation 3.85 -1.5 1.265 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.35 } } ] }
+Pose { translation 3.85 -1.5 1.265 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.37 } } ] }
 Pose { translation 3.25 -1.8 1.7 children [ Shape { appearance USE BEAM geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation 3.25 -1.2 1.7 children [ Shape { appearance USE BEAM geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation 3.25 -1.5 1.76 children [ Shape { appearance USE DECK geometry Box { size 2.42 0.6 0.02 } } ] }
-Pose { translation 3.85 -1.5 1.83 children [ Shape { appearance USE PINE geometry Box { size 1 0.54 0.12 } } ] }
-Pose { translation 3.85 -1.5 2.115 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.45 } } ] }
-Pose { translation 3.85 -1.5 2.115 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.47 } } ] }
+Pose { translation 2.65 -1.5 1.83 children [ Shape { appearance USE PINE geometry Box { size 1 0.54 0.12 } } ] }
+Pose { translation 2.65 -1.5 2.065 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.35 } } ] }
+Pose { translation 2.65 -1.5 2.065 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.37 } } ] }
 Pose { translation 5.75 -1.8 0.9 children [ Shape { appearance USE BEAM geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation 5.75 -1.2 0.9 children [ Shape { appearance USE BEAM geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation 5.75 -1.5 0.96 children [ Shape { appearance USE DECK geometry Box { size 2.42 0.6 0.02 } } ] }
 Pose { translation 5.15 -1.5 1.03 children [ Shape { appearance USE PINE geometry Box { size 1 0.54 0.12 } } ] }
-Pose { translation 5.15 -1.5 1.365 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.55 } } ] }
-Pose { translation 5.15 -1.5 1.365 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.57 } } ] }
+Pose { translation 5.15 -1.5 1.265 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.35 } } ] }
+Pose { translation 5.15 -1.5 1.265 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.37 } } ] }
+Pose { translation 6.35 -1.5 1.03 children [ Shape { appearance USE PINE geometry Box { size 1 0.54 0.12 } } ] }
+Pose { translation 6.35 -1.5 1.315 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.45 } } ] }
+Pose { translation 6.35 -1.5 1.315 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.47 } } ] }
 Pose { translation 5.75 -1.8 1.7 children [ Shape { appearance USE BEAM geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation 5.75 -1.2 1.7 children [ Shape { appearance USE BEAM geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation 5.75 -1.5 1.76 children [ Shape { appearance USE DECK geometry Box { size 2.42 0.6 0.02 } } ] }
 Pose { translation 5.15 -1.5 1.83 children [ Shape { appearance USE PINE geometry Box { size 1 0.54 0.12 } } ] }
-Pose { translation 5.15 -1.5 2.115 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.45 } } ] }
-Pose { translation 5.15 -1.5 2.115 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.47 } } ] }
-Pose { translation 6.35 -1.5 1.83 children [ Shape { appearance USE PINE geometry Box { size 1 0.54 0.12 } } ] }
-Pose { translation 6.35 -1.5 2.065 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.35 } } ] }
-Pose { translation 6.35 -1.5 2.065 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.37 } } ] }
+Pose { translation 5.15 -1.5 2.065 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.35 } } ] }
+Pose { translation 5.15 -1.5 2.065 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.37 } } ] }
 Pose { translation -2.75 -1.804 0.06 children [ Shape { appearance DEF LBL_r1s00 PBRAppearance { baseColor 1 1 1 baseColorMap ImageTexture { url [ "../textures/gen/slot_r1s00.png" ] } roughness 0.6 metalness 0 } geometry Box { size 0.18 0.006 0.06 } } ] }
 Pose { translation -2.25 -1.804 0.06 children [ Shape { appearance DEF LBL_r1s01 PBRAppearance { baseColor 1 1 1 baseColorMap ImageTexture { url [ "../textures/gen/slot_r1s01.png" ] } roughness 0.6 metalness 0 } geometry Box { size 0.18 0.006 0.06 } } ] }
 Pose { translation -1.75 -1.804 0.06 children [ Shape { appearance DEF LBL_r1s02 PBRAppearance { baseColor 1 1 1 baseColorMap ImageTexture { url [ "../textures/gen/slot_r1s02.png" ] } roughness 0.6 metalness 0 } geometry Box { size 0.18 0.006 0.06 } } ] }
@@ -520,42 +523,36 @@ Pose { translation -1.75 1.5 0.96 children [ Shape { appearance USE DECK geometr
 Pose { translation -2.35 1.5 1.03 children [ Shape { appearance USE PINE geometry Box { size 1 0.54 0.12 } } ] }
 Pose { translation -2.35 1.5 1.315 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.45 } } ] }
 Pose { translation -2.35 1.5 1.315 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.47 } } ] }
-Pose { translation -1.15 1.5 1.03 children [ Shape { appearance USE PINE geometry Box { size 1 0.54 0.12 } } ] }
-Pose { translation -1.15 1.5 1.365 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.55 } } ] }
-Pose { translation -1.15 1.5 1.365 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.57 } } ] }
 Pose { translation -1.75 1.2 1.7 children [ Shape { appearance USE BEAM geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation -1.75 1.8 1.7 children [ Shape { appearance USE BEAM geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation -1.75 1.5 1.76 children [ Shape { appearance USE DECK geometry Box { size 2.42 0.6 0.02 } } ] }
-Pose { translation -2.35 1.5 1.83 children [ Shape { appearance USE PINE geometry Box { size 1 0.54 0.12 } } ] }
-Pose { translation -2.35 1.5 2.115 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.45 } } ] }
-Pose { translation -2.35 1.5 2.115 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.47 } } ] }
-Pose { translation -1.15 1.5 1.83 children [ Shape { appearance USE PINE geometry Box { size 1 0.54 0.12 } } ] }
-Pose { translation -1.15 1.5 2.065 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.35 } } ] }
-Pose { translation -1.15 1.5 2.065 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.37 } } ] }
 Pose { translation 0.75 1.2 0.9 children [ Shape { appearance USE BEAM geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation 0.75 1.8 0.9 children [ Shape { appearance USE BEAM geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation 0.75 1.5 0.96 children [ Shape { appearance USE DECK geometry Box { size 2.42 0.6 0.02 } } ] }
-Pose { translation 1.35 1.5 1.03 children [ Shape { appearance USE PINE geometry Box { size 1 0.54 0.12 } } ] }
-Pose { translation 1.35 1.5 1.365 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.55 } } ] }
-Pose { translation 1.35 1.5 1.365 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.57 } } ] }
+Pose { translation 0.15 1.5 1.03 children [ Shape { appearance USE PINE geometry Box { size 1 0.54 0.12 } } ] }
+Pose { translation 0.15 1.5 1.265 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.35 } } ] }
+Pose { translation 0.15 1.5 1.265 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.37 } } ] }
 Pose { translation 0.75 1.2 1.7 children [ Shape { appearance USE BEAM geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation 0.75 1.8 1.7 children [ Shape { appearance USE BEAM geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation 0.75 1.5 1.76 children [ Shape { appearance USE DECK geometry Box { size 2.42 0.6 0.02 } } ] }
 Pose { translation 1.35 1.5 1.83 children [ Shape { appearance USE PINE geometry Box { size 1 0.54 0.12 } } ] }
-Pose { translation 1.35 1.5 2.065 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.35 } } ] }
-Pose { translation 1.35 1.5 2.065 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.37 } } ] }
+Pose { translation 1.35 1.5 2.165 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.55 } } ] }
+Pose { translation 1.35 1.5 2.165 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.57 } } ] }
 Pose { translation 3.25 1.2 0.9 children [ Shape { appearance USE BEAM geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation 3.25 1.8 0.9 children [ Shape { appearance USE BEAM geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation 3.25 1.5 0.96 children [ Shape { appearance USE DECK geometry Box { size 2.42 0.6 0.02 } } ] }
 Pose { translation 2.65 1.5 1.03 children [ Shape { appearance USE PINE geometry Box { size 1 0.54 0.12 } } ] }
 Pose { translation 2.65 1.5 1.315 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.45 } } ] }
 Pose { translation 2.65 1.5 1.315 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.47 } } ] }
+Pose { translation 3.85 1.5 1.03 children [ Shape { appearance USE PINE geometry Box { size 1 0.54 0.12 } } ] }
+Pose { translation 3.85 1.5 1.365 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.55 } } ] }
+Pose { translation 3.85 1.5 1.365 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.57 } } ] }
 Pose { translation 3.25 1.2 1.7 children [ Shape { appearance USE BEAM geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation 3.25 1.8 1.7 children [ Shape { appearance USE BEAM geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation 3.25 1.5 1.76 children [ Shape { appearance USE DECK geometry Box { size 2.42 0.6 0.02 } } ] }
 Pose { translation 2.65 1.5 1.83 children [ Shape { appearance USE PINE geometry Box { size 1 0.54 0.12 } } ] }
-Pose { translation 2.65 1.5 2.065 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.35 } } ] }
-Pose { translation 2.65 1.5 2.065 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.37 } } ] }
+Pose { translation 2.65 1.5 2.115 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.45 } } ] }
+Pose { translation 2.65 1.5 2.115 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.47 } } ] }
 Pose { translation 3.85 1.5 1.83 children [ Shape { appearance USE PINE geometry Box { size 1 0.54 0.12 } } ] }
 Pose { translation 3.85 1.5 2.165 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.55 } } ] }
 Pose { translation 3.85 1.5 2.165 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.57 } } ] }
@@ -563,11 +560,8 @@ Pose { translation 5.75 1.2 0.9 children [ Shape { appearance USE BEAM geometry 
 Pose { translation 5.75 1.8 0.9 children [ Shape { appearance USE BEAM geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation 5.75 1.5 0.96 children [ Shape { appearance USE DECK geometry Box { size 2.42 0.6 0.02 } } ] }
 Pose { translation 5.15 1.5 1.03 children [ Shape { appearance USE PINE geometry Box { size 1 0.54 0.12 } } ] }
-Pose { translation 5.15 1.5 1.315 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.45 } } ] }
-Pose { translation 5.15 1.5 1.315 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.47 } } ] }
-Pose { translation 6.35 1.5 1.03 children [ Shape { appearance USE PINE geometry Box { size 1 0.54 0.12 } } ] }
-Pose { translation 6.35 1.5 1.365 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.55 } } ] }
-Pose { translation 6.35 1.5 1.365 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.57 } } ] }
+Pose { translation 5.15 1.5 1.365 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.55 } } ] }
+Pose { translation 5.15 1.5 1.365 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.57 } } ] }
 Pose { translation 5.75 1.2 1.7 children [ Shape { appearance USE BEAM geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation 5.75 1.8 1.7 children [ Shape { appearance USE BEAM geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation 5.75 1.5 1.76 children [ Shape { appearance USE DECK geometry Box { size 2.42 0.6 0.02 } } ] }
@@ -641,51 +635,51 @@ Pose { translation -1.15 4.5 1.265 children [ Shape { appearance USE STRETCHWRAP
 Pose { translation -1.75 4.2 1.7 children [ Shape { appearance USE BEAM geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation -1.75 4.8 1.7 children [ Shape { appearance USE BEAM geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation -1.75 4.5 1.76 children [ Shape { appearance USE DECK geometry Box { size 2.42 0.6 0.02 } } ] }
-Pose { translation -2.35 4.5 1.83 children [ Shape { appearance USE PINE geometry Box { size 1 0.54 0.12 } } ] }
-Pose { translation -2.35 4.5 2.115 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.45 } } ] }
-Pose { translation -2.35 4.5 2.115 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.47 } } ] }
 Pose { translation -1.15 4.5 1.83 children [ Shape { appearance USE PINE geometry Box { size 1 0.54 0.12 } } ] }
 Pose { translation -1.15 4.5 2.115 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.45 } } ] }
 Pose { translation -1.15 4.5 2.115 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.47 } } ] }
 Pose { translation 0.75 4.2 0.9 children [ Shape { appearance USE BEAM geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation 0.75 4.8 0.9 children [ Shape { appearance USE BEAM geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation 0.75 4.5 0.96 children [ Shape { appearance USE DECK geometry Box { size 2.42 0.6 0.02 } } ] }
-Pose { translation 0.15 4.5 1.03 children [ Shape { appearance USE PINE geometry Box { size 1 0.54 0.12 } } ] }
-Pose { translation 0.15 4.5 1.265 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.35 } } ] }
-Pose { translation 0.15 4.5 1.265 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.37 } } ] }
-Pose { translation 1.35 4.5 1.03 children [ Shape { appearance USE PINE geometry Box { size 1 0.54 0.12 } } ] }
-Pose { translation 1.35 4.5 1.365 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.55 } } ] }
-Pose { translation 1.35 4.5 1.365 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.57 } } ] }
 Pose { translation 0.75 4.2 1.7 children [ Shape { appearance USE BEAM geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation 0.75 4.8 1.7 children [ Shape { appearance USE BEAM geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation 0.75 4.5 1.76 children [ Shape { appearance USE DECK geometry Box { size 2.42 0.6 0.02 } } ] }
 Pose { translation 0.15 4.5 1.83 children [ Shape { appearance USE PINE geometry Box { size 1 0.54 0.12 } } ] }
-Pose { translation 0.15 4.5 2.065 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.35 } } ] }
-Pose { translation 0.15 4.5 2.065 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.37 } } ] }
+Pose { translation 0.15 4.5 2.115 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.45 } } ] }
+Pose { translation 0.15 4.5 2.115 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.47 } } ] }
 Pose { translation 1.35 4.5 1.83 children [ Shape { appearance USE PINE geometry Box { size 1 0.54 0.12 } } ] }
-Pose { translation 1.35 4.5 2.165 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.55 } } ] }
-Pose { translation 1.35 4.5 2.165 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.57 } } ] }
+Pose { translation 1.35 4.5 2.065 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.35 } } ] }
+Pose { translation 1.35 4.5 2.065 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.37 } } ] }
 Pose { translation 3.25 4.2 0.9 children [ Shape { appearance USE BEAM geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation 3.25 4.8 0.9 children [ Shape { appearance USE BEAM geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation 3.25 4.5 0.96 children [ Shape { appearance USE DECK geometry Box { size 2.42 0.6 0.02 } } ] }
 Pose { translation 2.65 4.5 1.03 children [ Shape { appearance USE PINE geometry Box { size 1 0.54 0.12 } } ] }
-Pose { translation 2.65 4.5 1.315 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.45 } } ] }
-Pose { translation 2.65 4.5 1.315 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.47 } } ] }
+Pose { translation 2.65 4.5 1.265 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.35 } } ] }
+Pose { translation 2.65 4.5 1.265 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.37 } } ] }
 Pose { translation 3.85 4.5 1.03 children [ Shape { appearance USE PINE geometry Box { size 1 0.54 0.12 } } ] }
-Pose { translation 3.85 4.5 1.265 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.35 } } ] }
-Pose { translation 3.85 4.5 1.265 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.37 } } ] }
+Pose { translation 3.85 4.5 1.365 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.55 } } ] }
+Pose { translation 3.85 4.5 1.365 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.57 } } ] }
 Pose { translation 3.25 4.2 1.7 children [ Shape { appearance USE BEAM geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation 3.25 4.8 1.7 children [ Shape { appearance USE BEAM geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation 3.25 4.5 1.76 children [ Shape { appearance USE DECK geometry Box { size 2.42 0.6 0.02 } } ] }
 Pose { translation 2.65 4.5 1.83 children [ Shape { appearance USE PINE geometry Box { size 1 0.54 0.12 } } ] }
 Pose { translation 2.65 4.5 2.065 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.35 } } ] }
 Pose { translation 2.65 4.5 2.065 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.37 } } ] }
+Pose { translation 3.85 4.5 1.83 children [ Shape { appearance USE PINE geometry Box { size 1 0.54 0.12 } } ] }
+Pose { translation 3.85 4.5 2.065 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.35 } } ] }
+Pose { translation 3.85 4.5 2.065 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.37 } } ] }
 Pose { translation 5.75 4.2 0.9 children [ Shape { appearance USE BEAM geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation 5.75 4.8 0.9 children [ Shape { appearance USE BEAM geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation 5.75 4.5 0.96 children [ Shape { appearance USE DECK geometry Box { size 2.42 0.6 0.02 } } ] }
+Pose { translation 6.35 4.5 1.03 children [ Shape { appearance USE PINE geometry Box { size 1 0.54 0.12 } } ] }
+Pose { translation 6.35 4.5 1.265 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.35 } } ] }
+Pose { translation 6.35 4.5 1.265 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.37 } } ] }
 Pose { translation 5.75 4.2 1.7 children [ Shape { appearance USE BEAM geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation 5.75 4.8 1.7 children [ Shape { appearance USE BEAM geometry Box { size 2.42 0.05 0.1 } } ] }
 Pose { translation 5.75 4.5 1.76 children [ Shape { appearance USE DECK geometry Box { size 2.42 0.6 0.02 } } ] }
+Pose { translation 6.35 4.5 1.83 children [ Shape { appearance USE PINE geometry Box { size 1 0.54 0.12 } } ] }
+Pose { translation 6.35 4.5 2.115 children [ Shape { appearance USE CARDBOARD geometry Box { size 0.92 0.48 0.45 } } ] }
+Pose { translation 6.35 4.5 2.115 children [ Shape { appearance USE STRETCHWRAP geometry Box { size 0.95 0.51 0.47 } } ] }
 Pose { translation -2.75 4.196 0.06 children [ Shape { appearance DEF LBL_r3s00 PBRAppearance { baseColor 1 1 1 baseColorMap ImageTexture { url [ "../textures/gen/slot_r3s00.png" ] } roughness 0.6 metalness 0 } geometry Box { size 0.18 0.006 0.06 } } ] }
 Pose { translation -2.25 4.196 0.06 children [ Shape { appearance DEF LBL_r3s01 PBRAppearance { baseColor 1 1 1 baseColorMap ImageTexture { url [ "../textures/gen/slot_r3s01.png" ] } roughness 0.6 metalness 0 } geometry Box { size 0.18 0.006 0.06 } } ] }
 Pose { translation -1.75 4.196 0.06 children [ Shape { appearance DEF LBL_r3s02 PBRAppearance { baseColor 1 1 1 baseColorMap ImageTexture { url [ "../textures/gen/slot_r3s02.png" ] } roughness 0.6 metalness 0 } geometry Box { size 0.18 0.006 0.06 } } ] }
@@ -2373,13 +2367,13 @@ DEF BOX_ST0096 Solid {
 DEF BOX_IN0001 Solid {
   translation 100 100 0.07
   name "IN0001"
-  model "I1KDJ0-11"
-  recognitionColors [ 0.55 0.25 0.65 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.3 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.302 0.05 0.002 } } ] }
- Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
+  model "8N10W9-11"
+  recognitionColors [ 0.85 0.7 0.15 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
+ Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
  ]
-  boundingObject Box { size 0.3 0.2 0.14 }
+  boundingObject Box { size 0.28 0.2 0.14 }
 }
 DEF BOX_IN0002 Solid {
   translation 100.4 100 0.07
@@ -2395,7 +2389,7 @@ DEF BOX_IN0002 Solid {
 DEF BOX_IN0003 Solid {
   translation 100.8 100 0.07
   name "IN0003"
-  model "I1KDJ0-9"
+  model "I1KDJ0-11"
   recognitionColors [ 0.55 0.25 0.65 ]
   children [ Shape { appearance USE CARDBOARD geometry Box { size 0.3 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.302 0.05 0.002 } } ] }
  Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
@@ -2406,7 +2400,7 @@ DEF BOX_IN0003 Solid {
 DEF BOX_IN0004 Solid {
   translation 101.2 100 0.07
   name "IN0004"
-  model "I1KDJ0-9"
+  model "I1KDJ0-11"
   recognitionColors [ 0.55 0.25 0.65 ]
   children [ Shape { appearance USE CARDBOARD geometry Box { size 0.3 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.302 0.05 0.002 } } ] }
  Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
@@ -2428,29 +2422,29 @@ DEF BOX_IN0005 Solid {
 DEF BOX_IN0006 Solid {
   translation 102 100 0.07
   name "IN0006"
-  model "8N10W9-8.5"
-  recognitionColors [ 0.85 0.7 0.15 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
- Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
+  model "I1KDJ0-9"
+  recognitionColors [ 0.55 0.25 0.65 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.3 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.302 0.05 0.002 } } ] }
+ Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
  ]
-  boundingObject Box { size 0.28 0.2 0.14 }
+  boundingObject Box { size 0.3 0.2 0.14 }
 }
 DEF BOX_IN0007 Solid {
   translation 102.4 100 0.07
   name "IN0007"
-  model "8N10W9-9"
-  recognitionColors [ 0.85 0.7 0.15 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
- Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
+  model "I1KDJ0-11"
+  recognitionColors [ 0.55 0.25 0.65 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.3 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.302 0.05 0.002 } } ] }
+ Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
  ]
-  boundingObject Box { size 0.28 0.2 0.14 }
+  boundingObject Box { size 0.3 0.2 0.14 }
 }
 DEF BOX_IN0008 Solid {
   translation 102.8 100 0.07
   name "IN0008"
-  model "I1KDJ0-11"
+  model "I1KDJ0-9"
   recognitionColors [ 0.55 0.25 0.65 ]
   children [ Shape { appearance USE CARDBOARD geometry Box { size 0.3 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.302 0.05 0.002 } } ] }
  Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
@@ -2461,18 +2455,7 @@ DEF BOX_IN0008 Solid {
 DEF BOX_IN0009 Solid {
   translation 103.2 100 0.07
   name "IN0009"
-  model "8N10W9-11"
-  recognitionColors [ 0.85 0.7 0.15 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
- Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
- ]
-  boundingObject Box { size 0.28 0.2 0.14 }
-}
-DEF BOX_IN0010 Solid {
-  translation 103.6 100 0.07
-  name "IN0010"
-  model "I1KDJ0-11"
+  model "I1KDJ0-9"
   recognitionColors [ 0.55 0.25 0.65 ]
   children [ Shape { appearance USE CARDBOARD geometry Box { size 0.3 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.302 0.05 0.002 } } ] }
  Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
@@ -2480,10 +2463,21 @@ DEF BOX_IN0010 Solid {
  ]
   boundingObject Box { size 0.3 0.2 0.14 }
 }
+DEF BOX_IN0010 Solid {
+  translation 103.6 100 0.07
+  name "IN0010"
+  model "8N10W9-12"
+  recognitionColors [ 0.85 0.7 0.15 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
+ Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
+ ]
+  boundingObject Box { size 0.28 0.2 0.14 }
+}
 DEF BOX_IN0011 Solid {
   translation 104 100 0.07
   name "IN0011"
-  model "8N10W9-12"
+  model "8N10W9-9"
   recognitionColors [ 0.85 0.7 0.15 ]
   children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
  Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
@@ -2494,13 +2488,13 @@ DEF BOX_IN0011 Solid {
 DEF BOX_IN0012 Solid {
   translation 104.4 100 0.07
   name "IN0012"
-  model "I1KDJ0-9"
-  recognitionColors [ 0.55 0.25 0.65 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.3 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.302 0.05 0.002 } } ] }
- Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
+  model "8N10W9-8.5"
+  recognitionColors [ 0.85 0.7 0.15 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
+ Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
  ]
-  boundingObject Box { size 0.3 0.2 0.14 }
+  boundingObject Box { size 0.28 0.2 0.14 }
 }
 DEF BOX_IN0013 Solid {
   translation 104.8 100 0.07
@@ -2527,7 +2521,7 @@ DEF BOX_IN0014 Solid {
 DEF BOX_IN0015 Solid {
   translation 105.6 100 0.07
   name "IN0015"
-  model "I1KDJ0-10.5"
+  model "I1KDJ0-9"
   recognitionColors [ 0.55 0.25 0.65 ]
   children [ Shape { appearance USE CARDBOARD geometry Box { size 0.3 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.302 0.05 0.002 } } ] }
  Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
@@ -2538,7 +2532,7 @@ DEF BOX_IN0015 Solid {
 DEF BOX_IN0016 Solid {
   translation 106 100 0.07
   name "IN0016"
-  model "I1KDJ0-9"
+  model "I1KDJ0-10.5"
   recognitionColors [ 0.55 0.25 0.65 ]
   children [ Shape { appearance USE CARDBOARD geometry Box { size 0.3 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.302 0.05 0.002 } } ] }
  Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
@@ -2560,7 +2554,7 @@ DEF BOX_IN0017 Solid {
 DEF BOX_IN0018 Solid {
   translation 106.8 100 0.07
   name "IN0018"
-  model "I1KDJ0-9"
+  model "I1KDJ0-9.5"
   recognitionColors [ 0.55 0.25 0.65 ]
   children [ Shape { appearance USE CARDBOARD geometry Box { size 0.3 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.302 0.05 0.002 } } ] }
  Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
@@ -2582,7 +2576,7 @@ DEF BOX_IN0019 Solid {
 DEF BOX_IN0020 Solid {
   translation 107.6 100 0.07
   name "IN0020"
-  model "I1KDJ0-9.5"
+  model "I1KDJ0-9"
   recognitionColors [ 0.55 0.25 0.65 ]
   children [ Shape { appearance USE CARDBOARD geometry Box { size 0.3 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.302 0.05 0.002 } } ] }
  Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
@@ -2604,7 +2598,7 @@ DEF BOX_IN0021 Solid {
 DEF BOX_IN0022 Solid {
   translation 108.4 100 0.07
   name "IN0022"
-  model "I1KDJ0-10.5"
+  model "I1KDJ0-9"
   recognitionColors [ 0.55 0.25 0.65 ]
   children [ Shape { appearance USE CARDBOARD geometry Box { size 0.3 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.302 0.05 0.002 } } ] }
  Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
@@ -2626,7 +2620,7 @@ DEF BOX_IN0023 Solid {
 DEF BOX_IN0024 Solid {
   translation 109.2 100 0.07
   name "IN0024"
-  model "I1KDJ0-9"
+  model "I1KDJ0-10.5"
   recognitionColors [ 0.55 0.25 0.65 ]
   children [ Shape { appearance USE CARDBOARD geometry Box { size 0.3 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.302 0.05 0.002 } } ] }
  Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
@@ -2835,7 +2829,7 @@ DEF BOX_IN0042 Solid {
 DEF BOX_IN0043 Solid {
   translation 100.8 100.4 0.07
   name "IN0043"
-  model "I1KDJ0-9.5"
+  model "I1KDJ0-10.5"
   recognitionColors [ 0.55 0.25 0.65 ]
   children [ Shape { appearance USE CARDBOARD geometry Box { size 0.3 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.302 0.05 0.002 } } ] }
  Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
@@ -2857,7 +2851,7 @@ DEF BOX_IN0044 Solid {
 DEF BOX_IN0045 Solid {
   translation 101.6 100.4 0.07
   name "IN0045"
-  model "I1KDJ0-10.5"
+  model "I1KDJ0-9.5"
   recognitionColors [ 0.55 0.25 0.65 ]
   children [ Shape { appearance USE CARDBOARD geometry Box { size 0.3 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.302 0.05 0.002 } } ] }
  Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
@@ -2868,7 +2862,7 @@ DEF BOX_IN0045 Solid {
 DEF BOX_IN0046 Solid {
   translation 102 100.4 0.07
   name "IN0046"
-  model "I1KDJ0-9.5"
+  model "I1KDJ0-10.5"
   recognitionColors [ 0.55 0.25 0.65 ]
   children [ Shape { appearance USE CARDBOARD geometry Box { size 0.3 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.302 0.05 0.002 } } ] }
  Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
@@ -2879,7 +2873,7 @@ DEF BOX_IN0046 Solid {
 DEF BOX_IN0047 Solid {
   translation 102.4 100.4 0.07
   name "IN0047"
-  model "I1KDJ0-10.5"
+  model "I1KDJ0-9.5"
   recognitionColors [ 0.55 0.25 0.65 ]
   children [ Shape { appearance USE CARDBOARD geometry Box { size 0.3 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.302 0.05 0.002 } } ] }
  Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
@@ -3033,17 +3027,6 @@ DEF BOX_IN0060 Solid {
 DEF BOX_IN0061 Solid {
   translation 108 100.4 0.07
   name "IN0061"
-  model "8N10W9-10.5"
-  recognitionColors [ 0.85 0.7 0.15 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
- Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
- ]
-  boundingObject Box { size 0.28 0.2 0.14 }
-}
-DEF BOX_IN0062 Solid {
-  translation 108.4 100.4 0.07
-  name "IN0062"
   model "8D9SAW-10.5"
   recognitionColors [ 0.55 0.38 0.2 ]
   children [ Shape { appearance USE CARDBOARD geometry Box { size 0.32 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.322 0.05 0.002 } } ] }
@@ -3052,10 +3035,21 @@ DEF BOX_IN0062 Solid {
  ]
   boundingObject Box { size 0.32 0.2 0.14 }
 }
+DEF BOX_IN0062 Solid {
+  translation 108.4 100.4 0.07
+  name "IN0062"
+  model "I1KDJ0-10.5"
+  recognitionColors [ 0.55 0.25 0.65 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.3 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.302 0.05 0.002 } } ] }
+ Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
+ ]
+  boundingObject Box { size 0.3 0.2 0.14 }
+}
 DEF BOX_IN0063 Solid {
   translation 108.8 100.4 0.07
   name "IN0063"
-  model "I1KDJ0-10.5"
+  model "I1KDJ0-11"
   recognitionColors [ 0.55 0.25 0.65 ]
   children [ Shape { appearance USE CARDBOARD geometry Box { size 0.3 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.302 0.05 0.002 } } ] }
  Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
@@ -3066,18 +3060,18 @@ DEF BOX_IN0063 Solid {
 DEF BOX_IN0064 Solid {
   translation 109.2 100.4 0.07
   name "IN0064"
-  model "8N10W9-10.5"
-  recognitionColors [ 0.85 0.7 0.15 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
- Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
+  model "I1KDJ0-10.5"
+  recognitionColors [ 0.55 0.25 0.65 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.3 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.302 0.05 0.002 } } ] }
+ Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
  ]
-  boundingObject Box { size 0.28 0.2 0.14 }
+  boundingObject Box { size 0.3 0.2 0.14 }
 }
 DEF BOX_IN0065 Solid {
   translation 109.6 100.4 0.07
   name "IN0065"
-  model "I1KDJ0-11"
+  model "I1KDJ0-10.5"
   recognitionColors [ 0.55 0.25 0.65 ]
   children [ Shape { appearance USE CARDBOARD geometry Box { size 0.3 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.302 0.05 0.002 } } ] }
  Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
@@ -3088,18 +3082,18 @@ DEF BOX_IN0065 Solid {
 DEF BOX_IN0066 Solid {
   translation 110 100.4 0.07
   name "IN0066"
-  model "I1KDJ0-11"
-  recognitionColors [ 0.55 0.25 0.65 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.3 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.302 0.05 0.002 } } ] }
- Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
+  model "WRRW1W-9.5"
+  recognitionColors [ 0.45 0.15 0.2 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.32 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.322 0.05 0.002 } } ] }
+ Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_WRRW1W geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_WRRW1W geometry Box { size 0.11 0.002 0.07 } } ] }
  ]
-  boundingObject Box { size 0.3 0.2 0.14 }
+  boundingObject Box { size 0.32 0.2 0.14 }
 }
 DEF BOX_IN0067 Solid {
   translation 110.4 100.4 0.07
   name "IN0067"
-  model "I1KDJ0-10.5"
+  model "I1KDJ0-11"
   recognitionColors [ 0.55 0.25 0.65 ]
   children [ Shape { appearance USE CARDBOARD geometry Box { size 0.3 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.302 0.05 0.002 } } ] }
  Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
@@ -3110,29 +3104,29 @@ DEF BOX_IN0067 Solid {
 DEF BOX_IN0068 Solid {
   translation 110.8 100.4 0.07
   name "IN0068"
-  model "WRRW1W-9.5"
-  recognitionColors [ 0.45 0.15 0.2 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.32 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.322 0.05 0.002 } } ] }
- Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_WRRW1W geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_WRRW1W geometry Box { size 0.11 0.002 0.07 } } ] }
+  model "8N10W9-10.5"
+  recognitionColors [ 0.85 0.7 0.15 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
+ Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
  ]
-  boundingObject Box { size 0.32 0.2 0.14 }
+  boundingObject Box { size 0.28 0.2 0.14 }
 }
 DEF BOX_IN0069 Solid {
   translation 111.2 100.4 0.07
   name "IN0069"
-  model "I1KDJ0-11"
-  recognitionColors [ 0.55 0.25 0.65 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.3 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.302 0.05 0.002 } } ] }
- Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
+  model "8N10W9-10"
+  recognitionColors [ 0.85 0.7 0.15 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
+ Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
  ]
-  boundingObject Box { size 0.3 0.2 0.14 }
+  boundingObject Box { size 0.28 0.2 0.14 }
 }
 DEF BOX_IN0070 Solid {
   translation 111.6 100.4 0.07
   name "IN0070"
-  model "8N10W9-10"
+  model "8N10W9-10.5"
   recognitionColors [ 0.85 0.7 0.15 ]
   children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
  Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
@@ -3143,6 +3137,17 @@ DEF BOX_IN0070 Solid {
 DEF BOX_IN0071 Solid {
   translation 112 100.4 0.07
   name "IN0071"
+  model "I1KDJ0-11"
+  recognitionColors [ 0.55 0.25 0.65 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.3 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.302 0.05 0.002 } } ] }
+ Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
+ ]
+  boundingObject Box { size 0.3 0.2 0.14 }
+}
+DEF BOX_IN0072 Solid {
+  translation 112.4 100.4 0.07
+  name "IN0072"
   model "8N10W9-10.5"
   recognitionColors [ 0.85 0.7 0.15 ]
   children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
@@ -3151,21 +3156,10 @@ DEF BOX_IN0071 Solid {
  ]
   boundingObject Box { size 0.28 0.2 0.14 }
 }
-DEF BOX_IN0072 Solid {
-  translation 112.4 100.4 0.07
-  name "IN0072"
-  model "I1KDJ0-10.5"
-  recognitionColors [ 0.55 0.25 0.65 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.3 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.302 0.05 0.002 } } ] }
- Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
- ]
-  boundingObject Box { size 0.3 0.2 0.14 }
-}
 DEF BOX_IN0073 Solid {
   translation 112.8 100.4 0.07
   name "IN0073"
-  model "8N10W9-8.5"
+  model "8N10W9-9"
   recognitionColors [ 0.85 0.7 0.15 ]
   children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
  Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
@@ -3176,17 +3170,6 @@ DEF BOX_IN0073 Solid {
 DEF BOX_IN0074 Solid {
   translation 113.2 100.4 0.07
   name "IN0074"
-  model "8N10W9-12"
-  recognitionColors [ 0.85 0.7 0.15 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
- Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
- ]
-  boundingObject Box { size 0.28 0.2 0.14 }
-}
-DEF BOX_IN0075 Solid {
-  translation 113.6 100.4 0.07
-  name "IN0075"
   model "8D9SAW-10.5"
   recognitionColors [ 0.55 0.38 0.2 ]
   children [ Shape { appearance USE CARDBOARD geometry Box { size 0.32 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.322 0.05 0.002 } } ] }
@@ -3195,20 +3178,9 @@ DEF BOX_IN0075 Solid {
  ]
   boundingObject Box { size 0.32 0.2 0.14 }
 }
-DEF BOX_IN0076 Solid {
-  translation 114 100.4 0.07
-  name "IN0076"
-  model "2T1DJM-10"
-  recognitionColors [ 0.15 0.35 0.8 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.32 0.215 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.322 0.05 0.002 } } ] }
- Pose { translation 0 -0.1085 0 children [ Shape { appearance USE STK_2T1DJM geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.1085 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_2T1DJM geometry Box { size 0.11 0.002 0.07 } } ] }
- ]
-  boundingObject Box { size 0.32 0.215 0.14 }
-}
-DEF BOX_IN0077 Solid {
-  translation 114.4 100.4 0.07
-  name "IN0077"
+DEF BOX_IN0075 Solid {
+  translation 113.6 100.4 0.07
+  name "IN0075"
   model "I1KDJ0-10"
   recognitionColors [ 0.55 0.25 0.65 ]
   children [ Shape { appearance USE CARDBOARD geometry Box { size 0.3 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.302 0.05 0.002 } } ] }
@@ -3217,10 +3189,10 @@ DEF BOX_IN0077 Solid {
  ]
   boundingObject Box { size 0.3 0.2 0.14 }
 }
-DEF BOX_IN0078 Solid {
-  translation 114.8 100.4 0.07
-  name "IN0078"
-  model "8N10W9-9.5"
+DEF BOX_IN0076 Solid {
+  translation 114 100.4 0.07
+  name "IN0076"
+  model "8N10W9-12"
   recognitionColors [ 0.85 0.7 0.15 ]
   children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
  Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
@@ -3228,9 +3200,9 @@ DEF BOX_IN0078 Solid {
  ]
   boundingObject Box { size 0.28 0.2 0.14 }
 }
-DEF BOX_IN0079 Solid {
-  translation 115.2 100.4 0.07
-  name "IN0079"
+DEF BOX_IN0077 Solid {
+  translation 114.4 100.4 0.07
+  name "IN0077"
   model "8D9SAW-10"
   recognitionColors [ 0.55 0.38 0.2 ]
   children [ Shape { appearance USE CARDBOARD geometry Box { size 0.32 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.322 0.05 0.002 } } ] }
@@ -3239,10 +3211,32 @@ DEF BOX_IN0079 Solid {
  ]
   boundingObject Box { size 0.32 0.2 0.14 }
 }
+DEF BOX_IN0078 Solid {
+  translation 114.8 100.4 0.07
+  name "IN0078"
+  model "2T1DJM-10"
+  recognitionColors [ 0.15 0.35 0.8 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.32 0.215 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.322 0.05 0.002 } } ] }
+ Pose { translation 0 -0.1085 0 children [ Shape { appearance USE STK_2T1DJM geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.1085 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_2T1DJM geometry Box { size 0.11 0.002 0.07 } } ] }
+ ]
+  boundingObject Box { size 0.32 0.215 0.14 }
+}
+DEF BOX_IN0079 Solid {
+  translation 115.2 100.4 0.07
+  name "IN0079"
+  model "8N10W9-11"
+  recognitionColors [ 0.85 0.7 0.15 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
+ Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
+ ]
+  boundingObject Box { size 0.28 0.2 0.14 }
+}
 DEF BOX_IN0080 Solid {
   translation 115.6 100.4 0.07
   name "IN0080"
-  model "8N10W9-10"
+  model "8N10W9-10.5"
   recognitionColors [ 0.85 0.7 0.15 ]
   children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
  Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
@@ -3264,7 +3258,7 @@ DEF BOX_IN0081 Solid {
 DEF BOX_IN0082 Solid {
   translation 100.4 100.8 0.07
   name "IN0082"
-  model "8N10W9-10.5"
+  model "8N10W9-8.5"
   recognitionColors [ 0.85 0.7 0.15 ]
   children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
  Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
@@ -3275,7 +3269,7 @@ DEF BOX_IN0082 Solid {
 DEF BOX_IN0083 Solid {
   translation 100.8 100.8 0.07
   name "IN0083"
-  model "8N10W9-11"
+  model "8N10W9-9.5"
   recognitionColors [ 0.85 0.7 0.15 ]
   children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
  Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
@@ -3286,7 +3280,7 @@ DEF BOX_IN0083 Solid {
 DEF BOX_IN0084 Solid {
   translation 101.2 100.8 0.07
   name "IN0084"
-  model "8N10W9-9"
+  model "8N10W9-10"
   recognitionColors [ 0.85 0.7 0.15 ]
   children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
  Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
@@ -3297,18 +3291,18 @@ DEF BOX_IN0084 Solid {
 DEF BOX_IN0085 Solid {
   translation 101.6 100.8 0.07
   name "IN0085"
-  model "LXJQVG-10"
-  recognitionColors [ 0.6 0.75 0.3 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.3 0.185 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.302 0.05 0.002 } } ] }
- Pose { translation 0 -0.0935 0 children [ Shape { appearance USE STK_LXJQVG geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.0935 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_LXJQVG geometry Box { size 0.11 0.002 0.07 } } ] }
+  model "I1KDJ0-9.5"
+  recognitionColors [ 0.55 0.25 0.65 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.3 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.302 0.05 0.002 } } ] }
+ Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
  ]
-  boundingObject Box { size 0.3 0.185 0.14 }
+  boundingObject Box { size 0.3 0.2 0.14 }
 }
 DEF BOX_IN0086 Solid {
   translation 102 100.8 0.07
   name "IN0086"
-  model "SMMRK3-9"
+  model "SMMRK3-9.5"
   recognitionColors [ 0.25 0.25 0.6 ]
   children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
  Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_SMMRK3 geometry Box { size 0.11 0.002 0.07 } } ] }
@@ -3319,6 +3313,17 @@ DEF BOX_IN0086 Solid {
 DEF BOX_IN0087 Solid {
   translation 102.4 100.8 0.07
   name "IN0087"
+  model "I1KDJ0-9"
+  recognitionColors [ 0.55 0.25 0.65 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.3 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.302 0.05 0.002 } } ] }
+ Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
+ ]
+  boundingObject Box { size 0.3 0.2 0.14 }
+}
+DEF BOX_IN0088 Solid {
+  translation 102.8 100.8 0.07
+  name "IN0088"
   model "WRRW1W-10"
   recognitionColors [ 0.45 0.15 0.2 ]
   children [ Shape { appearance USE CARDBOARD geometry Box { size 0.32 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.322 0.05 0.002 } } ] }
@@ -3327,32 +3332,21 @@ DEF BOX_IN0087 Solid {
  ]
   boundingObject Box { size 0.32 0.2 0.14 }
 }
-DEF BOX_IN0088 Solid {
-  translation 102.8 100.8 0.07
-  name "IN0088"
-  model "I1KDJ0-9.5"
-  recognitionColors [ 0.55 0.25 0.65 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.3 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.302 0.05 0.002 } } ] }
- Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
- ]
-  boundingObject Box { size 0.3 0.2 0.14 }
-}
 DEF BOX_IN0089 Solid {
   translation 103.2 100.8 0.07
   name "IN0089"
-  model "I1KDJ0-9.5"
-  recognitionColors [ 0.55 0.25 0.65 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.3 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.302 0.05 0.002 } } ] }
- Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
+  model "SMMRK3-10"
+  recognitionColors [ 0.25 0.25 0.6 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
+ Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_SMMRK3 geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_SMMRK3 geometry Box { size 0.11 0.002 0.07 } } ] }
  ]
-  boundingObject Box { size 0.3 0.2 0.14 }
+  boundingObject Box { size 0.28 0.2 0.14 }
 }
 DEF BOX_IN0090 Solid {
   translation 103.6 100.8 0.07
   name "IN0090"
-  model "SMMRK3-10"
+  model "SMMRK3-10.5"
   recognitionColors [ 0.25 0.25 0.6 ]
   children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
  Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_SMMRK3 geometry Box { size 0.11 0.002 0.07 } } ] }
@@ -3363,18 +3357,18 @@ DEF BOX_IN0090 Solid {
 DEF BOX_IN0091 Solid {
   translation 104 100.8 0.07
   name "IN0091"
-  model "I1KDJ0-9"
-  recognitionColors [ 0.55 0.25 0.65 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.3 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.302 0.05 0.002 } } ] }
- Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
+  model "SMMRK3-12"
+  recognitionColors [ 0.25 0.25 0.6 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
+ Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_SMMRK3 geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_SMMRK3 geometry Box { size 0.11 0.002 0.07 } } ] }
  ]
-  boundingObject Box { size 0.3 0.2 0.14 }
+  boundingObject Box { size 0.28 0.2 0.14 }
 }
 DEF BOX_IN0092 Solid {
   translation 104.4 100.8 0.07
   name "IN0092"
-  model "SMMRK3-12"
+  model "SMMRK3-9"
   recognitionColors [ 0.25 0.25 0.6 ]
   children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
  Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_SMMRK3 geometry Box { size 0.11 0.002 0.07 } } ] }
@@ -3385,6 +3379,17 @@ DEF BOX_IN0092 Solid {
 DEF BOX_IN0093 Solid {
   translation 104.8 100.8 0.07
   name "IN0093"
+  model "LXJQVG-10"
+  recognitionColors [ 0.6 0.75 0.3 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.3 0.185 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.302 0.05 0.002 } } ] }
+ Pose { translation 0 -0.0935 0 children [ Shape { appearance USE STK_LXJQVG geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.0935 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_LXJQVG geometry Box { size 0.11 0.002 0.07 } } ] }
+ ]
+  boundingObject Box { size 0.3 0.185 0.14 }
+}
+DEF BOX_IN0094 Solid {
+  translation 105.2 100.8 0.07
+  name "IN0094"
   model "I1KDJ0-9.5"
   recognitionColors [ 0.55 0.25 0.65 ]
   children [ Shape { appearance USE CARDBOARD geometry Box { size 0.3 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.302 0.05 0.002 } } ] }
@@ -3392,17 +3397,6 @@ DEF BOX_IN0093 Solid {
  Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
  ]
   boundingObject Box { size 0.3 0.2 0.14 }
-}
-DEF BOX_IN0094 Solid {
-  translation 105.2 100.8 0.07
-  name "IN0094"
-  model "SMMRK3-9.5"
-  recognitionColors [ 0.25 0.25 0.6 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
- Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_SMMRK3 geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_SMMRK3 geometry Box { size 0.11 0.002 0.07 } } ] }
- ]
-  boundingObject Box { size 0.28 0.2 0.14 }
 }
 DEF BOX_IN0095 Solid {
   translation 105.6 100.8 0.07
@@ -3418,18 +3412,18 @@ DEF BOX_IN0095 Solid {
 DEF BOX_IN0096 Solid {
   translation 106 100.8 0.07
   name "IN0096"
-  model "SMMRK3-10.5"
-  recognitionColors [ 0.25 0.25 0.6 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
- Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_SMMRK3 geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_SMMRK3 geometry Box { size 0.11 0.002 0.07 } } ] }
+  model "I1KDJ0-9.5"
+  recognitionColors [ 0.55 0.25 0.65 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.3 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.302 0.05 0.002 } } ] }
+ Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
  ]
-  boundingObject Box { size 0.28 0.2 0.14 }
+  boundingObject Box { size 0.3 0.2 0.14 }
 }
 DEF BOX_IN0097 Solid {
   translation 106.4 100.8 0.07
   name "IN0097"
-  model "SMMRK3-9"
+  model "SMMRK3-9.5"
   recognitionColors [ 0.25 0.25 0.6 ]
   children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
  Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_SMMRK3 geometry Box { size 0.11 0.002 0.07 } } ] }
@@ -3440,13 +3434,13 @@ DEF BOX_IN0097 Solid {
 DEF BOX_IN0098 Solid {
   translation 106.8 100.8 0.07
   name "IN0098"
-  model "SMMRK3-10"
-  recognitionColors [ 0.25 0.25 0.6 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
- Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_SMMRK3 geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_SMMRK3 geometry Box { size 0.11 0.002 0.07 } } ] }
+  model "WRRW1W-11"
+  recognitionColors [ 0.45 0.15 0.2 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.32 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.322 0.05 0.002 } } ] }
+ Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_WRRW1W geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_WRRW1W geometry Box { size 0.11 0.002 0.07 } } ] }
  ]
-  boundingObject Box { size 0.28 0.2 0.14 }
+  boundingObject Box { size 0.32 0.2 0.14 }
 }
 DEF BOX_IN0099 Solid {
   translation 107.2 100.8 0.07
@@ -3462,29 +3456,29 @@ DEF BOX_IN0099 Solid {
 DEF BOX_IN0100 Solid {
   translation 107.6 100.8 0.07
   name "IN0100"
-  model "WRRW1W-11"
-  recognitionColors [ 0.45 0.15 0.2 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.32 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.322 0.05 0.002 } } ] }
- Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_WRRW1W geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_WRRW1W geometry Box { size 0.11 0.002 0.07 } } ] }
+  model "SMMRK3-10.5"
+  recognitionColors [ 0.25 0.25 0.6 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
+ Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_SMMRK3 geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_SMMRK3 geometry Box { size 0.11 0.002 0.07 } } ] }
  ]
-  boundingObject Box { size 0.32 0.2 0.14 }
+  boundingObject Box { size 0.28 0.2 0.14 }
 }
 DEF BOX_IN0101 Solid {
   translation 108 100.8 0.07
   name "IN0101"
-  model "8D9SAW-10.5"
-  recognitionColors [ 0.55 0.38 0.2 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.32 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.322 0.05 0.002 } } ] }
- Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_8D9SAW geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_8D9SAW geometry Box { size 0.11 0.002 0.07 } } ] }
+  model "SMMRK3-9"
+  recognitionColors [ 0.25 0.25 0.6 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
+ Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_SMMRK3 geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_SMMRK3 geometry Box { size 0.11 0.002 0.07 } } ] }
  ]
-  boundingObject Box { size 0.32 0.2 0.14 }
+  boundingObject Box { size 0.28 0.2 0.14 }
 }
 DEF BOX_IN0102 Solid {
   translation 108.4 100.8 0.07
   name "IN0102"
-  model "SMMRK3-9.5"
+  model "SMMRK3-9"
   recognitionColors [ 0.25 0.25 0.6 ]
   children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
  Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_SMMRK3 geometry Box { size 0.11 0.002 0.07 } } ] }
@@ -3495,7 +3489,7 @@ DEF BOX_IN0102 Solid {
 DEF BOX_IN0103 Solid {
   translation 108.8 100.8 0.07
   name "IN0103"
-  model "SMMRK3-12"
+  model "SMMRK3-10"
   recognitionColors [ 0.25 0.25 0.6 ]
   children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
  Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_SMMRK3 geometry Box { size 0.11 0.002 0.07 } } ] }
@@ -3517,7 +3511,7 @@ DEF BOX_IN0104 Solid {
 DEF BOX_IN0105 Solid {
   translation 109.6 100.8 0.07
   name "IN0105"
-  model "SMMRK3-10.5"
+  model "SMMRK3-12"
   recognitionColors [ 0.25 0.25 0.6 ]
   children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
  Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_SMMRK3 geometry Box { size 0.11 0.002 0.07 } } ] }
@@ -3528,13 +3522,13 @@ DEF BOX_IN0105 Solid {
 DEF BOX_IN0106 Solid {
   translation 110 100.8 0.07
   name "IN0106"
-  model "SMMRK3-9"
-  recognitionColors [ 0.25 0.25 0.6 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
- Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_SMMRK3 geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_SMMRK3 geometry Box { size 0.11 0.002 0.07 } } ] }
+  model "WRRW1W-10"
+  recognitionColors [ 0.45 0.15 0.2 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.32 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.322 0.05 0.002 } } ] }
+ Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_WRRW1W geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_WRRW1W geometry Box { size 0.11 0.002 0.07 } } ] }
  ]
-  boundingObject Box { size 0.28 0.2 0.14 }
+  boundingObject Box { size 0.32 0.2 0.14 }
 }
 DEF BOX_IN0107 Solid {
   translation 110.4 100.8 0.07
@@ -3550,73 +3544,73 @@ DEF BOX_IN0107 Solid {
 DEF BOX_IN0108 Solid {
   translation 110.8 100.8 0.07
   name "IN0108"
-  model "WRRW1W-10"
-  recognitionColors [ 0.45 0.15 0.2 ]
+  model "8D9SAW-10.5"
+  recognitionColors [ 0.55 0.38 0.2 ]
   children [ Shape { appearance USE CARDBOARD geometry Box { size 0.32 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.322 0.05 0.002 } } ] }
- Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_WRRW1W geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_WRRW1W geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_8D9SAW geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_8D9SAW geometry Box { size 0.11 0.002 0.07 } } ] }
  ]
   boundingObject Box { size 0.32 0.2 0.14 }
 }
 DEF BOX_RT001 Solid {
   translation 111.2 100.8 0.07
   name "RT001"
-  model "I1KDJ0-12"
-  recognitionColors [ 0.55 0.25 0.65 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.3 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.302 0.05 0.002 } } ] }
- Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
+  model "PY5UPB-24"
+  recognitionColors [ 0.95 0.55 0.2 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.185 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
+ Pose { translation 0 -0.0935 0 children [ Shape { appearance USE STK_PY5UPB geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.0935 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_PY5UPB geometry Box { size 0.11 0.002 0.07 } } ] }
  ]
-  boundingObject Box { size 0.3 0.2 0.14 }
+  boundingObject Box { size 0.28 0.185 0.14 }
 }
 DEF BOX_RT002 Solid {
   translation 111.6 100.8 0.07
   name "RT002"
-  model "WRRW1W-10.5"
-  recognitionColors [ 0.45 0.15 0.2 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.32 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.322 0.05 0.002 } } ] }
- Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_WRRW1W geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_WRRW1W geometry Box { size 0.11 0.002 0.07 } } ] }
+  model "PY5UPB-26.5"
+  recognitionColors [ 0.95 0.55 0.2 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.185 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
+ Pose { translation 0 -0.0935 0 children [ Shape { appearance USE STK_PY5UPB geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.0935 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_PY5UPB geometry Box { size 0.11 0.002 0.07 } } ] }
  ]
-  boundingObject Box { size 0.32 0.2 0.14 }
+  boundingObject Box { size 0.28 0.185 0.14 }
 }
 DEF BOX_RT003 Solid {
   translation 112 100.8 0.07
   name "RT003"
-  model "WRRW1W-8.5"
-  recognitionColors [ 0.45 0.15 0.2 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.32 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.322 0.05 0.002 } } ] }
- Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_WRRW1W geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_WRRW1W geometry Box { size 0.11 0.002 0.07 } } ] }
+  model "05W6TK-9.5"
+  recognitionColors [ 0.8 0.2 0.15 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.3 0.185 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.302 0.05 0.002 } } ] }
+ Pose { translation 0 -0.0935 0 children [ Shape { appearance USE STK_05W6TK geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.0935 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_05W6TK geometry Box { size 0.11 0.002 0.07 } } ] }
  ]
-  boundingObject Box { size 0.32 0.2 0.14 }
+  boundingObject Box { size 0.3 0.185 0.14 }
 }
 DEF BOX_RT004 Solid {
   translation 112.4 100.8 0.07
   name "RT004"
-  model "8N10W9-9"
-  recognitionColors [ 0.85 0.7 0.15 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
- Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
+  model "PY5UPB-25.5"
+  recognitionColors [ 0.95 0.55 0.2 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.185 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
+ Pose { translation 0 -0.0935 0 children [ Shape { appearance USE STK_PY5UPB geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.0935 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_PY5UPB geometry Box { size 0.11 0.002 0.07 } } ] }
  ]
-  boundingObject Box { size 0.28 0.2 0.14 }
+  boundingObject Box { size 0.28 0.185 0.14 }
 }
 DEF BOX_RT005 Solid {
   translation 112.8 100.8 0.07
   name "RT005"
-  model "8N10W9-8.5"
-  recognitionColors [ 0.85 0.7 0.15 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
- Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
+  model "JEGRCL-9"
+  recognitionColors [ 0.9 0.45 0.6 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.3 0.185 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.302 0.05 0.002 } } ] }
+ Pose { translation 0 -0.0935 0 children [ Shape { appearance USE STK_JEGRCL geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.0935 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_JEGRCL geometry Box { size 0.11 0.002 0.07 } } ] }
  ]
-  boundingObject Box { size 0.28 0.2 0.14 }
+  boundingObject Box { size 0.3 0.185 0.14 }
 }
 DEF BOX_RT006 Solid {
   translation 113.2 100.8 0.07
   name "RT006"
-  model "PY5UPB-26"
+  model "PY5UPB-26.5"
   recognitionColors [ 0.95 0.55 0.2 ]
   children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.185 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
  Pose { translation 0 -0.0935 0 children [ Shape { appearance USE STK_PY5UPB geometry Box { size 0.11 0.002 0.07 } } ] }
@@ -3627,7 +3621,7 @@ DEF BOX_RT006 Solid {
 DEF BOX_RT007 Solid {
   translation 113.6 100.8 0.07
   name "RT007"
-  model "8N10W9-10.5"
+  model "8N10W9-12"
   recognitionColors [ 0.85 0.7 0.15 ]
   children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
  Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
@@ -3638,116 +3632,6 @@ DEF BOX_RT007 Solid {
 DEF BOX_RT008 Solid {
   translation 114 100.8 0.07
   name "RT008"
-  model "I2B1FH-10"
-  recognitionColors [ 0.1 0.6 0.65 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.32 0.215 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.322 0.05 0.002 } } ] }
- Pose { translation 0 -0.1085 0 children [ Shape { appearance USE STK_I2B1FH geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.1085 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_I2B1FH geometry Box { size 0.11 0.002 0.07 } } ] }
- ]
-  boundingObject Box { size 0.32 0.215 0.14 }
-}
-DEF BOX_RT009 Solid {
-  translation 114.4 100.8 0.07
-  name "RT009"
-  model "PY5UPB-27"
-  recognitionColors [ 0.95 0.55 0.2 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.185 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
- Pose { translation 0 -0.0935 0 children [ Shape { appearance USE STK_PY5UPB geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.0935 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_PY5UPB geometry Box { size 0.11 0.002 0.07 } } ] }
- ]
-  boundingObject Box { size 0.28 0.185 0.14 }
-}
-DEF BOX_RT010 Solid {
-  translation 114.8 100.8 0.07
-  name "RT010"
-  model "8D9SAW-9"
-  recognitionColors [ 0.55 0.38 0.2 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.32 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.322 0.05 0.002 } } ] }
- Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_8D9SAW geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_8D9SAW geometry Box { size 0.11 0.002 0.07 } } ] }
- ]
-  boundingObject Box { size 0.32 0.2 0.14 }
-}
-DEF BOX_RT011 Solid {
-  translation 115.2 100.8 0.07
-  name "RT011"
-  model "PY5UPB-26"
-  recognitionColors [ 0.95 0.55 0.2 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.185 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
- Pose { translation 0 -0.0935 0 children [ Shape { appearance USE STK_PY5UPB geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.0935 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_PY5UPB geometry Box { size 0.11 0.002 0.07 } } ] }
- ]
-  boundingObject Box { size 0.28 0.185 0.14 }
-}
-DEF BOX_RT012 Solid {
-  translation 115.6 100.8 0.07
-  name "RT012"
-  model "PY5UPB-26.5"
-  recognitionColors [ 0.95 0.55 0.2 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.185 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
- Pose { translation 0 -0.0935 0 children [ Shape { appearance USE STK_PY5UPB geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.0935 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_PY5UPB geometry Box { size 0.11 0.002 0.07 } } ] }
- ]
-  boundingObject Box { size 0.28 0.185 0.14 }
-}
-DEF BOX_RT013 Solid {
-  translation 100 101.2 0.07
-  name "RT013"
-  model "SMMRK3-10.5"
-  recognitionColors [ 0.25 0.25 0.6 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
- Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_SMMRK3 geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_SMMRK3 geometry Box { size 0.11 0.002 0.07 } } ] }
- ]
-  boundingObject Box { size 0.28 0.2 0.14 }
-}
-DEF BOX_RT014 Solid {
-  translation 100.4 101.2 0.07
-  name "RT014"
-  model "8N10W9-10"
-  recognitionColors [ 0.85 0.7 0.15 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
- Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
- ]
-  boundingObject Box { size 0.28 0.2 0.14 }
-}
-DEF BOX_RT015 Solid {
-  translation 100.8 101.2 0.07
-  name "RT015"
-  model "I1KDJ0-10.5"
-  recognitionColors [ 0.55 0.25 0.65 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.3 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.302 0.05 0.002 } } ] }
- Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
- ]
-  boundingObject Box { size 0.3 0.2 0.14 }
-}
-DEF BOX_RT016 Solid {
-  translation 101.2 101.2 0.07
-  name "RT016"
-  model "2T1DJM-11"
-  recognitionColors [ 0.15 0.35 0.8 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.32 0.215 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.322 0.05 0.002 } } ] }
- Pose { translation 0 -0.1085 0 children [ Shape { appearance USE STK_2T1DJM geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.1085 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_2T1DJM geometry Box { size 0.11 0.002 0.07 } } ] }
- ]
-  boundingObject Box { size 0.32 0.215 0.14 }
-}
-DEF BOX_RT017 Solid {
-  translation 101.6 101.2 0.07
-  name "RT017"
-  model "05W6TK-10"
-  recognitionColors [ 0.8 0.2 0.15 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.3 0.185 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.302 0.05 0.002 } } ] }
- Pose { translation 0 -0.0935 0 children [ Shape { appearance USE STK_05W6TK geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.0935 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_05W6TK geometry Box { size 0.11 0.002 0.07 } } ] }
- ]
-  boundingObject Box { size 0.3 0.185 0.14 }
-}
-DEF BOX_RT018 Solid {
-  translation 102 101.2 0.07
-  name "RT018"
   model "PY5UPB-23.5"
   recognitionColors [ 0.95 0.55 0.2 ]
   children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.185 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
@@ -3756,10 +3640,10 @@ DEF BOX_RT018 Solid {
  ]
   boundingObject Box { size 0.28 0.185 0.14 }
 }
-DEF BOX_RT019 Solid {
-  translation 102.4 101.2 0.07
-  name "RT019"
-  model "8N10W9-11"
+DEF BOX_RT009 Solid {
+  translation 114.4 100.8 0.07
+  name "RT009"
+  model "8N10W9-13"
   recognitionColors [ 0.85 0.7 0.15 ]
   children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
  Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
@@ -3767,10 +3651,32 @@ DEF BOX_RT019 Solid {
  ]
   boundingObject Box { size 0.28 0.2 0.14 }
 }
-DEF BOX_RT020 Solid {
-  translation 102.8 101.2 0.07
-  name "RT020"
-  model "SMMRK3-9"
+DEF BOX_RT010 Solid {
+  translation 114.8 100.8 0.07
+  name "RT010"
+  model "WRRW1W-10"
+  recognitionColors [ 0.45 0.15 0.2 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.32 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.322 0.05 0.002 } } ] }
+ Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_WRRW1W geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_WRRW1W geometry Box { size 0.11 0.002 0.07 } } ] }
+ ]
+  boundingObject Box { size 0.32 0.2 0.14 }
+}
+DEF BOX_RT011 Solid {
+  translation 115.2 100.8 0.07
+  name "RT011"
+  model "8N10W9-13"
+  recognitionColors [ 0.85 0.7 0.15 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
+ Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
+ ]
+  boundingObject Box { size 0.28 0.2 0.14 }
+}
+DEF BOX_RT012 Solid {
+  translation 115.6 100.8 0.07
+  name "RT012"
+  model "SMMRK3-10"
   recognitionColors [ 0.25 0.25 0.6 ]
   children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
  Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_SMMRK3 geometry Box { size 0.11 0.002 0.07 } } ] }
@@ -3778,10 +3684,98 @@ DEF BOX_RT020 Solid {
  ]
   boundingObject Box { size 0.28 0.2 0.14 }
 }
+DEF BOX_RT013 Solid {
+  translation 100 101.2 0.07
+  name "RT013"
+  model "8N10W9-9"
+  recognitionColors [ 0.85 0.7 0.15 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
+ Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
+ ]
+  boundingObject Box { size 0.28 0.2 0.14 }
+}
+DEF BOX_RT014 Solid {
+  translation 100.4 101.2 0.07
+  name "RT014"
+  model "WRRW1W-11"
+  recognitionColors [ 0.45 0.15 0.2 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.32 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.322 0.05 0.002 } } ] }
+ Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_WRRW1W geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_WRRW1W geometry Box { size 0.11 0.002 0.07 } } ] }
+ ]
+  boundingObject Box { size 0.32 0.2 0.14 }
+}
+DEF BOX_RT015 Solid {
+  translation 100.8 101.2 0.07
+  name "RT015"
+  model "U95NWB-12"
+  recognitionColors [ 0.7 0.55 0.45 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.185 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
+ Pose { translation 0 -0.0935 0 children [ Shape { appearance USE STK_U95NWB geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.0935 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_U95NWB geometry Box { size 0.11 0.002 0.07 } } ] }
+ ]
+  boundingObject Box { size 0.28 0.185 0.14 }
+}
+DEF BOX_RT016 Solid {
+  translation 101.2 101.2 0.07
+  name "RT016"
+  model "PY5UPB-23.5"
+  recognitionColors [ 0.95 0.55 0.2 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.185 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
+ Pose { translation 0 -0.0935 0 children [ Shape { appearance USE STK_PY5UPB geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.0935 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_PY5UPB geometry Box { size 0.11 0.002 0.07 } } ] }
+ ]
+  boundingObject Box { size 0.28 0.185 0.14 }
+}
+DEF BOX_RT017 Solid {
+  translation 101.6 101.2 0.07
+  name "RT017"
+  model "PY5UPB-26"
+  recognitionColors [ 0.95 0.55 0.2 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.185 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
+ Pose { translation 0 -0.0935 0 children [ Shape { appearance USE STK_PY5UPB geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.0935 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_PY5UPB geometry Box { size 0.11 0.002 0.07 } } ] }
+ ]
+  boundingObject Box { size 0.28 0.185 0.14 }
+}
+DEF BOX_RT018 Solid {
+  translation 102 101.2 0.07
+  name "RT018"
+  model "2T1DJM-10"
+  recognitionColors [ 0.15 0.35 0.8 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.32 0.215 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.322 0.05 0.002 } } ] }
+ Pose { translation 0 -0.1085 0 children [ Shape { appearance USE STK_2T1DJM geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.1085 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_2T1DJM geometry Box { size 0.11 0.002 0.07 } } ] }
+ ]
+  boundingObject Box { size 0.32 0.215 0.14 }
+}
+DEF BOX_RT019 Solid {
+  translation 102.4 101.2 0.07
+  name "RT019"
+  model "PY5UPB-25.5"
+  recognitionColors [ 0.95 0.55 0.2 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.185 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
+ Pose { translation 0 -0.0935 0 children [ Shape { appearance USE STK_PY5UPB geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.0935 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_PY5UPB geometry Box { size 0.11 0.002 0.07 } } ] }
+ ]
+  boundingObject Box { size 0.28 0.185 0.14 }
+}
+DEF BOX_RT020 Solid {
+  translation 102.8 101.2 0.07
+  name "RT020"
+  model "I2B1FH-9"
+  recognitionColors [ 0.1 0.6 0.65 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.32 0.215 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.322 0.05 0.002 } } ] }
+ Pose { translation 0 -0.1085 0 children [ Shape { appearance USE STK_I2B1FH geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.1085 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_I2B1FH geometry Box { size 0.11 0.002 0.07 } } ] }
+ ]
+  boundingObject Box { size 0.32 0.215 0.14 }
+}
 DEF BOX_RT021 Solid {
   translation 103.2 101.2 0.07
   name "RT021"
-  model "I1KDJ0-9.5"
+  model "I1KDJ0-11"
   recognitionColors [ 0.55 0.25 0.65 ]
   children [ Shape { appearance USE CARDBOARD geometry Box { size 0.3 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.302 0.05 0.002 } } ] }
  Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
@@ -3792,7 +3786,7 @@ DEF BOX_RT021 Solid {
 DEF BOX_RT022 Solid {
   translation 103.6 101.2 0.07
   name "RT022"
-  model "I1KDJ0-10.5"
+  model "I1KDJ0-10"
   recognitionColors [ 0.55 0.25 0.65 ]
   children [ Shape { appearance USE CARDBOARD geometry Box { size 0.3 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.302 0.05 0.002 } } ] }
  Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
@@ -3803,79 +3797,79 @@ DEF BOX_RT022 Solid {
 DEF BOX_RT023 Solid {
   translation 104 101.2 0.07
   name "RT023"
-  model "WRRW1W-10"
-  recognitionColors [ 0.45 0.15 0.2 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.32 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.322 0.05 0.002 } } ] }
- Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_WRRW1W geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_WRRW1W geometry Box { size 0.11 0.002 0.07 } } ] }
+  model "PY5UPB-26.5"
+  recognitionColors [ 0.95 0.55 0.2 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.185 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
+ Pose { translation 0 -0.0935 0 children [ Shape { appearance USE STK_PY5UPB geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.0935 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_PY5UPB geometry Box { size 0.11 0.002 0.07 } } ] }
  ]
-  boundingObject Box { size 0.32 0.2 0.14 }
+  boundingObject Box { size 0.28 0.185 0.14 }
 }
 DEF BOX_RT024 Solid {
   translation 104.4 101.2 0.07
   name "RT024"
-  model "I1KDJ0-9"
-  recognitionColors [ 0.55 0.25 0.65 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.3 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.302 0.05 0.002 } } ] }
- Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
+  model "8N10W9-11"
+  recognitionColors [ 0.85 0.7 0.15 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
+ Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
  ]
-  boundingObject Box { size 0.3 0.2 0.14 }
+  boundingObject Box { size 0.28 0.2 0.14 }
 }
 DEF BOX_RT025 Solid {
   translation 104.8 101.2 0.07
   name "RT025"
-  model "8D9SAW-11"
-  recognitionColors [ 0.55 0.38 0.2 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.32 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.322 0.05 0.002 } } ] }
- Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_8D9SAW geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_8D9SAW geometry Box { size 0.11 0.002 0.07 } } ] }
+  model "8N10W9-8.5"
+  recognitionColors [ 0.85 0.7 0.15 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
+ Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
  ]
-  boundingObject Box { size 0.32 0.2 0.14 }
+  boundingObject Box { size 0.28 0.2 0.14 }
 }
 DEF BOX_RT026 Solid {
   translation 105.2 101.2 0.07
   name "RT026"
-  model "8N10W9-11"
-  recognitionColors [ 0.85 0.7 0.15 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
- Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
+  model "05W6TK-10.5"
+  recognitionColors [ 0.8 0.2 0.15 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.3 0.185 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.302 0.05 0.002 } } ] }
+ Pose { translation 0 -0.0935 0 children [ Shape { appearance USE STK_05W6TK geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.0935 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_05W6TK geometry Box { size 0.11 0.002 0.07 } } ] }
  ]
-  boundingObject Box { size 0.28 0.2 0.14 }
+  boundingObject Box { size 0.3 0.185 0.14 }
 }
 DEF BOX_RT027 Solid {
   translation 105.6 101.2 0.07
   name "RT027"
-  model "8N10W9-11"
-  recognitionColors [ 0.85 0.7 0.15 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
- Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
+  model "PY5UPB-28"
+  recognitionColors [ 0.95 0.55 0.2 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.185 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
+ Pose { translation 0 -0.0935 0 children [ Shape { appearance USE STK_PY5UPB geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.0935 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_PY5UPB geometry Box { size 0.11 0.002 0.07 } } ] }
  ]
-  boundingObject Box { size 0.28 0.2 0.14 }
+  boundingObject Box { size 0.28 0.185 0.14 }
 }
 DEF BOX_RT028 Solid {
   translation 106 101.2 0.07
   name "RT028"
-  model "8D9SAW-10.5"
-  recognitionColors [ 0.55 0.38 0.2 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.32 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.322 0.05 0.002 } } ] }
- Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_8D9SAW geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_8D9SAW geometry Box { size 0.11 0.002 0.07 } } ] }
+  model "I2B1FH-9"
+  recognitionColors [ 0.1 0.6 0.65 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.32 0.215 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.322 0.05 0.002 } } ] }
+ Pose { translation 0 -0.1085 0 children [ Shape { appearance USE STK_I2B1FH geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.1085 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_I2B1FH geometry Box { size 0.11 0.002 0.07 } } ] }
  ]
-  boundingObject Box { size 0.32 0.2 0.14 }
+  boundingObject Box { size 0.32 0.215 0.14 }
 }
 DEF BOX_RT029 Solid {
   translation 106.4 101.2 0.07
   name "RT029"
-  model "8N10W9-12"
-  recognitionColors [ 0.85 0.7 0.15 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
- Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
+  model "05W6TK-9.5"
+  recognitionColors [ 0.8 0.2 0.15 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.3 0.185 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.302 0.05 0.002 } } ] }
+ Pose { translation 0 -0.0935 0 children [ Shape { appearance USE STK_05W6TK geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.0935 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_05W6TK geometry Box { size 0.11 0.002 0.07 } } ] }
  ]
-  boundingObject Box { size 0.28 0.2 0.14 }
+  boundingObject Box { size 0.3 0.185 0.14 }
 }
 DEF BOX_RT030 Solid {
   translation 106.8 101.2 0.07
@@ -3891,40 +3885,40 @@ DEF BOX_RT030 Solid {
 DEF BOX_RT031 Solid {
   translation 107.2 101.2 0.07
   name "RT031"
-  model "8N10W9-10.5"
-  recognitionColors [ 0.85 0.7 0.15 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
- Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
+  model "WRRW1W-10.5"
+  recognitionColors [ 0.45 0.15 0.2 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.32 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.322 0.05 0.002 } } ] }
+ Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_WRRW1W geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_WRRW1W geometry Box { size 0.11 0.002 0.07 } } ] }
  ]
-  boundingObject Box { size 0.28 0.2 0.14 }
+  boundingObject Box { size 0.32 0.2 0.14 }
 }
 DEF BOX_RT032 Solid {
   translation 107.6 101.2 0.07
   name "RT032"
-  model "I2B1FH-10"
-  recognitionColors [ 0.1 0.6 0.65 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.32 0.215 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.322 0.05 0.002 } } ] }
- Pose { translation 0 -0.1085 0 children [ Shape { appearance USE STK_I2B1FH geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.1085 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_I2B1FH geometry Box { size 0.11 0.002 0.07 } } ] }
+  model "WRRW1W-8.5"
+  recognitionColors [ 0.45 0.15 0.2 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.32 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.322 0.05 0.002 } } ] }
+ Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_WRRW1W geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_WRRW1W geometry Box { size 0.11 0.002 0.07 } } ] }
  ]
-  boundingObject Box { size 0.32 0.215 0.14 }
+  boundingObject Box { size 0.32 0.2 0.14 }
 }
 DEF BOX_RT033 Solid {
   translation 108 101.2 0.07
   name "RT033"
-  model "U95NWB-12"
-  recognitionColors [ 0.7 0.55 0.45 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.185 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
- Pose { translation 0 -0.0935 0 children [ Shape { appearance USE STK_U95NWB geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.0935 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_U95NWB geometry Box { size 0.11 0.002 0.07 } } ] }
+  model "05W6TK-9.5"
+  recognitionColors [ 0.8 0.2 0.15 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.3 0.185 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.302 0.05 0.002 } } ] }
+ Pose { translation 0 -0.0935 0 children [ Shape { appearance USE STK_05W6TK geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.0935 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_05W6TK geometry Box { size 0.11 0.002 0.07 } } ] }
  ]
-  boundingObject Box { size 0.28 0.185 0.14 }
+  boundingObject Box { size 0.3 0.185 0.14 }
 }
 DEF BOX_RT034 Solid {
   translation 108.4 101.2 0.07
   name "RT034"
-  model "8N10W9-11"
+  model "8N10W9-10.5"
   recognitionColors [ 0.85 0.7 0.15 ]
   children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
  Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
@@ -3935,62 +3929,7 @@ DEF BOX_RT034 Solid {
 DEF BOX_RT035 Solid {
   translation 108.8 101.2 0.07
   name "RT035"
-  model "WRRW1W-9"
-  recognitionColors [ 0.45 0.15 0.2 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.32 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.322 0.05 0.002 } } ] }
- Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_WRRW1W geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_WRRW1W geometry Box { size 0.11 0.002 0.07 } } ] }
- ]
-  boundingObject Box { size 0.32 0.2 0.14 }
-}
-DEF BOX_RT036 Solid {
-  translation 109.2 101.2 0.07
-  name "RT036"
-  model "PY5UPB-26"
-  recognitionColors [ 0.95 0.55 0.2 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.185 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
- Pose { translation 0 -0.0935 0 children [ Shape { appearance USE STK_PY5UPB geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.0935 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_PY5UPB geometry Box { size 0.11 0.002 0.07 } } ] }
- ]
-  boundingObject Box { size 0.28 0.185 0.14 }
-}
-DEF BOX_RT037 Solid {
-  translation 109.6 101.2 0.07
-  name "RT037"
-  model "8N10W9-9.5"
-  recognitionColors [ 0.85 0.7 0.15 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
- Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
- ]
-  boundingObject Box { size 0.28 0.2 0.14 }
-}
-DEF BOX_RT038 Solid {
-  translation 110 101.2 0.07
-  name "RT038"
-  model "8N10W9-10.5"
-  recognitionColors [ 0.85 0.7 0.15 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
- Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
- ]
-  boundingObject Box { size 0.28 0.2 0.14 }
-}
-DEF BOX_RT039 Solid {
-  translation 110.4 101.2 0.07
-  name "RT039"
-  model "8N10W9-8"
-  recognitionColors [ 0.85 0.7 0.15 ]
-  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
- Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
- Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
- ]
-  boundingObject Box { size 0.28 0.2 0.14 }
-}
-DEF BOX_RT040 Solid {
-  translation 110.8 101.2 0.07
-  name "RT040"
-  model "I1KDJ0-11"
+  model "I1KDJ0-9"
   recognitionColors [ 0.55 0.25 0.65 ]
   children [ Shape { appearance USE CARDBOARD geometry Box { size 0.3 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.302 0.05 0.002 } } ] }
  Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_I1KDJ0 geometry Box { size 0.11 0.002 0.07 } } ] }
@@ -3998,30 +3937,85 @@ DEF BOX_RT040 Solid {
  ]
   boundingObject Box { size 0.3 0.2 0.14 }
 }
+DEF BOX_RT036 Solid {
+  translation 109.2 101.2 0.07
+  name "RT036"
+  model "8N10W9-12"
+  recognitionColors [ 0.85 0.7 0.15 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
+ Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
+ ]
+  boundingObject Box { size 0.28 0.2 0.14 }
+}
+DEF BOX_RT037 Solid {
+  translation 109.6 101.2 0.07
+  name "RT037"
+  model "8D9SAW-10.5"
+  recognitionColors [ 0.55 0.38 0.2 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.32 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.322 0.05 0.002 } } ] }
+ Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_8D9SAW geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_8D9SAW geometry Box { size 0.11 0.002 0.07 } } ] }
+ ]
+  boundingObject Box { size 0.32 0.2 0.14 }
+}
+DEF BOX_RT038 Solid {
+  translation 110 101.2 0.07
+  name "RT038"
+  model "SMMRK3-9.5"
+  recognitionColors [ 0.25 0.25 0.6 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
+ Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_SMMRK3 geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_SMMRK3 geometry Box { size 0.11 0.002 0.07 } } ] }
+ ]
+  boundingObject Box { size 0.28 0.2 0.14 }
+}
+DEF BOX_RT039 Solid {
+  translation 110.4 101.2 0.07
+  name "RT039"
+  model "SMMRK3-9.5"
+  recognitionColors [ 0.25 0.25 0.6 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
+ Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_SMMRK3 geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_SMMRK3 geometry Box { size 0.11 0.002 0.07 } } ] }
+ ]
+  boundingObject Box { size 0.28 0.2 0.14 }
+}
+DEF BOX_RT040 Solid {
+  translation 110.8 101.2 0.07
+  name "RT040"
+  model "8N10W9-13"
+  recognitionColors [ 0.85 0.7 0.15 ]
+  children [ Shape { appearance USE CARDBOARD geometry Box { size 0.28 0.2 0.14 } } Pose { translation 0 0 0.071 children [ Shape { appearance USE TAPE geometry Box { size 0.282 0.05 0.002 } } ] }
+ Pose { translation 0 -0.101 0 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
+ Pose { translation 0 0.101 0 rotation 0 0 1 3.1416 children [ Shape { appearance USE STK_8N10W9 geometry Box { size 0.11 0.002 0.07 } } ] }
+ ]
+  boundingObject Box { size 0.28 0.2 0.14 }
+}
 DEF R0 SimpleBot {
-  translation -6.0 5.8 0
-  rotation 0 0 1 0.0000
+  translation -10.5 -6.3 0
+  rotation 0 0 1 1.5708
   name "robot_0"
   controller "agent"
   controllerArgs [ "--id" "0" ]
-  color 0.9 0.6 0.1
+  color 0.2 0.4 0.9
   receiverChannel 100
   cameraFov 1.08
   detailed TRUE
 }
 DEF R1 SimpleBot {
-  translation -7.2 5.8 0
-  rotation 0 0 1 0.0000
+  translation -9.7 -6.3 0
+  rotation 0 0 1 1.5708
   name "robot_1"
   controller "agent"
   controllerArgs [ "--id" "1" ]
-  color 0.9 0.6 0.1
+  color 0.2 0.4 0.9
   receiverChannel 101
   cameraFov 1.08
   detailed TRUE
 }
 DEF R2 SimpleBot {
-  translation -10.5 -6.3 0
+  translation -8.9 -6.3 0
   rotation 0 0 1 1.5708
   name "robot_2"
   controller "agent"
@@ -4032,7 +4026,7 @@ DEF R2 SimpleBot {
   detailed TRUE
 }
 DEF R3 SimpleBot {
-  translation -9.7 -6.3 0
+  translation -8.1 -6.3 0
   rotation 0 0 1 1.5708
   name "robot_3"
   controller "agent"
@@ -4043,7 +4037,7 @@ DEF R3 SimpleBot {
   detailed TRUE
 }
 DEF R4 SimpleBot {
-  translation -8.9 -6.3 0
+  translation -7.3 -6.3 0
   rotation 0 0 1 1.5708
   name "robot_4"
   controller "agent"
@@ -4054,7 +4048,7 @@ DEF R4 SimpleBot {
   detailed TRUE
 }
 DEF R5 SimpleBot {
-  translation -8.1 -6.3 0
+  translation -6.5 -6.3 0
   rotation 0 0 1 1.5708
   name "robot_5"
   controller "agent"
@@ -4065,7 +4059,7 @@ DEF R5 SimpleBot {
   detailed TRUE
 }
 DEF R6 SimpleBot {
-  translation -7.3 -6.3 0
+  translation -5.699999999999999 -6.3 0
   rotation 0 0 1 1.5708
   name "robot_6"
   controller "agent"
@@ -4076,7 +4070,7 @@ DEF R6 SimpleBot {
   detailed TRUE
 }
 DEF R7 SimpleBot {
-  translation -6.5 -6.3 0
+  translation -4.8999999999999995 -6.3 0
   rotation 0 0 1 1.5708
   name "robot_7"
   controller "agent"

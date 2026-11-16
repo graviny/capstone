@@ -38,6 +38,7 @@ SWEEP_ANGLE = 0.3          # patrol reports a slot when it is this close to the 
 IDLE_PARK_S = 20.0
 ARRIVE_M = 0.35            # a path that ends farther than this from the goal is replanned
 MAX_RETRIES = 3
+NO_TASK = [2, 9, 1e9]      # right-of-way key of a robot without a task (see prio_key)
 
 
 def wrap(a):
@@ -115,7 +116,9 @@ def main():
                 and math.hypot(o["pos"][0] - s["pos"][0], o["pos"][1] - s["pos"][1]) <= per["slot_match_m"]]
         return min(hits, key=lambda o: o["dist"])["item"] if hits else "EMPTY"
 
-    poses, moving = {}, set()
+    poses, moving, prio = {}, set(), {}
+    # docs: "task" = right of way by task (default for new worlds); "id" = lower id first (older scenarios).
+    by_task = nav.get("traffic_priority", "id") == "task"
     path, goal = [], None
     blocked_since = None
     task, phase, holding = None, None, None
@@ -143,8 +146,22 @@ def main():
             path.clear()
             path.extend(p)
 
+    def prio_key():
+        """Right of way (lower wins), as fleet managers rank vehicles: loaded first, then the
+        task's priority and deadline; robots without a task or on hold last. Ties: robot id."""
+        if task is None or phase == "wait":
+            return NO_TASK
+        dl = task.get("deadline")
+        return [0 if holding else 1, task.get("priority") or 9, dl if dl is not None else 1e9]
+
     def state():
-        send("STATE", task=task["task_id"] if task else None, holding=holding, phase=phase)
+        send("STATE", task=task["task_id"] if task else None, holding=holding, phase=phase,
+             prio=prio_key() if by_task else None)
+
+    def yields_to(j):
+        # Keys from the same broadcast for both robots, so every pair agrees on who goes first.
+        # A robot that has not reported yet (or "id" mode: none report) counts as without a task.
+        return tuple(prio.get(j) or NO_TASK) + (j,) < tuple(prio.get(rid) or NO_TASK) + (rid,)
 
     def go_slot(x, y, sid, new_phase):
         nonlocal phase, face_point, plan_retries
@@ -185,6 +202,7 @@ def main():
                 moving = {j for j, p in new_poses.items()
                           if j in poses and math.hypot(p[0] - poses[j][0], p[1] - poses[j][1]) > MOVING_M}
                 poses = new_poses
+                prio = {int(k): v for k, v in msg.get("prio", {}).items()}
             elif kind == "DECISION":
                 action = msg["action"]
                 if action == "EXECUTE":
@@ -339,9 +357,10 @@ def main():
             drive(0.0, math.copysign(0.5, err))
             continue
 
-        # Collision avoidance: the lower id has priority; yield to robots in the way.
-        # Side by side in the same direction the yielding robot also waits, so the one
-        # with priority pulls ahead instead of the two rubbing along together.
+        # Collision avoidance: yield to robots in the way that have the right of way
+        # (yields_to: by task, or by lower id). Side by side in the same direction the
+        # yielding robot also waits, so the one with priority pulls ahead instead of the
+        # two rubbing along together.
         near_goal = goal is not None and math.hypot(goal[0] - x, goal[1] - y) < NEAR_GOAL_M
         must_stop, back_off, steer, slow = False, False, 0.0, False
         for j, (px, py, pyaw) in poses.items():
@@ -350,10 +369,11 @@ def main():
             d = math.hypot(px - x, py - y)
             bearing = abs(wrap(math.atan2(py - y, px - x) - heading_to_wp))
             in_way = bearing < 0.8
-            if in_way and (d < nav["stop_dist_m"] or (d < nav["avoid_dist_m"] and rid > j and not near_goal)):
+            give_way = yields_to(j)
+            if in_way and (d < nav["stop_dist_m"] or (d < nav["avoid_dist_m"] and give_way and not near_goal)):
                 must_stop = True
-                back_off |= d < nav["stop_dist_m"] and rid > j
-            elif (rid > j and j in moving and d < ALONGSIDE_M and bearing < math.pi / 2
+                back_off |= d < nav["stop_dist_m"] and give_way
+            elif (give_way and j in moving and d < ALONGSIDE_M and bearing < math.pi / 2
                   and abs(wrap(pyaw - heading_to_wp)) < ALONGSIDE_RAD):
                 must_stop = True
             elif d < PASS_M and bearing < math.pi / 2:

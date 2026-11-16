@@ -68,8 +68,10 @@ python tools/gen_world.py --config logs/<실행>/scenario.json
 
 | 옵션 | 기본값 | 뜻 |
 | --- | --- | --- |
-| `--seed` | 0 | 난수 시드 |
-| `--patrols`, `--transports` | 2, 6 | 순찰·운반 로봇 수 |
+| `--seed` | 42 | 난수 시드. 시나리오와 작업자 오류를 함께 정함. 2026-11-16 전 기본값은 0(그 전 결과의 seed 0) |
+| `--robot-speed` | 0.8 | 로봇 최고 속도(m/s). 2026-11-09에 0.3에서 올림. 그 전 결과(순찰 실험 1단계 포함)는 0.3 m/s 기준 |
+| `--traffic-priority` | task | 통행 우선순위. `task`: 짐 실은 로봇 → 작업 우선순위 → 마감 → 번호. `id`: 번호가 낮은 로봇 먼저. 2026-11-16 전 결과는 모두 `id` |
+| `--patrols`, `--transports` | **0, 8** | 순찰·운반 로봇 수. 기본은 순찰 로봇 없음(팀 결정, `experiments_patrol.md`) |
 | `--layout` | base | `base`(160칸) 또는 `large`(480칸) |
 | `--patrol-sweep` | 꺼짐 | 쉬는 순찰 로봇이 선반을 계속 돌며 관측 |
 | `--plain` | 꺼짐 | 장식 없는 월드 (배치 실험용, 약 3배 빠름) |
@@ -109,7 +111,7 @@ python tools/gen_world.py --config logs/<실행>/scenario.json
 
 | 파일 | 내용 | 결과 |
 | --- | --- | --- |
-| `base.json` | 기본 (2023-03-09, 1시간, 순찰 2·운반 6, plain) | 트럭 9대 / 108상자 |
+| `base.json` | 기본 (2023-03-09, 1시간, 순찰 0·운반 8, plain) | 트럭 9대 / 108상자 |
 | `no_faults.json` | 오류 끔 | |
 | `faults_x2.json` | 오류율 2배 | |
 | `inbound_x1.5.json` | 입고량 1.5배 | 트럭 14대 / 164상자 |

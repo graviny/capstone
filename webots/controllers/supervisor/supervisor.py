@@ -235,6 +235,7 @@ def main():
 
     # ---- robots / tasks ----
     robot_state = {rid: {"task": None, "holding": None, "phase": None} for rid in robots}
+    prio = {}                                          # robot -> right-of-way key (agent.py prio_key)
     task_dest = {}                                     # task id -> destination (for S3)
     task_src = {}                                      # task id -> source (record quality, below)
     # Record quality: a rack slot whose record differs from the truth while no robot works on
@@ -478,6 +479,8 @@ def main():
             elif msg["kind"] == "STATE":
                 robot_state[msg["src"]] = {"task": msg.get("task"), "holding": msg.get("holding"),
                                            "phase": msg.get("phase")}
+                if msg.get("prio") is not None:
+                    prio[msg["src"]] = msg["prio"]
             elif msg["kind"] == "EVENT":
                 ev = {k: v for k, v in msg.items() if k not in ("kind", "src")}
                 emit(ev)
@@ -517,7 +520,8 @@ def main():
                 last_pos[rid] = (x, y)
                 if robot_state[rid]["task"]:
                     busy_s[rid] += POSE_EVERY_STEPS * step_s
-            packet = json.dumps({"kind": "POSES", "poses": poses})
+            # Right-of-way keys travel with the poses, so all robots compare the same values.
+            packet = json.dumps({"kind": "POSES", "poses": poses, "prio": prio})
             for rid in rnodes:
                 emitter.setChannel(100 + rid)
                 emitter.send(packet)

@@ -11,7 +11,7 @@ Mock WMS, WES(Baseline·Proposed), 시뮬레이터를 개발할 때 지켜야 �
 | 핵심 시나리오 | S1 오적치, S2 Short Pick / 누락 재고, S3 낡은 작업 정보(목적지 점유) |
 | 오류 원인 | **사람만**: 작업자의 기록 없는 이동(S1)·반출(S2)·반품 적치(S3). 로봇은 실수하지 않음 |
 | 작업 종류 | PUTAWAY, PICK, VERIFY, RELOCATE |
-| 로봇 | 운반(transport), 순찰(patrol) 두 역할, 여러 대 동시 작업 |
+| 로봇 | 기본은 운반(transport) 8대. 확인(VERIFY)도 운반 로봇이 함. 순찰(patrol) 역할은 코드에 남아 있고 `--patrols`로 켤 수 있음 (팀 결정, `experiments_patrol.md`) |
 | 데이터 | 실제 주문(Footwear 데이터셋), 실제 보관 위치(선택), 나머지는 합성 |
 | 비교 | 같은 환경·같은 WMS에서 WES 스케줄러만 바꿔 비교 |
 
