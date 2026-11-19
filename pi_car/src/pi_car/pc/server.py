@@ -1,6 +1,7 @@
 """Multi-client TCP adapter for FleetController; contains no path planner."""
 import asyncio
 import time
+import logging
 from pi_car.transport.protocol import MAX_MESSAGE_BYTES, STATUS
 from pi_car.transport.tcp import JsonConnection
 
@@ -52,8 +53,8 @@ class FleetTCPServer:
                     self.fleet.status_received(event)
                 else:
                     raise ValueError("Unexpected Pi message")
-        except (OSError, ValueError, ConnectionError, asyncio.TimeoutError):
-            pass
+        except (OSError, ValueError, ConnectionError, asyncio.TimeoutError) as error:
+            logging.getLogger(__name__).warning('Robot session %s: %s',robot_id or writer.get_extra_info('peername'),error)
         finally:
             if pinger:
                 pinger.cancel()

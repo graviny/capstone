@@ -162,7 +162,7 @@ class FleetPanel:
             result=state.get('last_result') or {}
             command=state.get('command_id') or '-'
             if len(command)>24:command=command[:21]+'...'
-            reason=result.get('reason','')
+            reason=state.get('pose_error') or result.get('reason','')
             if len(reason)>28:reason=reason[:25]+'...'
             lines.append(f"{r}: {state.get('status','OFFLINE')}\n"
                          f"{command}\n{reason}")

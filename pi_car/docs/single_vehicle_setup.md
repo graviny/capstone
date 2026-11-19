@@ -1,5 +1,8 @@
 # 차량 1대·중앙 장착·7cm 태그 설정
 
+최신 실제 결과와 현재 PC/Pi 경로·IP를 반영한 명령은
+[실차 시험 및 재실행 안내](real_drive_trial.md)에 정리했다. 짧은 직선 목표의 ARRIVED를 확인했다.
+
 현재 config/robots.json과 config/robot.json은 다음 조건에 맞췄다.
 
 - 차량 이름(robot_id): 문자열 `"1"`. Pi도 `--robot-id 1`로 실행한다.
@@ -51,6 +54,24 @@ PDF는 A4, 실제 크기 100%로 인쇄한다. 페이지 맞춤을 끄고 검은
 현재 차량은 책상 위에 있어 보이며, 태그 인식 확인과 실제 바닥 주행 지도 생성은 별도 단계다.
 이 설정을 반영하려면 실행 중인 Fleet 서버/검사 도구를 다시 시작해야 한다.
 
+## 실시간 Pose null 문제 수정
+
+실제 Fleet에서 Pi는 연결됐으나 pose가 null인 상황을 확인했다.
+저장된 RGB fx=385.6702, fy=385.2582에 비해 현재 장치의 값은
+fx=386.8249, fy=386.4117로 약 0.3% 달랐다. 기존의 사전 완전 일치 검사가 이 변동을 거부했다.
+고정된 카메라 광학 프레임의 extrinsic은 유지하고, 역투영/PnP에는 프레임의 현재 K를 사용한다.
+동일 serial·해상도에서 focal 0.5% 이내, principal point 1px 이내 변동을 허용하도록 수정했다.
+이는 초기 보수적 검사 경계이며 실측 위치 정확도를 보장하는 수치가 아니다.
+큰 변동·다른 장치는 계속 거부하며, 카메라를 물리적으로 옮겨도 된다는 의미는 아니다.
+
+관측 오류는 STATUS의 pose_error에 나타나도록 추가했다. 수정 서버에서 태그 42의
+유효 Pose가 다시 나오는 것을 확인했다. 이 보정 검사 단계에서는 모터/목표 명령을 발급하지 않았다.
+이후 실제 주행 결과와 최신 테스트 결과는 위 실차 시험 문서에 기록했다.
+
+현재 지도는 약 0.99×0.96m이며 20cm clearance 확장 후 사용 가능한 셀이 25개뿐이다.
+카메라를 높여 더 넓은 주행장을 관측하거나, 실제 차체 반경·여유를 측정해 설정해야 한다.
+단지 움직이게 하려고 clearance나 Unknown 차단을 제거하면 안 된다.
+
 ## 실측 기준점 없이 지도 생성 → 수동 목표 주행
 
 PC의 `pi_car/`에서 가상환경을 활성화한다. 카메라를 고정하고 차량·사람을 지도 촬영 영역에서 뺀다.
@@ -80,15 +101,16 @@ pi-car fleet-server --map data/drive/map --calibration data/drive/calibration.js
 MPLBACKEND=TkAgg pi-car fleet-panel --map data/drive/map --clearance 0.20
 ```
 
-Pi에서는 실제 PC IP와 설치된 vendor 경로로 다음 명령을 실행한다.
+Pi에서는 현재 Tailscale PC 주소와 실제 설치된 vendor 경로로 다음 명령을 실행한다.
 
 ```bash
-pi-car robot-client --robot-id 1 --host 192.168.0.10 --map data/map \
+pi-car robot-client --robot-id 1 --host 100.124.4.8 --map data/map \
   --clearance 0.20 --journal data/robot_1.sqlite3 --enable-motors \
-  --vendor-dir ~/adeept/Server_OrdinaryWheels --max-output 0.15 --servo-angle 90
+  --vendor-dir "$HOME/ADR036-Adeept_4WD_Smart_Car_Kit_for_RPi-20260317/Code/Adeept_4WD_Smart_Car_for_RPi/Server/Server_OrdinaryWheels" \
+  --max-output 0.20 --servo-angle 90
 ```
 
 사진의 태그를 차량에 그대로 붙여 주행장에 놓고, PC 화면에서 차량 `1` 위치/방향이 맞는지 확인한다.
 그다음 흰 영역의 가까운 목표를 클릭한다. STOP selected가 정지 명령이다.
 카메라를 움직이면 이 지도·좌표 보정을 다시 사용할 수 없다.
-실제 차량 모터/정지거리/주행은 아직 검증 전이므로 최초 실험 전 방향과 정지를 먼저 확인한다.
+짧은 직선 주행은 확인했으며 큰 회전·정지거리·반복 주행 검증은 남아 있다.

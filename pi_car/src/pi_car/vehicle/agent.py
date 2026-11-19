@@ -8,6 +8,7 @@ from pi_car.transport.protocol import TERMINAL, identifier, make_message, valida
 from pi_car.vehicle.hardware import DisabledMotor
 from pi_car.vehicle.hardware.watchdog import WatchdogMotor
 from pi_car.vehicle.planning import plan
+from pi_car.vehicle.planning.line_of_sight import segment_is_free
 from pi_car.vehicle.runtime import VehicleRuntime
 
 
@@ -131,9 +132,11 @@ class RobotAgent:
             if math.dist(start, (self.pose.x, self.pose.y)) > self.grid.metadata.resolution_m:
                 self._finish("ERROR", "POSE_JUMP_DURING_PLANNING")
                 return
-            # Keep the exact external target as the final waypoint. A* itself
-            # returns cell centers, which can otherwise misreport goal arrival.
-            if path[-1] != goal:
+            # A short clear segment need not turn toward every grid center.
+            # Validate against all touched inflated cells before shortcutting.
+            if segment_is_free(self.navigation,start,goal):
+                path=[goal]
+            elif path[-1] != goal:
                 path.append(goal)
             self.runtime.set_path(path)
             self.runtime.follower.tolerance = min(.05, self.grid.metadata.resolution_m*.45)

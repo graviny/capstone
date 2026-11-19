@@ -12,6 +12,7 @@ class RobotState:
     robot_id: str
     connected: bool = False
     pose: object = None
+    pose_error: str | None = None
     command_id: str | None = None
     goal: dict | None = None
     status: str = "DISCONNECTED"
@@ -147,6 +148,8 @@ class FleetController:
                  and pose.frame_id == self.grid.metadata.frame_id
                  and 0 <= time.time()-pose.timestamp <= .3)
         state.pose = pose if valid else None
+        if pose is not None and not valid:
+            state.pose_error='POSE INVALID / WRONG FRAME / CAPTURE AGE OVER 0.3s'
         if not state.connected:
             return
         fields = dict(x=pose.x, y=pose.y, theta=pose.theta, timestamp=pose.timestamp) if valid else dict(
@@ -172,6 +175,7 @@ class FleetController:
     def snapshot(self):
         return {r: dict(robot_id=r, connected=s.connected,
                         pose=s.pose.to_dict() if s.pose else None, command_id=s.command_id,
+                        pose_error=s.pose_error,
                         goal=s.goal, status=s.status, last_communication=s.last_communication,
                         last_result=(self.journal.get(s.command_id)[1] if s.command_id else None))
                 for r, s in self.robots.items()}

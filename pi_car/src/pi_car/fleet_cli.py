@@ -16,6 +16,7 @@ def add_commands(commands):
     server.add_argument("--command-port", type=int, default=8766)
     server.add_argument("--clearance", type=float, default=.2)
     server.add_argument("--journal", default="data/fleet.sqlite3")
+    server.add_argument("--snapshot-dir",help="Optional live RGB-D diagnostic snapshot directory (1 Hz)")
     robot = commands.add_parser("robot-client", help="Pi executor; dry-run unless --enable-motors is explicit")
     robot.add_argument("--map", required=True)
     robot.add_argument("--robot-id", required=True)
@@ -116,6 +117,6 @@ async def run(args):
         await server.start(); await gateway.start()
         with RealSenseCamera() as camera:
             print(f"Fleet TCP {server.host}:{server.port}; command API 127.0.0.1:{gateway.port}",flush=True)
-            await publish_camera(fleet,camera,localizer)
+            await publish_camera(fleet,camera,localizer,snapshot_dir=args.snapshot_dir)
     finally:
         await gateway.close(); await server.close(); fleet.close()

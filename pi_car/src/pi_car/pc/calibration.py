@@ -15,8 +15,22 @@ class Calibration:
     rmse_m: float
 
     def check_frame(self, frame):
-        if self.serial != frame.serial or self.intrinsics != asdict(frame.intrinsics):
-            raise ValueError("Camera serial/intrinsics changed: recalibrate")
+        current=asdict(frame.intrinsics)
+        if (self.serial != frame.serial or any(self.intrinsics[k]!=current[k] for k in ('width','height'))):
+            raise ValueError("Camera serial/resolution changed: recalibrate")
+        # Extrinsics describe the fixed RGB optical frame, not a specific K.
+        # Live deprojection/PnP use the current frame K. The D455 can report small
+        # focal updates across starts; exact dictionary equality rejected these.
+        # Keep a conservative guard against materially different profiles.
+        for key in ('fx','fy'):
+            reference=self.intrinsics[key]
+            value=current[key]
+            if (not np.isfinite(value) or value<=0 or reference<=0
+                    or abs(value/reference-1.)>.005):
+                raise ValueError(f"Camera {key} changed over 0.5%: recalibrate")
+        for key in ('cx','cy'):
+            if not np.isfinite(current[key]) or abs(current[key]-self.intrinsics[key])>1.:
+                raise ValueError("Camera principal point changed over 1 pixel: recalibrate")
 
     def transform(self, points):
         return transform_points(self.camera_to_world, points)

@@ -83,6 +83,7 @@ class MultiRobotLocalizer:
         if not self.localizers:
             raise ValueError("Configure at least one robot")
         self.first = next(iter(self.localizers.values()))
+        self.last_detection_ids=[]
 
     def estimate(self, frame):
         self.first.calibration.check_frame(frame)
@@ -90,6 +91,7 @@ class MultiRobotLocalizer:
         corners, ids, _ = self.first.detector.detectMarkers(
             cv2.cvtColor(frame.rgb, cv2.COLOR_RGB2GRAY))
         ids = [] if ids is None else list(ids.ravel())
+        self.last_detection_ids=[int(tag_id) for tag_id in ids]
         results = {}
         for robot_id, localizer in self.localizers.items():
             pose = None

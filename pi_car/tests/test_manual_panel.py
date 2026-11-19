@@ -42,6 +42,13 @@ class PanelIntegrationTests(unittest.IsolatedAsyncioTestCase):
             # Real MouseEvent, including NumPy coordinates from the transform.
             from matplotlib.backend_bases import MouseEvent
             panel.fig.canvas.draw()
+            # Agg rendering is synchronous in this test's server event loop.
+            # Refresh a real TCP snapshot after rendering, rather than clicking
+            # with a pose that rendering itself may have aged past the timeout.
+            await asyncio.sleep(.05)
+            from pi_car.transport.commands import send_command
+            snapshot=await send_command('127.0.0.1',gateway.port,dict(type='STATUS'))
+            panel.model.set_states(snapshot['result'])
             u,v=panel.ax.transData.transform((1.5,2.))
             panel._click(MouseEvent('button_press_event',panel.fig.canvas,u,v,button=1))
             await until(lambda:world.fleet.robots['B'].command_id is not None)
