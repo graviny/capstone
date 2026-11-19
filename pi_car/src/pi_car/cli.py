@@ -1,4 +1,4 @@
-"""PC milestone commands. No command in this CLI activates vehicle hardware."""
+"""Mapping, fleet, manual goals and opt-in Adeept driving commands."""
 import argparse
 from dataclasses import asdict
 from pathlib import Path
@@ -22,7 +22,9 @@ def main():
     preview.add_argument("--show", action="store_true", help="Open saved capture in a GUI window")
     experiment = commands.add_parser("experiment", help="Depth floor fit → map → test goal/path report")
     experiment.add_argument("--capture", required=True)
-    experiment.add_argument("--floor-roi", type=int, nargs=4, required=True, metavar=("X0","Y0","X1","Y1"))
+    floor_source=experiment.add_mutually_exclusive_group(required=True)
+    floor_source.add_argument("--floor-roi", type=int, nargs=4, metavar=("X0","Y0","X1","Y1"))
+    floor_source.add_argument("--pick-floor", action="store_true",help="Click two corners of a clear floor patch")
     experiment.add_argument("--out", required=True)
     experiment.add_argument("--clearance", type=float, default=.2)
     experiment.add_argument("--resolution", type=float, default=.03)
@@ -61,7 +63,7 @@ def main():
 
 
 def _run(args, parser):
-    if args.command in {"fleet-server", "robot-client", "send-command", "mock-fleet"}:
+    if args.command in {"fleet-server", "robot-client", "send-command", "mock-fleet", "fleet-panel"}:
         from pi_car.fleet_cli import run
         try:
             asyncio.run(run(args))
@@ -83,8 +85,11 @@ def _run(args, parser):
         print(json.dumps(report, indent=2))
     elif args.command == "experiment":
         from pi_car.pc.experiment import run_experiment
+        from pi_car.pc.floor import pick_floor_roi
         robot = json.loads(Path(args.robot_config).read_text()) if args.robot_config else None
-        report = run_experiment(RGBDFrame.load(args.capture), args.floor_roi, args.out,
+        frame=RGBDFrame.load(args.capture)
+        roi=pick_floor_roi(frame) if args.pick_floor else args.floor_roi
+        report = run_experiment(frame, roi, args.out,
                                 clearance_m=args.clearance, resolution_m=args.resolution,
                                 robot_config=robot)
         print(json.dumps(report, indent=2))

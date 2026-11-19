@@ -1,5 +1,7 @@
 # 실차 자율주행 스택
 
+PC/Pi별 설치·실행과 지도 클릭 주행 안내: [pc_pi_quickstart.md](pc_pi_quickstart.md).
+
 외부 MOVE/STOP 기반 멀티로봇 TCP와 Pi 실행기 사용법은
 [multi_robot_commands.md](multi_robot_commands.md)에 있다. 아래는 지도·좌표 검사 도구 안내를 포함한다.
 

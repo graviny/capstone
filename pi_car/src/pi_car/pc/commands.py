@@ -20,6 +20,10 @@ class CommandInterface:
             return await self.fleet.stop_robot(request.get("robot_id"), request.get("command_id"))
         if kind == "STATUS":
             return self.fleet.snapshot()
+        if kind == "INFO":
+            m = self.fleet.grid.metadata
+            return dict(frame_id=m.frame_id, map_version=m.version,
+                        clearance_m=self.fleet.clearance, robot_ids=list(self.fleet.robots))
         if kind == "RESULT":
             return self.fleet.command_result(request.get("command_id"))
-        raise ValueError("Expected MOVE, STOP, STATUS or RESULT")
+        raise ValueError("Expected MOVE, STOP, STATUS, INFO or RESULT")

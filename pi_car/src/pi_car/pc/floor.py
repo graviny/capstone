@@ -5,6 +5,28 @@ import numpy as np
 from pi_car.pc.calibration import Calibration
 
 
+def pick_floor_roi(frame):
+    """Pick a clear floor patch for fitting, not the full driving-area boundary."""
+    import matplotlib.pyplot as plt
+    fig,ax=plt.subplots()
+    ax.imshow(frame.rgb)
+    ax.set_title('Click TWO opposite corners of a clear FLOOR patch (no robot/objects); close to cancel')
+    try:
+        points=plt.ginput(2,timeout=0)
+    finally:
+        plt.close(fig)
+    if len(points)!=2:
+        raise ValueError('Floor selection cancelled: two corners are required')
+    uv=np.asarray(points,float)
+    if uv.shape!=(2,2) or not np.isfinite(uv).all():
+        raise ValueError('Invalid floor selection')
+    x0,y0=np.floor(uv.min(0)).astype(int)
+    x1,y1=np.ceil(uv.max(0)).astype(int)
+    if not (0<=x0<x1<=frame.intrinsics.width and 0<=y0<y1<=frame.intrinsics.height):
+        raise ValueError('Select a nonempty floor rectangle inside the image')
+    return [int(x0),int(y0),int(x1),int(y1)]
+
+
 def estimate_floor(frame, roi, *, threshold_m=.015, iterations=300, seed=7):
     """RANSAC inside an explicitly selected floor ROI, then SVD refinement.
 

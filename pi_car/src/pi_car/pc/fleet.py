@@ -172,7 +172,8 @@ class FleetController:
     def snapshot(self):
         return {r: dict(robot_id=r, connected=s.connected,
                         pose=s.pose.to_dict() if s.pose else None, command_id=s.command_id,
-                        goal=s.goal, status=s.status, last_communication=s.last_communication)
+                        goal=s.goal, status=s.status, last_communication=s.last_communication,
+                        last_result=(self.journal.get(s.command_id)[1] if s.command_id else None))
                 for r, s in self.robots.items()}
 
     def close(self):

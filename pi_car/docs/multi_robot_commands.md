@@ -1,5 +1,8 @@
 # 외부 명령 기반 멀티로봇 통신·실행 시스템
 
+PC/Pi별 설치 경로·지도 복사·목표 클릭 화면·실제 모터 opt-in 실행은
+[pc_pi_quickstart.md](pc_pi_quickstart.md)를 참고한다.
+
 ## 1. 구현 결과와 범위
 
 `feature/pi_car1`의 기존 `pi_car/`를 확장했다. PC가 외부 MOVE를 받아 지정 차량에
@@ -10,7 +13,7 @@ PC의 Fleet 서버는 경로를 계산하거나 경로를 전송하지 않는다
 다음 두 실행 경로를 제공한다.
 
 - 실제 구성: D455 → 다중 태그 위치 추정 → PC Fleet TCP → Pi RobotClient/RobotAgent.
-  CLI의 실제 모터는 기본 비활성을 넘어 **항상 비활성**으로 제공한다.
+  모터는 기본 비활성이며 현재는 명시적 `--enable-motors` 옵션으로만 실제 구동할 수 있다.
 - Mock 구성: 외부 위치 관측을 모사하는 테스트 월드 → 동일한 TCP → 동일 RobotAgent/Runtime.
   모터 출력으로 가상 위치만 갱신하며, 명령이 없으면 아무 목표도 발급하지 않는다.
 
@@ -216,7 +219,7 @@ pi-car robot-client --robot-id B --host 192.168.0.10 --map data/map \
 ```
 
 `--mock-range`는 Dry-run에서만 쓰는 가상 초음파 값이다. 생략하면 실제 센서가 연결돼 있지
-않으므로 안전 입력 부족으로 정지한다. 이 CLI에는 실제 모터 활성화 옵션이 없다.
+않으므로 안전 입력 부족으로 정지한다. 추가된 `--enable-motors`는 `--mock-range`와 혼용할 수 없다.
 실제 PC 서버의 Dry-run은 물리적으로 차량이 움직이지 않으면 Pose도 움직이지 않아 도착하지 않는다.
 실제 모터 출력 없이 도착까지 보려면 앞의 Mock 환경을 사용한다.
 
@@ -301,6 +304,6 @@ B IDLE·command_id 없음까지 확인했다. 결과는 Git 제외 파일 `data/
 4. 센서 sampling 작업을 만들어 새 `RangeReading`을 전달한다. 원본 gpiozero 캐시의 실제 갱신
    및 서보 이동 이후 방향별 fresh echo 여부를 확인해야 한다.
 5. 실측 모터 방향·출력 제한·정지거리·회전 범위를 확인한 `AdeeptMotor`를 명시적으로 주입한다.
-   CLI의 DisabledMotor를 우회하는 실제 구동 연결은 이번 작업에서 활성화하지 않았다.
+   이후 추가된 실제 구동 opt-in 연결은 quickstart를 참고한다. 실차 검증은 아직 필요하다.
 6. 스레드 watchdog 외 하드웨어 fail-off·긴급 정지를 마련하고 낮은 출력부터 시험한다.
 7. 센서/통신 오류, 도착 오차와 성공률을 실차로 평가한다. 장애물 회피·로봇 간 충돌 회피는 별도 후속 작업이다.

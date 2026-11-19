@@ -3,6 +3,7 @@ import asyncio
 import json
 from pathlib import Path
 import time
+from contextlib import nullcontext
 
 
 def add_commands(commands):
@@ -15,7 +16,7 @@ def add_commands(commands):
     server.add_argument("--command-port", type=int, default=8766)
     server.add_argument("--clearance", type=float, default=.2)
     server.add_argument("--journal", default="data/fleet.sqlite3")
-    robot = commands.add_parser("robot-client", help="Pi executor; motors always disabled in this CLI")
+    robot = commands.add_parser("robot-client", help="Pi executor; dry-run unless --enable-motors is explicit")
     robot.add_argument("--map", required=True)
     robot.add_argument("--robot-id", required=True)
     robot.add_argument("--host", required=True)
@@ -23,6 +24,17 @@ def add_commands(commands):
     robot.add_argument("--clearance", type=float, default=.2)
     robot.add_argument("--journal", required=True, help="Unique durable SQLite file for this robot")
     robot.add_argument("--mock-range", type=float, help="DRY-RUN synthetic front range in meters")
+    robot.add_argument("--enable-motors",action="store_true",help="Activate real Adeept motor and ultrasonic hardware")
+    robot.add_argument("--vendor-dir",help="Installed Adeept OrdinaryWheels directory containing Move.py")
+    robot.add_argument("--max-output",type=float,default=.2)
+    robot.add_argument("--servo-angle",type=float,default=90.)
+    panel=commands.add_parser("fleet-panel",help="PC map window: choose robot, click goal, STOP")
+    panel_map=panel.add_mutually_exclusive_group(required=True)
+    panel_map.add_argument("--map")
+    panel_map.add_argument("--mock-map",action="store_true")
+    panel.add_argument("--host",default="127.0.0.1")
+    panel.add_argument("--port",type=int,default=8766)
+    panel.add_argument("--clearance",type=float,default=.2)
     sender = commands.add_parser("send-command", help="Send an external JSON command; no auto goals")
     sender.add_argument("--host", default="127.0.0.1")
     sender.add_argument("--port", type=int, default=8766)
@@ -36,6 +48,12 @@ async def run(args):
     from pi_car.common.grid import OccupancyGrid
     from pi_car.pc.commands import CommandInterface
     from pi_car.transport.commands import CommandTCPServer, send_command
+    if args.command == "fleet-panel":
+        from pi_car.pc.panel import FleetPanel
+        from pi_car.mock import mock_grid
+        grid=mock_grid() if args.mock_map else OccupancyGrid.load(args.map)
+        FleetPanel(grid,host=args.host,port=args.port,clearance_m=args.clearance).show()
+        return
     if args.command == "send-command":
         print(json.dumps(await send_command(args.host,args.port,json.loads(args.json)),indent=2))
         return
@@ -58,16 +76,25 @@ async def run(args):
         from pi_car.transport.protocol import number
         if args.mock_range is not None and number(args.mock_range) <= 0:
             raise ValueError("Mock range must be positive")
-        agent = RobotAgent(args.robot_id,OccupancyGrid.load(args.map),
-                           clearance_m=args.clearance,journal_path=args.journal)
-        provider = (lambda: RangeReading(args.mock_range,0.,time.monotonic())) if args.mock_range else None
-        client = RobotClient(agent,args.host,args.port,range_provider=provider)
-        try:
-            print("DRY RUN: motor output disabled; real pose input still required",flush=True)
-            await client.run()
-        finally:
-            await client.close()
-            await agent.close()
+        if args.enable_motors and (not args.vendor_dir or args.mock_range is not None):
+            raise ValueError('--enable-motors requires --vendor-dir and forbids --mock-range')
+        grid=OccupancyGrid.load(args.map)
+        if args.enable_motors:
+            from pi_car.vehicle.hardware.live import AdeeptHardware
+            context=AdeeptHardware(args.vendor_dir,max_output=args.max_output,servo_angle=args.servo_angle)
+        else:context=nullcontext(None)
+        with context as hardware:
+            agent = RobotAgent(args.robot_id,grid,clearance_m=args.clearance,
+                               journal_path=args.journal,motor=hardware.motor if hardware else None)
+            provider=(hardware.sensor.read if hardware else
+                      (lambda:RangeReading(args.mock_range,0.,time.monotonic())) if args.mock_range else None)
+            client = RobotClient(agent,args.host,args.port,range_provider=provider)
+            try:
+                print('REAL HARDWARE ENABLED' if hardware else 'DRY RUN: motor output disabled',flush=True)
+                await client.run()
+            finally:
+                await client.close()
+                await agent.close()
         return
     from pi_car.pc.calibration import Calibration
     from pi_car.pc.camera import RealSenseCamera
