@@ -63,6 +63,9 @@ from controller import Supervisor
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "lib"))
+from record_quality import RecordQuality
+from research_metrics import FlowMetrics, order_metrics, task_metrics
+from fault_tape import FaultTape, apply_worker_attempt
 POSE_EVERY_STEPS = 4
 CARRY_Z = 0.5
 STATS_PERIOD_S = 10.0
@@ -98,6 +101,8 @@ def main():
     seed, faults, belt_cfg, out_cfg = cfg["seed"], cfg["faults"], cfg["belt"], cfg["outbound"]
     wes = importlib.import_module(os.environ.get("WES_MODULE", "wes_standin")).WES(cfg)
     worker_rng = random.Random(seed + 101)
+    fault_tape = FaultTape(cfg) if cfg.get('fault_model') == 'marked-poisson-v1' else None
+    flow_metrics = FlowMetrics()
 
     sup = Supervisor()
     dt = int(sup.getBasicTimeStep())
@@ -185,6 +190,7 @@ def main():
         n_events[0] += 1
         ev = {"event_id": f"E{n_events[0]:06d}", "t": round(t_now[0], 2), **ev}
         counts[ev["type"]] = counts.get(ev["type"], 0) + 1
+        flow_metrics.observe(ev)
         ev_file.write(json.dumps(ev) + "\n")
         wes.on_event(ev)
 
@@ -240,9 +246,7 @@ def main():
     task_src = {}                                      # task id -> source (record quality, below)
     # Record quality: a rack slot whose record differs from the truth while no robot works on
     # it ("settled" mismatch; a slot under a running task differs only until it completes).
-    mm_open = {}                                       # slot -> time the settled mismatch started
-    mm_closed = []                                     # durations of settled mismatches that ended
-    mm_area = [0.0]                                    # slot-seconds of settled mismatch
+    record_quality = RecordQuality()
     place_count = {}
     s3_pending = []                                    # (time, slot, task)
     dist_m = {rid: 0.0 for rid in robots}
@@ -265,9 +269,13 @@ def main():
                 carried[lpn] = rid
                 res.update(ok=True, item=sku_of[lpn], lpn=lpn)
                 dest = task_dest.get(msg.get("task_id"))
-                if (dest and slots[dest]["kind"] == "rack"
-                        and unit(seed, msg["task_id"], dest, "dest") < faults["dest_taken_p"]):
-                    s3_pending.append((t_now[0] + 4.0, dest, msg["task_id"]))
+                if dest and slots[dest]["kind"] == "rack":
+                    if fault_tape:
+                        event = fault_tape.s3(lpn, t_now[0], faults['dest_taken_p'])
+                        if event:
+                            s3_pending.append((t_now[0] + 4.0, dest, event))
+                    elif unit(seed, msg["task_id"], dest, "dest") < faults["dest_taken_p"]:
+                        s3_pending.append((t_now[0] + 4.0, dest, msg["task_id"]))
             else:
                 res["reason"] = "too_far" if not near else ("empty" if not lpn else "holding")
         elif op == "place":
@@ -320,6 +328,15 @@ def main():
         worker_until[k] = t_now[0] + WORKER_SHOW_S
 
     def worker_events():
+        if fault_tape:
+            for event in fault_tape.due(t_now[0]):
+                result = apply_worker_attempt(event, t_now[0], slots, occupant, slot_of,
+                    faults['worker_move_max_slots'], take, put, hide, fault_tape)
+                if result:
+                    truth('S1_UNRECORDED_MOVE' if event['kind'] == 'S1' else 'S2_UNRECORDED_REMOVAL',
+                          fault_id=event['id'], **result)
+                    show_worker(result['src'])
+            return
         rack_lpns = [l for l, s in slot_of.items() if slots[s]["kind"] == "rack"]
         if not rack_lpns:
             return
@@ -467,8 +484,12 @@ def main():
             if occupant[dest] is None and returns:
                 lpn = returns.pop(0)
                 put(lpn, dest)
-                truth("S3_DEST_TAKEN", slot=dest, lpn=lpn, item=sku_of[lpn], task_id=tid)
+                truth("S3_DEST_TAKEN", slot=dest, lpn=lpn, item=sku_of[lpn], task_id=tid if not fault_tape else None)
+                if fault_tape:
+                    fault_tape.record(tid, t, 'injected', dst=dest)
                 show_worker(dest)
+            elif fault_tape:
+                fault_tape.record(tid, t, 'skipped_occupied' if occupant[dest] else 'skipped_no_returns', dst=dest)
 
         # Robot messages.
         while receiver.getQueueLength() > 0:
@@ -569,13 +590,7 @@ def main():
                 mismatch = len(wrong)
                 busy = {x for st in robot_state.values() if st["task"]
                         for x in (task_src.get(st["task"]), task_dest.get(st["task"])) if x}
-                cur = wrong - busy
-                for s in cur - mm_open.keys():
-                    mm_open[s] = t
-                for s in [s for s in mm_open if s not in cur]:
-                    mm_closed.append(t - mm_open.pop(s))
-                mm_area[0] += len(cur) * STATS_PERIOD_S
-                settled = len(cur)
+                settled = record_quality.sample(t, wrong, busy)
             ts.writerow([f"{t:.0f}", sum(1 for s in slots if slots[s]["kind"] == "rack" and occupant[s]), len(belt),
                          sum(1 for z in zones if occupant[z]),
                          sum(1 for x in belt_cfg["exception"] if occupant[x]),
@@ -597,6 +612,11 @@ def main():
             done_orders = [o for o in orders.values() if o["done_t"] is not None]
             released_orders = [o for o in orders.values() if o["released_t"] <= t]
             rec = wes.record_snapshot() if hasattr(wes, "record_snapshot") else {}
+            if rec:
+                wrong = {s for s, v in rec.items() if v != gt_sku(s)}
+                busy = {x for st in robot_state.values() if st["task"]
+                        for x in (task_src.get(st["task"]), task_dest.get(st["task"])) if x}
+                record_quality.sample(t, wrong, busy)
             summary = {
                 "tag": tag, "duration_s": round(t, 1), "wes": wes.name,
                 "orders_released": len(released_orders), "orders_completed": len(done_orders),
@@ -613,14 +633,10 @@ def main():
                 # Settled mismatches (no robot working on the slot), sampled every STATS_PERIOD_S:
                 # mean count over the run, how long the ones that got corrected lasted, and the
                 # ones still open at the end.
-                "record_quality": {
-                    "settled_mismatch_mean": round(mm_area[0] / t, 3) if rec else None,
-                    "corrected": len(mm_closed),
-                    "mean_time_to_correct_s": round(sum(mm_closed) / len(mm_closed), 1) if mm_closed else None,
-                    "open_at_end": len(mm_open),
-                    "mean_open_age_s": (round(sum(t - v for v in mm_open.values()) / len(mm_open), 1)
-                                        if mm_open else None),
-                } if rec else None,
+                "record_quality": record_quality.summary(t) if rec else None,
+                "research_metrics": {**flow_metrics.summary(t), **order_metrics(orders, t),
+                    'tasks': task_metrics(wes.wms.tasks, t) if hasattr(wes, 'wms') else None},
+                "fault_tape": fault_tape.summary() if fault_tape else None,
                 "robot_roles": {r: robots[r]["role"] for r in robots},
                 "robot_distance_m": {r: round(d, 1) for r, d in dist_m.items()},
                 "robot_busy_share": {r: round(b / t, 3) for r, b in busy_s.items()},
@@ -629,6 +645,8 @@ def main():
             for f in (ev_file, truth_file, ts_file, pose_file):
                 f.flush()
             (log_dir / "summary.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
+            if fault_tape:
+                (log_dir / 'fault_audit.json').write_text(json.dumps(fault_tape.audit, indent=2), encoding='utf-8')
             print("[sup] SUMMARY " + json.dumps(summary))
             if os.environ.get("QUIT_AT_END") == "1":
                 sup.simulationQuit(0)

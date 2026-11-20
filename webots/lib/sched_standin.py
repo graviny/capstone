@@ -84,8 +84,8 @@ class Scheduler:
                     continue             # no recorded stock (backorder) or the lane is full
             elif task["task_type"] == "PUTAWAY":
                 src, dst = task["source"], task["destination"]     # the WMS reserved it
-                if dst is None:
-                    continue                 # no free slot in the record yet
+                if dst is None or dst in taken:
+                    continue                 # no free slot in the record yet / used by a decision of this step
             elif task["task_type"] == "RELOCATE":
                 src = task["source"]
                 dst = task["destination"] or s.putaway_slot(task["item_id"], exclude=taken)
@@ -93,6 +93,8 @@ class Scheduler:
                     continue
             else:
                 src, dst = None, task["destination"]
+                if dst in taken:
+                    continue                 # VERIFY: slot reserved by a decision of this step
             at = s.pos(src or dst)
             robot = min(cands, key=lambda r: s.dist(r["pos"], at))
             taken.update(x for x in (src, dst) if x)

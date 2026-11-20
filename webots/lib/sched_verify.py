@@ -21,7 +21,9 @@ Other settings (environment): VERIFY_NEIGHBORS (default: the scenario's
 worker_move_max_slots), VERIFY_PERIOD_S (60), VERIFY_MAX_OPEN (4: at most this many open
 VERIFY tasks from this policy), VERIFY_RECENT_S (120: skip a slot checked this recently).
 """
+import math
 import os
+import random
 
 import sched_standin
 
@@ -45,6 +47,20 @@ class Scheduler(sched_standin.Scheduler):
         self.period = _env("VERIFY_PERIOD_S", 60.0)
         self.max_open = _env("VERIFY_MAX_OPEN", 4, int)
         self.recent = _env("VERIFY_RECENT_S", 120.0)
+        # Which slot a periodic tick checks. sweep = fixed spatial order (the original rule); random,
+        # oldest, value choose among recorded-occupied rack slots. Tick period/budget is the same for all.
+        self.tick_rule = os.environ.get("VERIFY_TICK_RULE", "sweep").lower()
+        if self.tick_rule not in ("sweep", "random", "oldest", "value"):
+            raise ValueError(f"VERIFY_TICK_RULE: {self.tick_rule}")
+        self.rate_source = os.environ.get("VERIFY_RATE_SOURCE", "online").lower()   # online | config
+        self._cfg_rate_per_h = float(cfg.get("faults", {}).get("worker_move_per_h", 0)
+                                     + cfg.get("faults", {}).get("worker_remove_per_h", 0))
+        self._rng = random.Random(int(cfg.get("seed", 0)) * 7919 + 17)
+        self.found = 0            # discrepancies seen by robots/checks (a lower bound of what happened)
+        self.exposure = 0.0       # integral of recorded-occupied rack slots over time (slot-seconds)
+        self._last_t = None
+        self.pending_pred = {}    # slot -> (recorded item, p) of a tick check not yet seen
+        self.calibration = []     # (p, mismatch 0/1) of each finished tick check
 
         # Rack faces in slot order, for neighbors and the cycle-count sweep.
         faces = {}
@@ -68,6 +84,15 @@ class Scheduler(sched_standin.Scheduler):
     # ------------------------------------------------------------------ events
     def on_event(self, ev, s):
         out = super().on_event(ev, s)
+        if ev["type"] in EXCEPTIONS + ("DESTINATION_OCCUPIED",) and ev.get("observed") not in (None, "UNREACHABLE"):
+            self.found += 1
+        if ev["type"] == "OBSERVATION_RESULT" and ev.get("slot") in self.pending_pred:
+            recorded, p = self.pending_pred.pop(ev["slot"])
+            seen = ev.get("observed")
+            if seen != "UNREADABLE":
+                mismatch = int((None if seen == "EMPTY" else seen) != recorded)
+                self.calibration.append((p, mismatch))
+                self.found += mismatch
         if self.policy in ("event", "both") and ev.get("slot") in self.face_of:
             sid = ev["slot"]
             if ev["type"] in EXCEPTIONS:
@@ -93,6 +118,10 @@ class Scheduler(sched_standin.Scheduler):
     # -------------------------------------------------------------------- plan
     def plan(self, s):
         self._track(s)
+        if self._last_t is not None:
+            self.exposure += (s.t - self._last_t) * sum(1 for sid in self.sweep_order
+                                                        if s.records[sid]["item"] not in (None, "UNKNOWN"))
+        self._last_t = s.t
         out = []
         open_tasks = {}
         for tid in list(self.mine):
@@ -135,7 +164,48 @@ class Scheduler(sched_standin.Scheduler):
 
         return super().plan(s)
 
+    def _rate(self, n_occ):
+        """Per-slot mismatch hazard (1/s). config: the scenario's worker S1+S2 rates spread over the occupied
+        slots (known-rate reference, NOT deployable). online: Gamma(0.5, 3600*n) prior updated with the
+        discrepancies found so far (underestimates: undetected ones are not counted)."""
+        if self.rate_source == "config":
+            return self._cfg_rate_per_h / 3600.0 / max(n_occ, 1)
+        return (0.5 + self.found) / (3600.0 * max(n_occ, 1) + self.exposure / max(n_occ, 1))
+
+    def _ranked_slot(self, s, open_tasks):
+        checking = {t["destination"] for t in open_tasks.values()}
+        demand = {}
+        for t in s.tasks.values():
+            if t["task_type"] == "PICK" and t["status"] not in FINAL:
+                demand[t["item_id"]] = demand.get(t["item_id"], 0) + 1
+        cands = []
+        for sid in self.sweep_order:
+            r = s.records[sid]
+            if r["item"] is None or r["item"] == "UNKNOWN" or sid in checking or sid in self.wanted                     or r["reserved_by"] is not None:
+                continue
+            if r.get("observed_t") is not None and s.t - r["observed_t"] < self.recent:
+                continue
+            cands.append(sid)
+        if not cands:
+            return None
+        n_occ = sum(1 for sid in self.sweep_order if s.records[sid]["item"] not in (None, "UNKNOWN"))
+        lam = self._rate(n_occ)
+        def age(sid):
+            r = s.records[sid]
+            return s.t - max(r["updated_t"], r["observed_t"] or 0.0)
+        p = {sid: 1.0 - math.exp(-lam * age(sid)) for sid in cands}
+        if self.tick_rule == "random":
+            pick = self._rng.choice(cands)
+        elif self.tick_rule == "oldest":
+            pick = max(cands, key=lambda sid: (age(sid), sid))
+        else:   # value: hazard x (1 + queued PICK demand for the recorded SKU, capped at 2)
+            pick = max(cands, key=lambda sid: (p[sid] * (1 + min(demand.get(s.records[sid]["item"], 0), 2)), sid))
+        self.pending_pred[pick] = (s.records[pick]["item"], p[pick])
+        return pick
+
     def _next_sweep_slot(self, s, open_tasks):
+        if self.tick_rule != "sweep":
+            return self._ranked_slot(s, open_tasks)
         checking = {t["destination"] for t in open_tasks.values()}
         for _ in range(len(self.sweep_order)):
             sid = self.sweep_order[self.sweep_k]

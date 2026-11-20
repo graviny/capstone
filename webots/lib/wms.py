@@ -176,6 +176,19 @@ class MockWMS:
     def _slot_putaways(self):
         """Give each PENDING putaway without a destination a free slot (oldest first) and reserve
         it. Runs after every event and decision, so a replay does the same."""
+        # A patrol can discover occupancy after a destination was reserved but before
+        # EXECUTE. Reallocate only pending work; active robots need a WES decision.
+        for tid in sorted(self._pending, key=lambda tid: self.tasks[tid]["queue_seq"]):
+            task = self.tasks[tid]
+            dst = task["destination"]
+            if task["task_type"] == "PUTAWAY" and dst and self.rec[dst]["item"] is not None:
+                self.release(tid, dst)
+                task.update(destination=None, state_version=task["state_version"] + 1, updated_t=self.t)
+                self.version += 1
+                if tid not in self._unslotted:
+                    self._unslotted.append(tid)
+                self.log("PUTAWAY_SLOT_INVALIDATED", task_id=tid, destination=dst,
+                         cause="RECORDED_OCCUPANCY")
         for tid in list(self._unslotted):
             task = self.tasks[tid]
             if task["status"] != PENDING or task["destination"] is not None:
@@ -623,6 +636,7 @@ class MockWMS:
         src, dst = self._slots_of(d, task)
         rid, tid = d["robot_id"], task["task_id"]
         self._pending.discard(tid)
+        task.setdefault('first_assigned_t', self.t)
         task.update(source=src, destination=dst, robot_id=rid, attempts=task["attempts"] + 1, assigned_t=self.t,
                     picked=False, hold_reason=None, fail_reason=None,
                     source_version=self.rec[src]["version"] if src else None)

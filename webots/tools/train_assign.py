@@ -45,6 +45,7 @@ _cfgs, _layouts = {}, {}           # per worker process: scenario path -> cfg; l
 def episode(job):
     """job = (scenario path, fault seed, robots, weights or None for the stand-in) -> (cost, summary bits)."""
     path, seed, robots, w = job
+    window = os.environ.get("ASSIGN_WINDOW", "raw")
     if path not in _cfgs:
         _cfgs[path] = json.loads(Path(path).read_text(encoding="utf-8"))
     base = _cfgs[path]
@@ -54,6 +55,8 @@ def episode(job):
         _layouts[key] = (GridMap(base), {})
     grid, fields = _layouts[key]
     sched = sched_verify.Scheduler(cfg) if w is None else sched_learned.Scheduler(cfg, weights=w)
+    if w is not None:
+        sched.window = window
     with tempfile.TemporaryDirectory() as tmp:
         wes = WES(cfg, scheduler=sched, log_dir=tmp)
         s = LiteSim(cfg, wes, grid=grid, fields=fields).run()

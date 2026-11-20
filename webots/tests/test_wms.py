@@ -83,6 +83,37 @@ class WMSTest(unittest.TestCase):
         self.assertEqual(len(snap), 6)                    # rack slots only
         self.assertIsNone(snap["r0s02"])
 
+    def test_patrol_reallocates_occupied_pending_putaway(self):
+        self.stage("B0", "IN1", "C")
+        task = self.w.tasks["PA-IN1"]
+        old = task["destination"]
+        self.w.apply_event(self.ev("OBSERVATION_RESULT", t=2, slot=old,
+                                  observed="A", source="patrol"))
+        self.assertNotEqual(task["destination"], old)
+        self.assertIsNone(self.w.rec[old]["reserved_by"])
+        self.assertIsNotNone(self.execute(task["task_id"], 2))
+
+    def test_pending_putaway_waits_when_patrol_finds_racks_full(self):
+        self.stage("B0", "IN1", "C")
+        for k in range(2, 6):
+            self.w.apply_event(self.ev("OBSERVATION_RESULT", t=2, slot=f"r0s{k:02d}",
+                                      observed="A", source="patrol"))
+        task = self.w.tasks["PA-IN1"]
+        self.assertIsNone(task["destination"])
+        self.w.apply_event(self.ev("OBSERVATION_RESULT", t=3, slot="r0s03",
+                                  observed="EMPTY", source="patrol"))
+        self.assertEqual(task["destination"], "r0s03")
+        self.assertIsNotNone(self.execute(task["task_id"], 2))
+
+    def test_patrol_does_not_reallocate_active_putaway(self):
+        self.stage("B0", "IN1", "C")
+        task = self.w.tasks["PA-IN1"]
+        old = task["destination"]
+        self.execute(task["task_id"], 2)
+        self.w.apply_event(self.ev("OBSERVATION_RESULT", t=2, slot=old,
+                                  observed="A", source="patrol"))
+        self.assertEqual(task["destination"], old)
+
     def test_staged_carton_gets_putaway(self):
         self.stage("B0", "IN1", "C")
         task = self.w.tasks["PA-IN1"]

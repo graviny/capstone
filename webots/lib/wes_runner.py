@@ -88,4 +88,8 @@ class WES:
     def stats(self):
         # Called once, at the end of the episode: write the final state too.
         self.wms.close()
-        return self.wms.stats()
+        result = self.wms.stats()
+        result['candidate_audit'] = getattr(self.sched, 'candidate_audit', None)
+        cal = getattr(self.sched, 'calibration', None)
+        result['verify_calibration'] = [list(x) for x in cal] if cal else None
+        return result

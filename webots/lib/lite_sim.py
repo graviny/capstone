@@ -41,6 +41,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "lib"))
 from nav import NEIGHBORS, GridMap  # noqa: E402
+from record_quality import RecordQuality
+from research_metrics import FlowMetrics, order_metrics, task_metrics
+from fault_tape import FaultTape, apply_worker_attempt
 
 STATS_PERIOD_S = 10.0
 IDLE_PARK_S = 20.0                 # agent.py: an idle robot drives home after this long
@@ -76,10 +79,11 @@ def distance_field(grid, goal):
 
 
 class LiteSim:
-    def __init__(self, cfg, wes, dt=0.5, slowdown=1.0, leg_s=2.0, yield_s=1.0, grid=None, fields=None):
+    def __init__(self, cfg, wes, dt=0.5, slowdown=1.0, leg_s=2.0, yield_s=1.0, grid=None, fields=None, event_sink=None):
         """grid, fields: pass the same GridMap and dict to many episodes of one layout, so the
         distance fields are computed once."""
         self.cfg, self.wes, self.dt = cfg, wes, dt
+        self.event_sink = event_sink
         self.slowdown, self.leg_s, self.yield_s = slowdown, leg_s, yield_s
         self.by_task = cfg["nav"].get("traffic_priority", "id") == "task"
         self.grid = grid or GridMap(cfg)
@@ -89,6 +93,8 @@ class LiteSim:
         self.nav, self.per = cfg["nav"], cfg["perception"]
         self.seed = cfg["seed"]
         self.worker_rng = random.Random(self.seed + 101)
+        self.fault_tape = FaultTape(cfg) if cfg.get('fault_model') == 'marked-poisson-v1' else None
+        self.flow_metrics = FlowMetrics()
         self.t = 0.0
 
         # Ground truth: which carton is where.
@@ -123,7 +129,7 @@ class LiteSim:
         self.lanes = self.out_cfg["lanes"]
         self.lane_state = {r: {"present": True, "loading_until": None, "back_at": None,
                                "next_cutoff": self.out_cfg["cutoff_period_s"]} for r in self.lanes}
-        self.mm_open, self.mm_closed, self.mm_area = {}, [], 0.0
+        self.quality = RecordQuality()
         self.n = {"events": 0, "released": 0, "shipped": 0, "mis_shipped": 0, "missed_cutoffs": 0,
                   "shipments": 0, "staged_in": 0}
         self.counts, self.truth_counts = {}, {}
@@ -145,6 +151,9 @@ class LiteSim:
         self.n["events"] += 1
         ev = {"event_id": f"E{self.n['events']:06d}", "t": round(self.t if t is None else t, 2), **ev}
         self.counts[ev["type"]] = self.counts.get(ev["type"], 0) + 1
+        self.flow_metrics.observe(ev)
+        if self.event_sink:
+            self.event_sink(ev)
         self.wes.on_event(ev)
 
     def truth(self, kind):
@@ -285,8 +294,13 @@ class LiteSim:
             self.take(lpn)
             r["holding"] = lpn
             dest = self.task_dest.get(tid)
-            if dest and self.slots[dest]["kind"] == "rack" and unit(self.seed, tid, dest, "dest") < self.faults["dest_taken_p"]:
-                self.s3_pending.append((t + S3_DELAY_S, dest, tid))
+            if dest and self.slots[dest]["kind"] == "rack":
+                if self.fault_tape:
+                    event = self.fault_tape.s3(lpn, t, self.faults['dest_taken_p'])
+                    if event:
+                        self.s3_pending.append((t + S3_DELAY_S, dest, event))
+                elif unit(self.seed, tid, dest, "dest") < self.faults["dest_taken_p"]:
+                    self.s3_pending.append((t + S3_DELAY_S, dest, tid))
             self.go_slot(r, task["destination"], "go_dst", t)
         elif phase == "place":
             if self.occupant[sid] is not None:
@@ -391,12 +405,23 @@ class LiteSim:
         self.worker_events()
         for item in [p for p in self.s3_pending if p[0] <= t]:
             self.s3_pending.remove(item)
-            _, dest, _ = item
+            _, dest, event = item
             if self.occupant[dest] is None and self.returns:
                 self.put(self.returns.pop(0), dest)
                 self.truth("S3_DEST_TAKEN")
+                if self.fault_tape:
+                    self.fault_tape.record(event, t, 'injected', dst=dest)
+            elif self.fault_tape:
+                self.fault_tape.record(event, t, 'skipped_occupied' if self.occupant[dest] else 'skipped_no_returns', dst=dest)
 
     def worker_events(self):
+        if self.fault_tape:
+            for event in self.fault_tape.due(self.t):
+                result = apply_worker_attempt(event, self.t, self.slots, self.occupant, self.slot_of,
+                    self.faults['worker_move_max_slots'], self.take, self.put, self.take, self.fault_tape)
+                if result:
+                    self.truth('S1_UNRECORDED_MOVE' if event['kind'] == 'S1' else 'S2_UNRECORDED_REMOVAL')
+            return
         f, rng = self.faults, self.worker_rng
         rack_lpns = [l for l, s in self.slot_of.items() if self.slots[s]["kind"] == "rack"]
         if not rack_lpns:
@@ -439,6 +464,8 @@ class LiteSim:
                  "holding": self.sku_of[r["holding"]] if r["holding"] else None, "phase": r["phase"]}
                 for r in self.robots.values()]
         for d in self.wes.decide(t, info):
+            if self.event_sink:
+                self.event_sink({'t': round(t, 2), 'kind': 'DECISION', **d})
             if d.get("robot_id") is None:
                 continue
             if d["action"] == "EXECUTE":
@@ -457,18 +484,14 @@ class LiteSim:
         wrong = {s for s, v in rec.items() if v != self.gt_sku(s)}
         busy = {x for r in self.robots.values() if r["task"]
                 for x in (self.task_src.get(r["task"]["task_id"]), self.task_dest.get(r["task"]["task_id"])) if x}
-        cur = wrong - busy
-        for s in cur - self.mm_open.keys():
-            self.mm_open[s] = t
-        for s in [s for s in self.mm_open if s not in cur]:
-            self.mm_closed.append(t - self.mm_open.pop(s))
-        self.mm_area += len(cur) * STATS_PERIOD_S
+        self.quality.sample(t, wrong, busy)
 
     def run(self, duration=None):
         duration = duration or self.cfg["episode"]["duration_s"]
         self.next_stats = 0.0
         while self.t + 1e-9 < duration:
             self.step()
+        self.record_quality(self.t)
         return self.summary()
 
     def summary(self):
@@ -486,14 +509,10 @@ class LiteSim:
             "inbound_staged": self.n["staged_in"], "cartons_on_belt_at_end": len(self.belt),
             "events": self.counts, "faults_injected": dict(self.truth_counts), "diagnostics": {},
             "record_mismatch_at_end": sum(1 for s, v in rec.items() if v != self.gt_sku(s)),
-            "record_quality": {
-                "settled_mismatch_mean": round(self.mm_area / t, 3),
-                "corrected": len(self.mm_closed),
-                "mean_time_to_correct_s": round(sum(self.mm_closed) / len(self.mm_closed), 1) if self.mm_closed else None,
-                "open_at_end": len(self.mm_open),
-                "mean_open_age_s": (round(sum(t - v for v in self.mm_open.values()) / len(self.mm_open), 1)
-                                    if self.mm_open else None),
-            },
+            "record_quality": self.quality.summary(t),
+            "research_metrics": {**self.flow_metrics.summary(t), **order_metrics(self.orders, t),
+                                 'tasks': task_metrics(self.wes.wms.tasks, t)},
+            "fault_tape": self.fault_tape.summary() if self.fault_tape else None,
             "robot_roles": {r["id"]: r["role"] for r in self.robots.values()},
             "robot_distance_m": {r["id"]: round(r["dist"], 1) for r in self.robots.values()},
             "robot_busy_share": {r["id"]: round(r["busy_s"] / t, 3) for r in self.robots.values()},

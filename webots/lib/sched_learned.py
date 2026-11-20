@@ -13,6 +13,7 @@ Without ASSIGN_WEIGHTS (or the default file) it uses HEURISTIC: nearest robot, p
 Weights are trained in the lightweight simulator (tools/train_assign.py).
 """
 import json
+import math
 import os
 from pathlib import Path
 
@@ -44,10 +45,14 @@ class Assign(sched_standin.Scheduler):
             dst = s.lane_free_slot(task["region"], exclude=taken)
             return (src, dst) if src and dst else None
         if tt == "PUTAWAY":
-            return (task["source"], task["destination"]) if task["destination"] else None
+            if not task["destination"] or task["destination"] in taken:
+                return None            # another decision of this step already uses the slot
+            return task["source"], task["destination"]
         if tt == "RELOCATE":
             dst = task["destination"] or s.putaway_slot(task["item_id"], exclude=taken)
             return (task["source"], dst) if dst else None
+        if task["destination"] in taken:
+            return None                # VERIFY: slot reserved by a decision of this step
         return (None, task["destination"])
 
     def task_features(self, s, task):
@@ -92,20 +97,37 @@ class Assign(sched_standin.Scheduler):
                             "source": task["source"], "destination": new})
         return out, taken
 
+    def update_load_weights(self, s):
+        """Load-adaptive weights: pending tasks per robot, smoothed (EMA, time constant `adapt_tc` s), picks the
+        weight set. Uses only the queue length the WMS shows; no truth, no future information."""
+        dt = 0.0 if self._pt is None else max(s.t - self._pt, 0.0)
+        self._pt = s.t
+        inst = len(s.pending_tasks()) / max(len(s.robots), 1)
+        a = 1.0 - math.exp(-dt / self.adapt_tc) if self._ema is not None else 1.0
+        self._ema = inst if self._ema is None else self._ema + a * (inst - self._ema)
+        self.w = self.w_high if self._ema >= self.adapt_tau else self.w_low
+
     def plan(self, s):
+        if getattr(self, "w_high", None) is not None:
+            self.update_load_weights(s)
         out, taken = self.reroute_waiting(s)
         wd, wb = self.w[0], self.w[1]
         idle = s.idle_robots()
         busy = [(r, *fa) for r in s.robots.values() if r not in idle for fa in [self.free_at(s, r)] if fa]
         cands = []
-        for task in s.pending_tasks()[:MAX_TASKS]:
+        for task in self.candidate_tasks(s, taken):
             ep = self.endpoints(s, task, taken)
             if ep is None:
                 continue
             at = s.pos(ep[0] or ep[1])
             role = "patrol" if task["task_type"] == "VERIFY" and self.has_patrol else "transport"
             tf = self.task_features(s, task)
+            if getattr(self, 'age_mode', 'learned') == 'zero':
+                tf['age'] = 0.0            # ablation: old tasks are not made less attractive
             base = sum(wi * tf[k] for wi, k in zip(self.w, FEATURES))
+            max_wait = getattr(self, 'max_wait', None)
+            if max_wait is not None and s.t - task["created_t"] > max_wait:
+                base += 100.0              # starvation guard: overdue tasks outrank every learned score
             cands += [(base + wd * s.dist(r["pos"], at) / 10.0, task, r["id"], False) for r in idle if r["role"] == role]
             cands += [(base + wd * (left + s.dist(end, at)) / 10.0 + wb, task, r["id"], True)
                       for r, end, left in busy if r["role"] == role]
@@ -125,6 +147,30 @@ class Assign(sched_standin.Scheduler):
                             "source": ep[0], "destination": ep[1]})
         return out
 
+    def candidate_tasks(self, s, taken=()):
+        tasks = s.pending_tasks()
+        limit = getattr(self, 'candidate_limit', MAX_TASKS)
+        if getattr(self, 'window', 'raw') == 'feasible':
+            # Bounded compute like MAX_TASKS, but the window counts only tasks that can be
+            # started now, so infeasible tasks at the queue head cannot hide the others.
+            picked = []
+            for task in tasks:
+                if self.endpoints(s, task, taken) is not None:
+                    picked.append(task)
+                    if limit is not None and len(picked) >= limit:
+                        break
+            return picked
+        selected = tasks if limit is None else tasks[:limit]
+        if not hasattr(self, 'candidate_audit'):
+            self.candidate_audit = {'calls': 0, 'excluded_task_steps': {}, 'max_excluded_age_s': {}}
+        audit = self.candidate_audit
+        audit['calls'] += 1
+        for task in tasks[len(selected):]:
+            kind = task['task_type']
+            audit['excluded_task_steps'][kind] = audit['excluded_task_steps'].get(kind, 0) + 1
+            audit['max_excluded_age_s'][kind] = max(audit['max_excluded_age_s'].get(kind, 0), s.t - task['created_t'])
+        return selected
+
 
 class Scheduler(sched_verify.Scheduler, Assign):
     """MRO: Scheduler -> sched_verify -> Assign -> sched_standin, so sched_verify keeps its
@@ -136,5 +182,7 @@ class Scheduler(sched_verify.Scheduler, Assign):
         if weights is None:
             weights, trained = load_weights()
         self.w = list(weights)
+        self.w_low = self.w_high = None            # set both (and adapt_tau) for load-adaptive weights
+        self.adapt_tau, self.adapt_tc, self._ema, self._pt = 3.5, 300.0, None, None
         # Log folders: wms-learned-<policy> with trained weights, wms-heuristic-<policy> without.
         self.name = f"{'learned' if trained else 'heuristic'}-{self.policy}"
