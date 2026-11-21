@@ -6,14 +6,14 @@ batch of episodes (scenario x fault seed, so they are compared on equal terms), 
 the mean to the best few. The weights are few (lib/sched_learned.FEATURES) and the reward
 comes once per episode, which suits this method; no deep learning library is needed.
 
-Cost of an episode (lower is better):
-    mean order lead time (s) + 600 per unit released but not shipped + 300 per missed cutoff
+Cost of an episode (lower is better): one of COSTS, --cost (default: see COSTS).
+The test table always reports the same metrics for every cost, so costs can be compared:
+order_all (lead of every released order, unfinished ones counted to the end) is the main one.
 
 Usage (from webots/):
-  python tools/train_assign.py --train logs/train_scenarios/2023-03-09_*.json \\
-         --test logs/train_scenarios/2023-03-22_*.json --robots 4
-Writes models/assign_weights.json (after every iteration) and prints a test table that
-compares the stand-in assignment, the untrained heuristic weights and the trained ones.
+  python tools/train_assign.py --train "logs/train_scenarios_v2/2023-03-09_*.json" \\
+         --test "logs/train_scenarios_v2/*.json" --test-seeds 100 101 102 103 104 --robots 8
+Writes the weights (--out, after every iteration) and, with --report, the test results as JSON.
 """
 import argparse
 import glob
@@ -39,13 +39,28 @@ from lite_sim import LiteSim  # noqa: E402
 from nav import GridMap  # noqa: E402
 from wes_runner import WES  # noqa: E402
 
+# Episode cost candidates (lower is better), from the episode metrics m (see episode()).
+COSTS = {
+    "old": lambda m: m["lead"] + 600 * (m["released"] - m["shipped"]) + 300 * m["missed"],
+    "order_all": lambda m: m["order_all"],
+    "unit": lambda m: m["unit"],
+    "order_all_missed": lambda m: m["order_all"] + 300 * m["missed"],
+    "unit_missed": lambda m: m["unit"] + 300 * m["missed"],
+    "tardy": lambda m: m["tardy"],
+    "tardy_unit": lambda m: m["tardy"] + m["unit"],
+    "p90": lambda m: m["p90"],
+    "order_all_dist": lambda m: m["order_all"] + m["dist"] / 50,
+    "mix": lambda m: 0.5 * m["order_all"] + 0.5 * m["unit"] + 300 * m["missed"],
+}
+DEFAULT_COST = "mix"   # chosen 2026-11-20 by the cost study (docs/lite_sim.md)
+METRICS = ("order_all", "unit", "p90", "tardy", "lead", "shipped", "released", "missed", "busy", "dist")
 _cfgs, _layouts = {}, {}           # per worker process: scenario path -> cfg; layout -> (grid, fields)
 
 
 def episode(job):
-    """job = (scenario path, fault seed, robots, weights or None for the stand-in) -> (cost, summary bits)."""
+    """job = (scenario path, fault seed, robots, weights or None for the stand-in) -> metrics."""
     path, seed, robots, w = job
-    window = os.environ.get("ASSIGN_WINDOW", "raw")
+    window = os.environ.get("ASSIGN_WINDOW", "feasible")
     if path not in _cfgs:
         _cfgs[path] = json.loads(Path(path).read_text(encoding="utf-8"))
     base = _cfgs[path]
@@ -60,27 +75,29 @@ def episode(job):
     with tempfile.TemporaryDirectory() as tmp:
         wes = WES(cfg, scheduler=sched, log_dir=tmp)
         s = LiteSim(cfg, wes, grid=grid, fields=fields).run()
-    lead = s["mean_order_lead_s"] or cfg["episode"]["duration_s"]
-    cost = lead + 600 * (s["units_released"] - s["units_shipped"]) + 300 * s["missed_cutoffs"]
-    busy = statistics.mean(s["robot_busy_share"].values())
-    return cost, {"lead": lead, "shipped": s["units_shipped"], "released": s["units_released"],
-                  "missed": s["missed_cutoffs"], "busy": busy, "dist": sum(s["robot_distance_m"].values())}
+    end = cfg["episode"]["duration_s"]
+    return {"order_all": s["order_lead_all_s"] or end, "unit": s["unit_lead_s"] or end,
+            "p90": s["order_lead_p90_s"] or end, "tardy": s["order_tardiness_s"] or 0.0,
+            "lead": s["mean_order_lead_s"] or end, "shipped": s["units_shipped"], "released": s["units_released"],
+            "missed": s["missed_cutoffs"], "busy": statistics.mean(s["robot_busy_share"].values()),
+            "dist": sum(s["robot_distance_m"].values())}
 
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--train", nargs="+", required=True, help="scenario files (globs ok)")
     ap.add_argument("--test", nargs="+", default=[], help="held-out scenario files for the final table")
-    ap.add_argument("--robots", type=int, default=4, help="use the first N robots of each scenario")
-    ap.add_argument("--test-robots", type=int, nargs="+", help="robot counts for the test table (default: --robots)")
-    ap.add_argument("--iters", type=int, default=30)
+    ap.add_argument("--cost", choices=sorted(COSTS), default=DEFAULT_COST)
+    ap.add_argument("--robots", type=int, default=8, help="use the first N robots of each scenario")
+    ap.add_argument("--iters", type=int, default=15)
     ap.add_argument("--pop", type=int, default=24)
     ap.add_argument("--elite", type=int, default=6)
     ap.add_argument("--batch", type=int, default=6, help="episodes per candidate per iteration")
-    ap.add_argument("--test-seeds", type=int, default=5)
+    ap.add_argument("--test-seeds", type=int, nargs="+", default=[100, 101, 102, 103, 104])
     ap.add_argument("--sigma", type=float, default=1.0)
     ap.add_argument("--workers", type=int, default=max(1, (os.cpu_count() or 2) - 1))
     ap.add_argument("--out", type=Path, default=sched_learned.DEFAULT_WEIGHTS)
+    ap.add_argument("--report", type=Path, help="write the test results here (JSON)")
     ap.add_argument("--rng", type=int, default=0)
     args = ap.parse_args()
     if hasattr(sys.stdout, "reconfigure"):
@@ -89,6 +106,7 @@ def main():
     train, test = expand(args.train), expand(args.test)
     if not train:
         raise SystemExit("no training scenarios")
+    cost = COSTS[args.cost]
     feats = sched_learned.FEATURES
     heur = [sched_learned.HEURISTIC.get(f, 0.0) for f in feats]
     rng = np.random.default_rng(args.rng)
@@ -96,7 +114,8 @@ def main():
     mean, sd = np.array(heur), np.full(len(feats), args.sigma)
     args.out.parent.mkdir(parents=True, exist_ok=True)
     history = []
-    print(f"train {len(train)} scenarios, test {len(test)}, robots {args.robots}, workers {args.workers}")
+    print(f"cost {args.cost}: train {len(train)} scenarios, test {len(test)}, robots {args.robots}, "
+          f"workers {args.workers}")
 
     with Pool(args.workers) as pool:
         t0 = time.time()
@@ -105,37 +124,43 @@ def main():
             pop = [mean] + [mean + sd * rng.standard_normal(len(feats)) for _ in range(args.pop - 1)]
             jobs = [(p, s, args.robots, list(w)) for w in pop for p, s in batch]
             jobs += [(p, s, args.robots, None) for p, s in batch]             # stand-in, for reference
-            res = pool.map(episode, jobs)
-            costs = [statistics.mean(c for c, _ in res[k * len(batch):(k + 1) * len(batch)]) for k in range(len(pop))]
-            ref = statistics.mean(c for c, _ in res[len(pop) * len(batch):])
+            res = [cost(m) for m in pool.map(episode, jobs)]
+            nb = len(batch)
+            costs = [statistics.mean(res[k * nb:(k + 1) * nb]) for k in range(len(pop))]
+            ref = statistics.mean(res[len(pop) * nb:])
             order = np.argsort(costs)
             elite = np.array([pop[k] for k in order[:args.elite]])
             mean, sd = elite.mean(axis=0), np.maximum(elite.std(axis=0), 0.05)
-            history.append({"iter": it, "best": costs[order[0]], "current_mean": costs[0], "standin": ref})
+            history.append({"iter": it, "best": costs[order[0]], "current_mean": costs[0], "standin": ref,
+                            "mean": [round(float(v), 4) for v in mean], "sd": [round(float(v), 4) for v in sd]})
             print(f"iter {it:2d}: cost best {costs[order[0]]:.0f}, current {costs[0]:.0f}, stand-in {ref:.0f} "
                   f"| {time.time() - t0:.0f} s", flush=True)
-            args.out.write_text(json.dumps({"weights": dict(zip(feats, map(float, mean))), "robots": args.robots,
-                                            "train": train, "history": history}, indent=2), encoding="utf-8")
+            args.out.write_text(json.dumps({"weights": dict(zip(feats, map(float, mean))), "cost": args.cost,
+                                            "robots": args.robots, "train": train, "history": history}, indent=2),
+                                encoding="utf-8")
 
         print("\nweights:", {f: round(float(v), 2) for f, v in zip(feats, mean)})
         if not test:
             return
-        table = {}
-        for n in args.test_robots or [args.robots]:
-            eps = [(p, s) for p in test for s in range(args.test_seeds)]
-            for label, w in (("stand-in", None), ("heuristic", heur), ("trained", list(mean))):
-                res = pool.map(episode, [(p, s, n, w) for p, s in eps])
-                table[(n, label)] = res
-            print(f"\ntest, {n} robots, {len(eps)} episodes (mean; paired diff vs stand-in)")
-            base = table[(n, "stand-in")]
-            for label in ("stand-in", "heuristic", "trained"):
-                r = table[(n, label)]
-                m = lambda k: statistics.mean(x[1][k] for x in r)  # noqa: E731
-                diff = [a[1]["lead"] - b[1]["lead"] for a, b in zip(r, base)]
-                print(f"  {label:9s} cost {statistics.mean(x[0] for x in r):6.0f} | lead {m('lead'):5.0f} s "
-                      f"(diff {statistics.mean(diff):+5.0f}, sd {statistics.pstdev(diff):4.0f}) | shipped "
-                      f"{m('shipped'):5.1f}/{m('released'):.0f} | missed {m('missed'):.1f} | busy {m('busy'):.3f} "
-                      f"| dist {m('dist'):5.0f} m")
+        eps = [(p, s) for p in test for s in args.test_seeds]
+        report = {"cost": args.cost, "robots": args.robots, "episodes": len(eps), "weights": dict(zip(feats, map(float, mean))),
+                  "results": {}}
+        rows = {}
+        for label, w in (("stand-in", None), ("heuristic", heur), ("trained", list(mean))):
+            rows[label] = pool.map(episode, [(p, s, args.robots, w) for p, s in eps])
+            report["results"][label] = {k: statistics.mean(m[k] for m in rows[label]) for k in METRICS}
+        report["paired_order_all_vs_standin"] = {
+            label: {"mean": statistics.mean(a["order_all"] - b["order_all"] for a, b in zip(rows[label], rows["stand-in"])),
+                    "sd": statistics.pstdev(a["order_all"] - b["order_all"] for a, b in zip(rows[label], rows["stand-in"]))}
+            for label in ("heuristic", "trained")}
+        print(f"\ntest, {args.robots} robots, {len(eps)} episodes (mean)")
+        for label, r in report["results"].items():
+            print(f"  {label:9s} order_all {r['order_all']:5.0f} | unit {r['unit']:5.0f} | p90 {r['p90']:5.0f} | "
+                  f"tardy {r['tardy']:5.0f} | shipped {r['shipped']:5.1f}/{r['released']:.0f} | missed {r['missed']:.2f} "
+                  f"| busy {r['busy']:.3f} | dist {r['dist']:5.0f}")
+        if args.report:
+            args.report.parent.mkdir(parents=True, exist_ok=True)
+            args.report.write_text(json.dumps(report, indent=2), encoding="utf-8")
 
 
 if __name__ == "__main__":

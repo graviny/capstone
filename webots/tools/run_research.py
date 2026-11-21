@@ -88,6 +88,7 @@ def execute(job):
                                                         else 'models/assign_weights.json'))[0]
                        if method.startswith(('learned', 'retrain', 'adapt')) else [sched_learned.HEURISTIC.get(f, 0) for f in sched_learned.FEATURES])
             scheduler = sched_learned.Scheduler(cfg, weights=weights)
+            scheduler.window = 'raw'   # learned30/learned_all/heuristic keep their original window; *_fw set it below
             if method == 'learned_all':
                 scheduler.candidate_limit = None
             if method == 'adapt_fw':

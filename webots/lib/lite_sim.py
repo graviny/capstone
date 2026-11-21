@@ -16,8 +16,9 @@ What is simpler:
            yield_s 1 (docs/lite_sim.md)
   time     fixed steps of dt (0.5 s); a robot's phase still ends at its exact time
   looking  a robot always reads the label (no UNREADABLE)
-  shortcut: S1 robot placement error, scanner failure and the patrol idle sweep are not
-           modelled (all off by default); add them here if an experiment turns them on.
+  shortcut: the old S1 robot placement error (place_error_p), scanner failure and the patrol
+           idle sweep are not modelled (all off by default); add them here if an experiment
+           turns them on. The robot place failures of lib/place_fail.py (faults.place_p) are.
 
 Usage (from webots/):
   python lib/lite_sim.py [--scheduler sched_verify --policy event] [--duration 3600]
@@ -44,6 +45,7 @@ from nav import NEIGHBORS, GridMap  # noqa: E402
 from record_quality import RecordQuality
 from research_metrics import FlowMetrics, order_metrics, task_metrics
 from fault_tape import FaultTape, apply_worker_attempt
+import place_fail  # noqa: E402
 
 STATS_PERIOD_S = 10.0
 IDLE_PARK_S = 20.0                 # agent.py: an idle robot drives home after this long
@@ -106,10 +108,14 @@ class LiteSim:
         self.returns = [c["lpn"] for c in cfg["returns"]]
         self.lane_tag = {}
         self.s3_pending = []
+        self.place_model = place_fail.enabled(self.faults)
+        self.place_count = {}              # lpn -> placements so far (place_fail draw key, as supervisor.py)
+        self.place_failures = {"first": 0, "retry": 0, "takeover": 0, "quarantined": 0}
 
         self.robots = {r["id"]: {"id": r["id"], "role": r["role"], "home": tuple(r["home"]), "pos": tuple(r["home"]),
                                  "task": None, "phase": None, "holding": None, "leg": None, "timer": None,
-                                 "idle_since": 0.0, "parked": True, "busy_s": 0.0, "dist": 0.0}
+                                 "idle_since": 0.0, "parked": True, "busy_s": 0.0, "dist": 0.0,
+                                 "tries": 0, "draw": None, "landed": None, "placed": None}
                        for r in cfg["robots"]}
         self.task_src, self.task_dest = {}, {}
 
@@ -133,6 +139,8 @@ class LiteSim:
         self.n = {"events": 0, "released": 0, "shipped": 0, "mis_shipped": 0, "missed_cutoffs": 0,
                   "shipments": 0, "staged_in": 0}
         self.counts, self.truth_counts = {}, {}
+        self.unit_wait = {}                # order -> release times of its units not shipped yet
+        self.unit_leads = []               # release -> shipped, s, per shipped unit
 
     # ------------------------------------------------------------ helpers
     def gt_sku(self, sid):
@@ -211,7 +219,7 @@ class LiteSim:
 
     def finish(self, r, t):
         self.stop(r, t)
-        r.update(task=None, phase=None, timer=None, parked=False, idle_since=t)
+        r.update(task=None, phase=None, timer=None, parked=False, idle_since=t, tries=0, draw=None, landed=None, placed=None)
 
     def wait(self, r, t):
         self.stop(r, t)
@@ -256,6 +264,18 @@ class LiteSim:
             self.stop(r, t)
             r["timer"] = None
             return
+        if phase == "pick_retry":                                   # the neighbor is within reach: no driving
+            lpn = self.occupant[r["landed"]]
+            if lpn != r["placed"]:
+                self.carton_taken(r, t)
+                return
+            self.take(lpn)
+            r["holding"] = lpn
+            r.update(phase="place", timer=t + self.place_seconds(r, task["destination"]))
+            return
+        if phase == "check":
+            self.after_check(r, t)
+            return
         if phase.startswith("go_"):
             self.stop(r, t)
             r["phase"] = phase.replace("go_", "look_")
@@ -279,7 +299,7 @@ class LiteSim:
                 self.wait(r, t)
         elif phase == "look_dst":
             if seen == "EMPTY":
-                r.update(phase="place", timer=t + self.nav["act_s"])
+                r.update(phase="place", timer=t + self.place_seconds(r, sid))
             else:
                 self.emit({"type": "DESTINATION_OCCUPIED", "robot_id": rid, "task_id": tid, "slot": sid,
                            "item_id": self.sku_of[r["holding"]], "observed": seen}, t)
@@ -309,6 +329,16 @@ class LiteSim:
                 self.wait(r, t)
                 return
             lpn = r["holding"]
+            if r["draw"] is not None:                              # place model: land, then check
+                ok, side, kind = r["draw"]
+                landed = None if ok else place_fail.landing(sid, self.occupant, side)
+                if landed:
+                    self.place_failures[kind] += 1
+                    self.truth("ROBOT_PLACE_FAIL")
+                self.put(lpn, landed or sid)
+                r.update(holding=None, landed=landed or sid, placed=lpn, draw=None, phase="check",
+                         timer=t + self.per["look_s"])
+                return
             self.put(lpn, sid)
             if self.slots[sid]["kind"] == "outbound":
                 self.lane_tag[lpn] = {"order": task.get("order"), "item": task["item_id"],
@@ -318,6 +348,49 @@ class LiteSim:
             r["holding"] = None
             self.finish(r, t)
 
+    def place_seconds(self, r, sid):
+        """How long this place takes; with the place model on, draws the attempt (place_fail)."""
+        if not self.place_model or self.slots[sid]["kind"] != "rack":
+            return self.nav["act_s"]
+        lpn, task = r["holding"], r["task"]
+        kind = "takeover" if task.get("cause") == "PLACE_FAILED" else ("first" if r["tries"] == 0 else "retry")
+        k = self.place_count[lpn] = self.place_count.get(lpn, 0) + 1
+        ok, secs, side = place_fail.attempt(self.seed, lpn, k, kind, self.faults, self.nav["act_s"])
+        r["draw"] = (ok, side, kind)
+        return secs
+
+    def after_check(self, r, t):
+        """agent.py's check after a place: done, retry from the slot it landed in, or PLACE_FAILED."""
+        task, rid, tid = r["task"], r["id"], r["task"]["task_id"]
+        landed, dest = r["landed"], task["destination"]
+        if self.occupant[landed] != r["placed"]:
+            self.carton_taken(r, t)
+            return
+        item = self.sku_of[r["placed"]]
+        if landed == dest:
+            self.emit({"type": "TASK_COMPLETED", "robot_id": rid, "task_id": tid, "task_type": task["task_type"],
+                       "item_id": item, "slot": dest}, t)
+            self.finish(r, t)
+            return
+        takeover = task.get("cause") == "PLACE_FAILED"
+        if not takeover and r["tries"] < place_fail.RETRIES:
+            r["tries"] += 1
+            r.update(phase="pick_retry", timer=t + self.nav["act_s"])
+            return
+        if takeover:
+            self.place_failures["quarantined"] += 1
+        self.emit({"type": "PLACE_FAILED", "robot_id": rid, "task_id": tid, "slot": dest, "actual": landed,
+                   "item_id": item, "takeover": takeover}, t)
+        self.finish(r, t)
+
+    def carton_taken(self, r, t):
+        """Another robot took the carton from the slot it landed in before this one could check or
+        retry (it acts on the record, which does not know yet). The robot gives up on the task."""
+        self.truth("PLACED_CARTON_TAKEN")
+        self.emit({"type": "TASK_FAILED", "robot_id": r["id"], "task_id": r["task"]["task_id"],
+                   "reason": "PLACED_CARTON_TAKEN"}, t)
+        self.finish(r, t)
+
     # -------------------------------------------------------- environment
     def environment(self, t):
         """supervisor.py's loop body before the robots: orders, inbound, belt, outbound, faults."""
@@ -325,6 +398,8 @@ class LiteSim:
             w = self.waves[self.next_wave]
             self.next_wave += 1
             self.n["released"] += sum(ln["qty"] for ln in w["lines"])
+            for ln in w["lines"]:
+                self.unit_wait.setdefault(ln["order"], []).extend([w["release_t"]] * ln["qty"])
             self.emit({"type": "ORDER_RELEASED", "wave": w["wave"], "lines": w["lines"]})
 
         bc = self.belt_cfg
@@ -390,6 +465,8 @@ class LiteSim:
                         o = self.orders[tag["order"]]
                         o["shipped"] += 1
                         self.n["shipped"] += 1
+                        if self.unit_wait.get(tag["order"]):
+                            self.unit_leads.append(t - self.unit_wait[tag["order"]].pop(0))
                         if o["shipped"] >= o["units"]:
                             o["done_t"] = t
                     else:
@@ -498,16 +575,29 @@ class LiteSim:
         t = self.t
         done = [o for o in self.orders.values() if o["done_t"] is not None]
         rec = self.wes.record_snapshot()
+        # Censored leads: whatever is not shipped by the end counts until the end, so runs that
+        # complete different orders are still compared on the same orders / units.
+        released = [o for o in self.orders.values() if o["released_t"] <= t]
+        lead_all = sorted((o["done_t"] if o["done_t"] is not None else t) - o["released_t"] for o in released)
+        period = self.out_cfg["cutoff_period_s"]
+        tard = [max(0.0, (o["done_t"] if o["done_t"] is not None else t)
+                    - (o["released_t"] // period + 1) * period) for o in released]
+        units = self.unit_leads + [t - r for rs in self.unit_wait.values() for r in rs]
         return {
             "duration_s": round(t, 1), "wes": self.wes.name, "simulator": "lite",
             "orders_released": sum(1 for o in self.orders.values() if o["released_t"] <= t),
             "orders_completed": len(done),
             "mean_order_lead_s": sum(o["done_t"] - o["released_t"] for o in done) / len(done) if done else None,
+            "order_lead_all_s": sum(lead_all) / len(lead_all) if lead_all else None,
+            "order_lead_p90_s": lead_all[int(0.9 * (len(lead_all) - 1))] if lead_all else None,
+            "order_tardiness_s": sum(tard) / len(tard) if tard else None,
+            "unit_lead_s": sum(units) / len(units) if units else None,
             "units_released": self.n["released"], "units_shipped": self.n["shipped"],
             "mis_shipped": self.n["mis_shipped"], "outbound_trucks": self.n["shipments"],
             "missed_cutoffs": self.n["missed_cutoffs"], "inbound_trucks_arrived": self.next_truck,
             "inbound_staged": self.n["staged_in"], "cartons_on_belt_at_end": len(self.belt),
             "events": self.counts, "faults_injected": dict(self.truth_counts), "diagnostics": {},
+            "place_failures": dict(self.place_failures),
             "record_mismatch_at_end": sum(1 for s, v in rec.items() if v != self.gt_sku(s)),
             "record_quality": self.quality.summary(t),
             "research_metrics": {**self.flow_metrics.summary(t), **order_metrics(self.orders, t),

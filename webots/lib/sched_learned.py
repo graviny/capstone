@@ -24,7 +24,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_WEIGHTS = ROOT / "models" / "assign_weights.json"
 FEATURES = ("dist", "busy", "pick", "putaway", "verify", "slack", "age", "truck_here", "lane_fill", "buffer_fill")
 HEURISTIC = {"dist": -1.0, "busy": -1.0, "pick": 2.0}
-MAX_TASKS = 30                     # pending tasks considered per step (oldest first)
+MAX_TASKS = 30                     # candidate tasks per step: the oldest startable ones (window 'feasible')
 
 
 def load_weights(path=None):
@@ -150,7 +150,7 @@ class Assign(sched_standin.Scheduler):
     def candidate_tasks(self, s, taken=()):
         tasks = s.pending_tasks()
         limit = getattr(self, 'candidate_limit', MAX_TASKS)
-        if getattr(self, 'window', 'raw') == 'feasible':
+        if getattr(self, 'window', 'feasible') == 'feasible':   # default since 2026-11-20; 'raw' = first MAX_TASKS
             # Bounded compute like MAX_TASKS, but the window counts only tasks that can be
             # started now, so infeasible tasks at the queue head cannot hide the others.
             picked = []
@@ -178,7 +178,7 @@ class Scheduler(sched_verify.Scheduler, Assign):
 
     def __init__(self, cfg, weights=None):
         super().__init__(cfg)
-        trained = True
+        trained, weights_from_env = True, weights is None and bool(os.environ.get("ASSIGN_WEIGHTS"))
         if weights is None:
             weights, trained = load_weights()
         self.w = list(weights)
@@ -186,3 +186,5 @@ class Scheduler(sched_verify.Scheduler, Assign):
         self.adapt_tau, self.adapt_tc, self._ema, self._pt = 3.5, 300.0, None, None
         # Log folders: wms-learned-<policy> with trained weights, wms-heuristic-<policy> without.
         self.name = f"{'learned' if trained else 'heuristic'}-{self.policy}"
+        if trained and weights_from_env:               # two weight files can run side by side
+            self.name = f"learned-{Path(os.environ['ASSIGN_WEIGHTS']).stem}-{self.policy}"

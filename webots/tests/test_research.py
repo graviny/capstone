@@ -66,6 +66,7 @@ class ResearchTests(unittest.TestCase):
                  {'task_id': 'vf', 'task_type': 'VERIFY', 'created_t': 0}]
         s = SimpleNamespace(t=100, pending_tasks=lambda: rows)
         assignment = Assign({'robots': []})
+        assignment.window = 'raw'          # this test is about the raw window's audit
         self.assertEqual(len(assignment.candidate_tasks(s)), 30)
         self.assertEqual(assignment.candidate_audit['excluded_task_steps'], {'PUTAWAY': 1, 'VERIFY': 1})
         assignment.candidate_limit = None
@@ -102,6 +103,11 @@ class CandidateWindowTests(unittest.TestCase):
         self.assertEqual([t['task_id'] for t in a.candidate_tasks(s, set())], ['ok'])
         a.candidate_limit = 1
         self.assertEqual(len(a.candidate_tasks(s, set())), 1)
+
+    def test_default_window_is_feasible(self):
+        a, s = self.make('raw')
+        del a.window
+        self.assertEqual([t['task_id'] for t in a.candidate_tasks(s, set())], ['ok'])
 
 
 if __name__ == '__main__':

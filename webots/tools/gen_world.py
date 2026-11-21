@@ -313,6 +313,12 @@ def main():
     ap.add_argument("--scanner-fail-p", type=float, default=0.0,
                     help="inbound: share of labels not read (default off, TODO)")
     ap.add_argument("--fault-scale", type=float, default=1.0, help="multiplies every fault rate above")
+    # Robot place failures (lib/place_fail.py): success probabilities, not scaled by --fault-scale.
+    ap.add_argument("--place-p", type=float, default=None,
+                    help="robot place failures on: success of the first try at a rack slot (default off)")
+    ap.add_argument("--retry-q", type=float, default=1.0, help="success of the same robot's retry (2 retries)")
+    ap.add_argument("--takeover-r", type=float, default=1.0, help="success of another robot's fix (RELOCATE)")
+    ap.add_argument("--place-fail-alpha", type=float, default=0.0, help="skew of a failed try's duration")
     ap.add_argument("--run-name", default="",
                     help="added to the log folder name (logs/<date>_<WES>_seed<n>_<faults>_<run-name>_<mode>)")
     ap.add_argument("--config", type=Path,
@@ -566,6 +572,9 @@ def main():
     }
     if args.no_faults:
         faults = {k: 0 if not k.endswith("max_slots") else v for k, v in faults.items()}
+    if args.place_p is not None:
+        faults.update(place_p=args.place_p, retry_q=args.retry_q, takeover_r=args.takeover_r,
+                      place_fail_alpha=args.place_fail_alpha)
 
     scenario = {
         "seed": args.seed,

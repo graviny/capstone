@@ -29,6 +29,11 @@ Task status
   ON_HOLD      the robot stopped: an exception (SHORT_PICK, ITEM_MISMATCH,
                DESTINATION_OCCUPIED) or a WAIT; needs a REROUTE / CANCEL / REASSIGN
   FAILED       the robot gave up (TASK_FAILED); needs a REASSIGN (back to PENDING) or CANCEL
+
+Robot place failures (PLACE_FAILED, lib/place_fail.py): the carton was recorded where the robot
+saw it land; the task completes (misplaced=True) and a fix task follows (RELOCATE back to the
+intended slot, cause PLACE_FAILED, both slots reserved, CANCEL refused). A failed fix quarantines
+the carton: its slot stays reserved by QUARANTINE, so no task uses it and stock() skips it.
   COMPLETED    done, the record was updated
   CANCELLED    dropped
 
@@ -45,6 +50,8 @@ STATUSES = (PENDING, ASSIGNED, IN_PROGRESS, ON_HOLD, FAILED, COMPLETED, CANCELLE
 ACTIVE = (ASSIGNED, IN_PROGRESS, ON_HOLD)          # a robot is on the task
 FINAL = (COMPLETED, CANCELLED)
 UNKNOWN = "UNKNOWN"                                # occupied, item not identified
+QUARANTINE = "QUARANTINE"                          # reserved_by of a slot whose carton is quarantined
+FIX = "PLACE_FAILED"                               # cause of a fix task (RELOCATE back to the intended slot)
 INBOUND = ("buffer", "exception")
 TASK_TYPES = ("PUTAWAY", "PICK", "VERIFY", "RELOCATE")
 MOVES = ("PUTAWAY", "PICK", "RELOCATE")            # tasks that carry a carton
@@ -55,7 +62,7 @@ PRIORITY = {"PICK": 1, "PUTAWAY": 2, "VERIFY": 2, "RELOCATE": 2}   # lower is mo
 CHOSEN_AT_ASSIGN = {"PICK": ("source", "destination"), "PUTAWAY": (), "VERIFY": (), "RELOCATE": ()}
 # Task fields a robot gets with EXECUTE.
 PAYLOAD = ("task_id", "task_type", "item_id", "source", "destination", "priority", "deadline", "state_version",
-           "order", "region", "wave", "lpn")
+           "order", "region", "wave", "lpn", "cause")
 REJECT_PRINT_LIMIT = 20
 
 
@@ -212,6 +219,11 @@ class MockWMS:
             task["destination"] = None
             self._unslotted.append(task["task_id"])
 
+    def _keep_fix_slots(self, task):
+        """A fix task holds both its slots until it is done: the carton must go back to the intended slot."""
+        for s in (task["source"], task["destination"]):
+            self.reserve(task["task_id"], s)
+
     # ---------------------------------------------------------------- tasks
     def _next_id(self, base):
         n = self._ids[base] = self._ids.get(base, 0) + 1
@@ -259,6 +271,8 @@ class MockWMS:
             self._detach(task)
         if status == PENDING and task["task_type"] == "PUTAWAY":
             self._keep_putaway_slot(task)
+        if task.get("cause") == FIX and status in (PENDING, FAILED):
+            self._keep_fix_slots(task)
         self.log("TASK_STATUS", task_id=tid, old=old, new=status, cause=cause, **kw)
 
     def _detach(self, task):
@@ -436,6 +450,36 @@ class MockWMS:
         if task["task_type"] == "VERIFY":
             self._inbound_followup(task["destination"])
 
+    def _on_place_failed(self, ev):
+        """A robot put the carton one slot off and could not fix it (its own 3 tries, or a takeover).
+        It saw where the carton is, so that is recorded; then a fix task, or quarantine if this
+        was the fix."""
+        task = self._task_of(ev)
+        if task is None:
+            return
+        if task["status"] not in ACTIVE:
+            self.anomaly("LATE_COMPLETION", task_id=task["task_id"], status=task["status"],
+                         event_id=ev.get("event_id"))
+            return
+        tid, src, actual = task["task_id"], task["source"], ev["actual"]
+        item = ev.get("item_id") or task["item_id"]
+        if src and self.rec[src]["version"] == task["source_version"]:
+            self.set_slot(src, None, "PLACE_FAILED", task_id=tid)
+        elif src:
+            self.count("source_changed_before_completion")
+        self.set_slot(actual, item, "PLACE_FAILED", lpn=task.get("lpn"), arrival=True, observed=True, task_id=tid)
+        self.count("place_failed")
+        self.set_status(task, COMPLETED, "PLACE_FAILED", done_t=self.t, misplaced=True, landed=actual)
+        if ev.get("takeover"):
+            self.reserve(QUARANTINE, actual)
+            self.count("quarantined")
+            self.log("QUARANTINE", slot=actual, item=item, task_id=tid)
+            return
+        fix = self.new_task("RELOCATE", item, FIX, source=actual, destination=task["destination"],
+                            lpn=task.get("lpn"))
+        fix["cause"] = FIX
+        self._keep_fix_slots(fix)
+
     def _on_task_failed(self, ev):
         task = self._task_of(ev)
         if task is None:
@@ -579,6 +623,8 @@ class MockWMS:
                 return "NO_PUTAWAY_SLOT_YET"       # racks full in the record
             if dst != task["destination"]:
                 return "DESTINATION_SET_BY_WMS"
+        if task.get("cause") == FIX and (src, dst) != (task["source"], task["destination"]):
+            return "FIX_SLOTS_SET_BY_WMS"
         return self._check_slots(task, src, dst) or self._check_move_records(task, src, dst)
 
     def _check_attached(self, d, task):
@@ -595,6 +641,8 @@ class MockWMS:
         src, dst = self._slots_of(d, task)
         if task["task_type"] == "PUTAWAY" and dst != task["destination"] and task["status"] != ON_HOLD:
             return "DESTINATION_SET_BY_WMS"        # only an exception or a WAIT lets the WES move it
+        if task.get("cause") == FIX and (src, dst) != (task["source"], task["destination"]) and task["status"] != ON_HOLD:
+            return "FIX_SLOTS_SET_BY_WMS"          # same for a fix (after DESTINATION_OCCUPIED it may move)
         return self._check_slots(task, src, dst) or self._check_move_records(
             task, src, dst, src_changed=src != task["source"], dst_changed=dst != task["destination"])
 
@@ -604,6 +652,8 @@ class MockWMS:
     def _check_cancel(self, d, task):
         if task["status"] in FINAL:
             return f"TASK_{task['status']}"
+        if d.get("action") == "CANCEL" and task.get("cause") == FIX:
+            return "FIX_TASK"                      # the carton must go back (REASSIGN is fine)
         if task["status"] in ACTIVE:
             if d.get("robot_id") != task["robot_id"]:
                 return "NOT_THIS_ROBOT"
@@ -681,6 +731,9 @@ class MockWMS:
         return d
 
     def _do_reassign(self, d, task):
+        if task.get("cause") == FIX and self.rec[task["source"]]["item"] != task["item_id"]:
+            self.set_status(task, CANCELLED, "FIX_SOURCE_GONE")   # the carton left: nothing to fix
+            return d
         self.set_status(task, PENDING, "REASSIGN")
         return d
 
@@ -758,9 +811,12 @@ class WMSView:
         return self._w.tasks.get(tid)
 
     def pending_tasks(self):
-        """PENDING tasks by (priority, creation time, time queued)."""
-        tasks = self._w.tasks
-        return sorted((tasks[tid] for tid in self._w._pending),
+        """PENDING tasks by (priority, creation time, time queued). A fix task waits while another
+        carton sits in its intended slot, or while its own carton is not where it was recorded."""
+        tasks, rec = self._w.tasks, self._w.rec
+        blocked = lambda t: t.get("cause") == FIX and (rec[t["destination"]]["item"] is not None    # noqa: E731
+                                                        or rec[t["source"]]["item"] != t["item_id"])
+        return sorted((tasks[tid] for tid in self._w._pending if not blocked(tasks[tid])),
                       key=lambda t: (t["priority"], t["created_t"], t["queue_seq"]))
 
     def tasks_with(self, *statuses):
@@ -790,7 +846,8 @@ class WMSView:
                 and self._w.slots[sid]["kind"] == kind and sid not in exclude]
 
     def stock(self, item):
-        return sum(1 for sid, r in self._w.rec.items() if r["item"] == item and self._w.slots[sid]["kind"] == "rack")
+        return sum(1 for sid, r in self._w.rec.items() if r["item"] == item and self._w.slots[sid]["kind"] == "rack"
+                   and r["reserved_by"] != QUARANTINE)
 
     def lane_free_slot(self, region, exclude=()):
         for sid in self._w.lanes[region]:

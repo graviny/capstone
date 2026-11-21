@@ -72,6 +72,64 @@ class LiteSimTest(unittest.TestCase):
         # The WMS accepted every decision and saw nothing inconsistent.
         self.assertFalse({k: v for k, v in counts.items() if k.startswith("anomaly_") or "reject" in k})
         self.assertTrue(all(0.0 <= b <= 1.0 for b in s["robot_busy_share"].values()))
+        # Censored leads cover every released order / unit, unfinished ones counted to the end.
+        self.assertGreater(s["unit_lead_s"], 0)
+        self.assertGreaterEqual(s["order_lead_p90_s"], s["order_lead_all_s"] * 0.5)
+        if s["orders_completed"] == s["orders_released"]:
+            self.assertAlmostEqual(s["order_lead_all_s"], s["mean_order_lead_s"])
+
+
+class PlaceFailLiteTest(unittest.TestCase):
+    """Robot place failures in the lite sim (lib/place_fail.py): retry, fix task, quarantine."""
+
+    def run_with(self, p, q, r, duration=1800.0):
+        faults = {**CFG["faults"], "worker_move_per_h": 0, "worker_remove_per_h": 0, "dest_taken_p": 0,
+                  "place_p": p, "retry_q": q, "takeover_r": r, "place_fail_alpha": 0.0}
+        cfg = {**CFG, "seed": 0, "faults": faults}
+        cfg.pop("fault_model", None)
+        tmp = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, tmp, ignore_errors=True)
+        events = []
+        with mock.patch.dict(os.environ, {"VERIFY_POLICY": "event", "ASSIGN_WEIGHTS": str(Path(tmp) / "none.json")}):
+            wes = WES(cfg, scheduler=sched_verify.Scheduler(cfg), log_dir=tmp)
+        s = LiteSim(cfg, wes, grid=GRID, fields=FIELDS, event_sink=events.append).run(duration)
+        counts = s["wes_stats"]["counts"]
+        self.assertFalse({k: v for k, v in counts.items() if k.startswith("anomaly_") or "reject" in k})
+        return s, [e for e in events if e.get("type") == "PLACE_FAILED"], counts
+
+    def test_place_model_off_is_unchanged(self):
+        s = LiteSimTest.run_once(self)                       # scenario.json has no place_p
+        self.assertEqual((s["units_shipped"], s["events"]["TASK_COMPLETED"]), (43, 92))
+        self.assertAlmostEqual(s["order_lead_all_s"], 313.8, places=2)
+        self.assertAlmostEqual(s["unit_lead_s"], 140.241, places=2)
+        self.assertNotIn("PLACE_FAILED", s["events"])
+
+    def test_failures_retry_then_fix(self):
+        s, failed, counts = self.run_with(0.0, 0.0, 1.0)
+        pf = s["place_failures"]
+        self.assertGreater(len(failed), 0)
+        self.assertFalse(any(e["takeover"] for e in failed))
+        self.assertTrue(all(e["actual"] != e["slot"] for e in failed))
+        self.assertGreaterEqual(pf["first"], len(failed))
+        self.assertLessEqual(len(failed), pf["first"])
+        self.assertLessEqual(pf["retry"], 2 * pf["first"])
+        self.assertGreaterEqual(pf["retry"], 2 * len(failed))
+        self.assertEqual((pf["takeover"], pf["quarantined"]), (0, 0))
+        self.assertGreater(counts.get("created_RELOCATE", 0), 0)
+        self.assertEqual(counts["place_failed"], len(failed))
+
+    def test_takeover_failure_quarantines(self):
+        s, failed, counts = self.run_with(0.0, 0.0, 0.0)
+        quarantined = [e for e in failed if e["takeover"]]
+        self.assertGreater(len(quarantined), 0)
+        self.assertEqual(s["place_failures"]["quarantined"], len(quarantined))
+        self.assertEqual(counts["quarantined"], len(quarantined))
+
+    def test_same_seed_same_failures(self):
+        a = self.run_with(0.8, 0.5, 0.8)
+        b = self.run_with(0.8, 0.5, 0.8)
+        self.assertEqual(a[0]["place_failures"], b[0]["place_failures"])
+        self.assertEqual(a[1], b[1])
 
 
 if __name__ == "__main__":

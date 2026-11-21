@@ -1,6 +1,6 @@
 {
- "seed": 42,
- "run_name": "",
+ "seed": 3001,
+ "run_name": "pfq0.5_0309",
  "generator": {
   "date": "2023-03-09",
   "duration": 3600.0,
@@ -8,7 +8,7 @@
   "transports": 8,
   "robot_speed": 0.8,
   "traffic_priority": "task",
-  "seed": 42,
+  "seed": 3001,
   "order_sample": 1.0,
   "max_line_qty": 6,
   "time_scale": 0.0,
@@ -23,7 +23,7 @@
   "truck_min_gap": 120.0,
   "inbound_lead": 240.0,
   "no_faults": false,
-  "plain": false,
+  "plain": true,
   "layout": "base",
   "patrol_sweep": false,
   "stock_layout": "abc",
@@ -34,8 +34,12 @@
   "worker_remove_per_h": 3.0,
   "dest_taken_p": 0.1,
   "scanner_fail_p": 0.0,
-  "fault_scale": 1.0,
-  "run_name": ""
+  "fault_scale": 0.0,
+  "place_p": 0.95,
+  "retry_q": 0.5,
+  "takeover_r": 0.95,
+  "place_fail_alpha": 0.0,
+  "run_name": "pfq0.5_0309"
  },
  "world": {
   "x_min": -12.0,
@@ -4123,11 +4127,11 @@
   },
   {
    "lpn": "IN0001",
-   "sku": "8N10W9-11"
+   "sku": "I1KDJ0-11"
   },
   {
    "lpn": "IN0002",
-   "sku": "I1KDJ0-11"
+   "sku": "8N10W9-11"
   },
   {
    "lpn": "IN0003",
@@ -4139,7 +4143,7 @@
   },
   {
    "lpn": "IN0005",
-   "sku": "I1KDJ0-11"
+   "sku": "8N10W9-8.5"
   },
   {
    "lpn": "IN0006",
@@ -4151,39 +4155,39 @@
   },
   {
    "lpn": "IN0008",
-   "sku": "I1KDJ0-9"
-  },
-  {
-   "lpn": "IN0009",
-   "sku": "I1KDJ0-9"
-  },
-  {
-   "lpn": "IN0010",
-   "sku": "8N10W9-12"
-  },
-  {
-   "lpn": "IN0011",
    "sku": "8N10W9-9"
   },
   {
+   "lpn": "IN0009",
+   "sku": "8N10W9-12"
+  },
+  {
+   "lpn": "IN0010",
+   "sku": "I1KDJ0-11"
+  },
+  {
+   "lpn": "IN0011",
+   "sku": "I1KDJ0-9"
+  },
+  {
    "lpn": "IN0012",
-   "sku": "8N10W9-8.5"
+   "sku": "I1KDJ0-9"
   },
   {
    "lpn": "IN0013",
-   "sku": "I1KDJ0-9"
+   "sku": "I1KDJ0-10.5"
   },
   {
    "lpn": "IN0014",
-   "sku": "I1KDJ0-10.5"
-  },
-  {
-   "lpn": "IN0015",
    "sku": "I1KDJ0-9"
   },
   {
-   "lpn": "IN0016",
+   "lpn": "IN0015",
    "sku": "I1KDJ0-10.5"
+  },
+  {
+   "lpn": "IN0016",
+   "sku": "I1KDJ0-9"
   },
   {
    "lpn": "IN0017",
@@ -4191,19 +4195,19 @@
   },
   {
    "lpn": "IN0018",
-   "sku": "I1KDJ0-9.5"
-  },
-  {
-   "lpn": "IN0019",
    "sku": "I1KDJ0-10.5"
   },
   {
-   "lpn": "IN0020",
+   "lpn": "IN0019",
    "sku": "I1KDJ0-9"
   },
   {
+   "lpn": "IN0020",
+   "sku": "I1KDJ0-10.5"
+  },
+  {
    "lpn": "IN0021",
-   "sku": "I1KDJ0-9"
+   "sku": "I1KDJ0-9.5"
   },
   {
    "lpn": "IN0022",
@@ -4215,7 +4219,7 @@
   },
   {
    "lpn": "IN0024",
-   "sku": "I1KDJ0-10.5"
+   "sku": "I1KDJ0-9"
   },
   {
    "lpn": "IN0025",
@@ -4267,7 +4271,7 @@
   },
   {
    "lpn": "IN0037",
-   "sku": "I1KDJ0-10.5"
+   "sku": "I1KDJ0-9.5"
   },
   {
    "lpn": "IN0038",
@@ -4279,11 +4283,11 @@
   },
   {
    "lpn": "IN0040",
-   "sku": "I1KDJ0-10.5"
+   "sku": "I1KDJ0-9.5"
   },
   {
    "lpn": "IN0041",
-   "sku": "I1KDJ0-9.5"
+   "sku": "I1KDJ0-10.5"
   },
   {
    "lpn": "IN0042",
@@ -4295,7 +4299,7 @@
   },
   {
    "lpn": "IN0044",
-   "sku": "I1KDJ0-9.5"
+   "sku": "I1KDJ0-10.5"
   },
   {
    "lpn": "IN0045",
@@ -4307,11 +4311,11 @@
   },
   {
    "lpn": "IN0047",
-   "sku": "I1KDJ0-9.5"
+   "sku": "I1KDJ0-10.5"
   },
   {
    "lpn": "IN0048",
-   "sku": "I1KDJ0-10.5"
+   "sku": "I1KDJ0-9.5"
   },
   {
    "lpn": "IN0049",
@@ -4367,43 +4371,43 @@
   },
   {
    "lpn": "IN0062",
-   "sku": "I1KDJ0-10.5"
+   "sku": "I1KDJ0-11"
   },
   {
    "lpn": "IN0063",
-   "sku": "I1KDJ0-11"
+   "sku": "I1KDJ0-10.5"
   },
   {
    "lpn": "IN0064",
-   "sku": "I1KDJ0-10.5"
+   "sku": "8N10W9-10.5"
   },
   {
    "lpn": "IN0065",
-   "sku": "I1KDJ0-10.5"
+   "sku": "I1KDJ0-11"
   },
   {
    "lpn": "IN0066",
-   "sku": "WRRW1W-9.5"
+   "sku": "I1KDJ0-10.5"
   },
   {
    "lpn": "IN0067",
-   "sku": "I1KDJ0-11"
+   "sku": "I1KDJ0-10.5"
   },
   {
    "lpn": "IN0068",
-   "sku": "8N10W9-10.5"
+   "sku": "I1KDJ0-11"
   },
   {
    "lpn": "IN0069",
-   "sku": "8N10W9-10"
-  },
-  {
-   "lpn": "IN0070",
    "sku": "8N10W9-10.5"
   },
   {
+   "lpn": "IN0070",
+   "sku": "WRRW1W-9.5"
+  },
+  {
    "lpn": "IN0071",
-   "sku": "I1KDJ0-11"
+   "sku": "8N10W9-10"
   },
   {
    "lpn": "IN0072",
@@ -4415,35 +4419,35 @@
   },
   {
    "lpn": "IN0074",
-   "sku": "8D9SAW-10.5"
-  },
-  {
-   "lpn": "IN0075",
-   "sku": "I1KDJ0-10"
-  },
-  {
-   "lpn": "IN0076",
-   "sku": "8N10W9-12"
-  },
-  {
-   "lpn": "IN0077",
-   "sku": "8D9SAW-10"
-  },
-  {
-   "lpn": "IN0078",
    "sku": "2T1DJM-10"
   },
   {
-   "lpn": "IN0079",
+   "lpn": "IN0075",
    "sku": "8N10W9-11"
   },
   {
+   "lpn": "IN0076",
+   "sku": "I1KDJ0-10"
+  },
+  {
+   "lpn": "IN0077",
+   "sku": "8N10W9-9.5"
+  },
+  {
+   "lpn": "IN0078",
+   "sku": "8D9SAW-9"
+  },
+  {
+   "lpn": "IN0079",
+   "sku": "8D9SAW-10"
+  },
+  {
    "lpn": "IN0080",
-   "sku": "8N10W9-10.5"
+   "sku": "8N10W9-10"
   },
   {
    "lpn": "IN0081",
-   "sku": "8D9SAW-9"
+   "sku": "8N10W9-10.5"
   },
   {
    "lpn": "IN0082",
@@ -4451,23 +4455,23 @@
   },
   {
    "lpn": "IN0083",
-   "sku": "8N10W9-9.5"
+   "sku": "8D9SAW-10.5"
   },
   {
    "lpn": "IN0084",
-   "sku": "8N10W9-10"
+   "sku": "8N10W9-12"
   },
   {
    "lpn": "IN0085",
-   "sku": "I1KDJ0-9.5"
+   "sku": "I1KDJ0-9"
   },
   {
    "lpn": "IN0086",
-   "sku": "SMMRK3-9.5"
+   "sku": "I1KDJ0-9.5"
   },
   {
    "lpn": "IN0087",
-   "sku": "I1KDJ0-9"
+   "sku": "SMMRK3-9"
   },
   {
    "lpn": "IN0088",
@@ -4475,31 +4479,31 @@
   },
   {
    "lpn": "IN0089",
-   "sku": "SMMRK3-10"
+   "sku": "I1KDJ0-9"
   },
   {
    "lpn": "IN0090",
-   "sku": "SMMRK3-10.5"
+   "sku": "SMMRK3-10"
   },
   {
    "lpn": "IN0091",
-   "sku": "SMMRK3-12"
+   "sku": "SMMRK3-9.5"
   },
   {
    "lpn": "IN0092",
-   "sku": "SMMRK3-9"
-  },
-  {
-   "lpn": "IN0093",
    "sku": "LXJQVG-10"
   },
   {
+   "lpn": "IN0093",
+   "sku": "SMMRK3-12"
+  },
+  {
    "lpn": "IN0094",
-   "sku": "I1KDJ0-9.5"
+   "sku": "SMMRK3-10.5"
   },
   {
    "lpn": "IN0095",
-   "sku": "I1KDJ0-9"
+   "sku": "I1KDJ0-9.5"
   },
   {
    "lpn": "IN0096",
@@ -4507,79 +4511,79 @@
   },
   {
    "lpn": "IN0097",
-   "sku": "SMMRK3-9.5"
-  },
-  {
-   "lpn": "IN0098",
-   "sku": "WRRW1W-11"
-  },
-  {
-   "lpn": "IN0099",
-   "sku": "WRRW1W-9.5"
-  },
-  {
-   "lpn": "IN0100",
-   "sku": "SMMRK3-10.5"
-  },
-  {
-   "lpn": "IN0101",
-   "sku": "SMMRK3-9"
-  },
-  {
-   "lpn": "IN0102",
-   "sku": "SMMRK3-9"
-  },
-  {
-   "lpn": "IN0103",
-   "sku": "SMMRK3-10"
-  },
-  {
-   "lpn": "IN0104",
    "sku": "2T1DJM-10"
   },
   {
-   "lpn": "IN0105",
-   "sku": "SMMRK3-12"
-  },
-  {
-   "lpn": "IN0106",
+   "lpn": "IN0098",
    "sku": "WRRW1W-10"
   },
   {
-   "lpn": "IN0107",
-   "sku": "8N10W9-9.5"
-  },
-  {
-   "lpn": "IN0108",
+   "lpn": "IN0099",
    "sku": "8D9SAW-10.5"
   },
   {
+   "lpn": "IN0100",
+   "sku": "SMMRK3-9"
+  },
+  {
+   "lpn": "IN0101",
+   "sku": "WRRW1W-11"
+  },
+  {
+   "lpn": "IN0102",
+   "sku": "SMMRK3-10.5"
+  },
+  {
+   "lpn": "IN0103",
+   "sku": "SMMRK3-9"
+  },
+  {
+   "lpn": "IN0104",
+   "sku": "SMMRK3-9.5"
+  },
+  {
+   "lpn": "IN0105",
+   "sku": "WRRW1W-9.5"
+  },
+  {
+   "lpn": "IN0106",
+   "sku": "SMMRK3-12"
+  },
+  {
+   "lpn": "IN0107",
+   "sku": "SMMRK3-10"
+  },
+  {
+   "lpn": "IN0108",
+   "sku": "8N10W9-9.5"
+  },
+  {
    "lpn": "RT001",
-   "sku": "PY5UPB-24"
+   "sku": "8N10W9-12"
   },
   {
    "lpn": "RT002",
-   "sku": "PY5UPB-26.5"
+   "sku": "05W6TK-8"
   },
   {
    "lpn": "RT003",
-   "sku": "05W6TK-9.5"
-  },
-  {
-   "lpn": "RT004",
-   "sku": "PY5UPB-25.5"
-  },
-  {
-   "lpn": "RT005",
-   "sku": "JEGRCL-9"
-  },
-  {
-   "lpn": "RT006",
    "sku": "PY5UPB-26.5"
   },
   {
+   "lpn": "RT004",
+   "sku": "8D9SAW-10"
+  },
+  {
+   "lpn": "RT005",
+   "sku": "I1KDJ0-10"
+  },
+  {
+   "lpn": "RT006",
+   "sku": "WRRW1W-12"
+  },
+  {
    "lpn": "RT007",
-   "sku": "8N10W9-12"
+   "sku": "8N10W9-11"
   },
   {
    "lpn": "RT008",
@@ -4587,131 +4591,131 @@
   },
   {
    "lpn": "RT009",
-   "sku": "8N10W9-13"
+   "sku": "WRRW1W-8"
   },
   {
    "lpn": "RT010",
-   "sku": "WRRW1W-10"
-  },
-  {
-   "lpn": "RT011",
-   "sku": "8N10W9-13"
-  },
-  {
-   "lpn": "RT012",
-   "sku": "SMMRK3-10"
-  },
-  {
-   "lpn": "RT013",
-   "sku": "8N10W9-9"
-  },
-  {
-   "lpn": "RT014",
    "sku": "WRRW1W-11"
   },
   {
-   "lpn": "RT015",
-   "sku": "U95NWB-12"
-  },
-  {
-   "lpn": "RT016",
-   "sku": "PY5UPB-23.5"
-  },
-  {
-   "lpn": "RT017",
+   "lpn": "RT011",
    "sku": "PY5UPB-26"
   },
   {
-   "lpn": "RT018",
+   "lpn": "RT012",
    "sku": "2T1DJM-10"
   },
   {
-   "lpn": "RT019",
-   "sku": "PY5UPB-25.5"
+   "lpn": "RT013",
+   "sku": "8N10W9-10"
   },
   {
-   "lpn": "RT020",
-   "sku": "I2B1FH-9"
-  },
-  {
-   "lpn": "RT021",
-   "sku": "I1KDJ0-11"
-  },
-  {
-   "lpn": "RT022",
-   "sku": "I1KDJ0-10"
-  },
-  {
-   "lpn": "RT023",
-   "sku": "PY5UPB-26.5"
-  },
-  {
-   "lpn": "RT024",
-   "sku": "8N10W9-11"
-  },
-  {
-   "lpn": "RT025",
-   "sku": "8N10W9-8.5"
-  },
-  {
-   "lpn": "RT026",
-   "sku": "05W6TK-10.5"
-  },
-  {
-   "lpn": "RT027",
-   "sku": "PY5UPB-28"
-  },
-  {
-   "lpn": "RT028",
-   "sku": "I2B1FH-9"
-  },
-  {
-   "lpn": "RT029",
-   "sku": "05W6TK-9.5"
-  },
-  {
-   "lpn": "RT030",
-   "sku": "PY5UPB-26"
-  },
-  {
-   "lpn": "RT031",
-   "sku": "WRRW1W-10.5"
-  },
-  {
-   "lpn": "RT032",
-   "sku": "WRRW1W-8.5"
-  },
-  {
-   "lpn": "RT033",
-   "sku": "05W6TK-9.5"
-  },
-  {
-   "lpn": "RT034",
+   "lpn": "RT014",
    "sku": "8N10W9-10.5"
   },
   {
+   "lpn": "RT015",
+   "sku": "SMMRK3-10.5"
+  },
+  {
+   "lpn": "RT016",
+   "sku": "05W6TK-9.5"
+  },
+  {
+   "lpn": "RT017",
+   "sku": "8N10W9-9"
+  },
+  {
+   "lpn": "RT018",
+   "sku": "8N10W9-10.5"
+  },
+  {
+   "lpn": "RT019",
+   "sku": "I2B1FH-10"
+  },
+  {
+   "lpn": "RT020",
+   "sku": "8N10W9-11"
+  },
+  {
+   "lpn": "RT021",
+   "sku": "WRRW1W-10"
+  },
+  {
+   "lpn": "RT022",
+   "sku": "2T1DJM-10"
+  },
+  {
+   "lpn": "RT023",
+   "sku": "PY5UPB-24"
+  },
+  {
+   "lpn": "RT024",
+   "sku": "2T1DJM-11"
+  },
+  {
+   "lpn": "RT025",
+   "sku": "8N10W9-10.5"
+  },
+  {
+   "lpn": "RT026",
+   "sku": "8N10W9-9.5"
+  },
+  {
+   "lpn": "RT027",
+   "sku": "05W6TK-9.5"
+  },
+  {
+   "lpn": "RT028",
+   "sku": "8N10W9-8.5"
+  },
+  {
+   "lpn": "RT029",
+   "sku": "SMMRK3-9.5"
+  },
+  {
+   "lpn": "RT030",
+   "sku": "WRRW1W-12"
+  },
+  {
+   "lpn": "RT031",
+   "sku": "8N10W9-9"
+  },
+  {
+   "lpn": "RT032",
+   "sku": "2T1DJM-10"
+  },
+  {
+   "lpn": "RT033",
+   "sku": "WRRW1W-9.5"
+  },
+  {
+   "lpn": "RT034",
+   "sku": "8D9SAW-9"
+  },
+  {
    "lpn": "RT035",
-   "sku": "I1KDJ0-9"
+   "sku": "8N10W9-8.5"
   },
   {
    "lpn": "RT036",
-   "sku": "8N10W9-12"
+   "sku": "PY5UPB-27"
   },
   {
    "lpn": "RT037",
-   "sku": "8D9SAW-10.5"
+   "sku": "8N10W9-9"
   },
   {
    "lpn": "RT038",
-   "sku": "SMMRK3-9.5"
+   "sku": "05W6TK-8.5"
   },
   {
    "lpn": "RT039",
-   "sku": "SMMRK3-9.5"
+   "sku": "KUFVRI-11"
   },
   {
    "lpn": "RT040",
-   "sku": "8N10W9-13"
+   "sku": "05W6TK-9.5"
   }
  ],
  "initial_stock": [
@@ -5404,11 +5408,11 @@
     "cartons": [
      {
       "lpn": "IN0001",
-      "sku": "8N10W9-11"
+      "sku": "I1KDJ0-11"
      },
      {
       "lpn": "IN0002",
-      "sku": "I1KDJ0-11"
+      "sku": "8N10W9-11"
      },
      {
       "lpn": "IN0003",
@@ -5420,7 +5424,7 @@
      },
      {
       "lpn": "IN0005",
-      "sku": "I1KDJ0-11"
+      "sku": "8N10W9-8.5"
      },
      {
       "lpn": "IN0006",
@@ -5432,45 +5436,45 @@
      },
      {
       "lpn": "IN0008",
-      "sku": "I1KDJ0-9"
-     },
-     {
-      "lpn": "IN0009",
-      "sku": "I1KDJ0-9"
-     },
-     {
-      "lpn": "IN0010",
-      "sku": "8N10W9-12"
-     },
-     {
-      "lpn": "IN0011",
       "sku": "8N10W9-9"
      },
      {
+      "lpn": "IN0009",
+      "sku": "8N10W9-12"
+     },
+     {
+      "lpn": "IN0010",
+      "sku": "I1KDJ0-11"
+     },
+     {
+      "lpn": "IN0011",
+      "sku": "I1KDJ0-9"
+     },
+     {
       "lpn": "IN0012",
-      "sku": "8N10W9-8.5"
+      "sku": "I1KDJ0-9"
      }
     ]
    },
    {
     "truck": "T02",
-    "arrive_t": 285.1,
+    "arrive_t": 318.1,
     "cartons": [
      {
       "lpn": "IN0013",
-      "sku": "I1KDJ0-9"
+      "sku": "I1KDJ0-10.5"
      },
      {
       "lpn": "IN0014",
-      "sku": "I1KDJ0-10.5"
-     },
-     {
-      "lpn": "IN0015",
       "sku": "I1KDJ0-9"
      },
      {
-      "lpn": "IN0016",
+      "lpn": "IN0015",
       "sku": "I1KDJ0-10.5"
+     },
+     {
+      "lpn": "IN0016",
+      "sku": "I1KDJ0-9"
      },
      {
       "lpn": "IN0017",
@@ -5478,19 +5482,19 @@
      },
      {
       "lpn": "IN0018",
-      "sku": "I1KDJ0-9.5"
-     },
-     {
-      "lpn": "IN0019",
       "sku": "I1KDJ0-10.5"
      },
      {
-      "lpn": "IN0020",
+      "lpn": "IN0019",
       "sku": "I1KDJ0-9"
      },
      {
+      "lpn": "IN0020",
+      "sku": "I1KDJ0-10.5"
+     },
+     {
       "lpn": "IN0021",
-      "sku": "I1KDJ0-9"
+      "sku": "I1KDJ0-9.5"
      },
      {
       "lpn": "IN0022",
@@ -5502,13 +5506,13 @@
      },
      {
       "lpn": "IN0024",
-      "sku": "I1KDJ0-10.5"
+      "sku": "I1KDJ0-9"
      }
     ]
    },
    {
     "truck": "T03",
-    "arrive_t": 567.3,
+    "arrive_t": 573.3,
     "cartons": [
      {
       "lpn": "IN0025",
@@ -5562,11 +5566,11 @@
    },
    {
     "truck": "T04",
-    "arrive_t": 825.7,
+    "arrive_t": 827.2,
     "cartons": [
      {
       "lpn": "IN0037",
-      "sku": "I1KDJ0-10.5"
+      "sku": "I1KDJ0-9.5"
      },
      {
       "lpn": "IN0038",
@@ -5578,11 +5582,11 @@
      },
      {
       "lpn": "IN0040",
-      "sku": "I1KDJ0-10.5"
+      "sku": "I1KDJ0-9.5"
      },
      {
       "lpn": "IN0041",
-      "sku": "I1KDJ0-9.5"
+      "sku": "I1KDJ0-10.5"
      },
      {
       "lpn": "IN0042",
@@ -5594,7 +5598,7 @@
      },
      {
       "lpn": "IN0044",
-      "sku": "I1KDJ0-9.5"
+      "sku": "I1KDJ0-10.5"
      },
      {
       "lpn": "IN0045",
@@ -5606,17 +5610,17 @@
      },
      {
       "lpn": "IN0047",
-      "sku": "I1KDJ0-9.5"
+      "sku": "I1KDJ0-10.5"
      },
      {
       "lpn": "IN0048",
-      "sku": "I1KDJ0-10.5"
+      "sku": "I1KDJ0-9.5"
      }
     ]
    },
    {
     "truck": "T05",
-    "arrive_t": 1128.6,
+    "arrive_t": 1092.9,
     "cartons": [
      {
       "lpn": "IN0049",
@@ -5678,43 +5682,43 @@
      },
      {
       "lpn": "IN0062",
-      "sku": "I1KDJ0-10.5"
+      "sku": "I1KDJ0-11"
      },
      {
       "lpn": "IN0063",
-      "sku": "I1KDJ0-11"
+      "sku": "I1KDJ0-10.5"
      },
      {
       "lpn": "IN0064",
-      "sku": "I1KDJ0-10.5"
+      "sku": "8N10W9-10.5"
      },
      {
       "lpn": "IN0065",
-      "sku": "I1KDJ0-10.5"
+      "sku": "I1KDJ0-11"
      },
      {
       "lpn": "IN0066",
-      "sku": "WRRW1W-9.5"
+      "sku": "I1KDJ0-10.5"
      },
      {
       "lpn": "IN0067",
-      "sku": "I1KDJ0-11"
+      "sku": "I1KDJ0-10.5"
      },
      {
       "lpn": "IN0068",
-      "sku": "8N10W9-10.5"
+      "sku": "I1KDJ0-11"
      },
      {
       "lpn": "IN0069",
-      "sku": "8N10W9-10"
-     },
-     {
-      "lpn": "IN0070",
       "sku": "8N10W9-10.5"
      },
      {
+      "lpn": "IN0070",
+      "sku": "WRRW1W-9.5"
+     },
+     {
       "lpn": "IN0071",
-      "sku": "I1KDJ0-11"
+      "sku": "8N10W9-10"
      },
      {
       "lpn": "IN0072",
@@ -5724,7 +5728,7 @@
    },
    {
     "truck": "T07",
-    "arrive_t": 1665.9,
+    "arrive_t": 1668.7,
     "cartons": [
      {
       "lpn": "IN0073",
@@ -5732,35 +5736,35 @@
      },
      {
       "lpn": "IN0074",
-      "sku": "8D9SAW-10.5"
-     },
-     {
-      "lpn": "IN0075",
-      "sku": "I1KDJ0-10"
-     },
-     {
-      "lpn": "IN0076",
-      "sku": "8N10W9-12"
-     },
-     {
-      "lpn": "IN0077",
-      "sku": "8D9SAW-10"
-     },
-     {
-      "lpn": "IN0078",
       "sku": "2T1DJM-10"
      },
      {
-      "lpn": "IN0079",
+      "lpn": "IN0075",
       "sku": "8N10W9-11"
      },
      {
+      "lpn": "IN0076",
+      "sku": "I1KDJ0-10"
+     },
+     {
+      "lpn": "IN0077",
+      "sku": "8N10W9-9.5"
+     },
+     {
+      "lpn": "IN0078",
+      "sku": "8D9SAW-9"
+     },
+     {
+      "lpn": "IN0079",
+      "sku": "8D9SAW-10"
+     },
+     {
       "lpn": "IN0080",
-      "sku": "8N10W9-10.5"
+      "sku": "8N10W9-10"
      },
      {
       "lpn": "IN0081",
-      "sku": "8D9SAW-9"
+      "sku": "8N10W9-10.5"
      },
      {
       "lpn": "IN0082",
@@ -5768,29 +5772,29 @@
      },
      {
       "lpn": "IN0083",
-      "sku": "8N10W9-9.5"
+      "sku": "8D9SAW-10.5"
      },
      {
       "lpn": "IN0084",
-      "sku": "8N10W9-10"
+      "sku": "8N10W9-12"
      }
     ]
    },
    {
     "truck": "T08",
-    "arrive_t": 1865.0,
+    "arrive_t": 1895.6,
     "cartons": [
      {
       "lpn": "IN0085",
-      "sku": "I1KDJ0-9.5"
+      "sku": "I1KDJ0-9"
      },
      {
       "lpn": "IN0086",
-      "sku": "SMMRK3-9.5"
+      "sku": "I1KDJ0-9.5"
      },
      {
       "lpn": "IN0087",
-      "sku": "I1KDJ0-9"
+      "sku": "SMMRK3-9"
      },
      {
       "lpn": "IN0088",
@@ -5798,31 +5802,31 @@
      },
      {
       "lpn": "IN0089",
-      "sku": "SMMRK3-10"
+      "sku": "I1KDJ0-9"
      },
      {
       "lpn": "IN0090",
-      "sku": "SMMRK3-10.5"
+      "sku": "SMMRK3-10"
      },
      {
       "lpn": "IN0091",
-      "sku": "SMMRK3-12"
+      "sku": "SMMRK3-9.5"
      },
      {
       "lpn": "IN0092",
-      "sku": "SMMRK3-9"
-     },
-     {
-      "lpn": "IN0093",
       "sku": "LXJQVG-10"
      },
      {
+      "lpn": "IN0093",
+      "sku": "SMMRK3-12"
+     },
+     {
       "lpn": "IN0094",
-      "sku": "I1KDJ0-9.5"
+      "sku": "SMMRK3-10.5"
      },
      {
       "lpn": "IN0095",
-      "sku": "I1KDJ0-9"
+      "sku": "I1KDJ0-9.5"
      },
      {
       "lpn": "IN0096",
@@ -5832,55 +5836,55 @@
    },
    {
     "truck": "T09",
-    "arrive_t": 2153.9,
+    "arrive_t": 2195.4,
     "cartons": [
      {
       "lpn": "IN0097",
-      "sku": "SMMRK3-9.5"
-     },
-     {
-      "lpn": "IN0098",
-      "sku": "WRRW1W-11"
-     },
-     {
-      "lpn": "IN0099",
-      "sku": "WRRW1W-9.5"
-     },
-     {
-      "lpn": "IN0100",
-      "sku": "SMMRK3-10.5"
-     },
-     {
-      "lpn": "IN0101",
-      "sku": "SMMRK3-9"
-     },
-     {
-      "lpn": "IN0102",
-      "sku": "SMMRK3-9"
-     },
-     {
-      "lpn": "IN0103",
-      "sku": "SMMRK3-10"
-     },
-     {
-      "lpn": "IN0104",
       "sku": "2T1DJM-10"
      },
      {
-      "lpn": "IN0105",
-      "sku": "SMMRK3-12"
-     },
-     {
-      "lpn": "IN0106",
+      "lpn": "IN0098",
       "sku": "WRRW1W-10"
      },
      {
+      "lpn": "IN0099",
+      "sku": "8D9SAW-10.5"
+     },
+     {
+      "lpn": "IN0100",
+      "sku": "SMMRK3-9"
+     },
+     {
+      "lpn": "IN0101",
+      "sku": "WRRW1W-11"
+     },
+     {
+      "lpn": "IN0102",
+      "sku": "SMMRK3-10.5"
+     },
+     {
+      "lpn": "IN0103",
+      "sku": "SMMRK3-9"
+     },
+     {
+      "lpn": "IN0104",
+      "sku": "SMMRK3-9.5"
+     },
+     {
+      "lpn": "IN0105",
+      "sku": "WRRW1W-9.5"
+     },
+     {
+      "lpn": "IN0106",
+      "sku": "SMMRK3-12"
+     },
+     {
       "lpn": "IN0107",
-      "sku": "8N10W9-9.5"
+      "sku": "SMMRK3-10"
      },
      {
       "lpn": "IN0108",
-      "sku": "8D9SAW-10.5"
+      "sku": "8N10W9-9.5"
      }
     ]
    }
@@ -6566,31 +6570,31 @@
  "returns": [
   {
    "lpn": "RT001",
-   "sku": "PY5UPB-24"
+   "sku": "8N10W9-12"
   },
   {
    "lpn": "RT002",
-   "sku": "PY5UPB-26.5"
+   "sku": "05W6TK-8"
   },
   {
    "lpn": "RT003",
-   "sku": "05W6TK-9.5"
-  },
-  {
-   "lpn": "RT004",
-   "sku": "PY5UPB-25.5"
-  },
-  {
-   "lpn": "RT005",
-   "sku": "JEGRCL-9"
-  },
-  {
-   "lpn": "RT006",
    "sku": "PY5UPB-26.5"
   },
   {
+   "lpn": "RT004",
+   "sku": "8D9SAW-10"
+  },
+  {
+   "lpn": "RT005",
+   "sku": "I1KDJ0-10"
+  },
+  {
+   "lpn": "RT006",
+   "sku": "WRRW1W-12"
+  },
+  {
    "lpn": "RT007",
-   "sku": "8N10W9-12"
+   "sku": "8N10W9-11"
   },
   {
    "lpn": "RT008",
@@ -6598,140 +6602,144 @@
   },
   {
    "lpn": "RT009",
-   "sku": "8N10W9-13"
+   "sku": "WRRW1W-8"
   },
   {
    "lpn": "RT010",
-   "sku": "WRRW1W-10"
-  },
-  {
-   "lpn": "RT011",
-   "sku": "8N10W9-13"
-  },
-  {
-   "lpn": "RT012",
-   "sku": "SMMRK3-10"
-  },
-  {
-   "lpn": "RT013",
-   "sku": "8N10W9-9"
-  },
-  {
-   "lpn": "RT014",
    "sku": "WRRW1W-11"
   },
   {
-   "lpn": "RT015",
-   "sku": "U95NWB-12"
-  },
-  {
-   "lpn": "RT016",
-   "sku": "PY5UPB-23.5"
-  },
-  {
-   "lpn": "RT017",
+   "lpn": "RT011",
    "sku": "PY5UPB-26"
   },
   {
-   "lpn": "RT018",
+   "lpn": "RT012",
    "sku": "2T1DJM-10"
   },
   {
-   "lpn": "RT019",
-   "sku": "PY5UPB-25.5"
+   "lpn": "RT013",
+   "sku": "8N10W9-10"
   },
   {
-   "lpn": "RT020",
-   "sku": "I2B1FH-9"
-  },
-  {
-   "lpn": "RT021",
-   "sku": "I1KDJ0-11"
-  },
-  {
-   "lpn": "RT022",
-   "sku": "I1KDJ0-10"
-  },
-  {
-   "lpn": "RT023",
-   "sku": "PY5UPB-26.5"
-  },
-  {
-   "lpn": "RT024",
-   "sku": "8N10W9-11"
-  },
-  {
-   "lpn": "RT025",
-   "sku": "8N10W9-8.5"
-  },
-  {
-   "lpn": "RT026",
-   "sku": "05W6TK-10.5"
-  },
-  {
-   "lpn": "RT027",
-   "sku": "PY5UPB-28"
-  },
-  {
-   "lpn": "RT028",
-   "sku": "I2B1FH-9"
-  },
-  {
-   "lpn": "RT029",
-   "sku": "05W6TK-9.5"
-  },
-  {
-   "lpn": "RT030",
-   "sku": "PY5UPB-26"
-  },
-  {
-   "lpn": "RT031",
-   "sku": "WRRW1W-10.5"
-  },
-  {
-   "lpn": "RT032",
-   "sku": "WRRW1W-8.5"
-  },
-  {
-   "lpn": "RT033",
-   "sku": "05W6TK-9.5"
-  },
-  {
-   "lpn": "RT034",
+   "lpn": "RT014",
    "sku": "8N10W9-10.5"
   },
   {
+   "lpn": "RT015",
+   "sku": "SMMRK3-10.5"
+  },
+  {
+   "lpn": "RT016",
+   "sku": "05W6TK-9.5"
+  },
+  {
+   "lpn": "RT017",
+   "sku": "8N10W9-9"
+  },
+  {
+   "lpn": "RT018",
+   "sku": "8N10W9-10.5"
+  },
+  {
+   "lpn": "RT019",
+   "sku": "I2B1FH-10"
+  },
+  {
+   "lpn": "RT020",
+   "sku": "8N10W9-11"
+  },
+  {
+   "lpn": "RT021",
+   "sku": "WRRW1W-10"
+  },
+  {
+   "lpn": "RT022",
+   "sku": "2T1DJM-10"
+  },
+  {
+   "lpn": "RT023",
+   "sku": "PY5UPB-24"
+  },
+  {
+   "lpn": "RT024",
+   "sku": "2T1DJM-11"
+  },
+  {
+   "lpn": "RT025",
+   "sku": "8N10W9-10.5"
+  },
+  {
+   "lpn": "RT026",
+   "sku": "8N10W9-9.5"
+  },
+  {
+   "lpn": "RT027",
+   "sku": "05W6TK-9.5"
+  },
+  {
+   "lpn": "RT028",
+   "sku": "8N10W9-8.5"
+  },
+  {
+   "lpn": "RT029",
+   "sku": "SMMRK3-9.5"
+  },
+  {
+   "lpn": "RT030",
+   "sku": "WRRW1W-12"
+  },
+  {
+   "lpn": "RT031",
+   "sku": "8N10W9-9"
+  },
+  {
+   "lpn": "RT032",
+   "sku": "2T1DJM-10"
+  },
+  {
+   "lpn": "RT033",
+   "sku": "WRRW1W-9.5"
+  },
+  {
+   "lpn": "RT034",
+   "sku": "8D9SAW-9"
+  },
+  {
    "lpn": "RT035",
-   "sku": "I1KDJ0-9"
+   "sku": "8N10W9-8.5"
   },
   {
    "lpn": "RT036",
-   "sku": "8N10W9-12"
+   "sku": "PY5UPB-27"
   },
   {
    "lpn": "RT037",
-   "sku": "8D9SAW-10.5"
+   "sku": "8N10W9-9"
   },
   {
    "lpn": "RT038",
-   "sku": "SMMRK3-9.5"
+   "sku": "05W6TK-8.5"
   },
   {
    "lpn": "RT039",
-   "sku": "SMMRK3-9.5"
+   "sku": "KUFVRI-11"
   },
   {
    "lpn": "RT040",
-   "sku": "8N10W9-13"
+   "sku": "05W6TK-9.5"
   }
  ],
  "faults": {
   "place_error_p": 0.0,
-  "worker_move_per_h": 8.0,
+  "worker_move_per_h": 0.0,
   "worker_move_max_slots": 3,
-  "worker_remove_per_h": 3.0,
-  "dest_taken_p": 0.1,
-  "scanner_fail_p": 0.0
+  "worker_remove_per_h": 0.0,
+  "dest_taken_p": 0.0,
+  "scanner_fail_p": 0.0,
+  "place_p": 0.95,
+  "retry_q": 0.5,
+  "takeover_r": 0.95,
+  "place_fail_alpha": 0.0
  },
  "episode": {
   "duration_s": 3600.0

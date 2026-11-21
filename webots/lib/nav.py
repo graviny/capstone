@@ -141,3 +141,34 @@ class GridMap:
         path = [self.to_world(c) for c in pruned[1:]] or [self.to_world(g)]
         path[-1] = tuple(goal) if self.free(self.to_cell(goal), blocked) else path[-1]
         return path
+
+
+def in_way_of(p, pose, dist, cone):
+    """True if point p is within dist ahead of a robot at pose (x, y, yaw), inside +-cone rad."""
+    px, py, pyaw = pose
+    a = math.atan2(p[1] - py, p[0] - px) - pyaw
+    return math.hypot(p[0] - px, p[1] - py) < dist and abs((a + math.pi) % (2 * math.pi) - math.pi) < cone
+
+
+def step_aside(grid, me, others, blockers, steps=(0.8, 0.5), clear=0.5, cone=0.8, n=16):
+    """A free point `steps` m from me to get out of the blockers' way: clear of walls and racks,
+    at least `clear` m from every other robot, not ahead of any blocker (within 1.2 m). The one
+    farthest from the blockers, or None."""
+    for step in steps:
+        best, best_d = None, -1.0
+        for k in range(n):
+            a = 2 * math.pi * k / n
+            q = (me[0] + step * math.cos(a), me[1] + step * math.sin(a))
+            if not all(grid.free(grid.to_cell((me[0] + f * (q[0] - me[0]), me[1] + f * (q[1] - me[1]))), set())
+                       for f in (0.5, 0.75, 1.0)):
+                continue
+            if any(math.hypot(q[0] - o[0], q[1] - o[1]) < clear for o in others):
+                continue
+            if any(in_way_of(q, b, 1.2, cone) for b in blockers):
+                continue
+            d = min(math.hypot(q[0] - b[0], q[1] - b[1]) for b in blockers)
+            if d > best_d:
+                best, best_d = q, d
+        if best:
+            return best
+    return None

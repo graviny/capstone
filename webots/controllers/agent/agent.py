@@ -24,7 +24,8 @@ from controller import Robot
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "lib"))
-from nav import GridMap  # noqa: E402
+from nav import GridMap, in_way_of, step_aside  # noqa: E402
+import place_fail  # noqa: E402
 
 CAM_Z = 0.24
 CAM_YAW = math.pi / 2      # camera looks left
@@ -39,6 +40,9 @@ IDLE_PARK_S = 20.0
 ARRIVE_M = 0.35            # a path that ends farther than this from the goal is replanned
 MAX_RETRIES = 3
 NO_TASK = [2, 9, 1e9]      # right-of-way key of a robot without a task (see prio_key)
+ASIDE_CONE = 0.8           # a robot stands in another's way when this close to its heading (rad)
+ASIDE_MAX_S = 6.0          # give up stepping aside after this long
+ASIDE_COOLDOWN_S = 5.0     # and do not step aside again sooner than this
 
 
 def wrap(a):
@@ -129,6 +133,10 @@ def main():
     sweep = {"face": None, "mode": None, "seen": set(), "k": k0 - 1}
     parked, idle_since = False, None
     plan_retries, act_retries = 0, 0
+    aside, aside_until, aside_ready, aside_replan = None, 0.0, 0.0, False
+    # Place failures (lib/place_fail.py): check after placing, retry from where it landed.
+    place_model = place_fail.enabled(cfg["faults"])
+    place = {"tries": 0, "landed": None, "item": None}
 
     def set_goal(x, y, target):
         nonlocal goal, blocked_since
@@ -172,6 +180,7 @@ def main():
     def finish():
         nonlocal task, phase, parked
         task, phase, parked = None, None, False
+        place.update(tries=0, landed=None, item=None)
         sweep["face"] = None
         state()
 
@@ -232,7 +241,19 @@ def main():
             elif kind == "ACT_RESULT" and task is not None:
                 waiting_act = False
                 reason = msg.get("reason")
-                if not msg["ok"] and reason == "too_far" and act_retries < MAX_RETRIES:
+                if msg["op"] == "pick" and phase == "pick_retry":
+                    if msg["ok"]:                      # back to the target, from where it stands
+                        holding = msg["item"]
+                        phase, timer, face_point = "place", t, slots[task["destination"]]["pos"]
+                    elif reason == "empty":            # someone took it from where it landed
+                        event("TASK_FAILED", task_id=task["task_id"], reason="PLACED_CARTON_TAKEN",
+                              slot=msg["slot"], item_id=task["item_id"])
+                        finish()
+                    else:                              # cannot get at it: leave it there, it is recorded
+                        event("PLACE_FAILED", task_id=task["task_id"], slot=task["destination"],
+                              actual=place["landed"], item_id=place["item"], takeover=False)
+                        finish()
+                elif not msg["ok"] and reason == "too_far" and act_retries < MAX_RETRIES:
                     # Stopped short of the slot (e.g. after yielding): drive up again.
                     act_retries += 1
                     go_slot(x, y, msg["slot"], "go_src" if msg["op"] == "pick" else "go_dst")
@@ -251,7 +272,14 @@ def main():
                               slot=msg["slot"], item_id=task["item_id"])
                         finish()
                 elif msg["op"] == "place":
-                    if msg["ok"]:
+                    if msg["ok"] and "landed" in msg:
+                        # shortcut: robot is told where the carton landed, upgrade to looking at both
+                        # neighbors if perception errors are modelled.
+                        place.update(landed=msg["landed"], item=holding)
+                        holding = None
+                        phase, timer = "check", t + per["look_s"]
+                        state()
+                    elif msg["ok"]:
                         event("TASK_COMPLETED", task_id=task["task_id"], task_type=task["task_type"],
                               item_id=holding, slot=task["destination"])
                         holding = None
@@ -292,15 +320,36 @@ def main():
             else:
                 # Cannot see the slot: try anyway, the place itself fails if it is taken.
                 if seen in ("EMPTY", "UNREADABLE"):
-                    phase, timer = "place", t + nav["act_s"]
+                    # Place model: the ACT goes out now; the supervisor answers when the attempt is over.
+                    phase, timer = "place", t + (0.0 if place_model and s["kind"] == "rack" else nav["act_s"])
                 else:
                     event("DESTINATION_OCCUPIED", task_id=task["task_id"], slot=sid, item_id=holding,
                           observed=seen)
                     phase = "wait"
                     state()
+        elif phase == "check" and t >= timer:
+            dest, landed = task["destination"], place["landed"]
+            takeover = task.get("cause") == "PLACE_FAILED"
+            if landed == dest:
+                event("TASK_COMPLETED", task_id=task["task_id"], task_type=task["task_type"],
+                      item_id=place["item"], slot=dest)
+                finish()
+            elif not takeover and place["tries"] < place_fail.RETRIES:
+                place["tries"] += 1                    # the neighbor is within reach: no driving
+                phase, timer, face_point = "pick_retry", t + nav["act_s"], slots[landed]["pos"]
+            else:
+                event("PLACE_FAILED", task_id=task["task_id"], slot=dest, actual=landed, item_id=place["item"],
+                      takeover=takeover)
+                finish()
+        elif phase == "pick_retry" and t >= timer and not waiting_act:
+            send("ACT", op="pick", slot=place["landed"], task_id=task["task_id"], item=task["item_id"],
+                 order=task.get("order"))
+            waiting_act = True
         elif phase in ("pick", "place") and t >= timer and not waiting_act:
             sid = task["source"] if phase == "pick" else task["destination"]
-            send("ACT", op=phase, slot=sid, task_id=task["task_id"], item=task["item_id"], order=task.get("order"))
+            attempt = "takeover" if task.get("cause") == "PLACE_FAILED" else ("retry" if place["tries"] else "first")
+            send("ACT", op=phase, slot=sid, task_id=task["task_id"], item=task["item_id"], order=task.get("order"),
+                 attempt=attempt)
             waiting_act = True
 
         # ---- idle behavior ----
@@ -332,7 +381,31 @@ def main():
                         event("OBSERVATION_RESULT", slot=s["id"], observed=observe(s, objs), source="patrol")
 
         # ---- motion ----
-        if phase in ("look_src", "look_dst", "look_verify", "pick", "place"):
+        # Stepping aside: yielding by stopping alone can lock robots in a cycle (A waits for B,
+        # B for C, ..., back to A). So a robot standing in the way of a stopped robot that has
+        # the right of way (and a task) moves out to a free spot nearby, then carries on.
+        if phase in (None, "wait", "go_src", "go_dst", "go_verify") and aside is None and t >= aside_ready:
+            ahead = [p for j, p in poses.items() if j != rid and j not in moving and yields_to(j)
+                     and prio.get(j) not in (None, NO_TASK) and in_way_of((x, y), p, nav["avoid_dist_m"], ASIDE_CONE)]
+            if ahead:
+                aside = step_aside(grid, (x, y), [p for j, p in poses.items() if j != rid], ahead)
+                aside_until, aside_ready, aside_replan = t + ASIDE_MAX_S, t + ASIDE_COOLDOWN_S, bool(path)
+        if aside is not None:
+            ax, ay = aside
+            if math.hypot(ax - x, ay - y) < nav["reach_m"] or t > aside_until:
+                aside = None
+                if aside_replan and goal is not None:
+                    set_goal(x, y, goal)       # back on the way from here
+            else:
+                err = wrap(math.atan2(ay - y, ax - x) - yaw)
+                close = any(math.hypot(p[0] - x, p[1] - y) < nav["stop_dist_m"] and in_way_of(p, (x, y, yaw), 1.0, 0.8)
+                            for j, p in poses.items() if j != rid)
+                if abs(err) > 0.4:
+                    drive(0.0, math.copysign(0.5, err))
+                else:
+                    drive(0.0 if close else 0.5, 1.5 * err)
+                continue
+        if phase in ("look_src", "look_dst", "look_verify", "pick", "place", "check", "pick_retry"):
             # Turn so the slot is on the camera side (left).
             fx, fy = face_point
             err = wrap(math.atan2(fy - y, fx - x) - CAM_YAW - yaw)

@@ -189,8 +189,10 @@ Mock WMS, WES(Baseline·Proposed), 시뮬레이터를 개발할 때 지켜야 �
 | `ITEM_MISMATCH` | `observed`: SKU 또는 `UNREADABLE` | 본 대로 기록, ON_HOLD |
 | `DESTINATION_OCCUPIED` | `observed`: SKU, `UNKNOWN`, `UNREACHABLE` | 본 대로 기록(`UNREACHABLE` 제외), ON_HOLD |
 | `OBSERVATION_RESULT` | `observed`, `source`: `verify` 또는 `patrol` | 본 대로 기록(`UNREADABLE` 제외), 다르면 예외 |
+| `PLACE_FAILED` | `slot`(목표), `actual`(놓인 칸), `item_id`, `takeover` | 실제 칸 기록, 완료, 수정 작업 생성 또는 격리 (`docs/wms.md`) |
 
-- 로봇은 놓기 오류(S1)를 모르고 **지시받은 칸으로** 완료를 보고합니다. 그래서 기록이 틀어지는 것이 정상입니다.
+- 로봇은 놓기 오류(S1, `place_error_p`)를 모르고 **지시받은 칸으로** 완료를 보고합니다. 그래서 기록이 틀어지는 것이 정상입니다.
+- 놓기 실패 모델(`place_p`, `lib/place_fail.py`)에서는 로봇이 놓은 뒤 확인하고, 그 자리에서 2번까지 다시 놓고, 그래도 안 되면 `PLACE_FAILED`를 보고합니다. 이 모델에서는 기록이 틀어지지 않습니다.
 - 같은 `event_id`는 한 번만 반영합니다.
 
 ## 8. 스케줄러 인터페이스
