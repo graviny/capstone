@@ -16,9 +16,8 @@ What is simpler:
            yield_s 1 (docs/lite_sim.md)
   time     fixed steps of dt (0.5 s); a robot's phase still ends at its exact time
   looking  a robot always reads the label (no UNREADABLE)
-  shortcut: the old S1 robot placement error (place_error_p), scanner failure and the patrol
-           idle sweep are not modelled (all off by default); add them here if an experiment
-           turns them on. The robot place failures of lib/place_fail.py (faults.place_p) are.
+  shortcut: S1 robot placement error, scanner failure and the patrol idle sweep are not
+           modelled (all off by default); add them here if an experiment turns them on.
 
 Usage (from webots/):
   python lib/lite_sim.py [--scheduler sched_verify --policy event] [--duration 3600]
@@ -45,7 +44,6 @@ from nav import NEIGHBORS, GridMap  # noqa: E402
 from record_quality import RecordQuality
 from research_metrics import FlowMetrics, order_metrics, task_metrics
 from fault_tape import FaultTape, apply_worker_attempt
-import place_fail  # noqa: E402
 
 STATS_PERIOD_S = 10.0
 IDLE_PARK_S = 20.0                 # agent.py: an idle robot drives home after this long
@@ -108,14 +106,10 @@ class LiteSim:
         self.returns = [c["lpn"] for c in cfg["returns"]]
         self.lane_tag = {}
         self.s3_pending = []
-        self.place_model = place_fail.enabled(self.faults)
-        self.place_count = {}              # lpn -> placements so far (place_fail draw key, as supervisor.py)
-        self.place_failures = {"first": 0, "retry": 0, "takeover": 0, "quarantined": 0}
 
         self.robots = {r["id"]: {"id": r["id"], "role": r["role"], "home": tuple(r["home"]), "pos": tuple(r["home"]),
                                  "task": None, "phase": None, "holding": None, "leg": None, "timer": None,
-                                 "idle_since": 0.0, "parked": True, "busy_s": 0.0, "dist": 0.0,
-                                 "tries": 0, "draw": None, "landed": None, "placed": None}
+                                 "idle_since": 0.0, "parked": True, "busy_s": 0.0, "dist": 0.0}
                        for r in cfg["robots"]}
         self.task_src, self.task_dest = {}, {}
 
@@ -219,7 +213,7 @@ class LiteSim:
 
     def finish(self, r, t):
         self.stop(r, t)
-        r.update(task=None, phase=None, timer=None, parked=False, idle_since=t, tries=0, draw=None, landed=None, placed=None)
+        r.update(task=None, phase=None, timer=None, parked=False, idle_since=t)
 
     def wait(self, r, t):
         self.stop(r, t)
@@ -264,18 +258,6 @@ class LiteSim:
             self.stop(r, t)
             r["timer"] = None
             return
-        if phase == "pick_retry":                                   # the neighbor is within reach: no driving
-            lpn = self.occupant[r["landed"]]
-            if lpn != r["placed"]:
-                self.carton_taken(r, t)
-                return
-            self.take(lpn)
-            r["holding"] = lpn
-            r.update(phase="place", timer=t + self.place_seconds(r, task["destination"]))
-            return
-        if phase == "check":
-            self.after_check(r, t)
-            return
         if phase.startswith("go_"):
             self.stop(r, t)
             r["phase"] = phase.replace("go_", "look_")
@@ -299,7 +281,7 @@ class LiteSim:
                 self.wait(r, t)
         elif phase == "look_dst":
             if seen == "EMPTY":
-                r.update(phase="place", timer=t + self.place_seconds(r, sid))
+                r.update(phase="place", timer=t + self.nav["act_s"])
             else:
                 self.emit({"type": "DESTINATION_OCCUPIED", "robot_id": rid, "task_id": tid, "slot": sid,
                            "item_id": self.sku_of[r["holding"]], "observed": seen}, t)
@@ -329,16 +311,6 @@ class LiteSim:
                 self.wait(r, t)
                 return
             lpn = r["holding"]
-            if r["draw"] is not None:                              # place model: land, then check
-                ok, side, kind = r["draw"]
-                landed = None if ok else place_fail.landing(sid, self.occupant, side)
-                if landed:
-                    self.place_failures[kind] += 1
-                    self.truth("ROBOT_PLACE_FAIL")
-                self.put(lpn, landed or sid)
-                r.update(holding=None, landed=landed or sid, placed=lpn, draw=None, phase="check",
-                         timer=t + self.per["look_s"])
-                return
             self.put(lpn, sid)
             if self.slots[sid]["kind"] == "outbound":
                 self.lane_tag[lpn] = {"order": task.get("order"), "item": task["item_id"],
@@ -347,49 +319,6 @@ class LiteSim:
                        "item_id": self.sku_of[lpn], "slot": sid}, t)
             r["holding"] = None
             self.finish(r, t)
-
-    def place_seconds(self, r, sid):
-        """How long this place takes; with the place model on, draws the attempt (place_fail)."""
-        if not self.place_model or self.slots[sid]["kind"] != "rack":
-            return self.nav["act_s"]
-        lpn, task = r["holding"], r["task"]
-        kind = "takeover" if task.get("cause") == "PLACE_FAILED" else ("first" if r["tries"] == 0 else "retry")
-        k = self.place_count[lpn] = self.place_count.get(lpn, 0) + 1
-        ok, secs, side = place_fail.attempt(self.seed, lpn, k, kind, self.faults, self.nav["act_s"])
-        r["draw"] = (ok, side, kind)
-        return secs
-
-    def after_check(self, r, t):
-        """agent.py's check after a place: done, retry from the slot it landed in, or PLACE_FAILED."""
-        task, rid, tid = r["task"], r["id"], r["task"]["task_id"]
-        landed, dest = r["landed"], task["destination"]
-        if self.occupant[landed] != r["placed"]:
-            self.carton_taken(r, t)
-            return
-        item = self.sku_of[r["placed"]]
-        if landed == dest:
-            self.emit({"type": "TASK_COMPLETED", "robot_id": rid, "task_id": tid, "task_type": task["task_type"],
-                       "item_id": item, "slot": dest}, t)
-            self.finish(r, t)
-            return
-        takeover = task.get("cause") == "PLACE_FAILED"
-        if not takeover and r["tries"] < place_fail.RETRIES:
-            r["tries"] += 1
-            r.update(phase="pick_retry", timer=t + self.nav["act_s"])
-            return
-        if takeover:
-            self.place_failures["quarantined"] += 1
-        self.emit({"type": "PLACE_FAILED", "robot_id": rid, "task_id": tid, "slot": dest, "actual": landed,
-                   "item_id": item, "takeover": takeover}, t)
-        self.finish(r, t)
-
-    def carton_taken(self, r, t):
-        """Another robot took the carton from the slot it landed in before this one could check or
-        retry (it acts on the record, which does not know yet). The robot gives up on the task."""
-        self.truth("PLACED_CARTON_TAKEN")
-        self.emit({"type": "TASK_FAILED", "robot_id": r["id"], "task_id": r["task"]["task_id"],
-                   "reason": "PLACED_CARTON_TAKEN"}, t)
-        self.finish(r, t)
 
     # -------------------------------------------------------- environment
     def environment(self, t):
@@ -597,7 +526,6 @@ class LiteSim:
             "missed_cutoffs": self.n["missed_cutoffs"], "inbound_trucks_arrived": self.next_truck,
             "inbound_staged": self.n["staged_in"], "cartons_on_belt_at_end": len(self.belt),
             "events": self.counts, "faults_injected": dict(self.truth_counts), "diagnostics": {},
-            "place_failures": dict(self.place_failures),
             "record_mismatch_at_end": sum(1 for s, v in rec.items() if v != self.gt_sku(s)),
             "record_quality": self.quality.summary(t),
             "research_metrics": {**self.flow_metrics.summary(t), **order_metrics(self.orders, t),

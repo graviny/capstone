@@ -37,9 +37,7 @@ summary = LiteSim(cfg, wes, grid=grid, fields=fields).run()
 | 시간 | | 0.5초 단위 (Webots 32 ms). 로봇 단계는 정확한 시각에 끝남 |
 | 인식 | | 라벨을 항상 읽음 (UNREADABLE 없음) |
 
-모델링하지 않은 것: 예전 로봇 놓기 오류(S1_PLACE_ERROR, `place_error_p`), 입고 판독 실패, 순찰 로봇의 선반 훑기. 모두 기본값이 꺼져 있어요.
-
-로봇 놓기 실패 모델(`place_p`, `retry_q`, `takeover_r`, `lib/place_fail.py`)은 Webots와 같은 방식으로 들어가 있어요. 시도마다 결과를 (시드, 상자, 놓기 순번, 시도 종류)로 정해서, 같은 시도는 두 엔진에서 결과가 같아요. 켜는 방법: `gen_world.py --fault-scale 0 --place-p 0.95 --retry-q 0.5 --takeover-r 0.95` (사람 오류는 끔). 설계: `docs/superpowers/specs/2026-11-21-robot-place-failure-design.md`.
+모델링하지 않은 것: 로봇 놓기 오류(S1_PLACE_ERROR), 입고 판독 실패, 순찰 로봇의 선반 훑기. 모두 기본값이 꺼져 있어요.
 
 ## 보정 (Webots 결과와 비교)
 

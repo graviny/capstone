@@ -50,8 +50,9 @@ COSTS = {
     "tardy_unit": lambda m: m["tardy"] + m["unit"],
     "p90": lambda m: m["p90"],
     "order_all_dist": lambda m: m["order_all"] + m["dist"] / 50,
-    "mix": lambda m: 0.5 * m["order_all"] + 0.5 * m["unit"] + 300 * m["missed"],
+    "mix": lambda m: 0.5 * m["order_all"] + 0.5 * m["unit"] + MISSED_W * m["missed"],
 }
+MISSED_W = 300.0       # mix's cost per missed cutoff (--missed-w)
 DEFAULT_COST = "mix"   # chosen 2026-11-20 by the cost study (docs/lite_sim.md)
 METRICS = ("order_all", "unit", "p90", "tardy", "lead", "shipped", "released", "missed", "busy", "dist")
 _cfgs, _layouts = {}, {}           # per worker process: scenario path -> cfg; layout -> (grid, fields)
@@ -92,7 +93,9 @@ def main():
     ap.add_argument("--iters", type=int, default=15)
     ap.add_argument("--pop", type=int, default=24)
     ap.add_argument("--elite", type=int, default=6)
-    ap.add_argument("--batch", type=int, default=6, help="episodes per candidate per iteration")
+    ap.add_argument("--batch", type=int, default=6, help="episodes per candidate per iteration "
+                    "(0: every training scenario once, same every iteration)")
+    ap.add_argument("--missed-w", type=float, default=300.0, help="mix cost per missed cutoff")
     ap.add_argument("--test-seeds", type=int, nargs="+", default=[100, 101, 102, 103, 104])
     ap.add_argument("--sigma", type=float, default=1.0)
     ap.add_argument("--workers", type=int, default=max(1, (os.cpu_count() or 2) - 1))
@@ -106,6 +109,8 @@ def main():
     train, test = expand(args.train), expand(args.test)
     if not train:
         raise SystemExit("no training scenarios")
+    global MISSED_W
+    MISSED_W = args.missed_w
     cost = COSTS[args.cost]
     feats = sched_learned.FEATURES
     heur = [sched_learned.HEURISTIC.get(f, 0.0) for f in feats]
@@ -120,7 +125,8 @@ def main():
     with Pool(args.workers) as pool:
         t0 = time.time()
         for it in range(1, args.iters + 1):
-            batch = [(pick.choice(train), pick.randrange(1000)) for _ in range(args.batch)]
+            batch = ([(p, 0) for p in train] if args.batch == 0
+                     else [(pick.choice(train), pick.randrange(1000)) for _ in range(args.batch)])
             pop = [mean] + [mean + sd * rng.standard_normal(len(feats)) for _ in range(args.pop - 1)]
             jobs = [(p, s, args.robots, list(w)) for w in pop for p, s in batch]
             jobs += [(p, s, args.robots, None) for p, s in batch]             # stand-in, for reference

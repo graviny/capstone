@@ -25,9 +25,6 @@ Faults (scenario.json "faults"), the causes of S1-S3, logged to truth.jsonl only
 By default every fault is caused by a person; the robot placement error and the
 scanner failure are off (rate 0) but still work when given a rate:
   S1_PLACE_ERROR          (off) a robot puts a carton in the next free slot of the face
-  ROBOT_PLACE_FAIL        (off, faults.place_p) the same, but the robot sees it and retries; a
-                          fix task follows (lib/place_fail.py). The place ACT is answered after
-                          the attempt's duration (act_s, or the failure time of a failed try)
   S1_UNRECORDED_MOVE      a worker moves a carton a few slots, unrecorded
   S2_UNRECORDED_REMOVAL   a worker takes a carton away, unrecorded
   S3_DEST_TAKEN           while a robot carries a carton to a rack slot, a worker
@@ -69,7 +66,6 @@ sys.path.insert(0, str(ROOT / "lib"))
 from record_quality import RecordQuality
 from research_metrics import FlowMetrics, order_metrics, task_metrics
 from fault_tape import FaultTape, apply_worker_attempt
-import place_fail  # noqa: E402
 POSE_EVERY_STEPS = 4
 CARRY_Z = 0.5
 STATS_PERIOD_S = 10.0
@@ -253,8 +249,6 @@ def main():
     record_quality = RecordQuality()
     place_count = {}
     s3_pending = []                                    # (time, slot, task)
-    act_pending = []                                   # place ACTs under way: (time, robot, lpn, slot, landed, msg, kind)
-    place_model = place_fail.enabled(faults)
     dist_m = {rid: 0.0 for rid in robots}
     anchor = {}                                        # robot -> (time, x, y) of its last real progress
     stuck_reported = set()
@@ -291,14 +285,6 @@ def main():
                 res["reason"] = "too_far"
             elif occupant[sid] is not None:
                 res["reason"] = "occupied"
-            elif place_model and s["kind"] == "rack":
-                # Answered when the attempt is over (finish_place); a failed one lands next door.
-                k = place_count[held] = place_count.get(held, 0) + 1
-                kind = msg.get("attempt", "first")
-                ok, secs, side = place_fail.attempt(seed, held, k, kind, faults, cfg["nav"]["act_s"])
-                landed = sid if ok else (place_fail.landing(sid, occupant, side) or sid)
-                act_pending.append((t_now[0] + secs, rid, held, sid, landed, msg, kind))
-                return
             else:
                 actual = sid
                 if s["kind"] == "rack":
@@ -322,22 +308,6 @@ def main():
         if not res["ok"]:
             truth("ACT_REJECTED", robot=rid, op=op, slot=sid, reason=res["reason"], task_id=msg.get("task_id"),
                   dist=round(math.hypot(s["pos"][0] - rx, s["pos"][1] - ry), 2))
-        to_robot(rid, res)
-
-    def finish_place(rid, held, sid, landed, msg, kind):
-        res = {"kind": "ACT_RESULT", "op": "place", "slot": sid, "ok": False, "task_id": msg.get("task_id")}
-        if occupant[landed] is not None:                   # filled meanwhile: the target if it is still free
-            landed = sid
-        if occupant[landed] is not None:
-            res["reason"] = "occupied"
-            truth("ACT_REJECTED", robot=rid, op="place", slot=sid, reason="occupied", task_id=msg.get("task_id"))
-        else:
-            if landed != sid:
-                truth("ROBOT_PLACE_FAIL", lpn=held, item=sku_of[held], intended=sid, actual=landed, attempt=kind,
-                      robot=rid, task_id=msg.get("task_id"))
-            del carried[held]
-            put(held, landed)
-            res.update(ok=True, item=sku_of[held], lpn=held, landed=landed)
         to_robot(rid, res)
 
     # Worker figures: shown for WORKER_SHOW_S in the aisle where an unrecorded change happens.
@@ -505,10 +475,6 @@ def main():
                 ls["present"] = True
                 show(ls["node"], ls["pos"], True)
                 emit({"type": "OUTBOUND_TRUCK_ARRIVED", "region": region})
-
-        for item in [a for a in act_pending if a[0] <= t]:
-            act_pending.remove(item)
-            finish_place(*item[1:])
 
         # Faults outside the robots' actions.
         worker_events()
