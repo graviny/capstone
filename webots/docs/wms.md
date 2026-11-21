@@ -125,7 +125,6 @@ python tools/compare_runs.py logs/<실행 A> logs/<실행 B>
 | `SHORT_PICK`, `ITEM_MISMATCH` | 출발지를 본 대로 기록(EMPTY → 빈칸, 못 읽음 → UNKNOWN), 그 칸 예약 해제, 작업 ON_HOLD, 예외 목록에 추가 |
 | `DESTINATION_OCCUPIED` | 목적지를 본 대로 기록(`UNREACHABLE`이면 기록은 그대로), 예약 해제, 작업 ON_HOLD, 예외 목록에 추가 |
 | `OBSERVATION_RESULT` | 본 대로 기록(`UNREADABLE`이면 그대로). 기록과 달랐으면 `RECORD_DISCREPANCY` 예외 |
-| `PLACE_FAILED` | 로봇이 랙 칸에 놓다가 옆 칸에 놓았고, 재시도 2회로도 못 고침(`takeover` false) 또는 수정 작업이 실패함(`takeover` true). 출발지 비우기, **실제 칸(`actual`)에 확인된 기록**, 작업 완료(`misplaced`). `takeover` false: 수정 작업 RELOCATE(`cause` `PLACE_FAILED`, 실제 칸 → 목표 칸)를 만들고 두 칸을 예약. 수정 작업은 CANCEL 거절, 칸 변경 거절(`DESTINATION_OCCUPIED`로 ON_HOLD일 때만 REROUTE 허용), 목표 칸에 다른 상자가 있거나 출발 칸에 그 상자가 없다고 기록된 동안 대기열에 안 보임, 상자가 사라진 뒤 REASSIGN하면 취소(`FIX_SOURCE_GONE`). `takeover` true: 실제 칸을 `QUARANTINE`으로 영구 예약(재고·집기·적치에서 제외), `quarantined` +1 |
 | `OUTBOUND_DEPARTED` | 실린 상자를 주문별 출하 수량에 반영, 그 지역 레인 기록 비우기, 트럭 없음 표시 |
 | `OUTBOUND_TRUCK_ARRIVED` | 트럭 있음 표시 |
 
