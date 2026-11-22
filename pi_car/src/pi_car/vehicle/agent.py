@@ -14,12 +14,13 @@ from pi_car.vehicle.runtime import VehicleRuntime
 
 class RobotAgent:
     def __init__(self, robot_id, grid, *, clearance_m=.2, motor=None, journal_path=":memory:",
-                 pose_timeout_s=.3, watchdog_s=.25):
+                 pose_timeout_s=.3, watchdog_s=.25, drive_output=.2):
         self.robot_id = identifier(robot_id)
         self.grid, self.navigation = grid, grid.inflated(clearance_m)
         self.clearance = clearance_m
         self.motor = WatchdogMotor(motor if motor is not None else DisabledMotor(), watchdog_s)
-        self.runtime = VehicleRuntime(self.motor, robot_id, grid.metadata.frame_id, pose_timeout_s)
+        self.runtime = VehicleRuntime(self.motor, robot_id, grid.metadata.frame_id, pose_timeout_s,
+                                      drive_output=drive_output)
         self.journal = CommandJournal(journal_path)
         self.pose = None
         self.pose_received = 0.

@@ -1,7 +1,8 @@
 # 차량 1대·중앙 장착·7cm 태그 설정
 
 최신 실제 결과와 현재 PC/Pi 경로·IP를 반영한 명령은
-[실차 시험 및 재실행 안내](real_drive_trial.md)에 정리했다. 짧은 직선 목표의 ARRIVED를 확인했다.
+[11월 22일 실차 시험 및 출력 설정](real_drive_20261122.md)에 정리했다.
+아래의 `data/drive` 경로는 이전 시험 지도이므로 최신 지도 경로와 구분한다.
 
 현재 config/robots.json과 config/robot.json은 다음 조건에 맞췄다.
 

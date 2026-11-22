@@ -28,6 +28,8 @@ def add_commands(commands):
     robot.add_argument("--enable-motors",action="store_true",help="Activate real Adeept motor and ultrasonic hardware")
     robot.add_argument("--vendor-dir",help="Installed Adeept OrdinaryWheels directory containing Move.py")
     robot.add_argument("--max-output",type=float,default=.2)
+    robot.add_argument("--drive-output",type=float,
+                       help="Waypoint motor command (0..1), not m/s; default 0.20 capped by --max-output")
     robot.add_argument("--servo-angle",type=float,default=90.)
     panel=commands.add_parser("fleet-panel",help="PC map window: choose robot, click goal, STOP")
     panel_map=panel.add_mutually_exclusive_group(required=True)
@@ -79,6 +81,12 @@ async def run(args):
             raise ValueError("Mock range must be positive")
         if args.enable_motors and (not args.vendor_dir or args.mock_range is not None):
             raise ValueError('--enable-motors requires --vendor-dir and forbids --mock-range')
+        drive_output=(number(args.drive_output) if args.drive_output is not None else
+                      min(.2,number(args.max_output)) if args.enable_motors else .2)
+        if not 0 < drive_output <= 1:
+            raise ValueError('--drive-output must be within (0, 1]')
+        if args.enable_motors and not 0 < drive_output <= number(args.max_output) <= .3:
+            raise ValueError('Hardware requires 0 < --drive-output <= --max-output <= 0.30')
         grid=OccupancyGrid.load(args.map)
         if args.enable_motors:
             from pi_car.vehicle.hardware.live import AdeeptHardware
@@ -86,7 +94,8 @@ async def run(args):
         else:context=nullcontext(None)
         with context as hardware:
             agent = RobotAgent(args.robot_id,grid,clearance_m=args.clearance,
-                               journal_path=args.journal,motor=hardware.motor if hardware else None)
+                               journal_path=args.journal,motor=hardware.motor if hardware else None,
+                               drive_output=drive_output)
             provider=(hardware.sensor.read if hardware else
                       (lambda:RangeReading(args.mock_range,0.,time.monotonic())) if args.mock_range else None)
             client = RobotClient(agent,args.host,args.port,range_provider=provider)

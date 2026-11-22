@@ -10,12 +10,12 @@ class VehicleRuntime:
     independent thread watchdog. Hardware fail-off is still needed for OS stalls.
     """
     def __init__(self, motor, robot_id, frame_id, pose_timeout_s=.3,
-                 stop_distance_m=.4, range_timeout_s=.2):
+                 stop_distance_m=.4, range_timeout_s=.2, *, drive_output=.2):
         self.motor, self.robot_id, self.frame_id = motor, robot_id, frame_id
         self.pose_timeout, self.stop_distance = pose_timeout_s, stop_distance_m
         self.range_timeout = range_timeout_s
         self.mode, self.path = Mode.IDLE, []
-        self.follower = WaypointFollower()
+        self.follower = WaypointFollower(output=drive_output)
 
     def set_path(self, path):
         self.motor.stop()
