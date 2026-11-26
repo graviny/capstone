@@ -5,7 +5,7 @@ import json
 import math
 import numpy as np
 from pi_car.common.geometry import transform_points
-from pi_car.pc.floor import estimate_floor
+from pi_car.pc.floor import estimate_floor, fit_floor_surface, surface_height
 from pi_car.pc.mapping import build_grid
 from pi_car.vehicle.planning import plan
 
@@ -38,7 +38,8 @@ def choose_test_path(navigation):
     return start, goal, plan(navigation, start, goal)
 
 
-def run_experiment(frame, roi, output, *, clearance_m=.2, resolution_m=.03, robot_config=None):
+def run_experiment(frame, roi, output, *, clearance_m=.2, resolution_m=.03, robot_config=None,
+                   floor_model="plane", obstacle_fraction=0., floor_below_m=None):
     import matplotlib.pyplot as plt
     from matplotlib.colors import ListedColormap, BoundaryNorm
     from matplotlib.patches import Rectangle
@@ -50,14 +51,22 @@ def run_experiment(frame, roi, output, *, clearance_m=.2, resolution_m=.03, robo
     valid = np.isfinite(frame.depth_m) & (frame.depth_m > 0)
     points = calibration.transform(frame.intrinsics.deproject(
         np.column_stack((xx[valid], yy[valid])), frame.depth_m[valid]))
+    surface, surface_sigma = None, None
+    if floor_model == "quadratic":
+        surface, surface_sigma = fit_floor_surface(points)
+        points = points.copy()
+        points[:, 2] -= surface_height(surface, points[:, 0], points[:, 1])
+    elif floor_model != "plane":
+        raise ValueError("floor_model must be plane or quadratic")
     heights = np.full(frame.depth_m.shape, np.nan)
     heights[valid] = points[:, 2]
-    floor = points[np.abs(points[:, 2]) <= .025]
+    floor = points[(points[:, 2] >= -(floor_below_m or .025)) & (points[:, 2] <= .025)]
     lower = np.floor(floor[:, :2].min(0)/resolution_m)*resolution_m - resolution_m
     upper = np.ceil(floor[:, :2].max(0)/resolution_m)*resolution_m + resolution_m
     config = dict(width_m=float(upper[0]-lower[0]), height_m=float(upper[1]-lower[1]),
                   origin_xy=lower.tolist(), resolution_m=resolution_m, min_hits=3,
-                  obstacle_max_m=3.)
+                  obstacle_max_m=3., floor_surface=surface, obstacle_fraction=obstacle_fraction,
+                  floor_below_m=floor_below_m)
     raw = build_grid(frame, calibration, **config)
     raw.save(output / "map")
     navigation = raw.inflated(clearance_m)
@@ -82,7 +91,8 @@ def run_experiment(frame, roi, output, *, clearance_m=.2, resolution_m=.03, robo
     (output / "pose.json").write_text(json.dumps(pose.to_dict() if pose else dict(valid=False), indent=2))
     report = dict(**diagnostics, depth_valid_fraction=float(valid.mean()),
                   map_shape=list(raw.cells.shape), resolution_m=resolution_m,
-                  capture_frames=frame.frame_count,
+                  capture_frames=frame.frame_count, floor_model=floor_model,
+                  floor_surface_sigma_m=surface_sigma, obstacle_fraction=obstacle_fraction,
                   free_cells=int(np.sum(raw.cells == 0)),
                   occupied_cells=int(np.sum(raw.cells == 1)),
                   unknown_cells=int(np.sum(raw.cells == -1)),
@@ -100,7 +110,7 @@ def run_experiment(frame, roi, output, *, clearance_m=.2, resolution_m=.03, robo
     fig, axes = plt.subplots(1, 3, figsize=(18, 6))
     axes[0].imshow(frame.rgb)
     tint = np.zeros((*heights.shape, 4))
-    tint[np.isfinite(heights) & (np.abs(heights) <= .025)] = [0., 1., .4, .3]
+    tint[np.isfinite(heights) & (heights >= -(floor_below_m or .025)) & (heights <= .025)] = [0., 1., .4, .3]
     axes[0].imshow(tint)
     axes[0].add_patch(Rectangle((roi[0],roi[1]),roi[2]-roi[0],roi[3]-roi[1],
                                 fill=False,edgecolor="yellow",lw=2))

@@ -31,6 +31,12 @@ def main():
     experiment.add_argument("--clearance", type=float, default=.2)
     experiment.add_argument("--resolution", type=float, default=.03)
     experiment.add_argument("--robot-config")
+    experiment.add_argument("--floor-model", choices=("plane", "quadratic"), default="quadratic",
+                            help="quadratic removes the D455 depth bowl toward the image edges")
+    experiment.add_argument("--obstacle-fraction", type=float, default=.25,
+                            help="Share of a cell's depth samples that must be raised to mark it occupied")
+    experiment.add_argument("--floor-below", type=float, default=.06,
+                            help="Depth this far below the floor still counts as floor (m)")
     tagcheck = commands.add_parser("tagcheck", help="Detect tags and locate centers using captured depth")
     tagcheck.add_argument("--capture", required=True)
     tagcheck.add_argument("--calibration", required=True)
@@ -95,7 +101,9 @@ def _run(args, parser):
         roi=pick_floor_roi(frame) if args.pick_floor else args.floor_roi
         report = run_experiment(frame, roi, args.out,
                                 clearance_m=args.clearance, resolution_m=args.resolution,
-                                robot_config=robot)
+                                robot_config=robot, floor_model=args.floor_model,
+                                obstacle_fraction=args.obstacle_fraction,
+                                floor_below_m=args.floor_below)
         print(json.dumps(report, indent=2))
     elif args.command == "preview":
         from pi_car.pc.preview import RGBDPreview

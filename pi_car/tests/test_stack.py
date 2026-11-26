@@ -122,6 +122,31 @@ class GeometryAndMapTests(unittest.TestCase):
             np.testing.assert_array_equal(RGBDFrame.load(Path(directory, "frame.npz")).depth_m,
                                           frame.depth_m)
 
+    def test_bowed_depth_floor_is_free_with_quadratic_model_and_box_stays(self):
+        from pi_car.pc.floor import fit_floor_surface
+        frame, calibration = scene()
+        flat = calibration.transform(frame.intrinsics.deproject(
+            np.column_stack([a.ravel() for a in np.indices(frame.depth_m.shape)[::-1]]),
+            frame.depth_m.ravel()))
+        bowl = .03 * ((flat[:, 0]-flat[:, 0].mean())**2 + (flat[:, 1]-flat[:, 1].mean())**2)
+        bowl /= bowl.max() / .05                  # 0 → 5 cm toward the edges
+        frame.depth_m -= bowl.reshape(frame.depth_m.shape)  # floor appears raised
+        frame.depth_m[25:40, 40:55] = 1.8         # real 20 cm box
+        options = dict(width_m=2, height_m=1.6, resolution_m=.05, min_hits=1)
+        plane = build_grid(frame, calibration, **options)
+        self.assertTrue((plane.cells == 1).sum() > 20)  # bowl edges read as obstacles
+        yy, xx = np.indices(frame.depth_m.shape)
+        points = calibration.transform(frame.intrinsics.deproject(
+            np.column_stack((xx.ravel(), yy.ravel())), frame.depth_m.ravel()))
+        surface, _ = fit_floor_surface(points)
+        model = build_grid(frame, calibration, floor_surface=surface, obstacle_fraction=.25,
+                           floor_below_m=.06, **options)
+        box = calibration.transform(frame.intrinsics.deproject([47, 32], 1.8))[:2]
+        x, y = model.world_to_cell(*box)
+        self.assertEqual(model.cells[y, x], 1)
+        self.assertLess((model.cells == 1).sum(), (plane.cells == 1).sum())
+        self.assertGreater((model.cells == 0).sum(), (plane.cells == 0).sum())
+
     def test_unknown_blocked_and_path_avoids_wall(self):
         mapped = grid()
         mapped.cells[:15, 15] = -1

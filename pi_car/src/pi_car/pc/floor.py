@@ -92,3 +92,31 @@ def estimate_floor(frame, roi, *, threshold_m=.015, iterations=300, seed=7):
                        origin="projection of median floor inlier in selected ROI",
                        axes="X=camera right projected onto floor; Y=Z cross X; Z=toward camera")
     return calibration, diagnostics
+
+
+def surface_terms(x, y):
+    x, y = np.asarray(x, float), np.asarray(y, float)
+    return np.column_stack((np.ones_like(x), x, y, x*x, x*y, y*y))
+
+
+def surface_height(coefficients, x, y):
+    return surface_terms(x, y) @ np.asarray(coefficients, float)
+
+
+def fit_floor_surface(points, *, search_m=.05, iterations=4):
+    """Robust quadratic floor height z=f(x,y) in the calibrated frame.
+
+    The D455 depth of a flat floor bows by a few centimetres toward the image
+    edges at ~2.5 m. A single plane then pushes edge floor outside the floor
+    tolerance (unknown/obstacle cells). Only mapping heights use this model.
+    """
+    x, y, z = np.asarray(points, float).T
+    mask = np.abs(z) < search_m
+    if np.count_nonzero(mask) < 1000:
+        raise ValueError("Insufficient floor points for surface fit")
+    for _ in range(iterations):
+        coefficients, *_ = np.linalg.lstsq(surface_terms(x[mask], y[mask]), z[mask], rcond=None)
+        residual = z - surface_height(coefficients, x, y)
+        sigma = 1.4826*np.median(np.abs(residual[mask]))
+        mask = np.abs(residual) < max(3*sigma, .012)
+    return [float(c) for c in coefficients], float(sigma)
