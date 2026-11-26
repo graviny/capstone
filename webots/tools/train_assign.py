@@ -102,6 +102,8 @@ def main():
     ap.add_argument("--out", type=Path, default=sched_learned.DEFAULT_WEIGHTS)
     ap.add_argument("--report", type=Path, help="write the test results here (JSON)")
     ap.add_argument("--rng", type=int, default=0)
+    ap.add_argument("--method", choices=("cem", "cma"), default="cem",
+                    help="cem: mean of the --elite best; cma: CMA-ES (pip install cma), --elite unused")
     args = ap.parse_args()
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
@@ -117,6 +119,11 @@ def main():
     rng = np.random.default_rng(args.rng)
     pick = random.Random(args.rng)
     mean, sd = np.array(heur), np.full(len(feats), args.sigma)
+    es = None
+    if args.method == "cma":
+        import cma  # pip install cma
+        es = cma.CMAEvolutionStrategy(heur, args.sigma, {"popsize": args.pop - 1, "seed": args.rng + 1,
+                                                         "verbose": -9})
     args.out.parent.mkdir(parents=True, exist_ok=True)
     history = []
     print(f"cost {args.cost}: train {len(train)} scenarios, test {len(test)}, robots {args.robots}, "
@@ -127,7 +134,11 @@ def main():
         for it in range(1, args.iters + 1):
             batch = ([(p, 0) for p in train] if args.batch == 0
                      else [(pick.choice(train), pick.randrange(1000)) for _ in range(args.batch)])
-            pop = [mean] + [mean + sd * rng.standard_normal(len(feats)) for _ in range(args.pop - 1)]
+            if es:  # CMA-ES: same budget, candidate 0 is still the current mean
+                asked = es.ask()
+                pop = [np.array(es.mean)] + asked
+            else:
+                pop = [mean] + [mean + sd * rng.standard_normal(len(feats)) for _ in range(args.pop - 1)]
             jobs = [(p, s, args.robots, list(w)) for w in pop for p, s in batch]
             jobs += [(p, s, args.robots, None) for p, s in batch]             # stand-in, for reference
             res = [cost(m) for m in pool.map(episode, jobs)]
@@ -136,7 +147,11 @@ def main():
             ref = statistics.mean(res[len(pop) * nb:])
             order = np.argsort(costs)
             elite = np.array([pop[k] for k in order[:args.elite]])
-            mean, sd = elite.mean(axis=0), np.maximum(elite.std(axis=0), 0.05)
+            if es:
+                es.tell(asked, costs[1:])
+                mean, sd = np.array(es.mean), np.array(es.stds)
+            else:
+                mean, sd = elite.mean(axis=0), np.maximum(elite.std(axis=0), 0.05)
             history.append({"iter": it, "best": costs[order[0]], "current_mean": costs[0], "standin": ref,
                             "mean": [round(float(v), 4) for v in mean], "sd": [round(float(v), 4) for v in sd]})
             print(f"iter {it:2d}: cost best {costs[order[0]]:.0f}, current {costs[0]:.0f}, stand-in {ref:.0f} "

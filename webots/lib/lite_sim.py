@@ -27,6 +27,7 @@ In code (e.g. an RL scheduler):
   summary = LiteSim(cfg, wes).run()        # wes: wes_runner.WES(cfg, scheduler, log_dir)
 """
 import argparse
+from array import array
 import heapq
 import importlib
 import json
@@ -165,10 +166,15 @@ class LiteSim:
         """Shortest grid path length from a to b (8-connected, octile: a bit longer than the
         pruned A* path the robots drive; slowdown absorbs it)."""
         g = self.grid.nearest_free(self.grid.to_cell(b), set())
-        if g not in self.fields:
-            self.fields[g] = distance_field(self.grid, g)
-        d = self.fields[g].get(self.grid.nearest_free(self.grid.to_cell(a), set()))
-        return d * self.grid.res if d is not None else math.dist(a, b)
+        ny = self.grid.ny
+        if g not in self.fields:   # flat array, not the dict: the large layout's fields overflow RAM per worker
+            f = array("d", [math.inf]) * (self.grid.nx * ny)
+            for (i, j), d in distance_field(self.grid, g).items():
+                f[i * ny + j] = d
+            self.fields[g] = f
+        i, j = self.grid.nearest_free(self.grid.to_cell(a), set())
+        d = self.fields[g][i * ny + j]
+        return d * self.grid.res if d != math.inf else math.dist(a, b)
 
     # ------------------------------------------------------------- robots
     def where(self, r, t):

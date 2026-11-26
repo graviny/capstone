@@ -22,7 +22,8 @@ import sched_verify
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_WEIGHTS = ROOT / "models" / "assign_weights.json"
-FEATURES = ("dist", "busy", "pick", "putaway", "verify", "slack", "age", "truck_here", "lane_fill", "buffer_fill")
+FEATURES = ("dist", "busy", "pick", "putaway", "verify", "slack", "age", "truck_here", "lane_fill", "buffer_fill",
+            "eta")               # eta: est. time (min) until the robot can be at the task, busy robots included
 HEURISTIC = {"dist": -1.0, "busy": -1.0, "pick": 2.0}
 MAX_TASKS = 30                     # candidate tasks per step: the oldest startable ones (window 'feasible')
 
@@ -71,14 +72,21 @@ class Assign(sched_standin.Scheduler):
         return f
 
     def free_at(self, s, r):
-        """Where a busy robot will be free and how far it still drives (m), or None."""
+        """Where a busy robot will be free, how far it still drives (m) and how many stops
+        (pick/place/verify) it still makes, or None."""
         task = s.task(r["task"] or r["assigned"])
         if task is None or task["status"] not in ("ASSIGNED", "IN_PROGRESS"):
             return None
         dst = s.pos(task["destination"])
         if task["source"] and not task["picked"] and not r["holding"]:
-            return dst, s.dist(r["pos"], s.pos(task["source"])) + s.dist(s.pos(task["source"]), dst)
-        return dst, s.dist(r["pos"], dst)
+            return dst, s.dist(r["pos"], s.pos(task["source"])) + s.dist(s.pos(task["source"]), dst), 2
+        return dst, s.dist(r["pos"], dst), 1
+
+    def leg_s(self, m, stops=0):
+        """Estimated seconds for m metres in one leg plus `stops` handlings, with lite_sim's
+        timing (path / speed + 2 s per leg; look + act per stop). Straight-line m, so a lower bound."""
+        speed, stop_s = self.timing
+        return m / speed + 2.0 + stops * stop_s
 
     def reroute_waiting(self, s):
         """sched_standin.plan's first part, unchanged: a task told to WAIT gets a destination
@@ -112,15 +120,37 @@ class Assign(sched_standin.Scheduler):
             self.update_load_weights(s)
         out, taken = self.reroute_waiting(s)
         wd, wb = self.w[0], self.w[1]
+        we = self.w[FEATURES.index("eta")] if len(self.w) > FEATURES.index("eta") else 0.0
         idle = s.idle_robots()
-        busy = [(r, *fa) for r in s.robots.values() if r not in idle for fa in [self.free_at(s, r)] if fa]
-        cands = []
+        res = self.reserved                             # commit: task id -> busy robot that will do it next
+        if self.commit:
+            pend = {t["task_id"] for t in s.pending_tasks()}
+            for tid in [t for t in res if t not in pend]:
+                del res[tid]
+            for r in list(idle):                         # a robot that just got free runs its reserved task
+                tid = next((t for t, x in res.items() if x == r["id"]), None)
+                if tid is None:
+                    continue
+                del res[tid]
+                ep = self.endpoints(s, s.task(tid), taken)
+                if ep:                                   # else the reservation lapses and it is planned normally
+                    idle.remove(r)
+                    taken.update(x for x in ep if x)
+                    out.append({"robot_id": r["id"], "task_id": tid, "action": "EXECUTE",
+                                "source": ep[0], "destination": ep[1]})
+        booked = set(res.values())
+        busy = [(r, *fa) for r in s.robots.values() if r not in idle and r["id"] not in booked
+                for fa in [self.free_at(s, r)] if fa]
+        cands, role_of = [], {}
         for task in self.candidate_tasks(s, taken):
+            if task["task_id"] in res or any(o["task_id"] == task["task_id"] for o in out):
+                continue
             ep = self.endpoints(s, task, taken)
             if ep is None:
                 continue
             at = s.pos(ep[0] or ep[1])
             role = "patrol" if task["task_type"] == "VERIFY" and self.has_patrol else "transport"
+            role_of[task["task_id"]] = role
             tf = self.task_features(s, task)
             if getattr(self, 'age_mode', 'learned') == 'zero':
                 tf['age'] = 0.0            # ablation: old tasks are not made less attractive
@@ -128,9 +158,11 @@ class Assign(sched_standin.Scheduler):
             max_wait = getattr(self, 'max_wait', None)
             if max_wait is not None and s.t - task["created_t"] > max_wait:
                 base += 100.0              # starvation guard: overdue tasks outrank every learned score
-            cands += [(base + wd * s.dist(r["pos"], at) / 10.0, task, r["id"], False) for r in idle if r["role"] == role]
-            cands += [(base + wd * (left + s.dist(end, at)) / 10.0 + wb, task, r["id"], True)
-                      for r, end, left in busy if r["role"] == role]
+            cands += [(base + wd * s.dist(r["pos"], at) / 10.0 + we * self.leg_s(s.dist(r["pos"], at)) / 60.0,
+                       task, r["id"], False) for r in idle if r["role"] == role]
+            cands += [(base + wd * (left + s.dist(end, at)) / 10.0 + wb
+                       + we * (self.leg_s(left, stops) + self.leg_s(s.dist(end, at))) / 60.0, task, r["id"], True)
+                      for r, end, left, stops in busy if r["role"] == role]
         cands.sort(key=lambda c: -c[0])
         used_r, used_t = set(), set()
         for _, task, rid, is_busy in cands:
@@ -141,7 +173,12 @@ class Assign(sched_standin.Scheduler):
                 continue
             used_r.add(rid)
             used_t.add(task["task_id"])
-            if not is_busy:                            # a busy robot's task waits for it
+            if is_busy:                                # a busy robot's task waits for it
+                # ... and with commit nobody else may take it; commit "idle": only when it beat a free idle robot
+                if self.commit and (self.commit != "idle" or any(
+                        r["id"] not in used_r and r["role"] == role_of[task["task_id"]] for r in idle)):
+                    res[task["task_id"]] = rid
+            else:
                 taken.update(x for x in ep if x)
                 out.append({"robot_id": rid, "task_id": task["task_id"], "action": "EXECUTE",
                             "source": ep[0], "destination": ep[1]})
@@ -182,9 +219,19 @@ class Scheduler(sched_verify.Scheduler, Assign):
         if weights is None:
             weights, trained = load_weights()
         self.w = list(weights)
+        # Commit (ASSIGN_COMMIT=1): a task won by a busy robot is reserved for it, so it is that robot's
+        # next task. shortcut: a reservation only lapses when the task leaves PENDING or cannot start
+        # when the robot is free; no timeout if the robot is held up for long.
+        # ASSIGN_COMMIT=idle: reserve only when the busy robot won against an idle robot that was still free.
+        self.commit = {"1": True, "idle": "idle"}.get(os.environ.get("ASSIGN_COMMIT", ""), False)
+        self.reserved = {}
+        nav, per = cfg["nav"], cfg["perception"]
+        self.timing = (nav["speed_mps"], 2.0 + per["look_s"] + nav["act_s"])   # leg_s(): speed, s per stop
         self.w_low = self.w_high = None            # set both (and adapt_tau) for load-adaptive weights
         self.adapt_tau, self.adapt_tc, self._ema, self._pt = 3.5, 300.0, None, None
         # Log folders: wms-learned-<policy> with trained weights, wms-heuristic-<policy> without.
         self.name = f"{'learned' if trained else 'heuristic'}-{self.policy}"
         if trained and weights_from_env:               # two weight files can run side by side
             self.name = f"learned-{Path(os.environ['ASSIGN_WEIGHTS']).stem}-{self.policy}"
+        if self.commit:
+            self.name += "-commit" + ("-idle" if self.commit == "idle" else "")

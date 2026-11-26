@@ -59,6 +59,33 @@ class LiteSimTest(unittest.TestCase):
         counts = s["wes_stats"]["counts"]
         self.assertFalse({k: v for k, v in counts.items() if k.startswith("anomaly_") or "reject" in k})
 
+    def test_commit_reserves_tasks_for_busy_robots(self):
+        # ASSIGN_COMMIT=1: tasks won by busy robots are reserved and later run, WMS stays consistent.
+        made, ran = [], []
+        orig = sched_learned.Assign.plan
+
+        def plan(self, s):
+            before = dict(self.reserved)
+            out = orig(self, s)
+            made.extend(t for t in self.reserved if t not in before)
+            ran.extend(o["task_id"] for o in out if before.get(o["task_id"]) == o["robot_id"])
+            return out
+        with mock.patch.dict(os.environ, {"ASSIGN_COMMIT": "1"}), mock.patch.object(sched_learned.Assign, "plan", plan):
+            s = self.run_once(module=sched_learned, robots=3)
+        self.assertGreater(len(made), 0)
+        self.assertGreater(len(ran), 0)
+        self.assertGreater(s["units_shipped"], 0)
+        counts = s["wes_stats"]["counts"]
+        self.assertFalse({k: v for k, v in counts.items() if k.startswith("anomaly_") or "reject" in k})
+
+    def test_hungarian_matches_min_total_distance(self):
+        # Hungarian baseline: idle robots and startable tasks paired at least total distance, WMS consistent.
+        import sched_hungarian
+        s = self.run_once(module=sched_hungarian)
+        self.assertGreater(s["units_shipped"], 0)
+        counts = s["wes_stats"]["counts"]
+        self.assertFalse({k: v for k, v in counts.items() if k.startswith("anomaly_") or "reject" in k})
+
     def test_same_seed_same_result(self):
         a, b = self.run_once(), self.run_once()
         self.assertEqual(json.dumps(a, sort_keys=True), json.dumps(b, sort_keys=True))
