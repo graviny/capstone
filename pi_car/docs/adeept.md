@@ -16,7 +16,7 @@
 | 원본 | 확인한 내용 | 이 스택의 연결 |
 | --- | --- | --- |
 | Ultra.py | gpiozero.DistanceSensor, trigger BCM23 / echo BCM24, 최대 2m | checkdist()의 cm를 m로 변환, 0/비정상/최댓값 포화는 무효 |
-| Move.py | setup(), Motor(channel,direction,speed), motorStop(), destroy() | M1·M2 왼쪽, M3·M4 오른쪽, 원본 polarity 보존 |
+| Move.py | setup(), motorStop(), motor1~motor4 | 초기화된 모터의 throttle에 출력 전달, M1·M2 왼쪽, M3·M4 오른쪽, 원본 polarity 보존 |
 | RPIservo.py | ServoCtrl.moveAngle(0, 상대각), 초기 90° | 0 정면, +45 왼쪽, -45 오른쪽 (실차 장착 방향 확인 필요) |
 | Functions.py | 40cm 이상 전진, 20~40cm 좌우 스캔, 그 이하면 후진 | 흐름만 참고, 그대로 import/실행하지 않음 |
 
@@ -28,11 +28,12 @@
 향후 통합 시 I2C 접근을 직렬화하고 서보 이동 동안 모터를 정지하는 방식부터 검증한다.
 `Move.setup()`은 원본 모터 객체를 만들며, 어댑터는 setup을 자동 호출하지 않는다.
 활성 드라이버 생성 시 `enabled=True`를 명시해야 하며 기본은 주행 비활성이다.
+제어 중에는 모터별 throttle만 갱신한다. 원본 `Move.Motor()`는 호출할 때마다 공용 PWM 주파수를 다시 설정한다.
 
-현재 어댑터는 초음파 함수의 반환 시각을 기록한다. gpiozero 내부 캐시의 마지막 실제 echo
-시각을 확인하는 구현은 아직 없다. 따라서 장애/갱신 정지 감지와 독립 watchdog을 추가하기 전에는
-이 어댑터의 timestamp만으로 실제 센서 freshness를 보장할 수 없다.
-서보를 움직인 직후에는 이전 방향에서 측정한 캐시값을 재사용하지 않도록 해야 한다.
+실차 실행기는 GPIO Zero의 개별 echo 측정 시각을 기록한다. 2m 상한에 걸린 샘플이 한 번 들어오면
+직전 거리와 그 측정 시각을 유지하고, 연속으로 상한에 걸리거나 echo가 누락되면 측정을 무효화한다.
+주행 중에는 200ms가 지난 값을 거부하며, 유효한 정면 거리 40cm 이하는 즉시 정지한다.
+서보를 움직인 직후에는 이전 방향에서 측정한 값을 재사용하지 않도록 해야 한다.
 
 원본 설치 방식과 GPIO/I2C 의존성은 차량 환경을 기준으로 유지한다.
 PC의 지도/위치 확인 작업에서는 이 원본 모듈들을 import할 필요가 없다.

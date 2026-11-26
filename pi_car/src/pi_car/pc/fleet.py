@@ -4,7 +4,7 @@ from dataclasses import dataclass, field
 import time
 import uuid
 from pi_car.transport.journal import CommandJournal
-from pi_car.transport.protocol import TERMINAL, identifier, make_message, number
+from pi_car.transport.protocol import TERMINAL, identifier, make_message, number, turn_degrees
 
 
 @dataclass
@@ -126,18 +126,34 @@ class FleetController:
         """Called only by an external requester; no goal queue or automatic scheduling."""
         try:
             identifier(command_id); number(x); number(y)
-            if frame_id is not None and frame_id != self.grid.metadata.frame_id:
-                raise ValueError("Frame mismatch")
-            if map_version is not None and map_version != self.grid.metadata.version:
-                raise ValueError("Map version mismatch")
+            self._check_motion_frame(frame_id, map_version)
             if not self.navigation.is_free(self.navigation.world_to_cell(x, y)):
                 raise ValueError("Goal is outside free navigation space")
         except ValueError:
-            # A rejected replacement must not leave the previous motion running.
-            if robot_id in self.robots and self.robots[robot_id].connected:
-                await self.stop_robot(robot_id, "safety."+uuid.uuid4().hex)
+            await self._stop_rejected_motion(robot_id)
             raise
         return await self._dispatch("GOAL", robot_id, command_id, goal=dict(x=x, y=y))
+
+    async def dispatch_turn(self, robot_id, degrees, command_id, *, frame_id=None, map_version=None):
+        try:
+            identifier(command_id)
+            turn_degrees(degrees)
+            self._check_motion_frame(frame_id, map_version)
+        except ValueError:
+            await self._stop_rejected_motion(robot_id)
+            raise
+        return await self._dispatch("TURN", robot_id, command_id, degrees=degrees)
+
+    def _check_motion_frame(self, frame_id, map_version):
+        if frame_id is not None and frame_id != self.grid.metadata.frame_id:
+            raise ValueError("Frame mismatch")
+        if map_version is not None and map_version != self.grid.metadata.version:
+            raise ValueError("Map version mismatch")
+
+    async def _stop_rejected_motion(self, robot_id):
+        # A rejected replacement must not leave the previous motion running.
+        if isinstance(robot_id, str) and robot_id in self.robots and self.robots[robot_id].connected:
+            await self.stop_robot(robot_id, "safety."+uuid.uuid4().hex)
 
     async def stop_robot(self, robot_id, command_id):
         return await self._dispatch("STOP", robot_id, command_id)

@@ -54,7 +54,7 @@ UTF-8 JSON Lines, `schema_version:1`, 한 메시지 최대 16384 bytes다.
 비정상 숫자 및 식별자를 거부한다. 송신 lock으로 메시지가 섞이지 않게 한다.
 
 모든 차량 메시지에 `robot_id`, `frame_id`, `map_version`을 넣는다.
-GOAL/STOP 및 명령 상태에는 `command_id`도 넣는다. ID는 1~128자의 영문·숫자·`_.:-`만 허용한다.
+GOAL/TURN/STOP 및 명령 상태에는 `command_id`도 넣는다. ID는 1~128자의 영문·숫자·`_.:-`만 허용한다.
 
 | 방향 | 메시지 | 의미 |
 | --- | --- | --- |
@@ -62,11 +62,12 @@ GOAL/STOP 및 명령 상태에는 `command_id`도 넣는다. ID는 1~128자의 �
 | Pi → PC | READY | 새 명령을 받을 수 있음. 목표 자동 발급 없음 |
 | PC → Pi | POSE | 해당 차량의 위치·방향·촬영 시각·valid |
 | PC → Pi | GOAL | 외부 이동 명령 |
+| PC → Pi | TURN | 상대 각도 회전. `degrees`의 양수는 왼쪽, 음수는 오른쪽 |
 | PC → Pi | STOP | 정지 명령. STOP에도 별도 고유 command_id 사용 |
-| Pi → PC | GOAL_ACCEPTED | **Pi에서** 경로 생성 성공 |
-| Pi → PC | MOVING | Runtime이 이동 출력을 계산하기 시작 |
-| Pi → PC | ARRIVED | 최종 목표 도착, 모터 정지 |
-| Pi → PC | BLOCKED | 초음파 장애물로 종료·정지 |
+| Pi → PC | GOAL_ACCEPTED | Pi에서 이동 경로 생성 또는 회전 시작 조건 검사 성공 |
+| Pi → PC | MOVING | Runtime이 주행 또는 회전 출력을 계산하기 시작 |
+| Pi → PC | ARRIVED | 목표 위치 또는 각도 도달, 모터 정지 |
+| Pi → PC | BLOCKED | 초음파 장애물 또는 회전 여유 부족으로 종료·정지 |
 | Pi → PC | ERROR | 위치·지도·계획·제어·통신 오류 |
 | Pi → PC | CANCELLED | 기존 명령을 새 명령/STOP으로 중단 (추가 상태) |
 | Pi → PC | STOPPED | STOP 처리 완료 (추가 상태) |
@@ -181,7 +182,15 @@ pi-car send-command --json '{"type":"STATUS"}'
 # 추가 명령이 들어와야 다음 이동을 시작한다.
 pi-car send-command --json '{"type":"MOVE","command_id":"CMD002","robot_id":"B","goal":{"x":1.5,"y":2.0}}'
 pi-car send-command --json '{"type":"STOP","command_id":"STOP001","robot_id":"B"}'
+pi-car send-command --json '{"type":"TURN","command_id":"TURN001","robot_id":"A","degrees":25}'
+pi-car send-command --json '{"type":"RESULT","command_id":"TURN001"}'
 ```
+
+지도 창의 `Degrees`와 `Turn left` / `Turn right`에서도 제자리 회전을 보낼 수 있다.
+`TURN`의 각도는 차량의 현재 방향을 기준으로 하고 양수는 왼쪽, 음수는 오른쪽이다.
+Pi는 카메라 각도가 목표 범위에 들어와 정지한 뒤 `ARRIVED`와 실제 회전량 `turned_degrees`를 보고한다.
+회전 중에도 지도 여유, 차량 위치, 초음파와 연결을 검사한다. 회전량이 더 이상 진행하지 않으면
+`TURN_STALLED`를 보고하고 정지한다.
 
 이 Mock의 A*·Runtime·TCP·명령 처리기는 실제 실행부와 같다. 단순 차동 모델은 Adeept 물리 모델이
 아니며 로봇끼리의 충돌도 처리하지 않는다. Mock journal은 메모리 기반이고 프로세스 종료 시 사라진다.
@@ -203,6 +212,8 @@ pi-car fleet-server --map data/map --calibration data/calibration.json \
 외부 명령용 테스트 포트 8766은 기본 localhost에만 열고, 로봇 TCP 8765는 지정 host에 연다.
 WES를 동일 PC 프로세스에서 연결하면 별도 명령용 TCP를 거치지 않고 위 API를 사용할 수 있다.
 GUI 검사 도구와 Fleet 서버가 동시에 D455를 열지 않도록 한다.
+Pi 시계가 PC보다 일정하게 늦고 정상 영상이 미래 시각으로 거부되면, 실측한 시차를 바탕으로
+`fleet-server --minimum-pose-age-ms`를 지정할 수 있다. 캡처 시각과 300ms 유효 기간은 유지한다.
 
 ### 각 Raspberry Pi: 현재는 모터 비활성 Dry-run
 

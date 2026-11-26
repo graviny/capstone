@@ -65,6 +65,21 @@ class FleetIntegrationTests(unittest.IsolatedAsyncioTestCase):
         a,b = await asyncio.gather(self.fleet.wait_result("a",5.),self.fleet.wait_result("b",5.))
         self.assertEqual([a['type'],b['type']],["ARRIVED","ARRIVED"])
 
+    async def test_turn_reaches_the_same_signed_magnitude_without_translation(self):
+        starts = {robot: self.world.positions[robot][:2] for robot in ('A', 'B')}
+        for robot, degrees in (('A', 25), ('B', -25)):
+            reply = await send_command("127.0.0.1", self.gateway.port,
+                                       dict(type="TURN", robot_id=robot, command_id="turn-"+robot,
+                                            degrees=degrees))
+            self.assertTrue(reply['ok'], reply)
+        for robot, degrees in (('A', 25), ('B', -25)):
+            result = await self.fleet.wait_result("turn-"+robot, 4.)
+            self.assertEqual(result['type'], "ARRIVED", result)
+            self.assertEqual(result['reason'], "TURN_REACHED")
+            self.assertAlmostEqual(result['turned_degrees'], degrees, delta=1.5)
+            self.assertEqual(self.world.positions[robot][:2], starts[robot])
+            self.assertEqual(self.world.motors[robot].last_command, MotorCommand())
+
     async def test_new_goal_cancels_old_goal_and_replans_on_pi(self):
         await self.move("A",2.5,1.,"old")
         await until(lambda: self.fleet.command_result('old')['type']=="MOVING")

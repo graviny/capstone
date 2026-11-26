@@ -17,6 +17,8 @@ def add_commands(commands):
     server.add_argument("--clearance", type=float, default=.2)
     server.add_argument("--journal", default="data/fleet.sqlite3")
     server.add_argument("--snapshot-dir",help="Optional live RGB-D diagnostic snapshot directory (1 Hz)")
+    server.add_argument("--minimum-pose-age-ms", type=float, default=0.,
+                        help="Delay fresh pose publication to accommodate measured Pi clock lag")
     robot = commands.add_parser("robot-client", help="Pi executor; dry-run unless --enable-motors is explicit")
     robot.add_argument("--map", required=True)
     robot.add_argument("--robot-id", required=True)
@@ -29,7 +31,7 @@ def add_commands(commands):
     robot.add_argument("--vendor-dir",help="Installed Adeept OrdinaryWheels directory containing Move.py")
     robot.add_argument("--max-output",type=float,default=.2)
     robot.add_argument("--drive-output",type=float,
-                       help="Waypoint motor command (0..1), not m/s; default 0.20 capped by --max-output")
+                       help="Cruise motor output (0..1), not m/s; default 0.20 capped by --max-output")
     robot.add_argument("--servo-angle",type=float,default=90.)
     panel=commands.add_parser("fleet-panel",help="PC map window: choose robot, click goal, STOP")
     panel_map=panel.add_mutually_exclusive_group(required=True)
@@ -112,6 +114,9 @@ async def run(args):
     from pi_car.pc.localization import MultiRobotLocalizer
     from pi_car.pc.server import FleetTCPServer
     from pi_car.pc.live import publish_camera
+    minimum_pose_age_s = args.minimum_pose_age_ms / 1000
+    if not 0 <= minimum_pose_age_s < .3:
+        raise ValueError('Minimum pose age must be in [0, 300) milliseconds')
     grid = OccupancyGrid.load(args.map)
     calibration = Calibration.load(args.calibration)
     if calibration.frame_id != grid.metadata.frame_id:
@@ -126,6 +131,7 @@ async def run(args):
         await server.start(); await gateway.start()
         with RealSenseCamera() as camera:
             print(f"Fleet TCP {server.host}:{server.port}; command API 127.0.0.1:{gateway.port}",flush=True)
-            await publish_camera(fleet,camera,localizer,snapshot_dir=args.snapshot_dir)
+            await publish_camera(fleet,camera,localizer,snapshot_dir=args.snapshot_dir,
+                                 minimum_pose_age_s=minimum_pose_age_s)
     finally:
         await gateway.close(); await server.close(); fleet.close()

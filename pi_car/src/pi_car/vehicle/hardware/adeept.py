@@ -38,6 +38,14 @@ class AdeeptMotor:
         if not 0 < max_output <= 1:
             raise ValueError("max_output must be within (0, 1]")
         self.move, self.enabled, self.max_output = move_module, enabled, max_output
+        self.wheels = []
+        if enabled:
+            for channel in range(1, 5):
+                motor = getattr(move_module, f"motor{channel}", None)
+                polarity = getattr(move_module, f"M{channel}_Direction", None)
+                if not hasattr(motor, "throttle") or polarity not in (-1, 1):
+                    raise ValueError(f"Incompatible Move.py: motor {channel} or direction is unavailable")
+                self.wheels.append((motor, polarity))
 
     def stop(self):
         self.move.motorStop()
@@ -49,12 +57,11 @@ class AdeeptMotor:
                 raise RuntimeError("Hardware driving is disabled")
             return
         try:
-            # M1/M2 left, M3/M4 right; preserve per-wheel vendor polarity.
-            for channel, value in ((1, command.left), (2, command.left),
-                                   (3, command.right), (4, command.right)):
-                polarity = getattr(self.move, f"M{channel}_Direction")
-                direction = polarity if value >= 0 else -polarity
-                self.move.Motor(channel, direction, min(abs(value), self.max_output)*100)
+            # Move.setup() sets the shared PWM frequency. Move.Motor() would
+            # put the PCA9685 to sleep and reset that frequency for each wheel.
+            values = (command.left, command.left, command.right, command.right)
+            for (motor, polarity), value in zip(self.wheels, values):
+                motor.throttle = polarity * max(-self.max_output, min(self.max_output, value))
         except BaseException:
             self.stop()
             raise

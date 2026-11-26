@@ -6,7 +6,7 @@ import re
 MAX_MESSAGE_BYTES = 16384
 TERMINAL = frozenset({"ARRIVED", "BLOCKED", "ERROR", "CANCELLED", "STOPPED"})
 STATUS = TERMINAL | {"READY", "GOAL_ACCEPTED", "MOVING"}
-TYPES = STATUS | {"HELLO", "POSE", "GOAL", "STOP", "PING", "PONG"}
+TYPES = STATUS | {"HELLO", "POSE", "GOAL", "TURN", "STOP", "PING", "PONG"}
 
 
 def identifier(value):
@@ -21,6 +21,12 @@ def number(value):
     return value
 
 
+def turn_degrees(value):
+    if not 0 < abs(number(value)) <= 180:
+        raise ValueError("Turn degrees must be nonzero and between -180 and 180")
+    return value
+
+
 def validate(message):
     if (not isinstance(message, dict) or type(message.get("schema_version")) is not int
             or message.get("schema_version") != 1):
@@ -30,13 +36,15 @@ def validate(message):
         raise ValueError("Unsupported message type")
     for name in ("robot_id", "frame_id", "map_version"):
         identifier(message.get(name))
-    if kind in {"GOAL", "STOP"} or kind in STATUS - {"READY"}:
+    if kind in {"GOAL", "TURN", "STOP"} or kind in STATUS - {"READY"}:
         identifier(message.get("command_id"))
     if kind == "GOAL":
         goal = message.get("goal")
         if not isinstance(goal, dict) or set(goal) != {"x", "y"}:
             raise ValueError("goal requires x and y")
         number(goal["x"]); number(goal["y"])
+    if kind == "TURN":
+        turn_degrees(message.get("degrees"))
     if kind == "POSE":
         if type(message.get("valid")) is not bool:
             raise ValueError("POSE requires boolean valid")

@@ -5,6 +5,7 @@ import time
 from pi_car.common.messages import Mode, Pose
 from pi_car.transport.journal import CommandJournal
 from pi_car.transport.protocol import TERMINAL, identifier, make_message, validate
+from pi_car.vehicle.control.turn import TurnStalled
 from pi_car.vehicle.hardware import DisabledMotor
 from pi_car.vehicle.hardware.watchdog import WatchdogMotor
 from pi_car.vehicle.planning import plan
@@ -54,12 +55,14 @@ class RobotAgent:
         self.emit(event)
 
     def _finish(self, kind, reason):
+        turn = self.runtime.turn
         self.runtime.halt()
         self.generation += 1
         active, self.active = self.active, None
         self.goal = None
         if active:
-            self._record(self.message(kind, command_id=active, reason=reason))
+            fields = dict(degrees=turn.degrees, turned_degrees=math.degrees(turn.swept)) if turn else {}
+            self._record(self.message(kind, command_id=active, reason=reason, **fields))
 
     def disconnect(self):
         self.connected = False
@@ -90,7 +93,7 @@ class RobotAgent:
             if not self.fresh_pose():
                 self._finish("ERROR", "POSE_INVALID_OR_STALE")
             return
-        if kind not in {"GOAL", "STOP"}:
+        if kind not in {"GOAL", "TURN", "STOP"}:
             raise ValueError("Unexpected PC command")
         command_id = message["command_id"]
         fingerprint = self.journal.fingerprint(message)
@@ -109,10 +112,18 @@ class RobotAgent:
         if kind == "STOP":
             self._record(self.message("STOPPED", command_id=command_id, reason="STOP_REQUESTED"))
             return
-        self.active, self.goal = command_id, message["goal"]
+        self.active, self.goal = command_id, message.get("goal")
         self.moving_reported = False
         if not self.connected or not self.fresh_pose():
             self._finish("ERROR", "POSE_UNAVAILABLE")
+            return
+        if kind == "TURN":
+            if not self._turn_position_clear():
+                self._finish("BLOCKED", "TURN_CLEARANCE")
+                return
+            self.runtime.set_turn(self.pose.theta, message["degrees"])
+            self.motor.arm()
+            self._record(self.message("GOAL_ACCEPTED", command_id=command_id, degrees=message["degrees"]))
             return
         goal_xy = (self.goal["x"], self.goal["y"])
         if not self.navigation.is_free(self.navigation.world_to_cell(*goal_xy)):
@@ -141,6 +152,7 @@ class RobotAgent:
                 path.append(goal)
             self.runtime.set_path(path)
             self.runtime.follower.tolerance = min(.05, self.grid.metadata.resolution_m*.45)
+            self.runtime.follower.goal_tolerance = min(.01, self.runtime.follower.tolerance)
             self.motor.arm()
             self._record(self.message("GOAL_ACCEPTED", command_id=self.active,
                                       goal=self.goal, waypoint_count=len(path)))
@@ -157,22 +169,32 @@ class RobotAgent:
         if not self.fresh_pose():
             self._finish("ERROR", "POSE_TIMEOUT")
             return
-        if not self.runtime.path:  # planning pending, motors already stopped
+        turn = self.runtime.turn
+        if turn is None and not self.runtime.path:  # planning pending, motors already stopped
+            return
+        if turn is not None and not self._turn_position_clear():
+            self._finish("BLOCKED", "TURN_CLEARANCE")
             return
         try:
             mode = self.runtime.tick(self.pose, self.front_range, connected=self.connected)
             if mode == Mode.EMERGENCY:
-                self._finish("ERROR", "SAFETY_INPUT_INVALID")
+                self._finish("ERROR", self.runtime.safety_error)
             elif mode == Mode.OBSTACLE:
                 self._finish("BLOCKED", "ULTRASONIC_OBSTACLE")
             elif mode == Mode.ARRIVED:
-                self._finish("ARRIVED", "GOAL_REACHED")
+                self._finish("ARRIVED", "TURN_REACHED" if turn is not None else "GOAL_REACHED")
                 self.emit(self.message("READY"))
             elif mode == Mode.NORMAL and not self.moving_reported:
                 self.moving_reported = True
-                self._record(self.message("MOVING", command_id=self.active, goal=self.goal))
+                fields = dict(degrees=turn.degrees) if turn is not None else dict(goal=self.goal)
+                self._record(self.message("MOVING", command_id=self.active, **fields))
+        except TurnStalled:
+            self._finish("ERROR", "TURN_STALLED")
         except Exception as error:
             self._finish("ERROR", f"CONTROL_FAILED: {error}")
+
+    def _turn_position_clear(self):
+        return self.navigation.is_free(self.navigation.world_to_cell(self.pose.x, self.pose.y))
 
     async def close(self):
         self.disconnect()

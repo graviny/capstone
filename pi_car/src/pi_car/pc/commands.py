@@ -16,6 +16,11 @@ class CommandInterface:
                 robot_id=request.get("robot_id"), x=goal.get("x"), y=goal.get("y"),
                 command_id=request.get("command_id"), frame_id=request.get("frame_id"),
                 map_version=request.get("map_version"))
+        if kind == "TURN":
+            return await self.fleet.dispatch_turn(
+                robot_id=request.get("robot_id"), degrees=request.get("degrees"),
+                command_id=request.get("command_id"), frame_id=request.get("frame_id"),
+                map_version=request.get("map_version"))
         if kind == "STOP":
             return await self.fleet.stop_robot(request.get("robot_id"), request.get("command_id"))
         if kind == "STATUS":
@@ -26,4 +31,4 @@ class CommandInterface:
                         clearance_m=self.fleet.clearance, robot_ids=list(self.fleet.robots))
         if kind == "RESULT":
             return self.fleet.command_result(request.get("command_id"))
-        raise ValueError("Expected MOVE, STOP, STATUS, INFO or RESULT")
+        raise ValueError("Expected MOVE, TURN, STOP, STATUS, INFO or RESULT")

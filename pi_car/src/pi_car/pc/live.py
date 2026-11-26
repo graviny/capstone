@@ -4,7 +4,7 @@ from pathlib import Path
 import time
 
 
-async def publish_camera(fleet, camera, localizer, *, snapshot_dir=None):
+async def publish_camera(fleet, camera, localizer, *, snapshot_dir=None, minimum_pose_age_s=0.):
     last_snapshot=0.
     directory=Path(snapshot_dir) if snapshot_dir else None
     if directory:directory.mkdir(parents=True,exist_ok=True)
@@ -27,6 +27,11 @@ async def publish_camera(fleet, camera, localizer, *, snapshot_dir=None):
             error=str(exception)
             poses = {robot_id: None for robot_id in fleet.robots}
             await asyncio.sleep(.05)
+        captured_at = max((pose.timestamp for pose in poses.values() if pose is not None), default=None)
+        if captured_at is not None and minimum_pose_age_s:
+            delay = captured_at + minimum_pose_age_s - time.time()
+            if delay > 0:
+                await asyncio.sleep(delay)
         for r in fleet.robots:
             if error:
                 reason=error

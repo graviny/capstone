@@ -186,6 +186,22 @@ class RuntimeTests(unittest.TestCase):
             adapter.apply(MotorCommand(.2, .2))
         self.assertEqual(calls, ["stop"])
 
+    def test_vendor_motor_output_preserves_polarity_without_resetting_pwm(self):
+        def reset_frequency(*_):
+            self.fail("Motor() resets the shared PWM frequency")
+
+        vendor = SimpleNamespace(Motor=reset_frequency)
+        for channel, polarity in enumerate((1, -1, 1, -1), start=1):
+            setattr(vendor, f"motor{channel}", SimpleNamespace(throttle=0.))
+            setattr(vendor, f"M{channel}_Direction", polarity)
+
+        motor = AdeeptMotor(vendor, enabled=True, max_output=.30)
+        motor.apply(MotorCommand(.6, -.25))
+
+        self.assertEqual([vendor.motor1.throttle, vendor.motor2.throttle,
+                          vendor.motor3.throttle, vendor.motor4.throttle],
+                         [.30, -.30, -.25, .25])
+
 
 class InspectionTests(unittest.TestCase):
     def test_experiment_writes_metric_map_test_goal_and_report(self):

@@ -1,12 +1,13 @@
 """Manual goal panel; uses the same external MOVE interface as a future WES."""
 from concurrent.futures import ThreadPoolExecutor
+from functools import partial
 import asyncio
 import math
 import time
 import uuid
 from numbers import Real
 from pi_car.transport.commands import send_command
-from pi_car.transport.protocol import number
+from pi_car.transport.protocol import number, turn_degrees
 
 
 class PanelModel:
@@ -30,28 +31,43 @@ class PanelModel:
         self.states = states
         self.last_update = time.monotonic()
 
-    def move_request(self, robot_id, x, y):
+    def _motion_pose(self, robot_id, states=None):
+        if self.info is None or (states is None and time.monotonic()-self.last_update > 2.):
+            raise ValueError("Wait for a current server connection")
+        state = (self.states if states is None else states).get(robot_id)
+        if not state or not state['connected']:
+            raise ValueError("Selected robot is disconnected")
+        pose = state.get('pose')
+        if (not pose or not pose['valid'] or pose['frame_id'] != self.grid.metadata.frame_id
+                or not 0 <= time.time()-pose['timestamp'] <= .3):
+            reason = state.get('pose_error')
+            message = "Selected robot has no fresh valid pose"
+            raise ValueError(f"{message} ({reason})" if reason else message)
+        return pose
+
+    def move_request(self, robot_id, x, y, *, states=None):
         # Matplotlib events supply NumPy real scalars. Normalize at the GUI
         # boundary; keep the network protocol's strict JSON numeric validation.
         if any(isinstance(v,bool) or not isinstance(v,Real) for v in (x,y)):
             raise ValueError("Click coordinates must be real numbers, not booleans")
         x,y=float(x),float(y)
         number(x); number(y)
-        if self.info is None or time.monotonic()-self.last_update > 2.:
-            raise ValueError("Wait for a current server connection")
-        state = self.states.get(robot_id)
-        if not state or not state['connected']:
-            raise ValueError("Selected robot is disconnected")
-        pose = state.get('pose')
-        if (not pose or not pose['valid'] or pose['frame_id'] != self.grid.metadata.frame_id
-                or not 0 <= time.time()-pose['timestamp'] <= .3):
-            raise ValueError("Selected robot has no fresh valid pose")
+        self._motion_pose(robot_id, states)
         cell = self.navigation.world_to_cell(x,y)
         if not self.navigation.is_free(cell):
             raise ValueError("Choose free space outside obstacle/unknown/clearance regions")
         x,y = self.grid.cell_to_world(*cell)
         return dict(type='MOVE',robot_id=robot_id,command_id='manual.'+uuid.uuid4().hex,
                     frame_id=self.info['frame_id'],map_version=self.info['map_version'],goal=dict(x=x,y=y))
+
+    def turn_request(self, robot_id, degrees, *, states=None):
+        turn_degrees(degrees)
+        pose = self._motion_pose(robot_id, states)
+        if not self.navigation.is_free(self.navigation.world_to_cell(pose['x'], pose['y'])):
+            raise ValueError("Vehicle is outside the clear turning area")
+        return dict(type='TURN', robot_id=robot_id, command_id='manual.turn.'+uuid.uuid4().hex,
+                    frame_id=self.info['frame_id'], map_version=self.info['map_version'],
+                    degrees=degrees)
 
     def stop_request(self, robot_id):
         if self.info is None or robot_id not in self.info['robot_ids']:
@@ -64,7 +80,7 @@ class FleetPanel:
     def __init__(self, grid, *, host='127.0.0.1', port=8766, clearance_m=.2):
         import matplotlib.pyplot as plt
         from matplotlib.colors import ListedColormap,BoundaryNorm
-        from matplotlib.widgets import Button
+        from matplotlib.widgets import Button, TextBox
         import numpy as np
         self.plt = plt
         self.model = PanelModel(grid,clearance_m)
@@ -91,20 +107,37 @@ class FleetPanel:
                     title='Select robot, then LEFT CLICK destination (sends MOVE immediately)')
         self.text=self.fig.text(.76,.68,'Connecting...',va='top',fontsize=9)
         self.notice=self.fig.text(.06,.1,'Gray unknown | Black obstacle | Orange vehicle clearance',fontsize=10,wrap=True)
+        self.fig.text(.76,.535,'Degrees',fontsize=10)
+        self.turn_angle=TextBox(self.fig.add_axes([.84,.515,.12,.045]),'',initial='25')
+        self.turn_left=Button(self.fig.add_axes([.76,.445,.095,.05]),'Turn left')
+        self.turn_right=Button(self.fig.add_axes([.865,.445,.095,.05]),'Turn right')
+        self.turn_left.on_clicked(lambda _:self._turn(1))
+        self.turn_right.on_clicked(lambda _:self._turn(-1))
         self.stop_button=Button(self.fig.add_axes([.76,.3,.2,.06]),'STOP selected',color='#f4aaaa')
         self.stop_button.on_clicked(self._stop)
         self.fig.canvas.mpl_connect('button_press_event',self._click)
         self.fig.canvas.mpl_connect('close_event',lambda _:self.close())
         self.fig.canvas.mpl_connect('key_press_event',lambda e:self._stop(None) if e.key=='escape' else None)
-        self.timer=self.fig.canvas.new_timer(interval=150)
+        self.timer=self.fig.canvas.new_timer(interval=100)
         self.timer.add_callback(self.refresh)
 
-    def _submit(self, request):
+    def _submit(self, request, *, motion_request=None):
         field='pending' if request['type'] in {'INFO','STATUS'} else 'command_pending'
         if getattr(self,field) is not None:
             self._notice('Network request in progress; click again after it finishes')
             return False
-        future=self.pool.submit(lambda:asyncio.run(send_command(self.host,self.port,request)))
+        async def send():
+            if motion_request is None:
+                return await send_command(self.host, self.port, request)
+            status = await send_command(self.host, self.port, dict(type='STATUS'))
+            if not status['ok']:
+                return status
+            if self.closed:
+                raise ValueError("Panel closed before sending the command")
+            command = motion_request(states=status['result'])
+            return await send_command(self.host, self.port, command)
+
+        future=self.pool.submit(lambda:asyncio.run(send()))
         setattr(self,field,(request,future))
         return True
 
@@ -121,16 +154,27 @@ class FleetPanel:
         toolbar=getattr(self.fig.canvas,'toolbar',None)
         if toolbar and toolbar.mode:
             return
-        try:
-            request=self.model.move_request(self.selected,event.xdata,event.ydata)
-            if self._submit(request):
-                self._notice(f"MOVE {self.selected}: {request['goal']} | {request['command_id']}")
-        except ValueError as error:self._notice(str(error))
+        robot_id, x, y = self.selected, event.xdata, event.ydata
+        request = partial(self.model.move_request, robot_id, x, y)
+        if self._submit(dict(type='MOVE'), motion_request=request):
+            self._notice(f"Checking current position for vehicle {robot_id}…")
 
     def _stop(self,_):
         try:
             self._submit(self.model.stop_request(self.selected))
         except ValueError as error:self._notice(str(error))
+
+    def _turn(self, direction):
+        try:
+            degrees = float(self.turn_angle.text)
+            if degrees <= 0:
+                raise ValueError("Enter a positive turn angle in degrees")
+            robot_id = self.selected
+            request = partial(self.model.turn_request, robot_id, direction * degrees)
+            if self._submit(dict(type='TURN'), motion_request=request):
+                self._notice(f"Checking current position for vehicle {robot_id}…")
+        except ValueError as error:
+            self._notice(str(error))
 
     def _configure(self):
         from matplotlib.widgets import RadioButtons
@@ -164,8 +208,12 @@ class FleetPanel:
             if len(command)>24:command=command[:21]+'...'
             reason=state.get('pose_error') or result.get('reason','')
             if len(reason)>28:reason=reason[:25]+'...'
-            lines.append(f"{r}: {state.get('status','OFFLINE')}\n"
-                         f"{command}\n{reason}")
+            line = f"{r}: {state.get('status','OFFLINE')}\n{command}\n{reason}"
+            if 'degrees' in result:
+                line += f"\nTurn {result['degrees']:+g}°"
+                if 'turned_degrees' in result:
+                    line += f" → {result['turned_degrees']:+.1f}°"
+            lines.append(line)
         self.text.set_text('\n\n'.join(lines))
         self.fig.canvas.draw_idle()
 
@@ -185,7 +233,8 @@ class FleetPanel:
                     elif request['type']=='STATUS':self.model.set_states(response['result'])
                     else:self._notice(f"{request['type']}: {response['result']['type']} (watch robot status)")
                 except (OSError,ValueError,KeyError,RuntimeError) as error:
-                    self.model.states={}
+                    if field == 'pending':
+                        self.model.states={}
                     self._notice(f'Connection/command error: {error}')
         if self.pending is None:
             self._submit(dict(type='STATUS' if self.model.info else 'INFO'))

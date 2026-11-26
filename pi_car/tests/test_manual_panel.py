@@ -42,13 +42,9 @@ class PanelIntegrationTests(unittest.IsolatedAsyncioTestCase):
             # Real MouseEvent, including NumPy coordinates from the transform.
             from matplotlib.backend_bases import MouseEvent
             panel.fig.canvas.draw()
-            # Agg rendering is synchronous in this test's server event loop.
-            # Refresh a real TCP snapshot after rendering, rather than clicking
-            # with a pose that rendering itself may have aged past the timeout.
-            await asyncio.sleep(.05)
-            from pi_car.transport.commands import send_command
-            snapshot=await send_command('127.0.0.1',gateway.port,dict(type='STATUS'))
-            panel.model.set_states(snapshot['result'])
+            # Rendering or a slow UI poll can leave an older display snapshot.
+            # Clicking must use the live server pose, not this stale copy.
+            panel.model.states['B']['pose']['timestamp'] -= 1.
             u,v=panel.ax.transData.transform((1.5,2.))
             panel._click(MouseEvent('button_press_event',panel.fig.canvas,u,v,button=1))
             await until(lambda:world.fleet.robots['B'].command_id is not None)
@@ -63,7 +59,18 @@ class PanelIntegrationTests(unittest.IsolatedAsyncioTestCase):
             self.assertIsNotNone(panel.pending)
             panel._stop(None)
             await until(lambda:world.fleet.robots['B'].command_id!=command)
-            self.assertEqual((await world.fleet.wait_result(world.fleet.robots['B'].command_id,2.))['type'],'STOPPED')
+            stop = world.fleet.robots['B'].command_id
+            self.assertEqual((await world.fleet.wait_result(stop,2.))['type'],'STOPPED')
+            panel.refresh()
+            await until(lambda:panel.command_pending[1].done() if panel.command_pending else True)
+            panel.refresh()
+            world.visible['B'] = False
+            await until(lambda:world.fleet.robots['B'].pose is None)
+            panel._click(MouseEvent('button_press_event',panel.fig.canvas,u,v,button=1))
+            await until(lambda:panel.command_pending[1].done())
+            panel.refresh()
+            self.assertIn('no fresh valid pose', panel.notice.get_text())
+            self.assertEqual(world.fleet.robots['B'].command_id, stop)
         finally:
             panel.close();panel.plt.close(panel.fig)
             await gateway.close();await world.close()
@@ -82,7 +89,8 @@ class PanelModelTests(unittest.TestCase):
     def model(self):
         model=PanelModel(mock_grid())
         model.set_info(dict(frame_id='mock-floor',map_version='mock-v1',clearance_m=.2,robot_ids=['A','B']))
-        model.set_states({'A':dict(connected=True,pose=dict(valid=True,frame_id='mock-floor',timestamp=time.time()))})
+        model.set_states({'A':dict(connected=True,pose=dict(
+            valid=True,frame_id='mock-floor',timestamp=time.time(),x=1.,y=1.))})
         return model
 
     def test_click_goal_contract_and_no_automatic_goals(self):
@@ -102,6 +110,17 @@ class PanelModelTests(unittest.TestCase):
         model.states['A']['pose']['timestamp']-=1
         with self.assertRaises(ValueError):model.move_request('A',1.5,1.)
         with self.assertRaises(ValueError):model.set_info(dict(frame_id='old',map_version='mock-v1',clearance_m=.2,robot_ids=['A']))
+
+    def test_turn_uses_signed_degrees_and_checks_current_clearance(self):
+        model = self.model()
+        self.assertEqual(model.turn_request('A', 25)['degrees'], 25)
+        self.assertEqual(model.turn_request('A', -25)['degrees'], -25)
+        for degrees in (0, True, 181, math.nan):
+            with self.assertRaises(ValueError):
+                model.turn_request('A', degrees)
+        model.states['A']['pose']['x'] = 0.
+        with self.assertRaises(ValueError):
+            model.turn_request('A', 25)
 
 
 class FreshSensorTests(unittest.TestCase):
@@ -134,8 +153,8 @@ from types import SimpleNamespace
 calls=[]
 M1_Direction=M2_Direction=M3_Direction=M4_Direction=-1
 def setup():
- global pwm_motor,motor1
- motor1=object()
+ global pwm_motor,motor1,motor2,motor3,motor4
+ motor1,motor2,motor3,motor4=(SimpleNamespace(throttle=0.) for _ in range(4))
  pwm_motor=SimpleNamespace(channels=list(range(16)),deinit=lambda:calls.append('deinit'))
  calls.append('setup')
 def Motor(*args):calls.append(('Motor',args))
@@ -179,6 +198,36 @@ def destroy():pass
             sensor.sensor.value=1.;sensor.sensor._read()
             self.assertIsNone(sensor.read())
         finally:sensor.close()
+
+    def test_one_clipped_echo_preserves_original_age_and_two_invalidate(self):
+        class FakeSensor:
+            def __init__(self, **kwargs):
+                pass
+
+            def close(self):
+                pass
+
+        sensor = FreshUltrasonic(sensor_class=FakeSensor)
+        try:
+            with patch('pi_car.vehicle.hardware.live.time.monotonic', return_value=5.):
+                sensor.sample(.55)
+            last_measured = sensor.read()
+            sensor.sample(1.)
+            self.assertIs(sensor.read(), last_measured)
+            self.assertTrue(sensor.read().usable(5.150))
+            self.assertFalse(sensor.read().usable(5.201))
+            sensor.sample(1.)
+            self.assertIsNone(sensor.read())
+
+            # A close obstacle replaces the previous clear distance immediately.
+            sensor.sample(.55)
+            sensor.sample(1.)
+            sensor.sample(.15)
+            self.assertAlmostEqual(sensor.read().distance_m, .30)
+            sensor.sample(None)
+            self.assertIsNone(sensor.read())
+        finally:
+            sensor.close()
 
     def test_hardware_options_fail_before_importing_vendor(self):
         with tempfile.TemporaryDirectory() as directory:

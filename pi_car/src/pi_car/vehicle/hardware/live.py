@@ -10,14 +10,16 @@ from pi_car.vehicle.perception import RangeReading
 class FreshUltrasonic:
     """Retain each raw GPIO Zero echo's time, never re-stamp a cached distance.
 
-    GPIO Zero 2.x samples _read() in its own thread. Missing/saturated echoes
-    invalidate the reading. If sampling stalls, the unchanged timestamp expires.
+    GPIO Zero 2.x samples _read() in its own thread. A single clipped echo
+    leaves the last measured distance and timestamp intact. Missing echoes and
+    repeated clipping invalidate it. The runtime still expires old readings.
     """
     def __init__(self, *, echo=24, trigger=23, sensor_class=None):
         if sensor_class is None:
             from gpiozero import DistanceSensor
             sensor_class=DistanceSensor
         self.latest=None
+        self.previous_saturated = False
         owner=self
         class TimestampedSensor(sensor_class):
             def _read(self):
@@ -31,6 +33,11 @@ class FreshUltrasonic:
         self.sensor=TimestampedSensor(echo=echo,trigger=trigger,max_distance=2.,queue_len=1,partial=True)
 
     def sample(self, normalized):
+        saturated = normalized == 1.
+        isolated_saturation = saturated and not self.previous_saturated
+        self.previous_saturated = saturated
+        if isolated_saturation:
+            return
         if (normalized is None or not math.isfinite(normalized) or not 0 < normalized < 1):
             self.latest=None
         else:
@@ -61,12 +68,12 @@ class AdeeptHardware:
         spec=importlib.util.spec_from_file_location('_pi_car_adeept_move',self.path)
         self.move=importlib.util.module_from_spec(spec)
         spec.loader.exec_module(self.move)
-        for name in ('setup','Motor','motorStop','destroy','M1_Direction','M2_Direction',
-                     'M3_Direction','M4_Direction'):
+        for name in ('setup','motorStop'):
             if not hasattr(self.move,name):raise ValueError(f'Incompatible Move.py: missing {name}')
         try:
             self.move.setup()
             self.move.motorStop()
+            self.motor=AdeeptMotor(self.move,enabled=True,max_output=self.max_output)
             from adafruit_motor.servo import Servo
             # Use the motor module's shared PCA9685 instead of importing Functions
             # or starting a competing vendor I2C/automatic-driving thread.
@@ -74,7 +81,6 @@ class AdeeptHardware:
             self.servo.angle=self.servo_angle
             time.sleep(.5)
             self.sensor=FreshUltrasonic(echo=self.echo,trigger=self.trigger)
-            self.motor=AdeeptMotor(self.move,enabled=True,max_output=self.max_output)
             return self
         except BaseException:
             self.close()
