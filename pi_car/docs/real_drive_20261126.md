@@ -93,3 +93,41 @@ MPLBACKEND=Agg .venv/bin/python -m unittest discover -s tests -q
 총 67개 중 66개가 통과했고, PC에 GPIO Zero가 필요한 선택 테스트 1개는 생략했다. 실차 정량 검증 범위는 위의 12cm 직진, 좌우 25° 회전, 정지 상태의 실제 초음파 샘플이다.
 
 외부 API에서 `TURN`을 보낼 때에는 명령마다 새 `command_id`를 사용한다. 현재 저널의 동일 ID 중복 판단에는 `degrees`가 빠져 있어, 같은 ID로 각도만 바꾸면 기존 결과가 반환될 수 있다. 지도 창은 각 클릭에 고유 ID를 생성한다.
+
+## 7. 새 브랜치의 카메라 클릭 주행
+
+`feature/picar-b-four-wheel`에서 PC/Pi가 같은 코드를 쓰도록 Pi에 별도 worktree
+`~/robotics/capstone-picar-b-four-wheel`을 만들었다. PC의 기존 브랜치와 Pi 원래 작업
+폴더는 보존했다. PC의 내부 지도
+`data/session_20261126/map_manual_01_filtered/clearance_05/map/`를 Pi worktree의
+`pi_car/data/live_goal_map/`에 복사하고 두 지도 파일의 SHA-256 일치를 확인했다.
+
+`fleet-panel --camera-dir <snapshot-dir> --calibration <calibration.json>`은
+Fleet 서버의 최신 RGB-D 장면을 화면에 표시한다. 바닥을 좌클릭하면 픽셀의 깊이와
+높이를 확인하고, 현재 카메라 보정으로 월드 좌표에 변환해 MOVE 명령을 보낸다.
+PC/Pi에는 같은 내부 지도가 필요하지만 사용자는 지도 창 대신 카메라 영상을 클릭한다.
+카메라를 두 프로세스가 동시에 열지 않도록 Fleet 서버가 약 4Hz로 장면을 저장한다.
+
+차량 태그는 12cm 검은 변의 `ArUco 4x4 ID 1`로 교체됐다. 기존 7cm AprilTag는
+천장 카메라의 640×480 장면에서 검출되지 않았다. 새 태그는 연속 10프레임 모두
+검출됐고 위치 유효 기준을 통과했다. 새 태그의 인쇄 방향이 달라
+`heading_offset_rad`를 `+π/2`로 변경했다. 화면 화살표가 차량 앞쪽을 가리키는지
+확인한 뒤 실차 주행을 진행했다.
+
+판을 치운 상태에서는 Pi 초음파 원시값이 30회 연속 2m 상한에 닿아 기존 안전
+판정이 `ULTRASONIC_INPUT_INVALID`로 주행을 막았다. `robot-client --allow-no-echo`는
+반복해 들어오는 **신선한 2m 상한값**을 열린 공간으로 해석한다. 2m 이내 거리값이
+들어오면 초음파 정지 조건을 다시 적용하며, 센서 갱신이 멈추거나 `None`을 내면
+정지한다. 기본 실행은 기존 무효 판정을 유지한다. 초음파 단선도 2m 상한으로
+보일 수 있으므로, 이 옵션의 주행은 카메라에서 확인한 열린 바닥에서만 사용한다.
+
+실차에서 `--max-output 0.30 --drive-output 0.30 --allow-no-echo`로 차량 앞쪽
+약 16cm 목표를 보냈다. 카메라 위치는 `(-0.625,-0.685)m`에서
+`(-0.743,-0.553)m`로 이동했다. 목표 `(-0.735,-0.555)m`과의 최종 카메라
+오차는 약 0.8cm였고, PC 저널에는 `ARRIVED / GOAL_REACHED`가 기록됐다.
+추가 STOP에도 `STOPPED`를 확인했다. 물체를 새로 놓아 초음파가 자동으로
+근거리 값을 받아 정지하는 실차 시험은 이 단계에서 수행하지 않았다.
+
+PC 전체 테스트는 70개 실행, 69개 통과, 선택 GPIO Zero 테스트 1개 생략이었다.
+카메라 바닥 클릭 변환, 두 태그 사전의 독립 검출, 새 2m 상한의 시각 보존과
+실제 30cm 측정으로의 자동 전환을 포함한다.

@@ -14,6 +14,8 @@ def main():
     add_commands(commands)
     capture = commands.add_parser("capture", help="Save one rectified RGB-D capture")
     capture.add_argument("--out", required=True)
+    capture.add_argument("--frames", type=int, default=1,
+                         help="Combine successive depth frames for stationary mapping (default: 1)")
     preview = commands.add_parser("preview", help="Check RGB/depth before calibration")
     preview_source = preview.add_mutually_exclusive_group(required=True)
     preview_source.add_argument("--capture")
@@ -63,20 +65,22 @@ def main():
 
 
 def _run(args, parser):
-    if args.command in {"fleet-server", "robot-client", "send-command", "mock-fleet", "fleet-panel"}:
+    if args.command in {"fleet-server", "robot-client", "send-command", "mock-fleet", "fleet-panel", "ws-robot"}:
         from pi_car.fleet_cli import run
         try:
             asyncio.run(run(args))
         except KeyboardInterrupt:
             pass
         return
-    from pi_car.pc.camera import RealSenseCamera, RGBDFrame
+    from pi_car.pc.camera import RealSenseCamera, RGBDFrame, capture_static
     from pi_car.pc.calibration import Calibration, calibrate
     if args.command == "capture":
+        if args.frames < 1:
+            raise ValueError("--frames must be positive")
         with RealSenseCamera() as camera:
-            frame = camera.read()
+            frame = capture_static(camera, args.frames)
         frame.save(args.out)
-        print(f"Saved {args.out}; depth in meters, rectified RGB optical frame")
+        print(f"Saved {args.out}; {frame.frame_count} frame(s), rectified depth in meters")
     elif args.command == "tagcheck":
         from pi_car.common.grid import OccupancyGrid
         from pi_car.pc.tagcheck import check_tags

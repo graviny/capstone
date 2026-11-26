@@ -1,4 +1,4 @@
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, replace
 from pathlib import Path
 import json
 import time
@@ -30,19 +30,40 @@ class RGBDFrame:
     intrinsics: Intrinsics  # RGB and depth both rectified to this optical frame
     timestamp: float
     serial: str
+    frame_count: int = 1
 
     def save(self, path):
         Path(path).parent.mkdir(parents=True, exist_ok=True)
         np.savez_compressed(path, rgb=self.rgb, depth_m=self.depth_m,
                             metadata=json.dumps(dict(intrinsics=asdict(self.intrinsics),
-                                                     timestamp=self.timestamp, serial=self.serial)))
+                                                     timestamp=self.timestamp, serial=self.serial,
+                                                     frame_count=self.frame_count)))
 
     @classmethod
     def load(cls, path):
         with np.load(path, allow_pickle=False) as data:
             meta = json.loads(str(data["metadata"]))
             return cls(data["rgb"], data["depth_m"], Intrinsics(**meta["intrinsics"]),
-                       meta["timestamp"], meta["serial"])
+                       meta["timestamp"], meta["serial"], meta.get("frame_count", 1))
+
+
+def capture_static(camera, frame_count):
+    """Combine successive frames from a fixed camera viewing a stationary scene."""
+    if frame_count < 1:
+        raise ValueError("Capture requires at least one frame")
+    first = camera.read()
+    if frame_count == 1:
+        return first
+    depths = np.empty((frame_count, *first.depth_m.shape), dtype=np.float32)
+    depths[0] = first.depth_m
+    latest = first
+    for index in range(1, frame_count):
+        latest = camera.read()
+        depths[index] = latest.depth_m
+    valid = np.isfinite(depths) & (depths > 0)
+    median = np.ma.median(np.ma.array(depths, mask=~valid), axis=0).filled(0)
+    median[valid.sum(axis=0) <= frame_count // 2] = 0
+    return replace(latest, depth_m=median, frame_count=frame_count)
 
 
 class RealSenseCamera:

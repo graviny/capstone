@@ -25,6 +25,8 @@ class RobotAgent:
         self.journal = CommandJournal(journal_path)
         self.pose = None
         self.pose_received = 0.
+        self.pose_loss_since = None
+        self.pose_loss_grace_s = .5
         self.front_range = None
         self.connected = False
         self.active = None
@@ -57,6 +59,7 @@ class RobotAgent:
     def _finish(self, kind, reason):
         turn = self.runtime.turn
         self.runtime.halt()
+        self.pose_loss_since = None
         self.generation += 1
         active, self.active = self.active, None
         self.goal = None
@@ -72,6 +75,7 @@ class RobotAgent:
     def connect(self):
         self.runtime.halt()
         self.connected, self.pose = True, None
+        self.pose_loss_since = None
         self.emit(self.message("READY"))
         for _, _, event in self.journal.events():
             if event["type"] in TERMINAL:
@@ -87,11 +91,21 @@ class RobotAgent:
             self.pose = None
             raise ValueError("Robot/frame/map mismatch")
         if kind == "POSE":
+            was_fresh=self.fresh_pose()
             self.pose = Pose(**{k: message[k] for k in (
                 "robot_id", "x", "y", "theta", "timestamp", "frame_id", "valid")})
             self.pose_received = time.monotonic()
             if not self.fresh_pose():
-                self._finish("ERROR", "POSE_INVALID_OR_STALE")
+                if self.active and not message['valid'] and (was_fresh or self.pose_loss_since is not None):
+                    if self.pose_loss_since is None:
+                        self.pose_loss_since=time.monotonic()
+                        self.motor.stop()
+                else:
+                    self._finish("ERROR", "POSE_INVALID_OR_STALE")
+            elif self.pose_loss_since is not None:
+                self.pose_loss_since=None
+                if self.active and (self.runtime.path or self.runtime.turn is not None):
+                    self.motor.arm()
             return
         if kind not in {"GOAL", "TURN", "STOP"}:
             raise ValueError("Unexpected PC command")
@@ -167,6 +181,8 @@ class RobotAgent:
             self.runtime.halt()
             return
         if not self.fresh_pose():
+            if self.pose_loss_since is not None and time.monotonic()-self.pose_loss_since < self.pose_loss_grace_s:
+                return  # motors are stopped; wait briefly for a new camera detection
             self._finish("ERROR", "POSE_TIMEOUT")
             return
         turn = self.runtime.turn

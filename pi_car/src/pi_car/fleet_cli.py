@@ -28,11 +28,28 @@ def add_commands(commands):
     robot.add_argument("--journal", required=True, help="Unique durable SQLite file for this robot")
     robot.add_argument("--mock-range", type=float, help="DRY-RUN synthetic front range in meters")
     robot.add_argument("--enable-motors",action="store_true",help="Activate real Adeept motor and ultrasonic hardware")
+    robot.add_argument("--allow-no-echo",action="store_true",
+                       help="Treat repeated fresh 2m ultrasonic saturation as clear; still stop for measured obstacles")
     robot.add_argument("--vendor-dir",help="Installed Adeept OrdinaryWheels directory containing Move.py")
     robot.add_argument("--max-output",type=float,default=.2)
     robot.add_argument("--drive-output",type=float,
                        help="Cruise motor output (0..1), not m/s; default 0.20 capped by --max-output")
     robot.add_argument("--servo-angle",type=float,default=90.)
+    ws=commands.add_parser("ws-robot",help="PC executor for a d455_drive/server.py --four-wheel car (WebSocket)")
+    ws.add_argument("--map", required=True)
+    ws.add_argument("--robot-id", required=True, help="Fleet robot id from robots.json (e.g. 1)")
+    ws.add_argument("--car-url", required=True, help="ws://<Pi IP>:8765 of d455_drive/server.py --four-wheel")
+    ws.add_argument("--car-robot-id", help="Expected status.robot_id of the car (e.g. picar4wd)")
+    ws.add_argument("--host", default="127.0.0.1", help="Fleet server host")
+    ws.add_argument("--port", type=int, default=8765)
+    ws.add_argument("--clearance", type=float, default=.2)
+    ws.add_argument("--journal", required=True, help="Unique durable SQLite file for this robot")
+    ws.add_argument("--max-output", type=float, default=.3)
+    ws.add_argument("--drive-output", type=float, help="Cruise output (0..1); default min(0.20, --max-output)")
+    ws.add_argument("--range-timeout-ms", type=float, default=400.,
+                    help="Max age of the car's front range (status arrives at 10 Hz over Wi-Fi)")
+    ws.add_argument("--pose-loss-grace-ms", type=float, default=1000.,
+                    help="Stopped wait for the tag to reappear before failing a command")
     panel=commands.add_parser("fleet-panel",help="PC map window: choose robot, click goal, STOP")
     panel_map=panel.add_mutually_exclusive_group(required=True)
     panel_map.add_argument("--map")
@@ -40,6 +57,8 @@ def add_commands(commands):
     panel.add_argument("--host",default="127.0.0.1")
     panel.add_argument("--port",type=int,default=8766)
     panel.add_argument("--clearance",type=float,default=.2)
+    panel.add_argument("--camera-dir",help="Show live fleet-server RGB snapshots and click the floor image")
+    panel.add_argument("--calibration",help="Camera calibration for --camera-dir pixel goals")
     sender = commands.add_parser("send-command", help="Send an external JSON command; no auto goals")
     sender.add_argument("--host", default="127.0.0.1")
     sender.add_argument("--port", type=int, default=8766)
@@ -55,9 +74,16 @@ async def run(args):
     from pi_car.transport.commands import CommandTCPServer, send_command
     if args.command == "fleet-panel":
         from pi_car.pc.panel import FleetPanel
+        from pi_car.pc.calibration import Calibration
         from pi_car.mock import mock_grid
+        if bool(args.camera_dir) != bool(args.calibration):
+            raise ValueError('--camera-dir and --calibration must be used together')
         grid=mock_grid() if args.mock_map else OccupancyGrid.load(args.map)
-        FleetPanel(grid,host=args.host,port=args.port,clearance_m=args.clearance).show()
+        calibration=Calibration.load(args.calibration) if args.calibration else None
+        if calibration and calibration.frame_id != grid.metadata.frame_id:
+            raise ValueError('Camera calibration and fleet map frames differ')
+        FleetPanel(grid,host=args.host,port=args.port,clearance_m=args.clearance,
+                   camera_dir=args.camera_dir,calibration=calibration).show()
         return
     if args.command == "send-command":
         print(json.dumps(await send_command(args.host,args.port,json.loads(args.json)),indent=2))
@@ -74,6 +100,39 @@ async def run(args):
             await gateway.close()
             await world.close()
         return
+    if args.command == "ws-robot":
+        from pi_car.vehicle.agent import RobotAgent
+        from pi_car.vehicle.client import RobotClient
+        from pi_car.pc.ws_robot import WebSocketCar, WebSocketWheels
+        from pi_car.transport.protocol import number
+        max_output=number(args.max_output)
+        drive_output=number(args.drive_output) if args.drive_output is not None else min(.2,max_output)
+        if not 0 < drive_output <= max_output <= .3:
+            raise ValueError('Requires 0 < --drive-output <= --max-output <= 0.30')
+        if not 100 <= number(args.range_timeout_ms) <= 1000:
+            raise ValueError('--range-timeout-ms must be within [100, 1000]')
+        grid=OccupancyGrid.load(args.map)
+        wheels=WebSocketWheels(asyncio.get_running_loop(),max_output)
+        car=WebSocketCar(args.car_url,wheels,expected_robot_id=args.car_robot_id)
+        agent=RobotAgent(args.robot_id,grid,clearance_m=args.clearance,journal_path=args.journal,
+                         motor=wheels,drive_output=drive_output)
+        agent.runtime.range_timeout=args.range_timeout_ms/1000
+        if not 0 <= number(args.pose_loss_grace_ms) <= 3000:
+            raise ValueError('--pose-loss-grace-ms must be within [0, 3000]')
+        agent.pose_loss_grace_s=args.pose_loss_grace_ms/1000
+        client=RobotClient(agent,args.host,args.port,range_provider=car.front_range)
+        print(f'WEBSOCKET CAR {args.car_url}: fleet robot {args.robot_id} via {args.host}:{args.port}',flush=True)
+        tasks=[asyncio.create_task(car.run()),asyncio.create_task(client.run())]
+        try:
+            done,_=await asyncio.wait(tasks,return_when=asyncio.FIRST_COMPLETED)
+            for task in done:task.result()
+        finally:
+            car.running=False
+            await client.close()
+            await agent.close()
+            for task in tasks:task.cancel()
+            await asyncio.gather(*tasks,return_exceptions=True)
+        return
     if args.command == "robot-client":
         from pi_car.vehicle.agent import RobotAgent
         from pi_car.vehicle.client import RobotClient
@@ -83,6 +142,8 @@ async def run(args):
             raise ValueError("Mock range must be positive")
         if args.enable_motors and (not args.vendor_dir or args.mock_range is not None):
             raise ValueError('--enable-motors requires --vendor-dir and forbids --mock-range')
+        if args.allow_no_echo and not args.enable_motors:
+            raise ValueError('--allow-no-echo requires --enable-motors')
         drive_output=(number(args.drive_output) if args.drive_output is not None else
                       min(.2,number(args.max_output)) if args.enable_motors else .2)
         if not 0 < drive_output <= 1:
@@ -92,17 +153,21 @@ async def run(args):
         grid=OccupancyGrid.load(args.map)
         if args.enable_motors:
             from pi_car.vehicle.hardware.live import AdeeptHardware
-            context=AdeeptHardware(args.vendor_dir,max_output=args.max_output,servo_angle=args.servo_angle)
+            context=AdeeptHardware(args.vendor_dir,max_output=args.max_output,
+                                   servo_angle=args.servo_angle)
         else:context=nullcontext(None)
         with context as hardware:
             agent = RobotAgent(args.robot_id,grid,clearance_m=args.clearance,
                                journal_path=args.journal,motor=hardware.motor if hardware else None,
                                drive_output=drive_output)
-            provider=(hardware.sensor.read if hardware else
+            provider=(hardware.sensor.read_allow_clear if hardware and args.allow_no_echo else
+                      hardware.sensor.read if hardware else
                       (lambda:RangeReading(args.mock_range,0.,time.monotonic())) if args.mock_range else None)
             client = RobotClient(agent,args.host,args.port,range_provider=provider)
             try:
-                print('REAL HARDWARE ENABLED' if hardware else 'DRY RUN: motor output disabled',flush=True)
+                label=('REAL HARDWARE: fresh no-echo means clear; measured obstacles still stop' if args.allow_no_echo else
+                       'REAL HARDWARE ENABLED' if hardware else 'DRY RUN: motor output disabled')
+                print(label,flush=True)
                 await client.run()
             finally:
                 await client.close()

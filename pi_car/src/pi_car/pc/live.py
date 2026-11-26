@@ -12,7 +12,7 @@ async def publish_camera(fleet, camera, localizer, *, snapshot_dir=None, minimum
         nonlocal last_snapshot
         frame = camera.read()
         poses=localizer.estimate(frame)
-        if directory and time.monotonic()-last_snapshot>=1.:
+        if directory and time.monotonic()-last_snapshot>=.25:
             temporary=directory/'latest.tmp.npz'
             frame.save(temporary)
             temporary.replace(directory/'latest.npz')
@@ -37,8 +37,8 @@ async def publish_camera(fleet, camera, localizer, *, snapshot_dir=None, minimum
                 reason=error
             elif poses.get(r) is not None:
                 reason=None
-            elif localizer.localizers[r].tag_id not in localizer.last_detection_ids:
-                reason=f"TAG {localizer.localizers[r].tag_id} NOT DETECTED (seen: {localizer.last_detection_ids})"
+            elif (localizer.localizers[r].tag_family,localizer.localizers[r].tag_id) not in localizer.last_detection_keys:
+                reason=f"TAG {localizer.localizers[r].tag_family}:{localizer.localizers[r].tag_id} NOT DETECTED (seen: {sorted(localizer.last_detection_keys)})"
             else:
                 reason="TAG POSE REJECTED: check size, view angle and reprojection error"
             fleet.robots[r].pose_error=reason

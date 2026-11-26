@@ -82,6 +82,7 @@ def run_experiment(frame, roi, output, *, clearance_m=.2, resolution_m=.03, robo
     (output / "pose.json").write_text(json.dumps(pose.to_dict() if pose else dict(valid=False), indent=2))
     report = dict(**diagnostics, depth_valid_fraction=float(valid.mean()),
                   map_shape=list(raw.cells.shape), resolution_m=resolution_m,
+                  capture_frames=frame.frame_count,
                   free_cells=int(np.sum(raw.cells == 0)),
                   occupied_cells=int(np.sum(raw.cells == 1)),
                   unknown_cells=int(np.sum(raw.cells == -1)),
@@ -90,7 +91,7 @@ def run_experiment(frame, roi, output, *, clearance_m=.2, resolution_m=.03, robo
                   path_length_m=sum(math.dist(a,b) for a,b in zip(path,path[1:])),
                   planning_error=planning_error, apriltag_detected=pose is not None,
                   limitations=["No surveyed world references or independent accuracy measurement",
-                               "Single frame: occlusions and depth holes remain unknown",
+                               "Occlusions and depth holes remain unknown",
                                "Test path endpoints are not a measured robot pose",
                                "No vehicle motion was performed"])
     (output / "report.json").write_text(json.dumps(report, indent=2))

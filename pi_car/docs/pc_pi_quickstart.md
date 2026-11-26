@@ -125,7 +125,8 @@ cd ~/robotics/capstone/pi_car
 source .venv/bin/activate
 pi-car fleet-server --map data/map --calibration data/calibration.json \
   --robots config/robots.json --host 0.0.0.0 --port 8765 \
-  --command-port 8766 --clearance 0.20 --journal data/fleet.sqlite3
+  --command-port 8766 --clearance 0.20 --journal data/fleet.sqlite3 \
+  --snapshot-dir data/live_camera
 ```
 
 이 프로세스가 D455를 계속 읽어 차량별 Pose를 보낸다. `preview --live`나 RealSense Viewer로
@@ -137,6 +138,17 @@ pi-car fleet-server --map data/map --calibration data/calibration.json \
 cd ~/robotics/capstone/pi_car
 source .venv/bin/activate
 MPLBACKEND=TkAgg pi-car fleet-panel --map data/map --host 127.0.0.1 --port 8766 --clearance 0.20
+```
+
+카메라 영상 위에서 바닥을 클릭해 즉시 주행하려면 두 번째 명령 대신 다음을 실행한다.
+별도의 카메라 장치를 열지 않고, 첫 번째 명령이 저장하는 최신 RGB-D 장면을 표시한다.
+선택 픽셀의 깊이와 바닥 높이를 검사하고, 보정 좌표로 변환한 뒤 MOVE를 보낸다.
+주행 경로와 안전 영역 판단에는 같은 내부 지도를 사용하므로 PC와 Pi에 동일한 지도가 있어야 한다.
+
+```bash
+MPLBACKEND=TkAgg pi-car fleet-panel --map data/map \
+  --camera-dir data/live_camera --calibration data/calibration.json \
+  --host 127.0.0.1 --port 8766 --clearance 0.20
 ```
 
 - 오른쪽 A/B 선택 → 지도 흰색의 유효 영역 **좌클릭 시 즉시 MOVE 전송**.
@@ -219,6 +231,20 @@ pi-car robot-client --robot-id B --host 192.168.0.10 --map data/map \
 초음파는 실제 측정 시각을 보존하고 timeout·0·2m 최대 포화는 무효 처리한다.
 넓은 공간에서 echo가 없으면 정지할 수 있다. 측정 스레드가 멈춰도 캐시값에 새 시각을 붙이지 않는다.
 종료 시 모터 정지·센서 해제·서보 PWM 해제·PCA9685 종료를 수행한다.
+
+정면에 판이 없어 초음파가 2m 최대치로 포화되는 열린 공간에서는
+`--allow-no-echo`를 추가할 수 있다. 이 옵션은 **반복해서 새로 측정된 2m 포화값**만
+빈 공간으로 처리한다. 2m 이내 물체의 실제 거리값이 들어오면 기존 40cm 정지 조건을
+그대로 적용한다. 센서 측정이 멈추거나 `None`이면 정지한다. 카메라 위치 인식과
+PC/Pi 지도 경로 검사는 계속 적용된다. 초음파 단선도 포화값으로 보일 수 있으므로
+주행 구간을 카메라에서 직접 확인한 열린 바닥으로 제한한다.
+
+```bash
+pi-car robot-client --robot-id 1 --host <PC_IP> --map data/map \
+  --clearance 0.20 --journal data/robot_1.sqlite3 \
+  --enable-motors --vendor-dir <ORDINARY_WHEELS_DIR> \
+  --max-output 0.30 --drive-output 0.30 --allow-no-echo
+```
 
 이 명령은 실제 출력이 가능한 연결 코드지만 **실제 차량으로 검증한 결과는 아니다.**
 첫 실험은 바퀴를 지면에서 띄워 방향·정지·서보 정면부터 확인하고, 이후 낮은 출력으로 진행한다.

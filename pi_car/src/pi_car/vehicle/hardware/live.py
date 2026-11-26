@@ -20,6 +20,7 @@ class FreshUltrasonic:
             sensor_class=DistanceSensor
         self.latest=None
         self.previous_saturated = False
+        self.last_saturated_at = None
         owner=self
         class TimestampedSensor(sensor_class):
             def _read(self):
@@ -36,6 +37,7 @@ class FreshUltrasonic:
         saturated = normalized == 1.
         isolated_saturation = saturated and not self.previous_saturated
         self.previous_saturated = saturated
+        self.last_saturated_at = time.monotonic() if saturated else None
         if isolated_saturation:
             return
         if (normalized is None or not math.isfinite(normalized) or not 0 < normalized < 1):
@@ -45,6 +47,14 @@ class FreshUltrasonic:
 
     def read(self):
         return self.latest
+
+    def read_allow_clear(self):
+        reading=self.read()
+        if reading is not None:
+            return reading
+        if self.previous_saturated and self.last_saturated_at is not None:
+            return RangeReading(2.,0.,self.last_saturated_at)
+        return None
 
     def close(self):
         self.sensor.close()
