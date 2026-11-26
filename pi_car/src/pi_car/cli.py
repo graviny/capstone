@@ -35,6 +35,10 @@ def main():
                             help="quadratic removes the D455 depth bowl toward the image edges")
     experiment.add_argument("--obstacle-fraction", type=float, default=.25,
                             help="Share of a cell's depth samples that must be raised to mark it occupied")
+    experiment.add_argument("--boundary-tags", type=int, nargs="+", metavar="ID",
+                            help="ArUco 4x4 tag IDs at the area corners; outside their polygon is not drivable")
+    experiment.add_argument("--boundary-px", type=float, nargs=2, action="append", metavar=("U","V"),
+                            help="Extra corner pixel for a tag clipped by the image edge (repeatable)")
     experiment.add_argument("--floor-below", type=float, default=.06,
                             help="Depth this far below the floor still counts as floor (m)")
     tagcheck = commands.add_parser("tagcheck", help="Detect tags and locate centers using captured depth")
@@ -99,11 +103,15 @@ def _run(args, parser):
         robot = json.loads(Path(args.robot_config).read_text()) if args.robot_config else None
         frame=RGBDFrame.load(args.capture)
         roi=pick_floor_roi(frame) if args.pick_floor else args.floor_roi
+        boundary=None
+        if args.boundary_tags or args.boundary_px:
+            from pi_car.pc.floor import find_tag_centers
+            boundary=(find_tag_centers(frame,args.boundary_tags) if args.boundary_tags else [])+(args.boundary_px or [])
         report = run_experiment(frame, roi, args.out,
                                 clearance_m=args.clearance, resolution_m=args.resolution,
                                 robot_config=robot, floor_model=args.floor_model,
                                 obstacle_fraction=args.obstacle_fraction,
-                                floor_below_m=args.floor_below)
+                                floor_below_m=args.floor_below, boundary_px=boundary)
         print(json.dumps(report, indent=2))
     elif args.command == "preview":
         from pi_car.pc.preview import RGBDPreview

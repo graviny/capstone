@@ -120,3 +120,33 @@ def fit_floor_surface(points, *, search_m=.05, iterations=4):
         sigma = 1.4826*np.median(np.abs(residual[mask]))
         mask = np.abs(residual) < max(3*sigma, .012)
     return [float(c) for c in coefficients], float(sigma)
+
+
+def pixel_to_floor(calibration, intrinsics, uv):
+    """World (x, y) where the pixel's viewing ray meets the calibrated floor z=0."""
+    u, v = map(float, uv)
+    ray = np.array([(u - intrinsics.cx)/intrinsics.fx, (v - intrinsics.cy)/intrinsics.fy, 1.])
+    transform = np.asarray(calibration.camera_to_world, float)
+    direction, origin = transform[:3, :3] @ ray, transform[:3, 3]
+    if abs(direction[2]) < 1e-9 or -origin[2]/direction[2] <= 0:
+        raise ValueError(f"Pixel {u:.1f},{v:.1f} does not look at the floor")
+    return (origin + direction*(-origin[2]/direction[2]))[:2]
+
+
+def find_tag_centers(frame, tag_ids, family="aruco_4x4_50"):
+    """Pixel centers of floor marker tags (used as map boundary corners)."""
+    import cv2
+    dictionaries = {"aruco_4x4_50": cv2.aruco.DICT_4X4_50,
+                    "apriltag_36h11": cv2.aruco.DICT_APRILTAG_36h11}
+    parameters = cv2.aruco.DetectorParameters()
+    parameters.cornerRefinementMethod = cv2.aruco.CORNER_REFINE_SUBPIX
+    parameters.perspectiveRemovePixelPerCell = 8
+    detector = cv2.aruco.ArucoDetector(cv2.aruco.getPredefinedDictionary(dictionaries[family]),
+                                       parameters)
+    corners, ids, _ = detector.detectMarkers(cv2.cvtColor(frame.rgb, cv2.COLOR_RGB2GRAY))
+    found = {} if ids is None else {int(i): c.reshape(4, 2).mean(0) for i, c in zip(ids.ravel(), corners)}
+    missing = [t for t in tag_ids if t not in found]
+    if missing:
+        raise ValueError(f"Boundary tags not detected: {missing} (detected {sorted(found)}); "
+                         "give clipped tags with --boundary-px U V")
+    return [found[t].tolist() for t in tag_ids]

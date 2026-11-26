@@ -245,6 +245,25 @@ class InspectionTests(unittest.TestCase):
             goal = json.loads(Path(directory, 'goal.json').read_text())
             self.assertEqual(goal['frame_id'], loaded.metadata.frame_id)
 
+    def test_experiment_boundary_polygon_masks_outside_cells(self):
+        import matplotlib
+        matplotlib.use("Agg")
+        from pi_car.pc.experiment import run_experiment
+        frame, _ = scene()
+        corners = [(20, 15), (80, 15), (80, 65), (20, 65)]
+        with tempfile.TemporaryDirectory() as directory:
+            report = run_experiment(frame, (15,10,85,70), directory, clearance_m=.05,
+                                    resolution_m=.05, boundary_px=corners)
+            grid = OccupancyGrid.load(Path(directory, 'map'))
+            boundary = np.array(report['boundary_xy'])
+            self.assertEqual(len(boundary), 4)
+            inside = grid.world_to_cell(*boundary.mean(0))
+            self.assertEqual(grid.cells[inside[1], inside[0]], 0)
+            m = grid.metadata
+            for column, row in ((0, 0), (m.width-1, m.height-1)):
+                self.assertEqual(grid.cells[row, column], -1)
+            self.assertIsNone(report['planning_error'])
+
     def test_goal_selection_path_and_invalid_space(self):
         import matplotlib
         matplotlib.use("Agg")
