@@ -1,31 +1,56 @@
 # d455_drive (PiCar 쪽)
 
+## 여러 대 운용 (PiCar-B2 + 사륜차)
+
+두 차량 모두 **같은 `server.py`와 같은 WebSocket 프로토콜**로 움직인다. 노트북이 차량마다
+WebSocket 연결을 하나씩 열고, 각 차량의 A*/Pure Pursuit 결과(`cmd`)를 그 차량 연결로만 보낸다.
+차량끼리는 통신하지 않는다.
+
+```
+             ┌─ ws://<PiCar-B2 IP>:8765 ──▶ server.py              (robot_id=picar_b2, ackermann)
+노트북 ──────┤
+             └─ ws://<사륜차 IP>:8765   ──▶ server.py --four-wheel (robot_id=picar4wd, differential)
+```
+
+- `status`에 `robot_id`, `drive`(`ackermann`/`differential`), `max_speed`가 실린다. 노트북은 접속 직후
+  `robot_id`가 설정과 맞는지 확인한다.
+- 이름은 `--robot-id`로 바꿀 수 있다 (기본 `picar_b2` / 사륜 `picar4wd`).
+
 ## 사륜 OrdinaryWheels 차량
 
-`--four-wheel`은 좌우 모터 쌍의 출력 차로 조향한다. 같은 WebSocket 명령을 사용하며 상태에
-좌우 PWM 퍼센트인 `left`, `right`가 추가된다. 기본 최대 출력은 30%다. 신선한 정면 초음파
-측정이 없거나 거리가 40cm 이하면 정지한다. 정지·연결 끊김·명령 타임아웃에서도 바퀴 출력을
-0으로 만든다. 이 프로필의 초음파 서보는 정면에 고정한다.
+`--four-wheel`은 PiCar-B2와 **같은 `cmd`(speed/steer)를 받아서** 좌우 모터 쌍의 출력 차로 조향한다.
 
-저장소 루트에서 Pi의 가상환경에 설치한다.
+| 항목 | PiCar-B2 | 사륜 (`--four-wheel`) |
+|---|---|---|
+| speed | -100~100, 최대 60%로 제한 | 같음, 최대 30%로 제한 (`--max-speed` ≤ 30) |
+| steer | -30~30, + = 왼쪽, 앞바퀴 각도 | 같은 부호. 안쪽 바퀴 출력을 `1 - |steer|/30` 배로 줄인다 (±30이면 안쪽 바퀴 정지) |
+| speed 0, steer ≠ 0 | 정지 | 정지 (제자리 회전 안 함) |
+| 초음파 | 스캔 서보로 좌우 스캔 | 정면 고정 |
+| 장애물 | 35cm 감속, 18cm 자율 회피 | 40cm 이하 또는 측정 불가면 **전진만** 정지 (`state:"blocked"`) |
+| 후진 | 보호 안 함 (노트북 책임) | 같음 — 막혔을 때 노트북이 후진으로 빠져나올 수 있다 |
+
+- 추가 상태 필드: `left`, `right` (좌우 PWM %).
+- 추가 이벤트: `{"type":"event","event":"blocked","dist_cm":38.5}` / `{"type":"event","event":"clear","dist_cm":90.1}`.
+  자율 회피를 하지 않으므로 `avoid_start`/`avoid_done`은 오지 않는다. `blocked`를 받으면 노트북이 후진·재계획한다.
+- 정지·연결 끊김·명령 타임아웃(0.5초)에서 바퀴 출력을 0으로 만든다. 모터 워치독(0.25초)이 걸려도
+  명령이 계속 들어오면 다시 arm한다.
+
+설치 (저장소 루트, Pi의 가상환경):
 
 ```bash
 python -m pip install -e './pi_car[pi,ws]'
-python d455_drive/server.py --four-wheel --dry-run --port 18765
+python d455_drive/server.py --four-wheel --dry-run --port 18765          # 하드웨어 없이
+python d455_drive/server.py --four-wheel --vendor-dir <Move.py 있는 경로>  # 실차
 ```
 
-실차에서 `--dry-run`을 빼고 `--vendor-dir`에 OrdinaryWheels의 `Move.py`가 있는 경로를 넣는다.
-기본 접속 주소는 Pi의 localhost다. 원격으로 접속할 때는 SSH 포트 포워딩을 사용할 수 있다.
-동일한 차량에서 다른 GPIO 구동기를 먼저 종료한다.
+- 기본으로 `0.0.0.0:8765`에서 대기하므로 노트북이 Tailscale/Wi-Fi로 바로 접속한다
+  (Pi 안에서만 받으려면 `--host 127.0.0.1`).
+- 정면에 판이 없어 초음파가 계속 2m로 포화되는(무반향) 공간에서는 `--allow-no-echo`를 붙인다.
+  없으면 측정 불가로 보고 전진하지 않는다. 실제 2m 이내 값이 나오면 40cm 정지 조건은 그대로 적용된다.
+- 같은 차량에서 다른 GPIO 구동기(`robot-client` 등)를 먼저 종료한다.
 
-RealSense 지도에서 목표점을 클릭해 주행할 때는 [PC·Pi 실행 안내](../pi_car/docs/pc_pi_quickstart.md)의
-`fleet-server` → `robot-client` → `fleet-panel` 흐름을 사용한다. 이 흐름에서 Pi는 목표점의
-A* 경로와 각도 회전을 처리하며, PC는 카메라 위치와 지도를 제공한다. 정적 지도는
-`pi-car capture --frames 21 --out <파일.npz>`로 촬영할 수 있다. 수동 WebSocket 서버와
-지도 주행용 `robot-client`는 같은 모터와 초음파를 사용하는 대체 실행 모드다.
-정면에 판이 없어 초음파가 계속 2m 최대치로 포화되는 공간은 지도 주행용
-`robot-client --allow-no-echo`로 운용할 수 있다. 실제 2m 이내 거리값이 측정되면
-초음파 정지 조건이 자동 적용된다.
+`pi_car/`의 `fleet-server` → `robot-client` 흐름([PC·Pi 실행 안내](../pi_car/docs/pc_pi_quickstart.md))은
+Pi가 A*를 직접 돌리는 별도 실행 모드다. 두 차량을 함께 운용할 때는 위의 `server.py` 방식을 사용한다.
 
 ## 기존 PiCar-B2 차량
 

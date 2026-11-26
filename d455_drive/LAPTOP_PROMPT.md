@@ -56,6 +56,42 @@ PiCar → 노트북:
 - 전방 18cm 이내에서 전진 명령이 오면 PiCar가 **자율 회피**를 한다(약 2.5~3초, 그동안 노트북 명령 무시): 정지 → 좌우 스캔 → 후진 → 빈 쪽으로 선회.
 - `avoid_done.result == "blocked"`: 양쪽이 막혀 후진만 하고 멈춘 상태.
 
+## 여러 대 운용 (PiCar-B2 + 사륜차)
+
+차량이 2대 이상이다. 각 차량은 위와 **같은 프로토콜**의 WebSocket 서버를 따로 띄운다.
+`config.yaml`에 차량 목록을 두고, 차량마다 태그·주소·주행 모델을 따로 설정할 것:
+
+```yaml
+robots:
+  - robot_id: picar_b2          # PiCar-B2 (앞바퀴 조향)
+    url: ws://100.72.101.76:8765
+    tag_id: <ID>
+    drive: ackermann
+    max_speed: 60
+    min_turn_radius_m: 0.35
+  - robot_id: picar4wd          # 팀원 사륜차 (좌우 출력 차 조향)
+    url: ws://<사륜차 IP>:8765
+    tag_id: <ID>
+    drive: differential
+    max_speed: 30
+    min_turn_radius_m: <실측>
+```
+
+- 차량마다 WebSocket 연결·재접속·20Hz `cmd` 송신·상태 수신을 **독립적으로** 돌린다. 한 차량의 연결이
+  끊겨도 다른 차량은 계속 동작해야 한다. 접속 후 `status.robot_id`가 설정과 다르면 연결을 끊고 경고.
+- 명령은 차량 단위다: GUI에서 차량을 선택(예: 숫자키 `1`, `2` / 탭)한 뒤 클릭하면 **선택된 차량**의 목표가
+  바뀐다. 차량마다 자기 목표·A* 경로·Pure Pursuit 상태를 가진다. `space`는 전체 정지/재개.
+  상위 시스템이 명령을 줄 수 있게 `move(robot_id, x, y)`, `stop(robot_id)` 함수로 분리해 둘 것.
+- 장애물 지도에서 **다른 차량의 영역은 장애물**로 넣는다(태그 위치 + 차체 반경 팽창). 자기 차량 영역만 마스킹.
+- 사륜차(`drive: differential`)도 `cmd`의 speed/steer 의미는 같다(+ = 왼쪽). 단 speed는 30%로 제한되고,
+  steer는 안쪽 바퀴 출력을 줄이는 방식이라 각도 ↔ 회전 반경 관계가 PiCar-B2와 다르다 →
+  `steer_cmd = δ × k`의 `k`와 최소 회전 반경을 **차량별로** 둘 것. speed 0에서 제자리 회전은 하지 않는다.
+- 사륜차는 자율 회피를 하지 않는다. 대신 `state:"blocked"`와 이벤트
+  `{"type":"event","event":"blocked","dist_cm":38.5}` / `{"type":"event","event":"clear",...}`를 보낸다.
+  `blocked` 동안 전진 명령은 무시되고 후진은 실행되므로, 노트북이 잠깐 후진한 뒤 그 앞을 임시 장애물로 두고
+  재계획한다. 상태 메시지에 좌우 바퀴 출력 `left`, `right`(%)가 추가로 실린다.
+- 두 차량의 경로가 서로 겹치면 나중에 출발한 차량이 기다리는 정도의 간단한 규칙이면 충분하다.
+
 ## 구현해야 할 것
 
 1. **카메라 & 보정**

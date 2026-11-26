@@ -19,9 +19,12 @@ def wheel_command(speed, steer):
 
 
 class FourWheelCar:
-    def __init__(self, hardware, fake_dist):
+    drive_type = "differential"
+
+    def __init__(self, hardware, fake_dist, allow_no_echo=False):
         self.hardware = hardware
         self.fake_dist = fake_dist
+        self.allow_no_echo = allow_no_echo
         driver = hardware.motor if hardware is not None else DisabledMotor()
         self.motor = WatchdogMotor(driver, timeout_s=.25)
         self.command = MotorCommand()
@@ -34,13 +37,20 @@ class FourWheelCar:
         else:
             if self.command == MotorCommand():
                 self.motor.arm()
-            self.motor.apply(command)
+            try:
+                self.motor.apply(command)
+            except RuntimeError:
+                # The motor watchdog latched because the control loop stalled.
+                # The command itself is still fresh (server.py checks that), so re-arm.
+                self.motor.arm()
+                self.motor.apply(command)
         self.command = command
 
     def distance_cm(self):
         if self.hardware is None:
             return self.fake_dist
-        reading = self.hardware.sensor.read()
+        sensor = self.hardware.sensor
+        reading = sensor.read_allow_clear() if self.allow_no_echo else sensor.read()
         if reading is None or not reading.usable(time.monotonic()) or abs(reading.angle_rad) > .05:
             return None
         return reading.distance_m * 100
@@ -60,7 +70,12 @@ def hardware_context(dry_run, vendor_dir, max_speed, servo_angle):
 
 
 class FrontStop:
-    """Stop when the front range is invalid or below the chassis threshold."""
+    """Stop forward motion when the front range is invalid or below the threshold.
+
+    Same interface as safety.Safety. Like the PiCar-B2, only forward motion is
+    guarded (the sensor faces forward); reversing is the laptop's responsibility,
+    which also lets the laptop back the car out of a blocked state.
+    """
     phase = None
 
     def __init__(self, car):
@@ -71,8 +86,12 @@ class FrontStop:
     def step(self, now, speed, steer):
         self.dist = self.car.distance_cm()
         valid = self.dist is not None and math.isfinite(self.dist) and self.dist > 0
-        if speed and (not valid or self.dist <= STOP_DISTANCE_CM):
-            self.state = "blocked"
-            return 0., 0., []
-        self.state = "normal"
-        return speed, steer, []
+        obstacle = not valid or self.dist <= STOP_DISTANCE_CM
+        events = []
+        if obstacle != (self.state == "blocked"):
+            events.append({"type": "event", "event": "blocked" if obstacle else "clear",
+                           "dist_cm": round(self.dist, 1) if valid else None})
+        self.state = "blocked" if obstacle else "normal"
+        if obstacle and speed > 0:
+            return 0., 0., events
+        return speed, steer, events

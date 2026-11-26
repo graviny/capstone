@@ -22,8 +22,9 @@ from safety import Safety
 
 
 class Controller:
-    def __init__(self, car, max_speed, safety=Safety):
+    def __init__(self, car, max_speed, safety=Safety, robot_id=None):
         self.car = car
+        self.robot_id = robot_id
         self.safety = safety(car)
         self.max_speed = max_speed
         self.cmd_speed = 0.0
@@ -76,7 +77,10 @@ class Controller:
             state = "idle"
         status = {
             "type": "status",
-            "state": state,                 # idle | normal | slow | avoiding
+            "robot_id": self.robot_id,      # 여러 대를 구분하기 위한 이름 (--robot-id)
+            "drive": getattr(self.car, "drive_type", "ackermann"),  # ackermann | differential
+            "max_speed": self.max_speed,
+            "state": state,                 # idle | normal | slow | avoiding | blocked(사륜)
             "avoid_phase": self.safety.phase,
             "dist_cm": None if self.safety.dist is None else round(self.safety.dist, 1),
             "speed": round(self.out_speed, 1),
@@ -148,7 +152,7 @@ def make_handler(ctl):
 
 
 async def run_server(args, car, safety):
-    ctl = Controller(car, args.max_speed, safety)
+    ctl = Controller(car, args.max_speed, safety, args.robot_id)
     stop = asyncio.Event()
     loop = asyncio.get_running_loop()
     for sig in (signal.SIGINT, signal.SIGTERM):
@@ -158,7 +162,8 @@ async def run_server(args, car, safety):
     stop_task = asyncio.create_task(stop.wait())
     try:
         async with serve(make_handler(ctl), args.host, args.port, ping_interval=2, ping_timeout=2):
-            print(f"[d455_drive] listening on ws://{args.host}:{args.port}  dry_run={args.dry_run}")
+            print(f"[d455_drive] robot={args.robot_id} listening on ws://{args.host}:{args.port}"
+                  f"  max_speed={args.max_speed} dry_run={args.dry_run}")
             done, _ = await asyncio.wait((stop_task, task), return_when=asyncio.FIRST_COMPLETED)
             if task in done:
                 task.result()
@@ -176,17 +181,19 @@ async def run_server(args, car, safety):
 async def main(args):
     if args.four_wheel:
         from four_wheel import FourWheelCar, FrontStop, MAX_SPEED, hardware_context
-        args.host = args.host or "127.0.0.1"
+        args.host = args.host or C.HOST
+        args.robot_id = args.robot_id or "picar4wd"
         args.max_speed = MAX_SPEED if args.max_speed is None else args.max_speed
         if not 0 < args.max_speed <= MAX_SPEED:
             raise SystemExit("Four-wheel --max-speed must be within (0, 30]")
         if not args.dry_run and not args.vendor_dir:
             raise SystemExit("Four-wheel hardware requires --vendor-dir")
         with hardware_context(args.dry_run, args.vendor_dir, args.max_speed, args.servo_angle) as hardware:
-            await run_server(args, FourWheelCar(hardware, args.fake_dist), FrontStop)
+            await run_server(args, FourWheelCar(hardware, args.fake_dist, args.allow_no_echo), FrontStop)
         return
 
     args.host = args.host or C.HOST
+    args.robot_id = args.robot_id or "picar_b2"
     args.max_speed = C.MAX_SPEED if args.max_speed is None else args.max_speed
     car = FakeCar(args.fake_dist, args.verbose) if args.dry_run else Car()
     await run_server(args, car, Safety)
@@ -195,7 +202,10 @@ async def main(args):
 if __name__ == "__main__":
     p = argparse.ArgumentParser()
     p.add_argument("--port", type=int, default=C.PORT)
-    p.add_argument("--host")
+    p.add_argument("--host", help=f"기본 {C.HOST} (노트북이 Tailscale/Wi-Fi로 접속)")
+    p.add_argument("--robot-id", help="status에 실리는 로봇 이름 (기본 picar_b2 / 사륜 picar4wd)")
+    p.add_argument("--allow-no-echo", action="store_true",
+                   help="사륜: 초음파 무반향(2m 포화)을 '앞이 비어 있음'으로 간주")
     p.add_argument("--max-speed", type=float)
     p.add_argument("--four-wheel", action="store_true", help="Use the Adeept OrdinaryWheels four-motor chassis")
     p.add_argument("--vendor-dir", help="OrdinaryWheels directory containing Move.py")
