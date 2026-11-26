@@ -13,7 +13,10 @@ import numpy as np
 matplotlib.use('Agg')
 
 from pi_car.mock import MockFleet, mock_grid
-from pi_car.pc.panel import PanelModel,FleetPanel
+from pi_car.pc.panel import PanelModel,FleetPanel,camera_floor_goal
+from pi_car.pc.camera import RGBDFrame
+from pi_car.pc.calibration import Calibration
+from pi_car.common.geometry import Intrinsics
 from pi_car.pc.commands import CommandInterface
 from pi_car.transport.commands import CommandTCPServer
 from pi_car.vehicle.hardware.live import FreshUltrasonic,AdeeptHardware
@@ -77,6 +80,22 @@ class PanelIntegrationTests(unittest.IsolatedAsyncioTestCase):
 
 
 class PanelModelTests(unittest.TestCase):
+    def test_camera_click_projects_floor_and_rejects_obstacle_or_stale_frame(self):
+        intr=Intrinsics(100,100,100.,100.,0.,0.)
+        depths=np.full((100,100),2.,dtype=np.float32)
+        frame=RGBDFrame(np.zeros((100,100,3),dtype=np.uint8),depths,intr,
+                        time.time(),'test-camera')
+        calibration=Calibration([[1.,0.,0.,0.],[0.,-1.,0.,3.],
+                                 [0.,0.,-1.,2.],[0.,0.,0.,1.]],
+                                'test-floor','test-camera',vars(intr),0.)
+        self.assertEqual(camera_floor_goal(frame,calibration,75,50),(1.5,2.))
+        frame.depth_m[48:53,73:78]=1.5
+        with self.assertRaisesRegex(ValueError,'floor'):
+            camera_floor_goal(frame,calibration,75,50)
+        frame.timestamp-=2
+        with self.assertRaisesRegex(ValueError,'stale'):
+            camera_floor_goal(frame,calibration,75,50)
+
     def test_numpy_mouse_coordinates_are_normalized_without_accepting_booleans(self):
         model=self.model()
         for x,y in [(np.float64(1.5),np.float64(1.)),(np.float32(1.5),np.int64(1))]:
@@ -234,6 +253,27 @@ def destroy():pass
             Path(directory,'Move.py').write_text('raise AssertionError("must not import")')
             for kwargs in [dict(max_output=1.),dict(servo_angle=math.nan)]:
                 with self.assertRaises(ValueError):AdeeptHardware(directory,**kwargs)
+
+    def test_fresh_no_echo_is_clear_only_in_opt_in_reader(self):
+        class FakeSensor:
+            def __init__(self, **kwargs):pass
+            def close(self):pass
+        sensor=FreshUltrasonic(sensor_class=FakeSensor)
+        try:
+            with patch('pi_car.vehicle.hardware.live.time.monotonic',return_value=10.):
+                sensor.sample(1.)
+                sensor.sample(1.)
+            self.assertIsNone(sensor.read())
+            clear=sensor.read_allow_clear()
+            self.assertEqual(clear.distance_m,2.)
+            self.assertTrue(clear.usable(10.15))
+            self.assertFalse(clear.usable(10.25))
+            with patch('pi_car.vehicle.hardware.live.time.monotonic',return_value=11.):
+                sensor.sample(.15)
+            self.assertAlmostEqual(sensor.read_allow_clear().distance_m,.3)
+            sensor.sample(None)
+            self.assertIsNone(sensor.read_allow_clear())
+        finally:sensor.close()
 
     def test_real_mode_rejects_fake_ranges_before_loading_any_hardware(self):
         from pi_car.fleet_cli import run

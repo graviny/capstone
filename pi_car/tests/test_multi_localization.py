@@ -35,8 +35,11 @@ class MultiLocalizationTests(unittest.TestCase):
             obj=np.array([[-s,s,0],[s,s,0],[s,-s,0],[-s,-s,0]])
             rvec,_=cv2.Rodrigues(rotation)
             pixels,_=cv2.projectPoints(obj,rvec,t,self.intr.matrix,np.zeros(5))
+            family=config.get('tag_family','apriltag_36h11')
+            dictionary=(cv2.aruco.DICT_4X4_50 if family=='aruco_4x4_50' else
+                        cv2.aruco.DICT_APRILTAG_36h11)
             marker=cv2.aruco.generateImageMarker(
-                cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_APRILTAG_36h11),config['tag_id'],200)
+                cv2.aruco.getPredefinedDictionary(dictionary),config['tag_id'],200)
             homography=cv2.getPerspectiveTransform(np.float32([[0,0],[199,0],[199,199],[0,199]]),
                                                     pixels.reshape(4,2).astype(np.float32))
             image=np.minimum(image,cv2.warpPerspective(marker,homography,(640,480),borderValue=255))
@@ -64,6 +67,19 @@ class MultiLocalizationTests(unittest.TestCase):
         frame,_=self.render(('B',))
         poses=localizer.estimate(frame)
         self.assertIsNone(poses['A']);self.assertIsNotNone(poses['B'])
+
+    def test_apriltag_and_aruco_with_same_numeric_id(self):
+        from pi_car.pc.localization import MultiRobotLocalizer
+        self.configs[1]=dict(self.configs[1],tag_family='aruco_4x4_50',tag_id=1)
+        localizer=MultiRobotLocalizer(self.calibration,self.configs)
+        frame,expected=self.render()
+        poses=localizer.estimate(frame)
+        self.assertEqual(localizer.last_detection_keys,
+                         {('apriltag_36h11',1),('aruco_4x4_50',1)})
+        for robot_id,(xyz,theta) in expected.items():
+            self.assertIsNotNone(poses[robot_id])
+            np.testing.assert_allclose([poses[robot_id].x,poses[robot_id].y],xyz[:2],atol=.02)
+            self.assertAlmostEqual(poses[robot_id].theta,theta,delta=.06)
 
     def test_duplicate_tag_or_robot_and_missing_configuration_rejected(self):
         from pi_car.pc.localization import MultiRobotLocalizer

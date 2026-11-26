@@ -5,16 +5,22 @@ from pi_car.common.messages import Pose
 
 class AprilTagLocalizer:
     def __init__(self, calibration, tag_id, tag_size_m, robot_id="B",
-                 center_in_tag_m=(0., 0., 0.), heading_offset_rad=0., max_reprojection_px=2.):
+                 center_in_tag_m=(0., 0., 0.), heading_offset_rad=0., max_reprojection_px=2.,
+                 tag_family='apriltag_36h11'):
         import cv2
         if not math.isfinite(tag_size_m) or tag_size_m <= 0:
             raise ValueError("Measure the black square edge; size must be positive")
         self.cv2, self.calibration = cv2, calibration
+        dictionaries={'apriltag_36h11':cv2.aruco.DICT_APRILTAG_36h11,
+                      'aruco_4x4_50':cv2.aruco.DICT_4X4_50}
+        if tag_family not in dictionaries:
+            raise ValueError(f'Unsupported tag family: {tag_family}')
         self.tag_id, self.tag_size_m, self.robot_id = tag_id, tag_size_m, robot_id
+        self.tag_family=tag_family
         self.offset = np.asarray(center_in_tag_m, float)
         self.heading_offset = heading_offset_rad
         self.max_error = max_reprojection_px
-        dictionary = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_APRILTAG_36h11)
+        dictionary = cv2.aruco.getPredefinedDictionary(dictionaries[tag_family])
         self.detector = cv2.aruco.ArucoDetector(dictionary, cv2.aruco.DetectorParameters())
 
     def estimate(self, frame):
@@ -73,27 +79,35 @@ class MultiRobotLocalizer:
                 raise ValueError("Tag ID must be a nonnegative integer")
             config.pop("clearance_m", None)
             localizer = AprilTagLocalizer(calibration, **config)
-            if localizer.robot_id in self.localizers or localizer.tag_id in tags:
-                raise ValueError("robot_id and tag_id must be unique")
+            tag_key=(localizer.tag_family,localizer.tag_id)
+            if localizer.robot_id in self.localizers or tag_key in tags:
+                raise ValueError("robot_id and tag family/ID must be unique")
             if (localizer.offset.shape != (3,) or not np.isfinite(localizer.offset).all()
                     or not math.isfinite(localizer.heading_offset)):
                 raise ValueError("Invalid robot center/heading offset")
             self.localizers[localizer.robot_id] = localizer
-            tags.add(localizer.tag_id)
+            tags.add(tag_key)
         if not self.localizers:
             raise ValueError("Configure at least one robot")
         self.first = next(iter(self.localizers.values()))
         self.last_detection_ids=[]
+        self.last_detection_keys=set()
 
     def estimate(self, frame):
         self.first.calibration.check_frame(frame)
         cv2 = self.first.cv2
-        corners, ids, _ = self.first.detector.detectMarkers(
-            cv2.cvtColor(frame.rgb, cv2.COLOR_RGB2GRAY))
-        ids = [] if ids is None else list(ids.ravel())
-        self.last_detection_ids=[int(tag_id) for tag_id in ids]
+        gray=cv2.cvtColor(frame.rgb, cv2.COLOR_RGB2GRAY)
+        detections={}
+        for localizer in self.localizers.values():
+            if localizer.tag_family not in detections:
+                corners, ids, _=localizer.detector.detectMarkers(gray)
+                detections[localizer.tag_family]=(corners,[] if ids is None else list(ids.ravel()))
+        self.last_detection_keys={(family,int(tag_id)) for family,(_,ids) in detections.items()
+                                  for tag_id in ids}
+        self.last_detection_ids=[tag_id for _,tag_id in sorted(self.last_detection_keys)]
         results = {}
         for robot_id, localizer in self.localizers.items():
+            corners,ids=detections[localizer.tag_family]
             pose = None
             if ids.count(localizer.tag_id) == 1:
                 try:

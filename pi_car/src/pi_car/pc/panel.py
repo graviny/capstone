@@ -6,6 +6,9 @@ import math
 import time
 import uuid
 from numbers import Real
+from pathlib import Path
+import numpy as np
+from pi_car.pc.camera import RGBDFrame
 from pi_car.transport.commands import send_command
 from pi_car.transport.protocol import number, turn_degrees
 
@@ -75,9 +78,28 @@ class PanelModel:
         return dict(type='STOP',robot_id=robot_id,command_id='stop.'+uuid.uuid4().hex)
 
 
+def camera_floor_goal(frame, calibration, u, v):
+    """Convert a recent RGB click to a measured floor point in world meters."""
+    calibration.check_frame(frame)
+    if not 0 <= time.time()-frame.timestamp <= 1.:
+        raise ValueError('Camera image is stale; wait for a new frame')
+    u,v=int(round(u)),int(round(v))
+    if not (0 <= u < frame.intrinsics.width and 0 <= v < frame.intrinsics.height):
+        raise ValueError('Click inside the camera image')
+    patch=frame.depth_m[max(0,v-2):v+3,max(0,u-2):u+3]
+    valid=patch[np.isfinite(patch)&(patch>0)]
+    if len(valid)<5:
+        raise ValueError('No reliable depth at the selected point')
+    xyz=calibration.transform(frame.intrinsics.deproject([u,v],float(np.median(valid))))
+    if abs(xyz[2])>.03:
+        raise ValueError('Select the floor (clicked surface is above the floor)')
+    return float(xyz[0]),float(xyz[1])
+
+
 class FleetPanel:
     """GUI never blocks on TCP. One query + one command in flight; no goal queue."""
-    def __init__(self, grid, *, host='127.0.0.1', port=8766, clearance_m=.2):
+    def __init__(self, grid, *, host='127.0.0.1', port=8766, clearance_m=.2,
+                 camera_dir=None, calibration=None):
         import matplotlib.pyplot as plt
         from matplotlib.colors import ListedColormap,BoundaryNorm
         from matplotlib.widgets import Button, TextBox
@@ -85,6 +107,15 @@ class FleetPanel:
         self.plt = plt
         self.model = PanelModel(grid,clearance_m)
         self.host,self.port = host,port
+        self.camera_dir=Path(camera_dir) if camera_dir else None
+        self.calibration=calibration
+        if bool(self.camera_dir)!=bool(calibration):
+            raise ValueError('Camera directory and calibration must be used together')
+        if calibration and calibration.frame_id!=grid.metadata.frame_id:
+            raise ValueError('Camera calibration and map frames differ')
+        self.camera_frame=None
+        self.camera_artist=None
+        self.snapshot_mtime_ns=0
         self.pool = ThreadPoolExecutor(max_workers=2,thread_name_prefix='panel-tcp')
         self.pending = None
         self.command_pending = None
@@ -97,16 +128,24 @@ class FleetPanel:
         m=grid.metadata
         extent=[m.origin_xy[0],m.origin_xy[0]+m.width*m.resolution_m,
                 m.origin_xy[1],m.origin_xy[1]+m.height*m.resolution_m]
-        self.ax.imshow(grid.cells,origin='lower',extent=extent,
-                        cmap=ListedColormap(['#959ba3','#fafafa','#242a32']),
-                        norm=BoundaryNorm([-1.5,-.5,.5,1.5],3))
-        blocked=np.ma.masked_where((grid.cells!=0)|(self.model.navigation.cells==0),np.ones(grid.cells.shape))
-        self.ax.imshow(blocked,origin='lower',extent=extent,cmap=ListedColormap(['#edb56f']),
-                        alpha=.7,vmin=0,vmax=1)
-        self.ax.set(xlabel='World X (m)',ylabel='World Y (m)',
-                    title='Select robot, then LEFT CLICK destination (sends MOVE immediately)')
+        if self.camera_dir:
+            self.ax.set(xlabel='Camera X (px)',ylabel='Camera Y (px)',
+                        title='Live camera: LEFT CLICK a floor destination')
+            self.ax.set_xlim(-.5,639.5)
+            self.ax.set_ylim(479.5,-.5)
+        else:
+            self.ax.imshow(grid.cells,origin='lower',extent=extent,
+                            cmap=ListedColormap(['#959ba3','#fafafa','#242a32']),
+                            norm=BoundaryNorm([-1.5,-.5,.5,1.5],3))
+            blocked=np.ma.masked_where((grid.cells!=0)|(self.model.navigation.cells==0),np.ones(grid.cells.shape))
+            self.ax.imshow(blocked,origin='lower',extent=extent,cmap=ListedColormap(['#edb56f']),
+                            alpha=.7,vmin=0,vmax=1)
+            self.ax.set(xlabel='World X (m)',ylabel='World Y (m)',
+                        title='Select robot, then LEFT CLICK destination (sends MOVE immediately)')
         self.text=self.fig.text(.76,.68,'Connecting...',va='top',fontsize=9)
-        self.notice=self.fig.text(.06,.1,'Gray unknown | Black obstacle | Orange vehicle clearance',fontsize=10,wrap=True)
+        notice=('Waiting for live camera image' if self.camera_dir else
+                'Gray unknown | Black obstacle | Orange vehicle clearance')
+        self.notice=self.fig.text(.06,.1,notice,fontsize=10,wrap=True)
         self.fig.text(.76,.535,'Degrees',fontsize=10)
         self.turn_angle=TextBox(self.fig.add_axes([.84,.515,.12,.045]),'',initial='25')
         self.turn_left=Button(self.fig.add_axes([.76,.445,.095,.05]),'Turn left')
@@ -155,6 +194,14 @@ class FleetPanel:
         if toolbar and toolbar.mode:
             return
         robot_id, x, y = self.selected, event.xdata, event.ydata
+        if self.camera_dir:
+            try:
+                if self.camera_frame is None:
+                    raise ValueError('Waiting for live camera image')
+                x,y=camera_floor_goal(self.camera_frame,self.calibration,x,y)
+            except ValueError as error:
+                self._notice(str(error))
+                return
         request = partial(self.model.move_request, robot_id, x, y)
         if self._submit(dict(type='MOVE'), motion_request=request):
             self._notice(f"Checking current position for vehicle {robot_id}…")
@@ -198,11 +245,20 @@ class FleetPanel:
             if (state.get('connected') and pose and 0 <= time.time()-pose['timestamp'] <= .3
                     and time.monotonic()-self.model.last_update <= 2.):
                 x,y,t=pose['x'],pose['y'],pose['theta']
-                point.set_data([x],[y]);heading.set_data([x,x+.15*math.cos(t)],[y,y+.15*math.sin(t)])
+                if self.camera_dir:
+                    x,y=self._world_to_pixel(x,y)
+                    tip=self._world_to_pixel(pose['x']+.15*math.cos(t),pose['y']+.15*math.sin(t))
+                else:
+                    tip=(x+.15*math.cos(t),y+.15*math.sin(t))
+                point.set_data([x],[y]);heading.set_data([x,tip[0]],[y,tip[1]])
             else:
                 point.set_data([],[]);heading.set_data([],[])
             goal=state.get('goal')
-            goal_artist.set_data([goal['x']],[goal['y']]) if goal else goal_artist.set_data([],[])
+            if goal:
+                gx,gy=(self._world_to_pixel(goal['x'],goal['y']) if self.camera_dir else
+                       (goal['x'],goal['y']))
+                goal_artist.set_data([gx],[gy])
+            else:goal_artist.set_data([],[])
             result=state.get('last_result') or {}
             command=state.get('command_id') or '-'
             if len(command)>24:command=command[:21]+'...'
@@ -217,8 +273,41 @@ class FleetPanel:
         self.text.set_text('\n\n'.join(lines))
         self.fig.canvas.draw_idle()
 
+    def _world_to_pixel(self,x,y):
+        frame=self.camera_frame
+        if frame is None:
+            return float('nan'),float('nan')
+        matrix=np.asarray(self.calibration.camera_to_world,float)
+        camera=matrix[:3,:3].T@(np.array([x,y,0.])-matrix[:3,3])
+        if camera[2]<=0:
+            return float('nan'),float('nan')
+        intr=frame.intrinsics
+        return intr.fx*camera[0]/camera[2]+intr.cx,intr.fy*camera[1]/camera[2]+intr.cy
+
+    def _refresh_camera(self):
+        if self.camera_dir is None:return
+        path=self.camera_dir/'latest.npz'
+        try:
+            mtime=path.stat().st_mtime_ns
+            if mtime==self.snapshot_mtime_ns:return
+            frame=RGBDFrame.load(path)
+            self.calibration.check_frame(frame)
+            self.snapshot_mtime_ns=mtime
+            self.camera_frame=frame
+            if self.camera_artist is None:
+                self.camera_artist=self.ax.imshow(frame.rgb)
+                self.ax.set_xlim(-.5,frame.intrinsics.width-.5)
+                self.ax.set_ylim(frame.intrinsics.height-.5,-.5)
+            else:self.camera_artist.set_data(frame.rgb)
+            self.fig.canvas.draw_idle()
+        except FileNotFoundError:
+            pass
+        except (OSError,ValueError,KeyError) as error:
+            self._notice(f'Camera image error: {error}')
+
     def refresh(self):
         if self.closed:return
+        self._refresh_camera()
         for field in ('pending','command_pending'):
             entry=getattr(self,field)
             if not entry:continue
@@ -230,7 +319,10 @@ class FleetPanel:
                     if not response['ok']:raise ValueError(response['error'])
                     if request['type']=='INFO':
                         self.model.set_info(response['result']);self._configure()
-                    elif request['type']=='STATUS':self.model.set_states(response['result'])
+                    elif request['type']=='STATUS':
+                        self.model.set_states(response['result'])
+                        if self.notice.get_text().startswith('Connection/command error:'):
+                            self._notice('Connected: select a vehicle and click a floor destination')
                     else:self._notice(f"{request['type']}: {response['result']['type']} (watch robot status)")
                 except (OSError,ValueError,KeyError,RuntimeError) as error:
                     if field == 'pending':
