@@ -128,6 +128,36 @@ class DriveOutputTests(unittest.IsolatedAsyncioTestCase):
                         await run(args)
                     load.assert_not_called()
 
+    async def test_one_missing_camera_detection_stops_then_resumes_only_on_fresh_pose(self):
+        motor=RecordingMotor()
+        agent=RobotAgent('A',mock_grid(),motor=motor,drive_output=.25)
+        try:
+            agent.connect()
+            await agent.handle(agent.message('POSE',valid=True,x=1.,y=1.,theta=0.,timestamp=time.time()))
+            await agent.handle(agent.message('GOAL',command_id='temporary-loss',goal=dict(x=1.5,y=1.)))
+            await agent.planning
+            agent.front_range=RangeReading(1.,0.,time.monotonic())
+            agent.tick()
+            self.assertNotEqual(motor.command,MotorCommand())
+            await agent.handle(agent.message('POSE',valid=False,x=0.,y=0.,theta=0.,timestamp=time.time()))
+            self.assertEqual(motor.command,MotorCommand())
+            agent.tick()
+            self.assertEqual(agent.active,'temporary-loss')
+            await agent.handle(agent.message('POSE',valid=True,x=1.02,y=1.,theta=0.,timestamp=time.time()))
+            agent.tick()
+            self.assertNotEqual(motor.command,MotorCommand())
+            await agent.handle(agent.message('POSE',valid=False,x=0.,y=0.,theta=0.,timestamp=time.time()))
+            agent.pose_loss_since-=1.
+            agent.tick()
+            self.assertIsNone(agent.active)
+            self.assertEqual(motor.command,MotorCommand())
+            self.assertEqual(agent.journal.get('temporary-loss')[1]['type'],'ERROR')
+            await agent.handle(agent.message('POSE',valid=True,x=1.02,y=1.,theta=0.,timestamp=time.time()))
+            agent.tick()
+            self.assertEqual(motor.command,MotorCommand())
+        finally:
+            await agent.close()
+
 
 if __name__=='__main__':
     unittest.main()

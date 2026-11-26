@@ -21,16 +21,29 @@ class AprilTagLocalizer:
         self.heading_offset = heading_offset_rad
         self.max_error = max_reprojection_px
         dictionary = cv2.aruco.getPredefinedDictionary(dictionaries[tag_family])
-        self.detector = cv2.aruco.ArucoDetector(dictionary, cv2.aruco.DetectorParameters())
+        parameters=cv2.aruco.DetectorParameters()
+        if tag_family=='aruco_4x4_50':
+            parameters.cornerRefinementMethod=cv2.aruco.CORNER_REFINE_SUBPIX
+        self.detector = cv2.aruco.ArucoDetector(dictionary, parameters)
+
+    def detect(self, gray):
+        scale=2 if self.tag_family=='aruco_4x4_50' else 1
+        if scale!=1:
+            gray=self.cv2.resize(gray,None,fx=scale,fy=scale,
+                                 interpolation=self.cv2.INTER_CUBIC)
+        corners,ids,_=self.detector.detectMarkers(gray)
+        if scale!=1:
+            corners=[corner/scale for corner in corners]
+        return corners,[] if ids is None else list(ids.ravel())
 
     def estimate(self, frame):
         """None means detection/quality failure; never reuse an old valid pose."""
         self.calibration.check_frame(frame)
         cv2 = self.cv2
-        corners, ids, _ = self.detector.detectMarkers(cv2.cvtColor(frame.rgb, cv2.COLOR_RGB2GRAY))
-        if ids is None or np.count_nonzero(ids == self.tag_id) != 1:
+        corners, ids = self.detect(cv2.cvtColor(frame.rgb, cv2.COLOR_RGB2GRAY))
+        if ids.count(self.tag_id) != 1:
             return None
-        image_points = corners[list(ids.ravel()).index(self.tag_id)].reshape(4, 2)
+        image_points = corners[ids.index(self.tag_id)].reshape(4, 2)
         return self.estimate_corners(frame, image_points)
 
     def estimate_corners(self, frame, image_points):
@@ -100,8 +113,7 @@ class MultiRobotLocalizer:
         detections={}
         for localizer in self.localizers.values():
             if localizer.tag_family not in detections:
-                corners, ids, _=localizer.detector.detectMarkers(gray)
-                detections[localizer.tag_family]=(corners,[] if ids is None else list(ids.ravel()))
+                detections[localizer.tag_family]=localizer.detect(gray)
         self.last_detection_keys={(family,int(tag_id)) for family,(_,ids) in detections.items()
                                   for tag_id in ids}
         self.last_detection_ids=[tag_id for _,tag_id in sorted(self.last_detection_keys)]
