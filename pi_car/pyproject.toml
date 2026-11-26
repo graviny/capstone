@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "capstone-pi-car"
+version = "0.1.0"
+description = "RealSense infrastructure and Raspberry Pi autonomy stack"
+requires-python = ">=3.10"
+dependencies = ["numpy>=1.26,<3", "matplotlib>=3.8,<4"]
+
+[project.optional-dependencies]
+pc = ["opencv-contrib-python>=4.8,<5", "pyrealsense2>=2.55,<3"]
+vision = ["opencv-contrib-python>=4.8,<5"]
+pi = ["gpiozero>=2.0,<3", "adafruit-blinka", "adafruit-circuitpython-pca9685", "adafruit-circuitpython-motor"]
+ws = ["websockets>=13"]
+
+[project.scripts]
+pi-car = "pi_car.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

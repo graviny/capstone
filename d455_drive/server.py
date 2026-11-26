@@ -9,6 +9,7 @@
 import argparse
 import asyncio
 import json
+import math
 import signal
 import time
 
@@ -21,9 +22,9 @@ from safety import Safety
 
 
 class Controller:
-    def __init__(self, car, max_speed):
+    def __init__(self, car, max_speed, safety=Safety):
         self.car = car
-        self.safety = Safety(car)
+        self.safety = safety(car)
         self.max_speed = max_speed
         self.cmd_speed = 0.0
         self.cmd_steer = 0.0
@@ -37,10 +38,14 @@ class Controller:
 
     # ---- 수신 ----
     def handle(self, msg):
+        if not isinstance(msg, dict):
+            raise ValueError("Expected a JSON object")
         t = msg.get("type")
         if t == "cmd":
             sp = float(msg.get("speed", 0))
             st = float(msg.get("steer", 0))
+            if not math.isfinite(sp) or not math.isfinite(st):
+                raise ValueError("Speed and steer must be finite")
             self.cmd_speed = max(-self.max_speed, min(self.max_speed, sp))
             self.cmd_steer = max(-C.STEER_MAX_DEG, min(C.STEER_MAX_DEG, st))
             self.last_cmd_t = time.monotonic()
@@ -62,15 +67,14 @@ class Controller:
         sp, st = (0.0, 0.0) if self.watchdog else (self.cmd_speed, self.cmd_steer)
         sp, st, events = self.safety.step(now, sp, st)
         self.out_speed, self.out_steer = sp, st
-        self.car.set_speed(sp)
-        self.car.set_steer(st)
+        self.car.drive(sp, st)
         return events
 
     def status(self):
         state = self.safety.state
         if state != "avoiding" and self.watchdog:
             state = "idle"
-        return {
+        status = {
             "type": "status",
             "state": state,                 # idle | normal | slow | avoiding
             "avoid_phase": self.safety.phase,
@@ -80,6 +84,10 @@ class Controller:
             "last_seq": self.last_seq,
             "battery_v": self.battery,
         }
+        if hasattr(self.car, "command"):
+            status.update(left=round(self.car.command.left * 100, 1),
+                          right=round(self.car.command.right * 100, 1))
+        return status
 
 
 async def send(ws, obj):
@@ -113,6 +121,8 @@ def make_handler(ctl):
     async def handler(ws):
         old = ctl.client
         ctl.client = ws
+        ctl.cmd_speed = ctl.cmd_steer = 0.
+        ctl.last_cmd_t = 0.
         print(f"[conn] client connected: {ws.remote_address}")
         if old is not None:
             await old.close(code=4000, reason="replaced by new client")
@@ -120,8 +130,10 @@ def make_handler(ctl):
             async for raw in ws:
                 try:
                     msg = json.loads(raw)
+                    if ctl.client is not ws:
+                        break
                     reply = ctl.handle(msg)
-                except (ValueError, TypeError) as e:
+                except (ValueError, TypeError, OverflowError) as e:
                     reply = {"type": "error", "error": f"bad message: {e}"}
                 if reply:
                     await send(ws, reply)
@@ -135,30 +147,59 @@ def make_handler(ctl):
     return handler
 
 
-async def main(args):
-    car = FakeCar(args.fake_dist, args.verbose) if args.dry_run else Car()
-    ctl = Controller(car, args.max_speed)
+async def run_server(args, car, safety):
+    ctl = Controller(car, args.max_speed, safety)
     stop = asyncio.Event()
     loop = asyncio.get_running_loop()
     for sig in (signal.SIGINT, signal.SIGTERM):
         loop.add_signal_handler(sig, stop.set)
 
     task = asyncio.create_task(control_loop(ctl))
+    stop_task = asyncio.create_task(stop.wait())
     try:
-        async with serve(make_handler(ctl), C.HOST, args.port, ping_interval=2, ping_timeout=2):
-            print(f"[d455_drive] listening on ws://{C.HOST}:{args.port}  dry_run={args.dry_run}")
-            await stop.wait()
+        async with serve(make_handler(ctl), args.host, args.port, ping_interval=2, ping_timeout=2):
+            print(f"[d455_drive] listening on ws://{args.host}:{args.port}  dry_run={args.dry_run}")
+            done, _ = await asyncio.wait((stop_task, task), return_when=asyncio.FIRST_COMPLETED)
+            if task in done:
+                task.result()
     finally:
         task.cancel()
-        car.set_speed(0)
-        car.close()
+        stop_task.cancel()
+        try:
+            car.drive(0, 0)
+        finally:
+            car.close()
+            await asyncio.gather(task, stop_task, return_exceptions=True)
         print("[d455_drive] stopped")
+
+
+async def main(args):
+    if args.four_wheel:
+        from four_wheel import FourWheelCar, FrontStop, MAX_SPEED, hardware_context
+        args.host = args.host or "127.0.0.1"
+        args.max_speed = MAX_SPEED if args.max_speed is None else args.max_speed
+        if not 0 < args.max_speed <= MAX_SPEED:
+            raise SystemExit("Four-wheel --max-speed must be within (0, 30]")
+        if not args.dry_run and not args.vendor_dir:
+            raise SystemExit("Four-wheel hardware requires --vendor-dir")
+        with hardware_context(args.dry_run, args.vendor_dir, args.max_speed, args.servo_angle) as hardware:
+            await run_server(args, FourWheelCar(hardware, args.fake_dist), FrontStop)
+        return
+
+    args.host = args.host or C.HOST
+    args.max_speed = C.MAX_SPEED if args.max_speed is None else args.max_speed
+    car = FakeCar(args.fake_dist, args.verbose) if args.dry_run else Car()
+    await run_server(args, car, Safety)
 
 
 if __name__ == "__main__":
     p = argparse.ArgumentParser()
     p.add_argument("--port", type=int, default=C.PORT)
-    p.add_argument("--max-speed", type=float, default=C.MAX_SPEED)
+    p.add_argument("--host")
+    p.add_argument("--max-speed", type=float)
+    p.add_argument("--four-wheel", action="store_true", help="Use the Adeept OrdinaryWheels four-motor chassis")
+    p.add_argument("--vendor-dir", help="OrdinaryWheels directory containing Move.py")
+    p.add_argument("--servo-angle", type=float, default=90., help="Front sensor center in four-wheel mode")
     p.add_argument("--dry-run", action="store_true", help="하드웨어 없이 실행")
     p.add_argument("--fake-dist", type=float, default=150.0, help="dry-run 초음파 거리(cm)")
     p.add_argument("-v", "--verbose", action="store_true")

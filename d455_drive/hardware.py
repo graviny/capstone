@@ -43,6 +43,10 @@ class Car:
         self.set_scan(0)
         self.set_speed(0)
 
+    def drive(self, speed, steer):
+        self.set_speed(speed)
+        self.set_steer(steer)
+
     # speed: -100..100 (%), 음수 = 후진
     def set_speed(self, speed):
         speed = _clamp(speed, -100, 100)
@@ -102,6 +106,10 @@ class FakeCar:
     def _log(self, *a):
         if self.verbose:
             print("[fake]", *a)
+
+    def drive(self, speed, steer):
+        self.set_speed(speed)
+        self.set_steer(steer)
 
     def set_speed(self, speed):
         speed = _clamp(speed, -100, 100)

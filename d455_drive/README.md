@@ -1,5 +1,31 @@
 # d455_drive (PiCar 쪽)
 
+## 사륜 OrdinaryWheels 차량
+
+`--four-wheel`은 좌우 모터 쌍의 출력 차로 조향한다. 같은 WebSocket 명령을 사용하며 상태에
+좌우 PWM 퍼센트인 `left`, `right`가 추가된다. 기본 최대 출력은 30%다. 신선한 정면 초음파
+측정이 없거나 거리가 40cm 이하면 정지한다. 정지·연결 끊김·명령 타임아웃에서도 바퀴 출력을
+0으로 만든다. 이 프로필의 초음파 서보는 정면에 고정한다.
+
+저장소 루트에서 Pi의 가상환경에 설치한다.
+
+```bash
+python -m pip install -e './pi_car[pi,ws]'
+python d455_drive/server.py --four-wheel --dry-run --port 18765
+```
+
+실차에서 `--dry-run`을 빼고 `--vendor-dir`에 OrdinaryWheels의 `Move.py`가 있는 경로를 넣는다.
+기본 접속 주소는 Pi의 localhost다. 원격으로 접속할 때는 SSH 포트 포워딩을 사용할 수 있다.
+동일한 차량에서 다른 GPIO 구동기를 먼저 종료한다.
+
+RealSense 지도에서 목표점을 클릭해 주행할 때는 [PC·Pi 실행 안내](../pi_car/docs/pc_pi_quickstart.md)의
+`fleet-server` → `robot-client` → `fleet-panel` 흐름을 사용한다. 이 흐름에서 Pi는 목표점의
+A* 경로와 각도 회전을 처리하며, PC는 카메라 위치와 지도를 제공한다. 정적 지도는
+`pi-car capture --frames 21 --out <파일.npz>`로 촬영할 수 있다. 수동 WebSocket 서버와
+지도 주행용 `robot-client`는 같은 모터와 초음파를 사용하는 대체 실행 모드다.
+
+## 기존 PiCar-B2 차량
+
 천장 D455 + AprilTag로 노트북이 A* 경로를 계산하고, PiCar는 **속도/조향 명령을 받아 실행 + 초음파로 돌발 장애물 회피**만 담당한다.
 
 ```
