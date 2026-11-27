@@ -36,7 +36,7 @@ def small_cfg():
                    {"id": 2, "role": "transport", "home": [8.0, 5.0]}],
         "outbound": {"date": "test", "lanes": {"R1": {"slots": ["LR1-0", "LR1-1"]}}, "cutoff_period_s": 900.0,
                      "center": [9.0, 1.0]},
-        "faults": {"place_error_p": 0.0}, "patrol": {"idle_sweep": False},
+        "patrol": {"idle_sweep": False},
     }
 
 

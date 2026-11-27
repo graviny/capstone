@@ -9,7 +9,7 @@ so that comparing mixes compares who does the checking, not whether anyone does.
 VERIFY_POLICY
   none      the stand-in as it is (exceptions are rerouted, nothing is checked)
   event     after a SHORT_PICK / ITEM_MISMATCH, VERIFY the slots next to it on the same face
-            (a worker moves a carton up to worker_move_max_slots); after a
+            (a misplaced carton is usually close to its recorded slot); after a
             DESTINATION_OCCUPIED, VERIFY that slot (its record is UNKNOWN)
   periodic  every VERIFY_PERIOD_S, VERIFY the rack slot checked longest ago (cycle count)
   both      event + periodic
@@ -17,8 +17,7 @@ VERIFY_POLICY
 Who checks: the stand-in gives a VERIFY to the nearest idle patrol robot, or to the nearest
 idle transport robot when there is no patrol robot (PICKs go first, by priority).
 
-Other settings (environment): VERIFY_NEIGHBORS (default: the scenario's
-worker_move_max_slots), VERIFY_PERIOD_S (60), VERIFY_MAX_OPEN (4: at most this many open
+Other settings (environment): VERIFY_NEIGHBORS (3), VERIFY_PERIOD_S (60), VERIFY_MAX_OPEN (4: at most this many open
 VERIFY tasks from this policy), VERIFY_RECENT_S (120: skip a slot checked this recently).
 """
 import math
@@ -43,7 +42,7 @@ class Scheduler(sched_standin.Scheduler):
         if self.policy not in ("none", "event", "periodic", "both"):
             raise ValueError(f"VERIFY_POLICY: {self.policy}")
         self.name = f"verify-{self.policy}"
-        self.neighbors = _env("VERIFY_NEIGHBORS", int(cfg.get("faults", {}).get("worker_move_max_slots", 3)), int)
+        self.neighbors = _env("VERIFY_NEIGHBORS", 3, int)
         self.period = _env("VERIFY_PERIOD_S", 60.0)
         self.max_open = _env("VERIFY_MAX_OPEN", 4, int)
         self.recent = _env("VERIFY_RECENT_S", 120.0)
@@ -52,9 +51,6 @@ class Scheduler(sched_standin.Scheduler):
         self.tick_rule = os.environ.get("VERIFY_TICK_RULE", "sweep").lower()
         if self.tick_rule not in ("sweep", "random", "oldest", "value"):
             raise ValueError(f"VERIFY_TICK_RULE: {self.tick_rule}")
-        self.rate_source = os.environ.get("VERIFY_RATE_SOURCE", "online").lower()   # online | config
-        self._cfg_rate_per_h = float(cfg.get("faults", {}).get("worker_move_per_h", 0)
-                                     + cfg.get("faults", {}).get("worker_remove_per_h", 0))
         self._rng = random.Random(int(cfg.get("seed", 0)) * 7919 + 17)
         self.found = 0            # discrepancies seen by robots/checks (a lower bound of what happened)
         self.exposure = 0.0       # integral of recorded-occupied rack slots over time (slot-seconds)
@@ -165,11 +161,8 @@ class Scheduler(sched_standin.Scheduler):
         return super().plan(s)
 
     def _rate(self, n_occ):
-        """Per-slot mismatch hazard (1/s). config: the scenario's worker S1+S2 rates spread over the occupied
-        slots (known-rate reference, NOT deployable). online: Gamma(0.5, 3600*n) prior updated with the
-        discrepancies found so far (underestimates: undetected ones are not counted)."""
-        if self.rate_source == "config":
-            return self._cfg_rate_per_h / 3600.0 / max(n_occ, 1)
+        """Per-slot mismatch hazard (1/s): Gamma(0.5, 3600*n) prior updated with the discrepancies
+        found so far (underestimates: undetected ones are not counted)."""
         return (0.5 + self.found) / (3600.0 * max(n_occ, 1) + self.exposure / max(n_occ, 1))
 
     def _ranked_slot(self, s, open_tasks):

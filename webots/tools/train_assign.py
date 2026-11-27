@@ -2,7 +2,7 @@
 
 Method: cross-entropy method (CEM), a policy-search form of RL. Each iteration samples a
 population of weight vectors around the current mean, runs every one of them on the same
-batch of episodes (scenario x fault seed, so they are compared on equal terms), and moves
+batch of episodes (the same scenarios, so they are compared on equal terms), and moves
 the mean to the best few. The weights are few (lib/sched_learned.FEATURES) and the reward
 comes once per episode, which suits this method; no deep learning library is needed.
 
@@ -59,7 +59,7 @@ _cfgs, _layouts = {}, {}           # per worker process: scenario path -> cfg; l
 
 
 def episode(job):
-    """job = (scenario path, fault seed, robots, weights or None for the stand-in) -> metrics."""
+    """job = (scenario path, seed, robots, weights or None for the stand-in) -> metrics."""
     path, seed, robots, w = job
     window = os.environ.get("ASSIGN_WINDOW", "feasible")
     if path not in _cfgs:

@@ -35,12 +35,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def log_dir_for(cfg, name):
-    """The folder the supervisor writes this run's logs to (same rule as supervisor.py)."""
-    faults_on = any(v for k, v in cfg["faults"].items() if not k.endswith("max_slots"))
+    """The folder the supervisor writes this run's logs to (supervisor.py uses this too)."""
+    meta = cfg.get("initial_record_errors_meta")       # tools/add_record_errors.py
+    errors = f"iri{meta['level']:g}-{meta['mix']}" if meta and meta["level"] else "iri0"
     sweep = "_sweep" if cfg.get("patrol", {}).get("idle_sweep") else ""
     run = f"_{cfg['run_name']}" if cfg.get("run_name") else ""
     mode = "batch" if os.environ.get("QUIT_AT_END") == "1" else "gui"
-    tag = (f"{cfg['outbound']['date']}_{name}_seed{cfg['seed']}_{'faults' if faults_on else 'nofaults'}"
+    tag = (f"{cfg['outbound']['date']}_{name}_seed{cfg['seed']}_{errors}"
            f"{sweep}{run}_{mode}")
     return ROOT / "logs" / tag
 

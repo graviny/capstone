@@ -6,38 +6,12 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'lib'))
-from fault_tape import FaultTape, apply_worker_attempt
 from research_metrics import FlowMetrics, order_metrics, task_metrics
 from sched_learned import Assign
 from travel_time import TravelTime
 
 
 class ResearchTests(unittest.TestCase):
-    def cfg(self):
-        return {'seed': 1, 'fault_seed': 100, 'episode': {'duration_s': 3600},
-                'faults': {'worker_move_per_h': 80, 'worker_remove_per_h': 30}}
-
-    def test_tape_is_independent_of_step_and_other_rng_consumption(self):
-        a, b = FaultTape(self.cfg()), FaultTape(self.cfg())
-        slow = [e for t in range(1, 3601) for e in a.due(t)]
-        fast = [e for t in range(1, 7201) for e in b.due(t / 2)]
-        self.assertEqual(slow, fast)
-        self.assertEqual(a.sha256, b.sha256)
-        self.assertGreater(len(slow), 50)
-
-    def test_s3_independent_of_task_destination_and_unrelated_pickups(self):
-        a, b = FaultTape(self.cfg()), FaultTape(self.cfg())
-        b.s3('OTHER', 5, .5)
-        self.assertEqual(a.s3('LPN', 10, 1)['u'], b.s3('LPN', 40, 1)['u'])
-        self.assertNotEqual(a.s3('LPN', 10, 1)['u'], a.audit[0]['u'])
-
-    def test_no_stock_attempt_is_retained(self):
-        tape = FaultTape(self.cfg())
-        e = tape.events[0]
-        result = apply_worker_attempt(e, 100, {}, {}, {}, 3, None, None, None, tape)
-        self.assertIsNone(result)
-        self.assertEqual(tape.audit[0]['outcome'], 'skipped_no_stock')
-
     def test_backlog_exact_integral_and_zero_shipments(self):
         m = FlowMetrics()
         m.observe({'type': 'ORDER_RELEASED', 't': 10, 'lines': [{'qty': 2}]})

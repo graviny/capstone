@@ -5,8 +5,10 @@ the same summary.json fields. So a scheduler trained or tuned here runs unchange
 (WES_MODULE=wes_runner WES_SCHEDULER=<module>), which is where results are checked.
 
 What is the same as Webots (controllers/supervisor + agent): orders, inbound trucks and belt,
-outbound docks and cutoffs, the worker faults (S1 move, S2 removal, S3 return into a robot's
-destination), the robot's task phases (go, look, pick, go, look, place) and its reports.
+outbound docks and cutoffs, the robot's task phases (go, look, pick, go, look, place) and its
+reports. The only record errors are the ones written into the scenario at t=0
+(initial_record_errors, tools/add_record_errors.py); nothing changes the stock unrecorded during
+an episode.
 
 What is simpler:
   robots   no wheels, no collision avoidance: a leg takes path length / speed * slowdown
@@ -16,8 +18,7 @@ What is simpler:
            yield_s 1 (docs/lite_sim.md)
   time     fixed steps of dt (0.5 s); a robot's phase still ends at its exact time
   looking  a robot always reads the label (no UNREADABLE)
-  shortcut: S1 robot placement error, scanner failure and the patrol idle sweep are not
-           modelled (all off by default); add them here if an experiment turns them on.
+  shortcut: the patrol idle sweep is not modelled (off by default).
 
 Usage (from webots/):
   python lib/lite_sim.py [--scheduler sched_verify --policy event] [--duration 3600]
@@ -33,10 +34,8 @@ import importlib
 import json
 import math
 import os
-import random
 import sys
 import time
-import zlib
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -44,17 +43,10 @@ sys.path.insert(0, str(ROOT / "lib"))
 from nav import NEIGHBORS, GridMap  # noqa: E402
 from record_quality import RecordQuality
 from research_metrics import FlowMetrics, order_metrics, task_metrics
-from fault_tape import FaultTape, apply_worker_attempt
 
 STATS_PERIOD_S = 10.0
 IDLE_PARK_S = 20.0                 # agent.py: an idle robot drives home after this long
-S3_DELAY_S = 4.0                   # supervisor.py: the returned carton lands 4 s after the pick
 NO_TASK = [2, 9, 1e9]              # agent.py: right-of-way key of a robot without a task
-
-
-def unit(*parts):
-    """Same deterministic draw as supervisor.py (S3 is keyed by task and destination)."""
-    return zlib.crc32("-".join(str(p) for p in parts).encode()) / 2 ** 32
 
 
 def distance_field(grid, goal):
@@ -90,11 +82,9 @@ class LiteSim:
         self.grid = grid or GridMap(cfg)
         self.fields = {} if fields is None else fields   # goal cell -> distance field
         self.slots = {s["id"]: s for s in cfg["slots"]}
-        self.faults, self.belt_cfg, self.out_cfg = cfg["faults"], cfg["belt"], cfg["outbound"]
+        self.belt_cfg, self.out_cfg = cfg["belt"], cfg["outbound"]
         self.nav, self.per = cfg["nav"], cfg["perception"]
         self.seed = cfg["seed"]
-        self.worker_rng = random.Random(self.seed + 101)
-        self.fault_tape = FaultTape(cfg) if cfg.get('fault_model') == 'marked-poisson-v1' else None
         self.flow_metrics = FlowMetrics()
         self.t = 0.0
 
@@ -104,9 +94,7 @@ class LiteSim:
         self.slot_of = {}
         for st in cfg["initial_stock"]:
             self.occupant[st["slot"]], self.slot_of[st["lpn"]] = st["lpn"], st["slot"]
-        self.returns = [c["lpn"] for c in cfg["returns"]]
         self.lane_tag = {}
-        self.s3_pending = []
 
         self.robots = {r["id"]: {"id": r["id"], "role": r["role"], "home": tuple(r["home"]), "pos": tuple(r["home"]),
                                  "task": None, "phase": None, "holding": None, "leg": None, "timer": None,
@@ -133,7 +121,7 @@ class LiteSim:
         self.quality = RecordQuality()
         self.n = {"events": 0, "released": 0, "shipped": 0, "mis_shipped": 0, "missed_cutoffs": 0,
                   "shipments": 0, "staged_in": 0}
-        self.counts, self.truth_counts = {}, {}
+        self.counts = {}
         self.unit_wait = {}                # order -> release times of its units not shipped yet
         self.unit_leads = []               # release -> shipped, s, per shipped unit
 
@@ -158,9 +146,6 @@ class LiteSim:
         if self.event_sink:
             self.event_sink(ev)
         self.wes.on_event(ev)
-
-    def truth(self, kind):
-        self.truth_counts[kind] = self.truth_counts.get(kind, 0) + 1
 
     def path_m(self, a, b):
         """Shortest grid path length from a to b (8-connected, octile: a bit longer than the
@@ -301,14 +286,6 @@ class LiteSim:
                 return
             self.take(lpn)
             r["holding"] = lpn
-            dest = self.task_dest.get(tid)
-            if dest and self.slots[dest]["kind"] == "rack":
-                if self.fault_tape:
-                    event = self.fault_tape.s3(lpn, t, self.faults['dest_taken_p'])
-                    if event:
-                        self.s3_pending.append((t + S3_DELAY_S, dest, event))
-                elif unit(self.seed, tid, dest, "dest") < self.faults["dest_taken_p"]:
-                    self.s3_pending.append((t + S3_DELAY_S, dest, tid))
             self.go_slot(r, task["destination"], "go_dst", t)
         elif phase == "place":
             if self.occupant[sid] is not None:
@@ -328,7 +305,7 @@ class LiteSim:
 
     # -------------------------------------------------------- environment
     def environment(self, t):
-        """supervisor.py's loop body before the robots: orders, inbound, belt, outbound, faults."""
+        """supervisor.py's loop body before the robots: orders, inbound, belt, outbound."""
         while self.next_wave < len(self.waves) and self.waves[self.next_wave]["release_t"] <= t:
             w = self.waves[self.next_wave]
             self.next_wave += 1
@@ -414,45 +391,6 @@ class LiteSim:
                 ls["present"] = True
                 self.emit({"type": "OUTBOUND_TRUCK_ARRIVED", "region": region})
 
-        self.worker_events()
-        for item in [p for p in self.s3_pending if p[0] <= t]:
-            self.s3_pending.remove(item)
-            _, dest, event = item
-            if self.occupant[dest] is None and self.returns:
-                self.put(self.returns.pop(0), dest)
-                self.truth("S3_DEST_TAKEN")
-                if self.fault_tape:
-                    self.fault_tape.record(event, t, 'injected', dst=dest)
-            elif self.fault_tape:
-                self.fault_tape.record(event, t, 'skipped_occupied' if self.occupant[dest] else 'skipped_no_returns', dst=dest)
-
-    def worker_events(self):
-        if self.fault_tape:
-            for event in self.fault_tape.due(self.t):
-                result = apply_worker_attempt(event, self.t, self.slots, self.occupant, self.slot_of,
-                    self.faults['worker_move_max_slots'], self.take, self.put, self.take, self.fault_tape)
-                if result:
-                    self.truth('S1_UNRECORDED_MOVE' if event['kind'] == 'S1' else 'S2_UNRECORDED_REMOVAL')
-            return
-        f, rng = self.faults, self.worker_rng
-        rack_lpns = [l for l, s in self.slot_of.items() if self.slots[s]["kind"] == "rack"]
-        if not rack_lpns:
-            return
-        if rng.random() < f["worker_move_per_h"] / 3600 * self.dt:
-            lpn = rng.choice(rack_lpns)
-            src = self.slot_of[lpn]
-            idx, face = int(src[3:]), src[:3]
-            k = f["worker_move_max_slots"]
-            free = [f"{face}{idx + d:02d}" for d in range(-k, k + 1)
-                    if d and self.occupant.get(f"{face}{idx + d:02d}", "x") is None]
-            if free:
-                self.take(lpn)
-                self.put(lpn, rng.choice(free))
-                self.truth("S1_UNRECORDED_MOVE")
-        if rng.random() < f["worker_remove_per_h"] / 3600 * self.dt:
-            self.take(rng.choice(rack_lpns))
-            self.truth("S2_UNRECORDED_REMOVAL")
-
     # --------------------------------------------------------------- loop
     def step(self):
         t = self.t = self.t + self.dt
@@ -531,12 +469,11 @@ class LiteSim:
             "mis_shipped": self.n["mis_shipped"], "outbound_trucks": self.n["shipments"],
             "missed_cutoffs": self.n["missed_cutoffs"], "inbound_trucks_arrived": self.next_truck,
             "inbound_staged": self.n["staged_in"], "cartons_on_belt_at_end": len(self.belt),
-            "events": self.counts, "faults_injected": dict(self.truth_counts), "diagnostics": {},
+            "events": self.counts, "diagnostics": {},
             "record_mismatch_at_end": sum(1 for s, v in rec.items() if v != self.gt_sku(s)),
             "record_quality": self.quality.summary(t),
             "research_metrics": {**self.flow_metrics.summary(t), **order_metrics(self.orders, t),
                                  'tasks': task_metrics(self.wes.wms.tasks, t)},
-            "fault_tape": self.fault_tape.summary() if self.fault_tape else None,
             "robot_roles": {r["id"]: r["role"] for r in self.robots.values()},
             "robot_distance_m": {r["id"]: round(r["dist"], 1) for r in self.robots.values()},
             "robot_busy_share": {r["id"]: round(r["busy_s"] / t, 3) for r in self.robots.values()},
@@ -549,7 +486,7 @@ def main():
     ap.add_argument("--scenario", type=Path, default=ROOT / "scenario.json")
     ap.add_argument("--scheduler", default="sched_standin", help="scheduler module in lib/")
     ap.add_argument("--policy", help="VERIFY_POLICY for sched_verify (none, event, periodic, both)")
-    ap.add_argument("--seeds", type=int, nargs="+", help="override the scenario seed (worker faults, S3 draws)")
+    ap.add_argument("--seeds", type=int, nargs="+", help="override the scenario seed")
     ap.add_argument("--duration", type=float)
     ap.add_argument("--dt", type=float, default=0.5)
     ap.add_argument("--slowdown", type=float, default=1.0, help="travel time factor (turning, waiting on others)")
