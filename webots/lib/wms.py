@@ -72,6 +72,10 @@ class MockWMS:
                           "reserved_by": None} for sid in self.slots}
         for st in cfg["initial_stock"]:
             self.rec[st["slot"]].update(item=st["sku"], lpn=st["lpn"], version=1)
+        # Record errors at t=0 (tools/add_record_errors.py). A wrong slot looks like any other: a ghost or
+        # swap like a stocked slot (version 1), a hidden one like an empty slot (version 0).
+        for e in cfg.get("initial_record_errors", ()):
+            self.rec[e["slot"]].update(item=e["record_sku"], lpn=None, version=1 if e["record_sku"] else 0)
         self.abc = {s["sku"]: s.get("abc", "C") for s in cfg["skus"]}
         self.robots = {r["id"]: {"id": r["id"], "role": r["role"], "pos": list(r.get("home", (0.0, 0.0))),
                                  "task": None, "holding": None, "phase": None, "assigned": None}
@@ -99,7 +103,8 @@ class MockWMS:
         self.view = WMSView(self)
         self._log = open(log_path, "w", encoding="utf-8") if log_path else None
         self.log("START", scenario=scenario_hash(cfg), slots=len(self.slots), robots=len(self.robots),
-                 initial_stock=len(cfg["initial_stock"]))
+                 initial_stock=len(cfg["initial_stock"]),
+                 initial_record_errors=len(cfg.get("initial_record_errors", ())))
 
     # ------------------------------------------------------------------ log
     def log(self, entry_type, **kw):
