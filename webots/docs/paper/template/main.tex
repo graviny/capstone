@@ -1,0 +1,358 @@
+% RSS 템플릿(IEEEtran) 한글 초안. 수업 과제 제출 후 영어로 옮겨 RSS 제출.
+% Overleaf: 이 폴더(main.tex, IEEEtran.cls, references.bib)를 올리고 Menu > Compiler = XeLaTeX (kotex 필요).
+% \todo{...} 는 아직 채우지 않은 부분. 최종본 전에 모두 지운다.
+% 수치는 저장소의 실험 기록에서 그대로 옮긴 것. 출처는 각 줄 옆 주석(%)에 적었다.
+% 범위(2026-11-27): 모든 실험은 작업자 오류가 있는 조건이다. 오류 없는 시험 조건은 넣지 않는다.
+% 2026-11-28: 학습 18일 / 시험 처음 보는 6일로 설계 변경. 학습 날짜 과적합을 분석 절로 추가.
+\documentclass[conference]{IEEEtran}
+\usepackage{kotex}
+\setmainfont{TeX Gyre Termes} % XeLaTeX용 Times. times 패키지는 XeLaTeX에서 글꼴을 못 찾는다.
+
+% numbers option provides compact numerical references in the text.
+\usepackage[numbers]{natbib}
+\usepackage{multicol}
+\usepackage{booktabs}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage[bookmarks=true]{hyperref}
+\newcommand{\todo}[1]{\textcolor{red}{[TODO: #1]}}
+
+\begin{document}
+
+\title{재고 기록이 어긋나는 물류창고에서의\\경량 시뮬레이터 기반 다중 로봇 작업 배정 학습}
+
+% You will get a Paper-ID when submitting a pdf file to the conference system
+\author{Author Names Omitted for Anonymous Review. Paper-ID [add your ID here]}
+
+\maketitle
+
+\begin{abstract}
+물류창고의 창고 실행 시스템(WES)은 입고 적치, 출고 피킹, 재고 확인 작업을 여러 이동 로봇에게 실시간으로 배정한다.
+현장 작업자가 기록 없이 재고를 옮기거나 빼 가면 시스템 기록과 실제 재고가 어긋나고, 로봇은 빈 칸에 가거나 확인 작업을 추가로 해야 한다.
+본 연구는 이러한 기록 불일치가 있는 창고에서, 작업-로봇 짝에 선형 점수를 매기는 배정 정책의 가중치를 학습한다.
+학습은 실제 WMS·WES 코드를 그대로 쓰고 로봇 이동만 단순화한 경량 시뮬레이터에서 교차 엔트로피 방법(CEM)으로 하고, 검증은 물리 시뮬레이터 Webots에서 한다.
+실제 신발 제조사 창고의 주문 데이터에서 18일로 학습하고, 학습에 쓰지 않은 6일로 시험한다.
+\todo{새 날짜 시험 결과(경량, Webots)로 주요 수치 작성}
+또한 학습한 날짜를 시드만 바꿔 시험하면 개선이 크게 부풀려짐을 보인다. 학습 날짜에서 7.4\%였던 개선이 처음 보는 날짜에서는 1\% 안팎으로 줄었다.
+\end{abstract}
+
+\IEEEpeerreviewmaketitle
+
+% ---------------------------------------------------------------
+\section{서론}
+
+자동화 물류창고에서는 여러 대의 이동 로봇이 입고된 상자를 랙에 적치하고(putaway), 주문에 맞춰 상자를 출고 레인으로 옮기며(pick),
+기록과 실제가 다른지 의심되는 칸을 확인한다(verify)~\cite{wurman2008}.
+어떤 작업을 어느 로봇에게 언제 맡길지 정하는 작업 배정은 창고의 처리 속도와 출고 마감 준수에 직접 영향을 준다~\cite{gerkey2004}.
+
+실제 창고에서는 로봇과 사람이 함께 일한다.
+작업자가 상자를 기록 없이 다른 칸으로 옮기거나 빼 가면 재고 기록이 틀어지고~\cite{dehoratius2008},
+로봇은 상자가 없는 칸에 도착해 피킹에 실패하거나, 이미 차 있는 칸에 적치하려다 다른 칸을 찾아야 한다.
+그 결과 확인 작업과 재작업이 생기고, 작업 대기열에는 피킹, 적치, 확인 작업이 섞인다.
+
+배정 규칙은 보통 사람이 정한 우선순위(가까운 로봇, 피킹 우선 등)로 만든다.
+이런 규칙은 기록이 정확하다는 가정에서 조정되었기 때문에, 확인 작업과 재작업이 섞이는 상황에서 어떤 작업을 먼저 할지를 잘 고르지 못한다.
+본 연구는 기록 불일치가 있는 조건에서 배정 점수의 가중치를 데이터 기반 시나리오로 직접 학습하여 이 문제를 다룬다.
+
+\textbf{기여.}
+\begin{enumerate}
+  \item 실제 창고 주문 데이터와 작업자 오류 모델로 만든 시나리오에서, 실제 WMS·WES 코드를 그대로 쓰는 경량 시뮬레이터로 배정 가중치를 학습하고 물리 시뮬레이터(Webots)에서 검증하는 절차를 제시한다.
+  \item 학습에 쓰지 않은 날짜의 주문으로 학습한 배정을 팀 기본 WES, 거리 최적 매칭(헝가리안)과 비교한다. \todo{결과 요약 한 줄}
+  \item 같은 날짜를 시드만 바꿔 시험하면 학습한 배정의 개선이 크게 부풀려짐을 보인다. 시드는 입고와 작업자 오류만 바꾸고 출고 주문은 그대로 두기 때문이다.
+\end{enumerate}
+
+% ---------------------------------------------------------------
+\section{관련 연구}
+
+\textbf{다중 로봇 작업 배정.}
+\citet{gerkey2004}은 다중 로봇 작업 배정 문제를 분류했다.
+\citet{choudhury2020}은 완료 시간의 불확실성과 시간 제약이 있는 동적 배정을 다뤘고,
+\citet{dhanaraj2024}은 실패와 복구 작업을 고려한 hindsight optimization을 제안했다.
+\todo{우리 방법과의 차이: 이들은 작업 실패 확률을 알고 계획하지만, 우리는 기록 불일치가 언제 어디서 생기는지 모르는 상태에서 WMS가 보여 주는 정보만으로 배정한다}
+
+\textbf{물류창고 로봇.}
+\citet{wurman2008}은 수백 대 규모 창고 로봇 시스템을 소개했고,
+\citet{leet2023}은 작업 구성, 배정, 스케줄, 경로 계획을 결합해 대규모 작업량을 다뤘다.
+본 연구는 그보다 작은 규모에서, 기록 불일치가 있는 조건의 배정 정책 학습에 집중한다.
+
+\textbf{재고 기록 불일치.}
+실제 재고와 시스템 기록이 다른 문제는 소매·물류에서 널리 보고되었다~\cite{dehoratius2008}.
+검사와 보충을 결합한 정책~\cite{kok2007,akkerman2025}이 연구되었으나, 로봇 이동과 자원 경합을 함께 다루지는 않는다.
+
+\textbf{정책 탐색.}
+교차 엔트로피 방법(CEM)~\cite{rubinstein1999}은 경사 없이 정책 파라미터를 찾는 방법이다.
+에피소드 끝에 한 번 나오는 비용과 적은 파라미터 수에 적합하다.
+
+% ---------------------------------------------------------------
+\section{문제 설정}
+
+\subsection{창고와 작업}
+창고는 $24\times14$\,m 크기이며 랙 160칸, 입고 대기칸(buffer), 지역별 출고 레인 4개(각 8칸)로 구성된다. 로봇은 8대이며, 모든 실험은 이 창고에서 한다. % scenario.json world, outbound.lanes
+작업 종류는 다음과 같다.
+\begin{itemize}
+  \item \textbf{PUTAWAY}: 입고 대기칸의 상자를 정해진 랙 칸에 적치한다.
+  \item \textbf{PICK}: 주문 품목이 있는 랙 칸의 상자를 해당 지역 출고 레인으로 옮긴다.
+  \item \textbf{RELOCATE}: 상자를 다른 칸으로 옮긴다. 배정에서는 적치와 같은 종류로 다룬다.
+  \item \textbf{VERIFY}: 칸의 실제 내용을 확인해 기록을 바로잡는다. 놀고 있는 로봇이 수행한다.
+\end{itemize}
+출고 트럭은 지역별로 900\,초마다 마감되어 출발한다. % cutoff_period_s
+에피소드 길이는 3600\,초이다.
+
+\subsection{시스템 구조}
+창고 관리 시스템(WMS)은 재고 기록과 작업 상태를 관리하고 작업을 만든다.
+WES는 WMS가 보여 주는 정보만으로 매 단계 작업과 로봇을 짝지어 실행 지시를 보낸다.
+WES는 실제 재고나 미래 주문 같은 숨겨진 정보를 쓰지 않는다.
+\todo{그림 1: WMS--WES--로봇 구조도}
+
+\subsection{사람 작업자에 의한 기록 불일치}
+현장 작업자가 기록 없이 재고를 옮기는 상황을 세 가지로 모델링한다.
+\begin{itemize}
+  \item S1: 상자를 다른 칸으로 옮긴다. 시간당 8회, 한 번에 최대 3칸이다.
+  \item S2: 상자를 빼 간다. 시간당 3회이다.
+  \item S3: 적치하려는 칸이 이미 차 있다. 확률 0.1이다.
+\end{itemize}
+불일치는 로봇이 칸에 도착해 라벨을 읽을 때 드러난다.
+피킹 실패(SHORT\_PICK)나 품목 불일치(ITEM\_MISMATCH)가 나면 이웃 칸을, 적치 칸이 차 있으면(DESTINATION\_OCCUPIED) 그 칸을 확인 작업으로 만든다(열린 확인 작업 최대 4개). % sched_verify VERIFY_POLICY=event, VERIFY_MAX_OPEN 4
+로봇 자체의 오류(적치 실수, 스캐너 실패)는 0으로 둔다.
+모든 학습과 시험은 위 작업자 오류가 있는 조건에서 한다.
+위 비율은 실측 자료가 없어 정한 합성 가정이며, 한계에서 다시 언급한다.
+
+\subsection{시나리오}
+주문은 공개된 신발 제조사 창고 피킹 데이터셋~\cite{assis2023}의 \texttt{Customer\_Order.csv}에서 하루를 골라 시간을 압축해 만든다.
+\begin{itemize}
+  \item 시간 압축 비율은 약 6배이고, 웨이브는 90\,초 간격으로 풀린다. % time_scale 6.08, wave_interval_s 90
+  \item 입고는 그날 수요를 덮도록 합성한 트럭으로 만들고, 트럭 한 대에 상자 12개가 실린다.
+  \item 날짜가 출고 주문(품목, 수량, 풀리는 시각)을 정한다. 날짜마다 한 시간 동안 다루는 상자 수는 약 120--2200개로 다르다.
+  \item 시드는 입고 트럭의 도착 시각과 상자 구성, 작업자 오류가 언제 어디서 생기는지를 정한다. 출고 주문과 처음 재고 배치는 시드가 바뀌어도 같다.
+\end{itemize}
+
+\subsection{평가 지표}
+\begin{itemize}
+  \item \textbf{주문 리드타임}(주 지표): 주문이 풀린 시각부터 그 주문의 마지막 상자가 출하된 시각까지의 평균이다. 끝내지 못한 주문은 에피소드 종료 시각을 완료 시각으로 쳐서 포함한다. 끝낸 주문만 평균하면 어려운 주문을 미루는 정책이 유리해 보이기 때문이다.
+  \item \textbf{상자 단위 리드타임}: 같은 방식으로 상자마다 잰 평균이다.
+  \item \textbf{p90}: 주문 리드타임의 90번째 백분위수이다.
+  \item \textbf{마감 놓침}: 마감까지 출하하지 못한 주문 수이다.
+\end{itemize}
+
+% ---------------------------------------------------------------
+\section{방법}
+
+\subsection{작업-로봇 짝 점수}
+매 단계 시작 가능한 대기 작업 $\tau$ 각각을, 놀고 있는 로봇과 일하고 있는 로봇 $r$ 각각과 짝지어 점수를 매긴다.
+\begin{equation}
+  S(\tau, r) = \mathbf{w}^\top \boldsymbol{\phi}(\tau, r)
+\end{equation}
+점수가 높은 짝부터 탐욕적으로 고르며, 한 작업과 한 로봇은 한 번만 쓰인다.
+놀고 있는 로봇이 이기면 바로 실행 지시를 보내고, 일하고 있는 로봇이 이기면 아무 지시도 보내지 않고 다음 단계에서 다시 정한다.
+특징 $\boldsymbol{\phi}$는 표~\ref{tab:features}와 같다.
+일하고 있는 로봇의 거리는 \emph{현재 작업의 남은 이동 거리 + 현재 작업이 끝나는 곳에서 새 작업까지의 거리}로 계산한다.
+모든 특징은 WMS가 보여 주는 정보로만 계산한다.
+
+\begin{table}[t]
+\centering
+\caption{배정 점수의 특징. 위 세 개만 로봇에 따라 달라진다.} % lib/sched_learned.py FEATURES
+\label{tab:features}
+\small
+\begin{tabular}{@{}lp{0.62\columnwidth}@{}}
+\toprule
+특징 & 정의 \\
+\midrule
+dist & 로봇에서 작업 출발 칸까지 거리 (m) / 10 \\
+busy & 일하고 있는 로봇이면 1 \\
+eta & 로봇이 작업에 도착할 예상 시간 (분) \\
+\midrule
+pick, putaway, verify & 작업 종류 (0/1) \\
+age & 대기 시간 / 600\,s (최대 2) \\
+slack & 마감까지 남은 시간 / 900\,s, [0,1] (PICK) \\
+truck\_here & 해당 레인에 트럭이 있으면 1 (PICK) \\
+lane\_fill & 출고 레인 점유율 (PICK) \\
+buffer\_fill & 입고 대기칸 점유율 (PUTAWAY) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{경량 시뮬레이터}
+Webots 실행은 1시간 시나리오에 약 8.5분이 걸려 학습에 쓰기 어렵다.
+그래서 같은 시나리오 파일과 같은 WMS·WES 코드를 쓰고, 로봇 이동만 단순화한 경량 시뮬레이터를 만들었다.
+작업자 오류도 같은 코드로 들어가므로, 학습 중에 기록 불일치와 확인 작업이 그대로 나타난다.
+\begin{itemize}
+  \item 한 구간의 이동 시간은 \emph{경로 길이 / 속도 + 2\,초 + 1\,초 $\times$ (우선권이 앞선 움직이는 로봇 수)}이다.
+  \item 시간 간격은 0.5\,초이고, 충돌과 회피는 모델링하지 않는다.
+  \item 1시간 시나리오를 약 1초에 실행한다.
+\end{itemize}
+Webots 실행 51개와 비교했을 때 가동률 평균 오차는 2.2\%, 주문 리드타임 평균 오차는 5.4\%였다. % docs/lite_sim.md, 2026-11-16
+방법 간 순위는 리드타임 기준 92\%, 출하 기준 86\%가 일치했다.
+\todo{이 보정은 Webots에 비켜서기 동작을 넣기 전 결과. 재보정하거나 한계에 명시}
+
+\subsection{학습}
+가중치 $\mathbf{w}$는 작업자 오류가 있는 경량 시뮬레이터에서 CEM으로 학습한다.
+\begin{itemize}
+  \item 후보 24개, 상위 6개, 15회 반복, 초기 표준편차 1.0(최소 0.05)이다.
+  \item 시작값은 \emph{가까운 로봇, 피킹 우선} 규칙이다(dist $-1$, busy $-1$, pick $+2$).
+  \item 매 반복 모든 후보를 학습 시나리오 36개 전부에서 평가해 같은 조건으로 비교한다.
+  \item 학습 난수 시드를 3개(r0--r2) 바꿔 결과의 흔들림을 잰다.
+\end{itemize}
+에피소드 비용은 다음과 같다.
+\begin{equation}
+  C = 0.5\,L_{\text{order}} + 0.5\,L_{\text{unit}} + \lambda\,N_{\text{missed}}, \quad \lambda = 100
+\end{equation}
+
+% ---------------------------------------------------------------
+\section{실험 설정}
+
+\textbf{시나리오.} 모든 시나리오에 작업자 오류가 있다. 학습 날짜와 시험 날짜는 겹치지 않는다.
+\begin{itemize}
+  \item 학습: 18일 $\times$ 시드 42--43 (36개). 가벼운 날 6일(01-13, 02-10, 03-09, 05-12, 06-15, 07-31), 중간 8일(01-09, 01-12, 02-09, 04-24, 05-23, 06-26, 07-11, 10-13), 무거운 날 4일(01-25, 03-22, 05-04, 05-16). % logs/train_scenarios_fault_days18
+  \item 시험: 학습에 쓰지 않은 6일 $\times$ 시드 54--56 (18개). 부하가 학습 날짜와 비슷하게 퍼지도록 골랐다(표~\ref{tab:testdays}). % logs/test_scenarios_newdays
+  \item 경량 시험은 시나리오마다 5회 실행한다(90 에피소드). Webots 시험은 \todo{Webots 시험 범위: 날짜, 시드, 방법}.
+\end{itemize}
+
+\begin{table}[t]
+\centering
+\caption{시험 날짜. 상자 수와 주문 수는 한 시간 에피소드 기준.} % scratchpad day_loads.txt
+\label{tab:testdays}
+\small
+\begin{tabular}{llrr}
+\toprule
+부하 & 날짜 & 상자 & 주문 \\
+\midrule
+가벼움 & 2023-01-24 & 130 & 39 \\
+ & 2023-06-09 & 139 & 35 \\
+중간 & 2023-06-14 & 491 & 72 \\
+ & 2023-01-05 & 585 & 66 \\
+무거움 & 2023-08-22 & 922 & 182 \\
+ & 2023-06-19 & 2219 & 92 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{비교 방법.}
+\begin{itemize}
+  \item 팀 기본 WES 배정
+  \item 가까운 로봇, 피킹 우선 규칙 (학습 시작값)
+  \item 헝가리안 최적 매칭~\cite{kuhn1955}: 매 단계 놀고 있는 로봇과 시작 가능한 작업(같은 후보 30개)을, 로봇에서 작업 출발 칸까지 거리의 합이 최소가 되도록 짝짓는다. 작업 우선순위는 쓰지 않는다. % lib/sched_hungarian.py
+  \item 제안 방법: CEM 학습 배정
+\end{itemize}
+
+\textbf{Webots.}
+로봇 8대, 바퀴 물리와 충돌 회피, 통행 우선순위 규칙을 포함한다.
+% 학습 날짜 시험: scratchpad webots_fault.sh, webots_more.sh (2026-11-26, 27); 새 날짜 08-22: webots_nd.sh (2026-11-27)
+
+% ---------------------------------------------------------------
+\section{결과}
+
+\subsection{경량 시뮬레이터}
+
+\begin{table}[t]
+\centering
+\caption{경량 시뮬레이터 시험 결과 (작업자 오류, 처음 보는 6일, 90 에피소드 평균). 시간은 초.} % logs/train_fault_days18_cem_r*_report.json; scratchpad newdays_screen.txt
+\label{tab:lite}
+\small
+\begin{tabular}{lrrrr}
+\toprule
+방법 & 주문 & 상자 & p90 & 마감 놓침 \\
+\midrule
+팀 기본 WES & 393 & 309 & 818 & 3.51 \\
+가까운 로봇 규칙 & 401 & 306 & 833 & 3.78 \\
+헝가리안 & 400 & 308 & 836 & 3.7 \\
+CEM r0 & 385 & 306 & 776 & 3.60 \\
+CEM r1, r2 & \multicolumn{4}{l}{\todo{학습 중}} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{itemize}
+  \item \todo{r0--r2 평균, 팀 WES 대비 같은 에피소드끼리의 차이 $\pm$ 표준오차, 이긴 횟수}
+  \item CEM r0는 팀 기본 WES보다 주문 리드타임이 8\,초(2\%) 짧았고, p90은 818에서 776\,초로 줄었다.
+  \item 헝가리안은 처음 보는 날짜에서 팀 기본 WES보다 7\,초 길었다. 특히 무거운 날(08-22)에 37\,초 나빴다.
+  \item \todo{날짜별 결과: 어느 부하에서 이득이 나는지}
+\end{itemize}
+
+\subsection{Webots 검증}
+\label{sec:webots}
+
+\begin{table}[t]
+\centering
+\caption{Webots 결과 (작업자 오류, 처음 보는 날짜). 시간은 초. 마지막 열은 같은 시나리오끼리 잰 주문 리드타임 차이의 평균 $\pm$ 표준오차와, 팀 기본 WES보다 나았던 시나리오 수.}
+\label{tab:webots}
+\small
+\begin{tabular}{lrrrl}
+\toprule
+방법 & 주문 & 상자 & p90 & 팀 WES 대비 \\
+\midrule
+팀 기본 WES & \multicolumn{4}{l}{\todo{Webots 새 날짜 시험}} \\
+헝가리안 & \multicolumn{4}{l}{\todo{}} \\
+CEM & \multicolumn{4}{l}{\todo{}} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{itemize}
+  \item \todo{Webots 결과 해석: 경량 시뮬레이터와 방향이 같은지, 헝가리안과의 차이}
+  \item \todo{상자 단위 리드타임이 같은지 확인. 같다면 개선은 처리량이 아니라 주문을 끝내는 순서에서 나온다}
+\end{itemize}
+
+\subsection{학습 날짜에 대한 과적합}
+\label{sec:overfit}
+시드는 입고와 작업자 오류만 바꾸고 출고 주문은 바꾸지 않는다.
+따라서 학습한 날짜를 시드만 바꿔 시험하면, 학습한 배정은 이미 본 주문 패턴에서 평가된다.
+표~\ref{tab:overfit}은 학습 날짜 수와 시험 날짜에 따라 팀 기본 WES 대비 개선이 어떻게 달라지는지 보여 준다.
+
+\begin{table}[t]
+\centering
+\caption{학습과 시험 날짜에 따른 팀 기본 WES 대비 주문 리드타임 차이 (초, 음수가 개선). 경량 값은 같은 에피소드끼리의 차이 평균으로, 학습 시드 3개의 평균이다. 단 2일 학습의 처음 보는 6일, 3일 학습의 같은 날짜, Webots의 2일 학습 값은 학습 시드 r0 하나이다.} % logs/train_fault_base_cem_r*, train_fault_base3_cem_r*, train_fault_days18_cem_r* reports; scratchpad newdays_screen.txt, agg2.py, agg_nd.py
+\label{tab:overfit}
+\small
+\begin{tabular}{@{}llrr@{}}
+\toprule
+학습 & 시험 & 경량 & Webots \\
+\midrule
+2일 & 같은 날짜$^\dagger$ & $-39$ & $-57$ \\
+2일 & 새 6일 & $+1$ & -- \\
+3일$^\ddagger$ & 같은 날짜$^\dagger$ & $-36$ & -- \\
+3일$^\ddagger$ & 새 6일 & $-1$ & $+4$, $+17$$^\ast$ \\
+18일 & 새 6일 & \todo{} & \todo{} \\
+\bottomrule
+\end{tabular}
+
+\vspace{2pt}
+\footnotesize $^\dagger$ 학습한 날짜를 시드만 바꿔 시험. $^\ddagger$ 과부하(03-22 전체) 포함. $^\ast$ 08-22 하루, 시드 54--56, 학습 시드 r0, r1.
+\end{table}
+
+\begin{itemize}
+  \item 학습한 날짜에서 7\% 안팎이던 개선이, 처음 보는 날짜에서는 사라졌다. Webots에서도 같았다.
+  \item 처음 보는 날짜 가운데 경량 시뮬레이터에서 차이가 가장 컸던 08-22를 Webots로 돌렸지만, 학습한 배정은 팀 기본 WES와 차이가 없었다.
+  \item 학습 날짜를 18일로 늘리면 \todo{결과}.
+  \item 시드만 바꾼 시험은 학습한 배정의 일반화를 과대평가한다. 날짜(주문)를 나눠 시험해야 한다.
+\end{itemize}
+
+% ---------------------------------------------------------------
+\section{한계}
+\begin{itemize}
+  \item \textbf{시뮬레이션만 사용한다.} 실제 로봇 시연은 \todo{축소 창고 시연 추가 예정}.
+  \item \textbf{오류율은 합성 가정이다.} 실측 오류율 자료가 없어 한 가지 오류 수준만 썼다.
+  \item \textbf{학습된 가중치는 하나로 정해지지 않는다.} 작업 종류 특징은 차이만 의미가 있어서, 서로 다른 가중치 조합이 비슷한 성능을 낸다.
+  \item \textbf{과부하에서 큰 주문을 놓칠 수 있다.} 평균 비용으로 학습하면 오래된 작업의 우선순위가 낮아져, 일부 주문이 끝까지 남을 수 있다. 2일로 학습한 배정은 Webots 과부하 시나리오에서 이 실패를 보였다. \todo{18일 학습에서도 나타나는지}
+  \item \textbf{Webots 시험 규모가 작다.} 시나리오마다 1회만 실행했고, 끝내지 못한 주문 하나가 평균을 수십 초 움직인다. \todo{Webots 시나리오 수 확정 후 수정}
+  \item \textbf{날짜 수가 제한적이다.} 데이터셋에서 쓸 수 있는 날짜 가운데 학습 18일, 시험 6일만 썼다.
+  \item \textbf{창고 하나, 로봇 8대만 실험했다.} 더 큰 창고와 로봇 수에서의 결과는 확인하지 않았다.
+  \item \textbf{경량 시뮬레이터 보정 시점.} 보정은 Webots에 비켜서기 동작을 넣기 전에 했다.
+\end{itemize}
+
+% ---------------------------------------------------------------
+\section{결론}
+\label{sec:conclusion}
+작업자가 기록 없이 재고를 옮기는 물류창고에서, 작업-로봇 짝 점수의 가중치를 경량 시뮬레이터에서 CEM으로 학습했다.
+학습한 날짜를 시드만 바꿔 시험하면 개선이 크게 부풀려졌고, 처음 보는 날짜에서는 개선이 대부분 사라졌다.
+\todo{18일 학습 결과(경량, Webots) 한두 문장}
+학습한 배정을 평가할 때는 시드가 아니라 주문 날짜를 나눠 시험해야 한다.
+\todo{향후 과제: 더 많은 날짜와 주문 특징, 확인 작업 결정의 학습, 더 큰 창고, 축소 창고 실물 시연}
+
+\section*{Acknowledgments}
+\todo{최종본에서 작성 (익명 심사본에서는 비움)}
+
+%% Use plainnat to work nicely with natbib.
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\end{document}
