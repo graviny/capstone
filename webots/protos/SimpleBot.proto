@@ -123,7 +123,7 @@ PROTO SimpleBot [
       %< } >%
       HingeJoint {
         jointParameters HingeJointParameters { axis 0 1 0 anchor 0 0.09 0.033 }
-        device [ RotationalMotor { name "left wheel motor" maxVelocity 15 } ]
+        device [ RotationalMotor { name "left wheel motor" maxVelocity 30 } ]
         endPoint Solid {
           translation 0 0.09 0.033
           rotation 1 0 0 1.5708
@@ -140,7 +140,7 @@ PROTO SimpleBot [
       }
       HingeJoint {
         jointParameters HingeJointParameters { axis 0 1 0 anchor 0 -0.09 0.033 }
-        device [ RotationalMotor { name "right wheel motor" maxVelocity 15 } ]
+        device [ RotationalMotor { name "right wheel motor" maxVelocity 30 } ]
         endPoint Solid {
           translation 0 -0.09 0.033
           rotation 1 0 0 1.5708

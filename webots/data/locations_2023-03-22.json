@@ -1,0 +1,616 @@
+{
+ "date": "2023-03-22",
+ "source": "Picking_Wave.csv + Customer_Order.csv + Storage_Location.csv (doi:10.17632/pf2w725pw3.1)",
+ "assumptions": {
+  "front_y": -29.0,
+  "corridors_x": [
+   66.0,
+   403.0,
+   686.0
+  ],
+  "window_days": 30,
+  "front_dist": "(y - front_y) + distance to the nearest corridor; floors not weighted"
+ },
+ "skus": [
+  {
+   "sku": "SMMRK3-12",
+   "location": "I-23-23",
+   "x": 86,
+   "y": 572,
+   "floor": 2,
+   "picks": 15,
+   "basis": "day",
+   "front_dist": 621.0
+  },
+  {
+   "sku": "SMMRK3-11",
+   "location": "I-23-12",
+   "x": 102,
+   "y": 572,
+   "floor": 1,
+   "picks": 16,
+   "basis": "day",
+   "front_dist": 637.0
+  },
+  {
+   "sku": "SMMRK3-10.5",
+   "location": "I-23-22",
+   "x": 102,
+   "y": 572,
+   "floor": 2,
+   "picks": 16,
+   "basis": "day",
+   "front_dist": 637.0
+  },
+  {
+   "sku": "SMMRK3-10",
+   "location": "I-23-11",
+   "x": 118,
+   "y": 572,
+   "floor": 1,
+   "picks": 26,
+   "basis": "day",
+   "front_dist": 653.0
+  },
+  {
+   "sku": "SMMRK3-9.5",
+   "location": "I-21-13",
+   "x": 136,
+   "y": 572,
+   "floor": 1,
+   "picks": 10,
+   "basis": "day",
+   "front_dist": 671.0
+  },
+  {
+   "sku": "SMMRK3-9",
+   "location": "I-21-12",
+   "x": 152,
+   "y": 572,
+   "floor": 1,
+   "picks": 16,
+   "basis": "day",
+   "front_dist": 687.0
+  },
+  {
+   "sku": "8D9SAW-9",
+   "location": "I-15-12",
+   "x": 302,
+   "y": 572,
+   "floor": 1,
+   "picks": 5,
+   "basis": "day",
+   "front_dist": 702.0
+  },
+  {
+   "sku": "8D9SAW-9.5",
+   "location": "I-15-13",
+   "x": 286,
+   "y": 572,
+   "floor": 1,
+   "picks": 10,
+   "basis": "day",
+   "front_dist": 718.0
+  },
+  {
+   "sku": "8D9SAW-10",
+   "location": "I-17-11",
+   "x": 268,
+   "y": 572,
+   "floor": 1,
+   "picks": 18,
+   "basis": "day",
+   "front_dist": 736.0
+  },
+  {
+   "sku": "8D9SAW-11",
+   "location": "I-17-12",
+   "x": 252,
+   "y": 572,
+   "floor": 1,
+   "picks": 14,
+   "basis": "day",
+   "front_dist": 752.0
+  },
+  {
+   "sku": "8D9SAW-10.5",
+   "location": "I-17-22",
+   "x": 252,
+   "y": 572,
+   "floor": 2,
+   "picks": 14,
+   "basis": "day",
+   "front_dist": 752.0
+  },
+  {
+   "sku": "8N10W9-13",
+   "location": "H-10-12",
+   "x": 450,
+   "y": 688,
+   "floor": 1,
+   "picks": 19,
+   "basis": "day",
+   "front_dist": 764.0
+  },
+  {
+   "sku": "8N10W9-12",
+   "location": "H-10-22",
+   "x": 450,
+   "y": 688,
+   "floor": 2,
+   "picks": 56,
+   "basis": "day",
+   "front_dist": 764.0
+  },
+  {
+   "sku": "8N10W9-11",
+   "location": "H-10-11",
+   "x": 466,
+   "y": 688,
+   "floor": 1,
+   "picks": 32,
+   "basis": "day",
+   "front_dist": 780.0
+  },
+  {
+   "sku": "WRRW1W-12",
+   "location": "I-09-12",
+   "x": 450,
+   "y": 720,
+   "floor": 1,
+   "picks": 14,
+   "basis": "day",
+   "front_dist": 796.0
+  },
+  {
+   "sku": "8N10W9-10.5",
+   "location": "H-08-23",
+   "x": 484,
+   "y": 688,
+   "floor": 2,
+   "picks": 24,
+   "basis": "day",
+   "front_dist": 798.0
+  },
+  {
+   "sku": "WRRW1W-11",
+   "location": "I-09-11",
+   "x": 466,
+   "y": 720,
+   "floor": 1,
+   "picks": 17,
+   "basis": "day",
+   "front_dist": 812.0
+  },
+  {
+   "sku": "8N10W9-10",
+   "location": "H-08-22",
+   "x": 500,
+   "y": 688,
+   "floor": 2,
+   "picks": 39,
+   "basis": "day",
+   "front_dist": 814.0
+  },
+  {
+   "sku": "6M2FJM-9",
+   "location": "I-22-21",
+   "x": 168,
+   "y": 688,
+   "floor": 2,
+   "picks": 57,
+   "basis": "window",
+   "front_dist": 819.0
+  },
+  {
+   "sku": "8N10W9-9.5",
+   "location": "H-08-11",
+   "x": 516,
+   "y": 688,
+   "floor": 1,
+   "picks": 17,
+   "basis": "day",
+   "front_dist": 830.0
+  },
+  {
+   "sku": "WRRW1W-10.5",
+   "location": "I-07-13",
+   "x": 484,
+   "y": 720,
+   "floor": 1,
+   "picks": 11,
+   "basis": "day",
+   "front_dist": 830.0
+  },
+  {
+   "sku": "8N10W9-8",
+   "location": "H-06-11",
+   "x": 566,
+   "y": 688,
+   "floor": 1,
+   "picks": 11,
+   "basis": "day",
+   "front_dist": 837.0
+  },
+  {
+   "sku": "WRRW1W-10",
+   "location": "I-07-12",
+   "x": 500,
+   "y": 720,
+   "floor": 1,
+   "picks": 26,
+   "basis": "day",
+   "front_dist": 846.0
+  },
+  {
+   "sku": "8N10W9-9",
+   "location": "H-06-23",
+   "x": 534,
+   "y": 688,
+   "floor": 2,
+   "picks": 24,
+   "basis": "day",
+   "front_dist": 848.0
+  },
+  {
+   "sku": "JEGRCL-9",
+   "location": "J-15-12",
+   "x": 302,
+   "y": 720,
+   "floor": 1,
+   "picks": 8,
+   "basis": "day",
+   "front_dist": 850.0
+  },
+  {
+   "sku": "2T1DJM-10",
+   "location": "I-18-11",
+   "x": 268,
+   "y": 688,
+   "floor": 1,
+   "picks": 13,
+   "basis": "day",
+   "front_dist": 852.0
+  },
+  {
+   "sku": "8N10W9-8.5",
+   "location": "H-06-22",
+   "x": 550,
+   "y": 688,
+   "floor": 2,
+   "picks": 8,
+   "basis": "day",
+   "front_dist": 853.0
+  },
+  {
+   "sku": "I1KDJ0-12",
+   "location": "I-10-12",
+   "x": 450,
+   "y": 778,
+   "floor": 1,
+   "picks": 27,
+   "basis": "day",
+   "front_dist": 854.0
+  },
+  {
+   "sku": "LXJQVG-10",
+   "location": "J-24-21",
+   "x": 118,
+   "y": 778,
+   "floor": 2,
+   "picks": 127,
+   "basis": "window",
+   "front_dist": 859.0
+  },
+  {
+   "sku": "WRRW1W-9.5",
+   "location": "I-07-11",
+   "x": 516,
+   "y": 720,
+   "floor": 1,
+   "picks": 26,
+   "basis": "day",
+   "front_dist": 862.0
+  },
+  {
+   "sku": "2T1DJM-11",
+   "location": "I-18-12",
+   "x": 252,
+   "y": 688,
+   "floor": 1,
+   "picks": 12,
+   "basis": "day",
+   "front_dist": 868.0
+  },
+  {
+   "sku": "WRRW1W-8",
+   "location": "I-05-11",
+   "x": 566,
+   "y": 720,
+   "floor": 1,
+   "picks": 5,
+   "basis": "day",
+   "front_dist": 869.0
+  },
+  {
+   "sku": "I1KDJ0-11",
+   "location": "I-10-21",
+   "x": 466,
+   "y": 778,
+   "floor": 2,
+   "picks": 45,
+   "basis": "day",
+   "front_dist": 870.0
+  },
+  {
+   "sku": "WRRW1W-9",
+   "location": "I-05-13",
+   "x": 534,
+   "y": 720,
+   "floor": 1,
+   "picks": 10,
+   "basis": "day",
+   "front_dist": 880.0
+  },
+  {
+   "sku": "JEGRCL-10",
+   "location": "J-17-11",
+   "x": 268,
+   "y": 720,
+   "floor": 1,
+   "picks": 40,
+   "basis": "day",
+   "front_dist": 884.0
+  },
+  {
+   "sku": "WRRW1W-8.5",
+   "location": "I-05-12",
+   "x": 550,
+   "y": 720,
+   "floor": 1,
+   "picks": 14,
+   "basis": "day",
+   "front_dist": 885.0
+  },
+  {
+   "sku": "I1KDJ0-10.5",
+   "location": "I-08-13",
+   "x": 484,
+   "y": 778,
+   "floor": 1,
+   "picks": 48,
+   "basis": "day",
+   "front_dist": 888.0
+  },
+  {
+   "sku": "PY5UPB-27.5",
+   "location": "J-01-23",
+   "x": 634,
+   "y": 810,
+   "floor": 2,
+   "picks": 47,
+   "basis": "all",
+   "front_dist": 891.0
+  },
+  {
+   "sku": "I1KDJ0-10",
+   "location": "I-08-12",
+   "x": 500,
+   "y": 778,
+   "floor": 1,
+   "picks": 18,
+   "basis": "day",
+   "front_dist": 904.0
+  },
+  {
+   "sku": "05W6TK-10.5",
+   "location": "J-07-23",
+   "x": 484,
+   "y": 810,
+   "floor": 2,
+   "picks": 14,
+   "basis": "day",
+   "front_dist": 920.0
+  },
+  {
+   "sku": "I1KDJ0-9.5",
+   "location": "I-08-21",
+   "x": 516,
+   "y": 778,
+   "floor": 2,
+   "picks": 35,
+   "basis": "day",
+   "front_dist": 920.0
+  },
+  {
+   "sku": "05W6TK-10",
+   "location": "J-07-22",
+   "x": 500,
+   "y": 810,
+   "floor": 2,
+   "picks": 60,
+   "basis": "day",
+   "front_dist": 936.0
+  },
+  {
+   "sku": "I1KDJ0-9",
+   "location": "I-06-23",
+   "x": 534,
+   "y": 778,
+   "floor": 2,
+   "picks": 43,
+   "basis": "day",
+   "front_dist": 938.0
+  },
+  {
+   "sku": "KUFVRI-11",
+   "location": "J-10-22",
+   "x": 450,
+   "y": 868,
+   "floor": 2,
+   "picks": 27,
+   "basis": "day",
+   "front_dist": 944.0
+  },
+  {
+   "sku": "05W6TK-9.5",
+   "location": "J-07-11",
+   "x": 516,
+   "y": 810,
+   "floor": 1,
+   "picks": 74,
+   "basis": "day",
+   "front_dist": 952.0
+  },
+  {
+   "sku": "05W6TK-8",
+   "location": "J-05-21",
+   "x": 566,
+   "y": 810,
+   "floor": 2,
+   "picks": 78,
+   "basis": "day",
+   "front_dist": 959.0
+  },
+  {
+   "sku": "05W6TK-9",
+   "location": "J-05-23",
+   "x": 534,
+   "y": 810,
+   "floor": 2,
+   "picks": 59,
+   "basis": "day",
+   "front_dist": 970.0
+  },
+  {
+   "sku": "05W6TK-8.5",
+   "location": "J-05-22",
+   "x": 550,
+   "y": 810,
+   "floor": 2,
+   "picks": 68,
+   "basis": "day",
+   "front_dist": 975.0
+  },
+  {
+   "sku": "PY5UPB-25.5",
+   "location": "L-01-11",
+   "x": 666,
+   "y": 990,
+   "floor": 1,
+   "picks": 48,
+   "basis": "all",
+   "front_dist": 1039.0
+  },
+  {
+   "sku": "PY5UPB-23.5",
+   "location": "L-01-12",
+   "x": 650,
+   "y": 990,
+   "floor": 1,
+   "picks": 59,
+   "basis": "all",
+   "front_dist": 1055.0
+  },
+  {
+   "sku": "PY5UPB-24",
+   "location": "L-01-13",
+   "x": 634,
+   "y": 990,
+   "floor": 1,
+   "picks": 60,
+   "basis": "all",
+   "front_dist": 1071.0
+  },
+  {
+   "sku": "U95NWB-12",
+   "location": "L-16-23",
+   "x": 286,
+   "y": 958,
+   "floor": 2,
+   "picks": 3,
+   "basis": "day",
+   "front_dist": 1104.0
+  },
+  {
+   "sku": "PY5UPB-25",
+   "location": null,
+   "x": null,
+   "y": null,
+   "floor": null,
+   "picks": 0,
+   "basis": "reference",
+   "front_dist": 1129.0
+  },
+  {
+   "sku": "PY5UPB-28",
+   "location": "M-01-11",
+   "x": 666,
+   "y": 1080,
+   "floor": 1,
+   "picks": 29,
+   "basis": "all",
+   "front_dist": 1129.0
+  },
+  {
+   "sku": "PY5UPB-24.5",
+   "location": "M-01-22",
+   "x": 650,
+   "y": 1080,
+   "floor": 2,
+   "picks": 40,
+   "basis": "all",
+   "front_dist": 1145.0
+  },
+  {
+   "sku": "I2B1FH-10",
+   "location": "M-19-11",
+   "x": 218,
+   "y": 990,
+   "floor": 1,
+   "picks": 48,
+   "basis": "window",
+   "front_dist": 1171.0
+  },
+  {
+   "sku": "I2B1FH-9",
+   "location": "M-17-13",
+   "x": 236,
+   "y": 990,
+   "floor": 1,
+   "picks": 51,
+   "basis": "day",
+   "front_dist": 1186.0
+  },
+  {
+   "sku": "PY5UPB-26.5",
+   "location": "M-02-11",
+   "x": 666,
+   "y": 1138,
+   "floor": 1,
+   "picks": 48,
+   "basis": "all",
+   "front_dist": 1187.0
+  },
+  {
+   "sku": "PY5UPB-27",
+   "location": "N-01-11",
+   "x": 666,
+   "y": 1170,
+   "floor": 1,
+   "picks": 17,
+   "basis": "all",
+   "front_dist": 1219.0
+  },
+  {
+   "sku": "PY5UPB-26",
+   "location": "N-01-12",
+   "x": 650,
+   "y": 1170,
+   "floor": 1,
+   "picks": 48,
+   "basis": "all",
+   "front_dist": 1235.0
+  }
+ ]
+}

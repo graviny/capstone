@@ -21,12 +21,15 @@ the carton is diverted to a free exception slot (or staged unread when both are 
 Outbound: each region's truck leaves when its lane holds dispatch_cartons or at
 every cutoff with whatever is staged, and is back after turnaround_s.
 
-Faults (scenario.json "faults"), the causes of S1-S3, logged to truth.jsonl only:
-  S1_PLACE_ERROR          a carton lands in the next free slot of the face
+Faults (scenario.json "faults"), the causes of S1-S3, logged to truth.jsonl only.
+By default every fault is caused by a person; the robot placement error and the
+scanner failure are off (rate 0) but still work when given a rate:
+  S1_PLACE_ERROR          (off) a robot puts a carton in the next free slot of the face
   S1_UNRECORDED_MOVE      a worker moves a carton a few slots, unrecorded
   S2_UNRECORDED_REMOVAL   a worker takes a carton away, unrecorded
   S3_DEST_TAKEN           while a robot carries a carton to a rack slot, a worker
                           puts a returned carton there
+  SCANNER_FAIL            (off, TODO) the inbound scanner cannot read a label
 Placement errors and S3 draws are keyed by carton / task, so they repeat across
 WES policies; worker events come from a seeded process.
 
@@ -41,6 +44,8 @@ are looks only and do not block the robots.
 
 Logs (logs/<tag>/): events.jsonl (events + decisions), truth.jsonl, poses.csv (every 2 s),
 timeseries.csv (every 10 s), summary.json. QUIT_AT_END=1 closes Webots at the end.
+Record quality ("record_mismatch_settled", summary "record_quality"): rack slots whose WES
+record differs from the truth while no robot works on them.
 """
 import csv
 import importlib
@@ -58,6 +63,9 @@ from controller import Supervisor
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "lib"))
+from record_quality import RecordQuality
+from research_metrics import FlowMetrics, order_metrics, task_metrics
+from fault_tape import FaultTape, apply_worker_attempt
 POSE_EVERY_STEPS = 4
 CARRY_Z = 0.5
 STATS_PERIOD_S = 10.0
@@ -93,6 +101,8 @@ def main():
     seed, faults, belt_cfg, out_cfg = cfg["seed"], cfg["faults"], cfg["belt"], cfg["outbound"]
     wes = importlib.import_module(os.environ.get("WES_MODULE", "wes_standin")).WES(cfg)
     worker_rng = random.Random(seed + 101)
+    fault_tape = FaultTape(cfg) if cfg.get('fault_model') == 'marked-poisson-v1' else None
+    flow_metrics = FlowMetrics()
 
     sup = Supervisor()
     dt = int(sup.getBasicTimeStep())
@@ -157,7 +167,8 @@ def main():
     mode = "batch" if os.environ.get("QUIT_AT_END") == "1" else "gui"
     faults_on = any(v for k, v in faults.items() if not k.endswith("max_slots"))
     sweep = "_sweep" if cfg.get("patrol", {}).get("idle_sweep") else ""
-    tag = f"{out_cfg['date']}_{wes.name}_seed{seed}_{'faults' if faults_on else 'nofaults'}{sweep}_{mode}"
+    run = f"_{cfg['run_name']}" if cfg.get("run_name") else ""      # gen_world.py --run-name
+    tag = f"{out_cfg['date']}_{wes.name}_seed{seed}_{'faults' if faults_on else 'nofaults'}{sweep}{run}_{mode}"
     log_dir = ROOT / "logs" / tag
     log_dir.mkdir(parents=True, exist_ok=True)
     ev_file = open(log_dir / "events.jsonl", "w", encoding="utf-8")
@@ -165,7 +176,7 @@ def main():
     ts_file = open(log_dir / "timeseries.csv", "w", newline="", encoding="utf-8")
     ts = csv.writer(ts_file)
     ts.writerow(["t", "rack_cartons", "belt", "buffer", "exception", "staged_out", "units_released",
-                 "units_shipped", "robots_busy", "record_mismatch"])
+                 "units_shipped", "robots_busy", "record_mismatch", "record_mismatch_settled"])
     pose_file = open(log_dir / "poses.csv", "w", newline="", encoding="utf-8")
     pose_log = csv.writer(pose_file)
     pose_log.writerow(["t", "robot", "x", "y", "task", "phase", "holding"])
@@ -179,6 +190,7 @@ def main():
         n_events[0] += 1
         ev = {"event_id": f"E{n_events[0]:06d}", "t": round(t_now[0], 2), **ev}
         counts[ev["type"]] = counts.get(ev["type"], 0) + 1
+        flow_metrics.observe(ev)
         ev_file.write(json.dumps(ev) + "\n")
         wes.on_event(ev)
 
@@ -229,7 +241,12 @@ def main():
 
     # ---- robots / tasks ----
     robot_state = {rid: {"task": None, "holding": None, "phase": None} for rid in robots}
+    prio = {}                                          # robot -> right-of-way key (agent.py prio_key)
     task_dest = {}                                     # task id -> destination (for S3)
+    task_src = {}                                      # task id -> source (record quality, below)
+    # Record quality: a rack slot whose record differs from the truth while no robot works on
+    # it ("settled" mismatch; a slot under a running task differs only until it completes).
+    record_quality = RecordQuality()
     place_count = {}
     s3_pending = []                                    # (time, slot, task)
     dist_m = {rid: 0.0 for rid in robots}
@@ -252,9 +269,13 @@ def main():
                 carried[lpn] = rid
                 res.update(ok=True, item=sku_of[lpn], lpn=lpn)
                 dest = task_dest.get(msg.get("task_id"))
-                if (dest and slots[dest]["kind"] == "rack"
-                        and unit(seed, msg["task_id"], dest, "dest") < faults["dest_taken_p"]):
-                    s3_pending.append((t_now[0] + 4.0, dest, msg["task_id"]))
+                if dest and slots[dest]["kind"] == "rack":
+                    if fault_tape:
+                        event = fault_tape.s3(lpn, t_now[0], faults['dest_taken_p'])
+                        if event:
+                            s3_pending.append((t_now[0] + 4.0, dest, event))
+                    elif unit(seed, msg["task_id"], dest, "dest") < faults["dest_taken_p"]:
+                        s3_pending.append((t_now[0] + 4.0, dest, msg["task_id"]))
             else:
                 res["reason"] = "too_far" if not near else ("empty" if not lpn else "holding")
         elif op == "place":
@@ -307,6 +328,15 @@ def main():
         worker_until[k] = t_now[0] + WORKER_SHOW_S
 
     def worker_events():
+        if fault_tape:
+            for event in fault_tape.due(t_now[0]):
+                result = apply_worker_attempt(event, t_now[0], slots, occupant, slot_of,
+                    faults['worker_move_max_slots'], take, put, hide, fault_tape)
+                if result:
+                    truth('S1_UNRECORDED_MOVE' if event['kind'] == 'S1' else 'S2_UNRECORDED_REMOVAL',
+                          fault_id=event['id'], **result)
+                    show_worker(result['src'])
+            return
         rack_lpns = [l for l, s in slot_of.items() if slots[s]["kind"] == "rack"]
         if not rack_lpns:
             return
@@ -454,8 +484,12 @@ def main():
             if occupant[dest] is None and returns:
                 lpn = returns.pop(0)
                 put(lpn, dest)
-                truth("S3_DEST_TAKEN", slot=dest, lpn=lpn, item=sku_of[lpn], task_id=tid)
+                truth("S3_DEST_TAKEN", slot=dest, lpn=lpn, item=sku_of[lpn], task_id=tid if not fault_tape else None)
+                if fault_tape:
+                    fault_tape.record(tid, t, 'injected', dst=dest)
                 show_worker(dest)
+            elif fault_tape:
+                fault_tape.record(tid, t, 'skipped_occupied' if occupant[dest] else 'skipped_no_returns', dst=dest)
 
         # Robot messages.
         while receiver.getQueueLength() > 0:
@@ -466,6 +500,8 @@ def main():
             elif msg["kind"] == "STATE":
                 robot_state[msg["src"]] = {"task": msg.get("task"), "holding": msg.get("holding"),
                                            "phase": msg.get("phase")}
+                if msg.get("prio") is not None:
+                    prio[msg["src"]] = msg["prio"]
             elif msg["kind"] == "EVENT":
                 ev = {k: v for k, v in msg.items() if k not in ("kind", "src")}
                 emit(ev)
@@ -482,8 +518,10 @@ def main():
             task = d.get("task") or {}
             if d["action"] == "EXECUTE":
                 task_dest[d["task_id"]] = task.get("destination")
+                task_src[d["task_id"]] = task.get("source")
             elif d["action"] == "REROUTE":
                 task_dest[d["task_id"]] = d.get("destination")
+                task_src[d["task_id"]] = d.get("source", task_src.get(d["task_id"]))
             to_robot(d["robot_id"], {"kind": "DECISION", **d})
 
         # Carried cartons ride on their robot.
@@ -503,7 +541,8 @@ def main():
                 last_pos[rid] = (x, y)
                 if robot_state[rid]["task"]:
                     busy_s[rid] += POSE_EVERY_STEPS * step_s
-            packet = json.dumps({"kind": "POSES", "poses": poses})
+            # Right-of-way keys travel with the poses, so all robots compare the same values.
+            packet = json.dumps({"kind": "POSES", "poses": poses, "prio": prio})
             for rid in rnodes:
                 emitter.setChannel(100 + rid)
                 emitter.send(packet)
@@ -544,15 +583,20 @@ def main():
             bad += [l for l in carried if l in slot_of] + [b["lpn"] for b in belt if b["lpn"] in slot_of or b["lpn"] in carried]
             if bad:
                 truth("INVARIANT_VIOLATION", items=bad[:10])
-            mismatch = ""
+            mismatch, settled = "", ""
             if hasattr(wes, "record_snapshot"):
                 rec = wes.record_snapshot()
-                mismatch = sum(1 for s, v in rec.items() if v != gt_sku(s))
+                wrong = {s for s, v in rec.items() if v != gt_sku(s)}
+                mismatch = len(wrong)
+                busy = {x for st in robot_state.values() if st["task"]
+                        for x in (task_src.get(st["task"]), task_dest.get(st["task"])) if x}
+                settled = record_quality.sample(t, wrong, busy)
             ts.writerow([f"{t:.0f}", sum(1 for s in slots if slots[s]["kind"] == "rack" and occupant[s]), len(belt),
                          sum(1 for z in zones if occupant[z]),
                          sum(1 for x in belt_cfg["exception"] if occupant[x]),
                          sum(1 for r in lanes for s in lanes[r]["slots"] if occupant[s]),
-                         units_released, units_shipped, sum(1 for r in robot_state.values() if r["task"]), mismatch])
+                         units_released, units_shipped, sum(1 for r in robot_state.values() if r["task"]), mismatch,
+                         settled])
             next_stats = t + STATS_PERIOD_S
         if t >= next_print:
             for f in (ev_file, truth_file, ts_file, pose_file):
@@ -568,6 +612,11 @@ def main():
             done_orders = [o for o in orders.values() if o["done_t"] is not None]
             released_orders = [o for o in orders.values() if o["released_t"] <= t]
             rec = wes.record_snapshot() if hasattr(wes, "record_snapshot") else {}
+            if rec:
+                wrong = {s for s, v in rec.items() if v != gt_sku(s)}
+                busy = {x for st in robot_state.values() if st["task"]
+                        for x in (task_src.get(st["task"]), task_dest.get(st["task"])) if x}
+                record_quality.sample(t, wrong, busy)
             summary = {
                 "tag": tag, "duration_s": round(t, 1), "wes": wes.name,
                 "orders_released": len(released_orders), "orders_completed": len(done_orders),
@@ -581,6 +630,14 @@ def main():
                 "faults_injected": {k: v for k, v in truth_counts.items() if k not in DIAGNOSTICS},
                 "diagnostics": {k: v for k, v in truth_counts.items() if k in DIAGNOSTICS},
                 "record_mismatch_at_end": sum(1 for s, v in rec.items() if v != gt_sku(s)) if rec else None,
+                # Settled mismatches (no robot working on the slot), sampled every STATS_PERIOD_S:
+                # mean count over the run, how long the ones that got corrected lasted, and the
+                # ones still open at the end.
+                "record_quality": record_quality.summary(t) if rec else None,
+                "research_metrics": {**flow_metrics.summary(t), **order_metrics(orders, t),
+                    'tasks': task_metrics(wes.wms.tasks, t) if hasattr(wes, 'wms') else None},
+                "fault_tape": fault_tape.summary() if fault_tape else None,
+                "robot_roles": {r: robots[r]["role"] for r in robots},
                 "robot_distance_m": {r: round(d, 1) for r, d in dist_m.items()},
                 "robot_busy_share": {r: round(b / t, 3) for r, b in busy_s.items()},
                 "wes_stats": wes.stats() if hasattr(wes, "stats") else None,
@@ -588,10 +645,18 @@ def main():
             for f in (ev_file, truth_file, ts_file, pose_file):
                 f.flush()
             (log_dir / "summary.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
+            if fault_tape:
+                (log_dir / 'fault_audit.json').write_text(json.dumps(fault_tape.audit, indent=2), encoding='utf-8')
             print("[sup] SUMMARY " + json.dumps(summary))
             if os.environ.get("QUIT_AT_END") == "1":
                 sup.simulationQuit(0)
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception:
+        # Webots drops controller output in --batch runs: keep the traceback.
+        import traceback
+        (ROOT / "logs" / "_supervisor_crash.txt").write_text(traceback.format_exc(), encoding="utf-8")
+        raise

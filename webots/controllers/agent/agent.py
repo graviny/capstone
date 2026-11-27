@@ -24,7 +24,7 @@ from controller import Robot
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "lib"))
-from nav import GridMap  # noqa: E402
+from nav import GridMap, in_way_of, step_aside  # noqa: E402
 
 CAM_Z = 0.24
 CAM_YAW = math.pi / 2      # camera looks left
@@ -38,6 +38,10 @@ SWEEP_ANGLE = 0.3          # patrol reports a slot when it is this close to the 
 IDLE_PARK_S = 20.0
 ARRIVE_M = 0.35            # a path that ends farther than this from the goal is replanned
 MAX_RETRIES = 3
+NO_TASK = [2, 9, 1e9]      # right-of-way key of a robot without a task (see prio_key)
+ASIDE_CONE = 0.8           # a robot stands in another's way when this close to its heading (rad)
+ASIDE_MAX_S = 6.0          # give up stepping aside after this long
+ASIDE_COOLDOWN_S = 5.0     # and do not step aside again sooner than this
 
 
 def wrap(a):
@@ -115,7 +119,9 @@ def main():
                 and math.hypot(o["pos"][0] - s["pos"][0], o["pos"][1] - s["pos"][1]) <= per["slot_match_m"]]
         return min(hits, key=lambda o: o["dist"])["item"] if hits else "EMPTY"
 
-    poses, moving = {}, set()
+    poses, moving, prio = {}, set(), {}
+    # docs: "task" = right of way by task (default for new worlds); "id" = lower id first (older scenarios).
+    by_task = nav.get("traffic_priority", "id") == "task"
     path, goal = [], None
     blocked_since = None
     task, phase, holding = None, None, None
@@ -126,6 +132,7 @@ def main():
     sweep = {"face": None, "mode": None, "seen": set(), "k": k0 - 1}
     parked, idle_since = False, None
     plan_retries, act_retries = 0, 0
+    aside, aside_until, aside_ready, aside_replan = None, 0.0, 0.0, False
 
     def set_goal(x, y, target):
         nonlocal goal, blocked_since
@@ -143,8 +150,22 @@ def main():
             path.clear()
             path.extend(p)
 
+    def prio_key():
+        """Right of way (lower wins), as fleet managers rank vehicles: loaded first, then the
+        task's priority and deadline; robots without a task or on hold last. Ties: robot id."""
+        if task is None or phase == "wait":
+            return NO_TASK
+        dl = task.get("deadline")
+        return [0 if holding else 1, task.get("priority") or 9, dl if dl is not None else 1e9]
+
     def state():
-        send("STATE", task=task["task_id"] if task else None, holding=holding, phase=phase)
+        send("STATE", task=task["task_id"] if task else None, holding=holding, phase=phase,
+             prio=prio_key() if by_task else None)
+
+    def yields_to(j):
+        # Keys from the same broadcast for both robots, so every pair agrees on who goes first.
+        # A robot that has not reported yet (or "id" mode: none report) counts as without a task.
+        return tuple(prio.get(j) or NO_TASK) + (j,) < tuple(prio.get(rid) or NO_TASK) + (rid,)
 
     def go_slot(x, y, sid, new_phase):
         nonlocal phase, face_point, plan_retries
@@ -185,6 +206,7 @@ def main():
                 moving = {j for j, p in new_poses.items()
                           if j in poses and math.hypot(p[0] - poses[j][0], p[1] - poses[j][1]) > MOVING_M}
                 poses = new_poses
+                prio = {int(k): v for k, v in msg.get("prio", {}).items()}
             elif kind == "DECISION":
                 action = msg["action"]
                 if action == "EXECUTE":
@@ -314,6 +336,30 @@ def main():
                         event("OBSERVATION_RESULT", slot=s["id"], observed=observe(s, objs), source="patrol")
 
         # ---- motion ----
+        # Stepping aside: yielding by stopping alone can lock robots in a cycle (A waits for B,
+        # B for C, ..., back to A). So a robot standing in the way of a stopped robot that has
+        # the right of way (and a task) moves out to a free spot nearby, then carries on.
+        if phase in (None, "wait", "go_src", "go_dst", "go_verify") and aside is None and t >= aside_ready:
+            ahead = [p for j, p in poses.items() if j != rid and j not in moving and yields_to(j)
+                     and prio.get(j) not in (None, NO_TASK) and in_way_of((x, y), p, nav["avoid_dist_m"], ASIDE_CONE)]
+            if ahead:
+                aside = step_aside(grid, (x, y), [p for j, p in poses.items() if j != rid], ahead)
+                aside_until, aside_ready, aside_replan = t + ASIDE_MAX_S, t + ASIDE_COOLDOWN_S, bool(path)
+        if aside is not None:
+            ax, ay = aside
+            if math.hypot(ax - x, ay - y) < nav["reach_m"] or t > aside_until:
+                aside = None
+                if aside_replan and goal is not None:
+                    set_goal(x, y, goal)       # back on the way from here
+            else:
+                err = wrap(math.atan2(ay - y, ax - x) - yaw)
+                close = any(math.hypot(p[0] - x, p[1] - y) < nav["stop_dist_m"] and in_way_of(p, (x, y, yaw), 1.0, 0.8)
+                            for j, p in poses.items() if j != rid)
+                if abs(err) > 0.4:
+                    drive(0.0, math.copysign(0.5, err))
+                else:
+                    drive(0.0 if close else 0.5, 1.5 * err)
+                continue
         if phase in ("look_src", "look_dst", "look_verify", "pick", "place"):
             # Turn so the slot is on the camera side (left).
             fx, fy = face_point
@@ -339,9 +385,10 @@ def main():
             drive(0.0, math.copysign(0.5, err))
             continue
 
-        # Collision avoidance: the lower id has priority; yield to robots in the way.
-        # Side by side in the same direction the yielding robot also waits, so the one
-        # with priority pulls ahead instead of the two rubbing along together.
+        # Collision avoidance: yield to robots in the way that have the right of way
+        # (yields_to: by task, or by lower id). Side by side in the same direction the
+        # yielding robot also waits, so the one with priority pulls ahead instead of the
+        # two rubbing along together.
         near_goal = goal is not None and math.hypot(goal[0] - x, goal[1] - y) < NEAR_GOAL_M
         must_stop, back_off, steer, slow = False, False, 0.0, False
         for j, (px, py, pyaw) in poses.items():
@@ -350,10 +397,11 @@ def main():
             d = math.hypot(px - x, py - y)
             bearing = abs(wrap(math.atan2(py - y, px - x) - heading_to_wp))
             in_way = bearing < 0.8
-            if in_way and (d < nav["stop_dist_m"] or (d < nav["avoid_dist_m"] and rid > j and not near_goal)):
+            give_way = yields_to(j)
+            if in_way and (d < nav["stop_dist_m"] or (d < nav["avoid_dist_m"] and give_way and not near_goal)):
                 must_stop = True
-                back_off |= d < nav["stop_dist_m"] and rid > j
-            elif (rid > j and j in moving and d < ALONGSIDE_M and bearing < math.pi / 2
+                back_off |= d < nav["stop_dist_m"] and give_way
+            elif (give_way and j in moving and d < ALONGSIDE_M and bearing < math.pi / 2
                   and abs(wrap(pyaw - heading_to_wp)) < ALONGSIDE_RAD):
                 must_stop = True
             elif d < PASS_M and bearing < math.pi / 2:
