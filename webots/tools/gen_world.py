@@ -12,12 +12,10 @@ a truck that arrives before the demand it covers (plus safety stock), and the
 initial stock covers part of the day's demand. Real and synthetic inputs are
 labelled in scenario.json.
 
-Faults that make S1-S3 happen are set in scenario.json "faults" (all on by
-default, --no-faults turns them off for the fault-free experiment). Their rates
-are options too (--place-error-p ... --scanner-fail-p, all scaled by --fault-scale).
-Every default fault is caused by a person (worker moves, removals, returns);
-robots do not make mistakes and the inbound scanner reads every label. The robot
-placement error and scanner failures stay available but are off (0) by default.
+Nothing changes the stock unrecorded during an episode: robots do not make
+mistakes, the inbound scanner reads every label and no worker touches the stock.
+Record errors are added to a generated scenario afterwards, at t=0 only
+(tools/add_record_errors.py).
 
 Settings can come from a JSON file (--config): option names as keys, or a
 scenario.json, whose "generator" entry records every setting it was made with.
@@ -275,7 +273,7 @@ def main():
                     help="who gives way when robots meet: task (loaded first, then task priority, deadline, id) "
                          "or id (lower robot id first, the earlier rule)")
     ap.add_argument("--seed", type=int, default=42,
-                    help="scenario and fault seed (initial stock, regions, inbound, worker faults); 0 before 2026-11-16")
+                    help="scenario seed (initial stock, regions, inbound); 0 before 2026-11-16")
     ap.add_argument("--order-sample", type=float, default=1.0, help="share of orders kept (whole orders)")
     ap.add_argument("--max-line-qty", type=int, default=6)
     ap.add_argument("--time-scale", type=float, default=0.0, help="real s per sim s (0: fit releases)")
@@ -289,7 +287,6 @@ def main():
     ap.add_argument("--truck-first", type=float, default=60.0)
     ap.add_argument("--truck-min-gap", type=float, default=120.0)
     ap.add_argument("--inbound-lead", type=float, default=240.0, help="carton should arrive this long before demand")
-    ap.add_argument("--no-faults", action="store_true")
     ap.add_argument("--plain", action="store_true", help="no decoration (faster batch experiments)")
     ap.add_argument("--layout", choices=["base", "large"], default="base",
                     help="base: 24 x 14 m, 160 rack slots; large: 34 x 20 m, 480 rack slots")
@@ -300,21 +297,8 @@ def main():
                          "the SKUs' real storage locations (data/locations_<date>.json)")
     ap.add_argument("--inbound-scale", type=float, default=1.0,
                     help="inbound cartons per SKU x this (1: the day's uncovered demand + safety stock)")
-    # Fault rates (scenario.json "faults"); --fault-scale multiplies all of them.
-    # Off: faults are caused by people only (team decision); kept for later comparisons.
-    ap.add_argument("--place-error-p", type=float, default=0.0,
-                    help="S1 robot error: share of rack placements off by a slot (default off)")
-    ap.add_argument("--worker-move-per-h", type=float, default=8.0, help="S1: unrecorded moves per hour")
-    ap.add_argument("--worker-move-max-slots", type=int, default=3, help="S1: how far a worker moves a carton")
-    ap.add_argument("--worker-remove-per-h", type=float, default=3.0, help="S2: unrecorded removals per hour")
-    ap.add_argument("--dest-taken-p", type=float, default=0.1, help="S3: share of putaways whose slot gets taken")
-    # TODO: inbound label read failures are left out for now (default 0); the supervisor,
-    # the WMS (VERIFY of exception slots) and the stand-in policies still handle them.
-    ap.add_argument("--scanner-fail-p", type=float, default=0.0,
-                    help="inbound: share of labels not read (default off, TODO)")
-    ap.add_argument("--fault-scale", type=float, default=1.0, help="multiplies every fault rate above")
     ap.add_argument("--run-name", default="",
-                    help="added to the log folder name (logs/<date>_<WES>_seed<n>_<faults>_<run-name>_<mode>)")
+                    help="added to the log folder name (logs/<date>_<WES>_seed<n>_<iri>_<run-name>_<mode>)")
     ap.add_argument("--config", type=Path,
                     help="JSON with option values (option names, - or _), or a scenario.json to repeat its settings")
     pre, _ = ap.parse_known_args()
@@ -322,7 +306,10 @@ def main():
         conf = json.loads(pre.config.read_text(encoding="utf-8"))
         conf = conf.get("generator", conf)            # a scenario.json carries its settings here
         known = {a.dest for a in ap._actions}
-        conf = {k.replace("-", "_"): v for k, v in conf.items() if k not in ("config",)}
+        # Older scenarios still carry the in-episode fault options removed on 2026-11-28.
+        removed = {"no_faults", "fault_scale", "place_error_p", "worker_move_per_h", "worker_move_max_slots",
+                   "worker_remove_per_h", "dest_taken_p", "scanner_fail_p"}
+        conf = {k.replace("-", "_"): v for k, v in conf.items() if k != "config" and k.replace("-", "_") not in removed}
         unknown = sorted(set(conf) - known)
         if unknown:
             raise SystemExit(f"{pre.config}: unknown settings {unknown}")
@@ -376,10 +363,6 @@ def main():
         lanes[region] = {"y": yc, "slots": ids, "truck_pos": [OUT_TRUCK_X, yc]}
 
     stock, trucks, per_sku = plan_stock(args, skus, waves, rack_slots, rng)
-    # Unrecorded cartons a worker may put into a slot (returns): S3 and S1 sources.
-    returns = [{"lpn": f"RT{k + 1:03d}", "sku": rng.choices([s["sku"] for s in skus],
-                                                          weights=[s["share"] for s in skus])[0]}
-               for k in range(40)]
 
     # ---- world ----
     hx, hy = FLOOR_X / 2, FLOOR_Y / 2
@@ -495,11 +478,7 @@ def main():
             parts.append(wv.sign(looks, region, (sum(LANE_XS) / 2, yc, 2.6), size=(1.2, 0.6), facing="x"))
         parts.append(wv.truck(looks, f"TRUCK_{region}", hx + 0.05, yc, 1, cab_colors[k % len(cab_colors)]))
 
-    # Workers who cause the unrecorded changes (shown by the supervisor where it happens).
-    for k in range(2):
-        parts.append(wv.worker(looks, f"WORKER_{k}", (0, -40 - 2 * k, -5)))
-
-    # Cartons: shelf stock at its slot, inbound and return cartons parked out of sight.
+    # Cartons: shelf stock at its slot, inbound cartons parked out of sight.
     color = {s["sku"]: s["color"] for s in skus}
     ref_of = {s["sku"]: s["ref"] for s in skus}
     box_z = BOX_SIZE[2] / 2
@@ -515,7 +494,7 @@ def main():
         cartons.append({"lpn": lpn, "sku": st["sku"]})
         carton(lpn, st["sku"], (s["pos"][0], s["pos"][1], s["z"] + box_z))
         st["lpn"] = lpn
-    hidden = [c for tr in trucks for c in tr["cartons"]] + returns
+    hidden = [c for tr in trucks for c in tr["cartons"]]
     for k, c in enumerate(hidden):
         cartons.append(c)
         carton(c["lpn"], c["sku"], (100 + (k % 40) * 0.4, 100 + (k // 40) * 0.4, box_z))
@@ -548,24 +527,6 @@ def main():
         f"rotation {wv.vec(*look_at(persp_eye, persp_target))}\n"
         "      width 1200 height 700 fieldOfView 1.1 } ]\n}\n"
     )
-
-    fs = args.fault_scale
-    faults = {
-        # S1 robot execution error: a carton lands in the next free slot of the face instead of
-        # the target. Off by default (faults come from people only).
-        "place_error_p": min(1.0, args.place_error_p * fs),
-        # S1/S2 unobserved changes: a worker moves (nearby) or removes a carton without recording it.
-        "worker_move_per_h": args.worker_move_per_h * fs,
-        "worker_move_max_slots": args.worker_move_max_slots,
-        "worker_remove_per_h": args.worker_remove_per_h * fs,
-        # S3: while a robot carries a carton to a rack slot, a worker puts a returned carton there.
-        "dest_taken_p": min(1.0, args.dest_taken_p * fs),
-        # Inbound: the fixed scanner cannot read a label -> carton diverted to an exception slot.
-        # Off by default (TODO).
-        "scanner_fail_p": min(1.0, args.scanner_fail_p * fs),
-    }
-    if args.no_faults:
-        faults = {k: 0 if not k.endswith("max_slots") else v for k, v in faults.items()}
 
     scenario = {
         "seed": args.seed,
@@ -611,8 +572,6 @@ def main():
             "turnaround_s": 180.0,
             "waves": waves,
         },
-        "returns": returns,
-        "faults": faults,
         "episode": {"duration_s": args.duration},
         # Off by default: which slots to check is the WES's decision (VERIFY tasks).
         "patrol": {"idle_sweep": args.patrol_sweep},
@@ -634,7 +593,6 @@ def main():
     print(f"wrote warehouse.wbt: {args.patrols} patrol + {args.transports} transport robots; "
           f"{args.date}: {order_meta['waves']} waves, {order_meta['units']} units, time x{order_meta['time_scale']}; "
           f"stock {len(stock)}/{len(rack_slots)} slots, {len(trucks)} trucks / {n_in} cartons; "
-          f"faults {'off' if args.no_faults else ('on' if fs == 1 else f'x{fs:g}')}, "
           f"patrol sweep {'on' if args.patrol_sweep else 'off'}, {'plain' if args.plain else 'decorated'}"
           + (f", run name {args.run_name}" if args.run_name else ""))
 

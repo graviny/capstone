@@ -371,26 +371,6 @@ def truck(looks, def_name, x_rear, y, facing, cab_color, depth=1.1):
 
 # ---------------------------------------------------------------- people, cartons
 
-def worker(looks, def_name, hidden_at):
-    vest = looks.color("VEST", (1, 0.45, 0.05), rough=0.6)
-    reflect = looks.color("REFLECT", (0.85, 0.9, 0.85), rough=0.2, metal=0.6)
-    pants = looks.color("PANTS", (0.12, 0.16, 0.3), rough=0.9)
-    skin = looks.color("SKIN", (0.85, 0.68, 0.55), rough=0.7)
-    helmet = looks.color("HELMET", (0.98, 0.85, 0.1), rough=0.3)
-    parts = [
-        pose((0, -0.09, 0.42), [shape(pants, cyl(0.07, 0.84))]),
-        pose((0, 0.09, 0.42), [shape(pants, cyl(0.07, 0.84))]),
-        block(looks, vest, (0, 0, 1.12), (0.24, 0.42, 0.6)),
-        block(looks, reflect, (0, 0, 1.0), (0.25, 0.43, 0.04)),
-        pose((0, -0.26, 1.1), [shape(vest, cyl(0.05, 0.55))]),
-        pose((0, 0.26, 1.1), [shape(vest, cyl(0.05, 0.55))]),
-        pose((0, 0, 1.55), [shape(skin, "Sphere { radius 0.11 }")]),
-        pose((0, 0, 1.63), [shape(helmet, "Sphere { radius 0.12 }")]),
-        block(looks, helmet, (0.08, 0, 1.6), (0.12, 0.2, 0.02)),
-    ]
-    return pose(hidden_at, parts, def_name=def_name)
-
-
 def carton_size(ref, base):
     """Shoe cartons vary a little by model (footprint only; height stays the same)."""
     h = zlib.crc32(ref.encode())

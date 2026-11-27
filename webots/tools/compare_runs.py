@@ -18,11 +18,6 @@ ROWS = [
     ("inbound trucks / staged", lambda s: f"{s['inbound_trucks_arrived']} / {s['inbound_staged']}"),
     ("cartons on belt at end", lambda s: s["cartons_on_belt_at_end"]),
     ("record mismatch at end", lambda s: s.get("record_mismatch_at_end")),
-    ("faults S1 place / S1 move", lambda s: f"{s['faults_injected'].get('S1_PLACE_ERROR', 0)} / "
-                                            f"{s['faults_injected'].get('S1_UNRECORDED_MOVE', 0)}"),
-    ("faults S2 removal / S3 dest", lambda s: f"{s['faults_injected'].get('S2_UNRECORDED_REMOVAL', 0)} / "
-                                              f"{s['faults_injected'].get('S3_DEST_TAKEN', 0)}"),
-    ("scanner failures", lambda s: s["faults_injected"].get("SCANNER_FAIL", 0)),
     ("SHORT_PICK / ITEM_MISMATCH", lambda s: f"{s['events'].get('SHORT_PICK', 0)} / {s['events'].get('ITEM_MISMATCH', 0)}"),
     ("DESTINATION_OCCUPIED", lambda s: s["events"].get("DESTINATION_OCCUPIED", 0)),
     ("TASK_COMPLETED / TASK_FAILED", lambda s: f"{s['events'].get('TASK_COMPLETED', 0)} / {s['events'].get('TASK_FAILED', 0)}"),

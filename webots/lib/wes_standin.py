@@ -14,6 +14,8 @@ WES_MODULE environment variable at another module with the same interface:
         def record_snapshot(self) -> dict[str, str | None]:             # optional: slot -> SKU it believes
 
 Task / Decision / event fields follow the team design document (section 6).
+It reads initial_stock directly and ignores initial_record_errors: record errors at t=0 are
+supported only on the wes_runner path (through lib/wms.py).
 The WES only sees events; it never reads the simulator's ground truth.
 """
 import math

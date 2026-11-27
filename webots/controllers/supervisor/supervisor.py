@@ -1,4 +1,4 @@
-"""Supervisor: warehouse ground truth, inbound belt, outbound docks, fault injection, WES hookup, logs.
+"""Supervisor: warehouse ground truth, inbound belt, outbound docks, WES hookup, logs.
 
 Ground truth (which carton is where) lives only here. The WES (stand-in by
 default, WES_MODULE env var for another module) sees nothing but events:
@@ -15,32 +15,20 @@ Inbound: a truck unloads cartons onto the belt (unload_s apart); the fixed
 scanner at gate_x reads each label; each carton is pushed off the belt into the
 east-most free buffer zone ahead of it (zones sit on a staging table beside the
 belt, so a staged carton does not block the belt). With no free zone ahead it
-waits at the belt end and holds up the cartons behind it. If the scanner fails,
-the carton is diverted to a free exception slot (or staged unread when both are taken).
+waits at the belt end and holds up the cartons behind it. The scanner reads every label.
 
 Outbound: each region's truck leaves when its lane holds dispatch_cartons or at
 every cutoff with whatever is staged, and is back after turnaround_s.
 
-Faults (scenario.json "faults"), the causes of S1-S3, logged to truth.jsonl only.
-By default every fault is caused by a person; the robot placement error and the
-scanner failure are off (rate 0) but still work when given a rate:
-  S1_PLACE_ERROR          (off) a robot puts a carton in the next free slot of the face
-  S1_UNRECORDED_MOVE      a worker moves a carton a few slots, unrecorded
-  S2_UNRECORDED_REMOVAL   a worker takes a carton away, unrecorded
-  S3_DEST_TAKEN           while a robot carries a carton to a rack slot, a worker
-                          puts a returned carton there
-  SCANNER_FAIL            (off, TODO) the inbound scanner cannot read a label
-Placement errors and S3 draws are keyed by carton / task, so they repeat across
-WES policies; worker events come from a seeded process.
+Record errors: only the ones the scenario starts with (initial_record_errors, applied by the
+WMS; tools/add_record_errors.py). Nothing changes the stock unrecorded during an episode.
 
-Diagnostics also go to truth.jsonl: rejected picks / places (ACT_REJECTED),
+Diagnostics go to truth.jsonl: rejected picks / places (ACT_REJECTED),
 ground-truth consistency problems (INVARIANT_VIOLATION, checked every 10 s) and
 robots that drive to a slot without progress for STUCK_S (ROBOT_STUCK).
 SNAPSHOT_AT="60,1800" saves a top-down (view_<t>.png) and a perspective view
 (persp_<t>.png) at those sim times; SNAPSHOT_EYE="x,y,z,tx,ty,tz" moves the
-perspective camera (rendering must be on, i.e. no --no-rendering). Worker figures appear for a few seconds in the
-aisle where an unrecorded change (S1 move, S2 removal, S3 return) happens; they
-are looks only and do not block the robots.
+perspective camera (rendering must be on, i.e. no --no-rendering).
 
 Logs (logs/<tag>/): events.jsonl (events + decisions), truth.jsonl, poses.csv (every 2 s),
 timeseries.csv (every 10 s), summary.json. QUIT_AT_END=1 closes Webots at the end.
@@ -52,11 +40,9 @@ import importlib
 import json
 import math
 import os
-import random
 import shutil
 import sys
 import tempfile
-import zlib
 from pathlib import Path
 
 from controller import Supervisor
@@ -65,15 +51,13 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "lib"))
 from record_quality import RecordQuality
 from research_metrics import FlowMetrics, order_metrics, task_metrics
-from fault_tape import FaultTape, apply_worker_attempt
+from wes_runner import log_dir_for
 POSE_EVERY_STEPS = 4
 CARRY_Z = 0.5
 STATS_PERIOD_S = 10.0
 PRINT_PERIOD_S = 60.0
-DIAGNOSTICS = ("ACT_REJECTED", "INVARIANT_VIOLATION", "ROBOT_STUCK")   # logged to truth.jsonl, not faults
 POSE_LOG_S = 2.0
 PUSH_TOL = 0.25                    # half the buffer zone pitch
-WORKER_SHOW_S = 8.0                # how long a worker figure stays where it changed something
 STUCK_S, STUCK_M = 60.0, 0.3       # driving to a slot but less than STUCK_M of progress in STUCK_S
 
 
@@ -92,16 +76,10 @@ def look_at(eye, target):
     return ((r[2][1] - r[1][2]) / s, (r[0][2] - r[2][0]) / s, (r[1][0] - r[0][1]) / s, angle)
 
 
-def unit(*parts):
-    return zlib.crc32("-".join(str(p) for p in parts).encode()) / 2 ** 32
-
-
 def main():
     cfg = json.loads((ROOT / "scenario.json").read_text(encoding="utf-8"))
-    seed, faults, belt_cfg, out_cfg = cfg["seed"], cfg["faults"], cfg["belt"], cfg["outbound"]
+    seed, belt_cfg, out_cfg = cfg["seed"], cfg["belt"], cfg["outbound"]
     wes = importlib.import_module(os.environ.get("WES_MODULE", "wes_standin")).WES(cfg)
-    worker_rng = random.Random(seed + 101)
-    fault_tape = FaultTape(cfg) if cfg.get('fault_model') == 'marked-poisson-v1' else None
     flow_metrics = FlowMetrics()
 
     sup = Supervisor()
@@ -141,7 +119,6 @@ def main():
     carried = {}                     # lpn -> robot id
     for st in cfg["initial_stock"]:
         occupant[st["slot"]], slot_of[st["lpn"]] = st["lpn"], st["slot"]
-    returns = [c["lpn"] for c in cfg["returns"]]
     lane_tag = {}                    # lpn on an outbound lane -> what the robot placed it for
     hidden_k = [0]
 
@@ -155,7 +132,7 @@ def main():
         if sid:
             occupant[sid] = None
 
-    def hide(lpn):
+    def hide(lpn):                   # shipped: moved out of sight
         take(lpn)
         k = hidden_k[0] = hidden_k[0] + 1
         bnode[lpn].getField("translation").setSFVec3f([200 + (k % 40) * 0.4, 200 + (k // 40) * 0.4, half_h])
@@ -165,11 +142,8 @@ def main():
 
     # ---- logs ----
     mode = "batch" if os.environ.get("QUIT_AT_END") == "1" else "gui"
-    faults_on = any(v for k, v in faults.items() if not k.endswith("max_slots"))
-    sweep = "_sweep" if cfg.get("patrol", {}).get("idle_sweep") else ""
-    run = f"_{cfg['run_name']}" if cfg.get("run_name") else ""      # gen_world.py --run-name
-    tag = f"{out_cfg['date']}_{wes.name}_seed{seed}_{'faults' if faults_on else 'nofaults'}{sweep}{run}_{mode}"
-    log_dir = ROOT / "logs" / tag
+    log_dir = log_dir_for(cfg, wes.name)               # same folder rule as the lite runs
+    tag = log_dir.name
     log_dir.mkdir(parents=True, exist_ok=True)
     ev_file = open(log_dir / "events.jsonl", "w", encoding="utf-8")
     truth_file = open(log_dir / "truth.jsonl", "w", encoding="utf-8")
@@ -183,7 +157,7 @@ def main():
 
     n_events = [0]
     counts = {}
-    truth_counts = {}
+    diag_counts = {}
     t_now = [0.0]
 
     def emit(ev):
@@ -195,7 +169,7 @@ def main():
         wes.on_event(ev)
 
     def truth(kind, **kw):
-        truth_counts[kind] = truth_counts.get(kind, 0) + 1
+        diag_counts[kind] = diag_counts.get(kind, 0) + 1
         truth_file.write(json.dumps({"t": round(t_now[0], 2), "type": kind, **kw}) + "\n")
         print(f"[truth t={t_now[0]:.0f}] {kind} {kw}")
 
@@ -242,13 +216,11 @@ def main():
     # ---- robots / tasks ----
     robot_state = {rid: {"task": None, "holding": None, "phase": None} for rid in robots}
     prio = {}                                          # robot -> right-of-way key (agent.py prio_key)
-    task_dest = {}                                     # task id -> destination (for S3)
+    task_dest = {}                                     # task id -> destination (record quality, below)
     task_src = {}                                      # task id -> source (record quality, below)
     # Record quality: a rack slot whose record differs from the truth while no robot works on
     # it ("settled" mismatch; a slot under a running task differs only until it completes).
     record_quality = RecordQuality()
-    place_count = {}
-    s3_pending = []                                    # (time, slot, task)
     dist_m = {rid: 0.0 for rid in robots}
     anchor = {}                                        # robot -> (time, x, y) of its last real progress
     stuck_reported = set()
@@ -268,14 +240,6 @@ def main():
                 take(lpn)
                 carried[lpn] = rid
                 res.update(ok=True, item=sku_of[lpn], lpn=lpn)
-                dest = task_dest.get(msg.get("task_id"))
-                if dest and slots[dest]["kind"] == "rack":
-                    if fault_tape:
-                        event = fault_tape.s3(lpn, t_now[0], faults['dest_taken_p'])
-                        if event:
-                            s3_pending.append((t_now[0] + 4.0, dest, event))
-                    elif unit(seed, msg["task_id"], dest, "dest") < faults["dest_taken_p"]:
-                        s3_pending.append((t_now[0] + 4.0, dest, msg["task_id"]))
             else:
                 res["reason"] = "too_far" if not near else ("empty" if not lpn else "holding")
         elif op == "place":
@@ -286,21 +250,8 @@ def main():
             elif occupant[sid] is not None:
                 res["reason"] = "occupied"
             else:
-                actual = sid
-                if s["kind"] == "rack":
-                    k = place_count[held] = place_count.get(held, 0) + 1
-                    u = unit(seed, held, k, "place")
-                    if u < faults["place_error_p"]:
-                        idx = int(sid[3:])
-                        order = (-1, 1) if u < faults["place_error_p"] / 2 else (1, -1)
-                        side = [f"{sid[:3]}{idx + d:02d}" for d in order]
-                        nb = next((n for n in side if n in occupant and occupant[n] is None), None)
-                        if nb:
-                            actual = nb
-                            truth("S1_PLACE_ERROR", lpn=held, item=sku_of[held], intended=sid, actual=nb,
-                                  robot=rid, task_id=msg.get("task_id"))
                 del carried[held]
-                put(held, actual)
+                put(held, sid)
                 if s["kind"] == "outbound":
                     lane_tag[held] = {"order": msg.get("order"), "item": msg.get("item"), "region": s["lane"],
                                       "task_id": msg.get("task_id")}
@@ -309,56 +260,6 @@ def main():
             truth("ACT_REJECTED", robot=rid, op=op, slot=sid, reason=res["reason"], task_id=msg.get("task_id"),
                   dist=round(math.hypot(s["pos"][0] - rx, s["pos"][1] - ry), 2))
         to_robot(rid, res)
-
-    # Worker figures: shown for WORKER_SHOW_S in the aisle where an unrecorded change happens.
-    workers = [n for n in (sup.getFromDef(f"WORKER_{k}") for k in range(4)) if n]
-    worker_home = [n.getField("translation").getSFVec3f() for n in workers]
-    worker_until = [0.0] * len(workers)
-
-    def show_worker(sid):
-        if not workers:
-            return
-        k = min(range(len(workers)), key=lambda i: worker_until[i])
-        s = slots[sid]
-        dx, dy = s["approach"][0] - s["pos"][0], s["approach"][1] - s["pos"][1]
-        n = math.hypot(dx, dy) or 1.0
-        workers[k].getField("translation").setSFVec3f([s["approach"][0] + dx / n * 0.3,
-                                                      s["approach"][1] + dy / n * 0.3, 0.0])
-        workers[k].getField("rotation").setSFRotation([0, 0, 1, math.atan2(-dy, -dx)])
-        worker_until[k] = t_now[0] + WORKER_SHOW_S
-
-    def worker_events():
-        if fault_tape:
-            for event in fault_tape.due(t_now[0]):
-                result = apply_worker_attempt(event, t_now[0], slots, occupant, slot_of,
-                    faults['worker_move_max_slots'], take, put, hide, fault_tape)
-                if result:
-                    truth('S1_UNRECORDED_MOVE' if event['kind'] == 'S1' else 'S2_UNRECORDED_REMOVAL',
-                          fault_id=event['id'], **result)
-                    show_worker(result['src'])
-            return
-        rack_lpns = [l for l, s in slot_of.items() if slots[s]["kind"] == "rack"]
-        if not rack_lpns:
-            return
-        if worker_rng.random() < faults["worker_move_per_h"] / 3600 * step_s:
-            lpn = worker_rng.choice(rack_lpns)
-            src = slot_of[lpn]
-            idx, face = int(src[3:]), src[:3]
-            free = [f"{face}{idx + d:02d}" for d in range(-faults["worker_move_max_slots"],
-                                                           faults["worker_move_max_slots"] + 1)
-                    if d and f"{face}{idx + d:02d}" in occupant and occupant[f"{face}{idx + d:02d}"] is None]
-            if free:
-                dst = worker_rng.choice(free)
-                take(lpn)
-                put(lpn, dst)
-                truth("S1_UNRECORDED_MOVE", lpn=lpn, item=sku_of[lpn], src=src, dst=dst)
-                show_worker(src)
-        if worker_rng.random() < faults["worker_remove_per_h"] / 3600 * step_s:
-            lpn = worker_rng.choice(rack_lpns)
-            src = slot_of[lpn]
-            hide(lpn)
-            truth("S2_UNRECORDED_REMOVAL", lpn=lpn, item=sku_of[lpn], src=src)
-            show_worker(src)
 
     step_count = 0
     next_stats, next_print = 0.0, PRINT_PERIOD_S
@@ -400,7 +301,6 @@ def main():
         belt.sort(key=lambda b: -b["x"])
         claimed, prev_x, done = set(), None, []
         for b in belt:
-            prev_before = prev_x
             limit = belt_cfg["x_end"] if prev_x is None else prev_x - belt_cfg["gap_m"]
             # A zone's pusher reaches PUSH_TOL either side of it, so a carton queued next to a
             # free zone can still be pushed in.
@@ -417,18 +317,6 @@ def main():
             prev_x = b["x"]
             if not b["scanned"] and b["x"] >= belt_cfg["gate_x"]:
                 b["scanned"] = True
-                if unit(seed, b["lpn"], "scan") < faults["scanner_fail_p"]:
-                    free_x = next((x for x in belt_cfg["exception"] if occupant[x] is None), None)
-                    truth("SCANNER_FAIL", lpn=b["lpn"], item=sku_of[b["lpn"]], diverted_to=free_x)
-                    if free_x:
-                        # Diverted off the belt: it no longer holds back the cartons behind it.
-                        put(b["lpn"], free_x)
-                        done.append(b)
-                        prev_x = prev_before
-                        claimed.discard(target)
-                        emit({"type": "INBOUND_READ_FAIL", "slot": free_x})
-                        continue
-                    b["read"] = False
             if target and b["x"] >= zone_x[target] - 1e-6:
                 put(b["lpn"], target)
                 done.append(b)
@@ -475,21 +363,6 @@ def main():
                 ls["present"] = True
                 show(ls["node"], ls["pos"], True)
                 emit({"type": "OUTBOUND_TRUCK_ARRIVED", "region": region})
-
-        # Faults outside the robots' actions.
-        worker_events()
-        for item in [p for p in s3_pending if p[0] <= t]:
-            s3_pending.remove(item)
-            _, dest, tid = item
-            if occupant[dest] is None and returns:
-                lpn = returns.pop(0)
-                put(lpn, dest)
-                truth("S3_DEST_TAKEN", slot=dest, lpn=lpn, item=sku_of[lpn], task_id=tid if not fault_tape else None)
-                if fault_tape:
-                    fault_tape.record(tid, t, 'injected', dst=dest)
-                show_worker(dest)
-            elif fault_tape:
-                fault_tape.record(tid, t, 'skipped_occupied' if occupant[dest] else 'skipped_no_returns', dst=dest)
 
         # Robot messages.
         while receiver.getQueueLength() > 0:
@@ -557,10 +430,6 @@ def main():
                     shutil.move(str(tmp), str(log_dir / name))
                 else:
                     print(f"[sup] snapshot {name} failed")
-        for k, until in enumerate(worker_until):
-            if until and t >= until:
-                workers[k].getField("translation").setSFVec3f(worker_home[k])
-                worker_until[k] = 0.0
         if step_count % int(POSE_LOG_S / step_s) == 0:
             for rid, node in rnodes.items():
                 x, y, _ = node.getPosition()
@@ -604,7 +473,7 @@ def main():
             print(f"[sup t={t:.0f}] released {units_released} shipped {units_shipped} | belt {len(belt)} "
                   f"buffer {sum(1 for z in zones if occupant[z])} exc "
                   f"{sum(1 for x in belt_cfg['exception'] if occupant[x])} | busy "
-                  f"{sum(1 for r in robot_state.values() if r['task'])}/{len(robots)} | faults {truth_counts}")
+                  f"{sum(1 for r in robot_state.values() if r['task'])}/{len(robots)} | diagnostics {diag_counts}")
             next_print = t + PRINT_PERIOD_S
 
         if not finished and t >= duration:
@@ -627,8 +496,7 @@ def main():
                 "inbound_trucks_arrived": next_truck, "inbound_staged": staged_in,
                 "cartons_on_belt_at_end": len(belt),
                 "events": counts,
-                "faults_injected": {k: v for k, v in truth_counts.items() if k not in DIAGNOSTICS},
-                "diagnostics": {k: v for k, v in truth_counts.items() if k in DIAGNOSTICS},
+                "diagnostics": dict(diag_counts),
                 "record_mismatch_at_end": sum(1 for s, v in rec.items() if v != gt_sku(s)) if rec else None,
                 # Settled mismatches (no robot working on the slot), sampled every STATS_PERIOD_S:
                 # mean count over the run, how long the ones that got corrected lasted, and the
@@ -636,17 +504,15 @@ def main():
                 "record_quality": record_quality.summary(t) if rec else None,
                 "research_metrics": {**flow_metrics.summary(t), **order_metrics(orders, t),
                     'tasks': task_metrics(wes.wms.tasks, t) if hasattr(wes, 'wms') else None},
-                "fault_tape": fault_tape.summary() if fault_tape else None,
                 "robot_roles": {r: robots[r]["role"] for r in robots},
                 "robot_distance_m": {r: round(d, 1) for r, d in dist_m.items()},
                 "robot_busy_share": {r: round(b / t, 3) for r, b in busy_s.items()},
+                "record_slips": {"injected": sum(not x["skipped"] for x in wes.wms.record_slips), "skipped": sum(x["skipped"] for x in wes.wms.record_slips)} if hasattr(wes, "wms") else None,
                 "wes_stats": wes.stats() if hasattr(wes, "stats") else None,
             }
             for f in (ev_file, truth_file, ts_file, pose_file):
                 f.flush()
             (log_dir / "summary.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
-            if fault_tape:
-                (log_dir / 'fault_audit.json').write_text(json.dumps(fault_tape.audit, indent=2), encoding='utf-8')
             print("[sup] SUMMARY " + json.dumps(summary))
             if os.environ.get("QUIT_AT_END") == "1":
                 sup.simulationQuit(0)
