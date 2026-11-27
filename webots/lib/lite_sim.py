@@ -477,6 +477,7 @@ class LiteSim:
             "robot_roles": {r["id"]: r["role"] for r in self.robots.values()},
             "robot_distance_m": {r["id"]: round(r["dist"], 1) for r in self.robots.values()},
             "robot_busy_share": {r["id"]: round(r["busy_s"] / t, 3) for r in self.robots.values()},
+            "record_slips": {"injected": sum(not x["skipped"] for x in self.wes.wms.record_slips), "skipped": sum(x["skipped"] for x in self.wes.wms.record_slips)} if hasattr(self.wes, "wms") else None,
             "wes_stats": self.wes.stats(),
         }
 

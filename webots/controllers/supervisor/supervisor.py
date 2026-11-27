@@ -507,6 +507,7 @@ def main():
                 "robot_roles": {r: robots[r]["role"] for r in robots},
                 "robot_distance_m": {r: round(d, 1) for r, d in dist_m.items()},
                 "robot_busy_share": {r: round(b / t, 3) for r, b in busy_s.items()},
+                "record_slips": {"injected": sum(not x["skipped"] for x in wes.wms.record_slips), "skipped": sum(x["skipped"] for x in wes.wms.record_slips)} if hasattr(wes, "wms") else None,
                 "wes_stats": wes.stats() if hasattr(wes, "stats") else None,
             }
             for f in (ev_file, truth_file, ts_file, pose_file):

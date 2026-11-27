@@ -59,6 +59,12 @@ PAYLOAD = ("task_id", "task_type", "item_id", "source", "destination", "priority
 REJECT_PRINT_LIMIT = 20
 
 
+def _uniform(*key):
+    """Deterministic draw in (0, 1) from a key (same key, same value, whatever else ran before)."""
+    raw = json.dumps(key, separators=(",", ":")).encode()
+    return (int.from_bytes(hashlib.sha256(raw).digest()[:8], "big") >> 11 | 1) / 2 ** 53
+
+
 def scenario_hash(cfg):
     return hashlib.sha256(json.dumps(cfg, sort_keys=True).encode()).hexdigest()[:16]
 
@@ -76,6 +82,13 @@ class MockWMS:
         # swap like a stocked slot (version 1), a hidden one like an empty slot (version 0).
         for e in cfg.get("initial_record_errors", ()):
             self.rec[e["slot"]].update(item=e["record_sku"], lpn=None, version=1 if e["record_sku"] else 0)
+        # Record slips during the episode: a carton put into rack slot A is recorded in a nearby
+        # slot B with probability record_slip_p per completed PUTAWAY / RELOCATE (0 = off).
+        self.slip_p = float(cfg.get("record_slip_p", 0.0))
+        # Carton ids (IN0001 ...) repeat across days: the date keeps the draws of two days apart.
+        self.slip_seed = [cfg["seed"], cfg.get("outbound", {}).get("date")]
+        self.record_slips = []             # truth for analysis only: never in counts, the view or the log
+        self._placed = {}                  # lpn / task -> placements so far (keys the draw)
         self.abc = {s["sku"]: s.get("abc", "C") for s in cfg["skus"]}
         self.robots = {r["id"]: {"id": r["id"], "role": r["role"], "pos": list(r.get("home", (0.0, 0.0))),
                                  "task": None, "holding": None, "phase": None, "assigned": None}
@@ -433,13 +446,36 @@ class MockWMS:
                 # Something new was recorded there after the robot took the carton: keep it.
                 self.count("source_changed_before_completion")
             if not task.get("shipped_before_completion"):          # else it already left on the truck
-                self.set_slot(dst, ev.get("item_id") or task["item_id"], "TASK_COMPLETED", lpn=task.get("lpn"),
+                where = self._slip(task, dst)
+                self.set_slot(where, ev.get("item_id") or task["item_id"], "TASK_COMPLETED", lpn=task.get("lpn"),
                               arrival=True, task_id=task["task_id"])
             if task["task_type"] == "PICK" and task.get("order") in self.orders:
                 self.orders[task["order"]]["picked"] += 1
         self.set_status(task, COMPLETED, "TASK_COMPLETED", done_t=self.t)
         if task["task_type"] == "VERIFY":
             self._inbound_followup(task["destination"])
+
+    def _slip(self, task, dst):
+        """Slot the completed put is recorded in: dst, or (probability slip_p) the nearest
+        free-recorded, unreserved rack slot, same face first (ties drawn). Skipped only when no rack
+        slot is free. The draw is keyed by carton and its placement count, not by task ids, so every
+        policy meets the same slips."""
+        if not self.slip_p or task["task_type"] == "PICK" or self.slots[dst]["kind"] != "rack":
+            return dst
+        key = task.get("lpn") or task["task_id"]
+        n = self._placed[key] = self._placed.get(key, 0) + 1
+        if _uniform(self.slip_seed, "slip", key, n) >= self.slip_p:
+            return dst
+        here = self.slots[dst]
+        rank = lambda s: (self.slots[s].get("face") != here["face"],  # noqa: E731
+                          round(math.dist(self.slots[s]["pos"], here["pos"]), 3))
+        free = [s for s, x in self.slots.items() if x["kind"] == "rack" and s != dst
+                and self.rec[s]["item"] is None and not self.rec[s]["reserved_by"]]
+        free = sorted(s for s in free if rank(s) == min(map(rank, free))) if free else []
+        where = free[min(int(_uniform(self.slip_seed, "slip-to", key, n) * len(free)), len(free) - 1)] if free else dst
+        self.record_slips.append({"t": round(self.t, 2), "task_id": task["task_id"], "lpn": task.get("lpn"),
+                                  "actual": dst, "recorded": where, "skipped": not free})
+        return where
 
     def _on_task_failed(self, ev):
         task = self._task_of(ev)

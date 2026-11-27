@@ -91,6 +91,31 @@ class RecordErrorsTest(unittest.TestCase):
         self.assertNotIn("INVARIANT_VIOLATION", s["diagnostics"])
         self.assertGreater(s["events"].get("SHORT_PICK", 0) + s["events"].get("DESTINATION_OCCUPIED", 0), 0)
 
+    def test_record_slips_put_the_record_next_to_the_carton(self):
+        cfg = {**CFG, "record_slip_p": 1.0}
+        tmp = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, tmp, ignore_errors=True)
+        with mock.patch.dict(os.environ, {"VERIFY_POLICY": "event"}):
+            wes = WES(cfg, scheduler=sched_verify.Scheduler(cfg), log_dir=tmp)
+        sim = LiteSim(cfg, wes, grid=GRID, fields=FIELDS)
+        s = sim.run(1200.0)
+        slips = [x for x in wes.wms.record_slips if not x["skipped"]]
+        self.assertGreater(len(slips), 0)
+        self.assertEqual(s["record_slips"]["injected"], len(slips))
+        slots = {x["id"]: x for x in CFG["slots"]}
+        for x in slips:
+            a, b = slots[x["actual"]], slots[x["recorded"]]
+            self.assertEqual(b["kind"], "rack")
+            self.assertNotEqual(x["actual"], x["recorded"])
+        self.assertGreater(sum(slots[x["recorded"]]["face"] == slots[x["actual"]]["face"] for x in slips), 0)
+        counts = s["wes_stats"]["counts"]
+        self.assertFalse({k: v for k, v in counts.items() if k.startswith("anomaly_") or "reject" in k})
+        self.assertGreater(s["record_quality"]["settled_mismatch_mean"], 0)
+
+    def test_record_slips_off_by_default(self):
+        s = run_lite(CFG)
+        self.assertEqual(s["record_slips"], {"injected": 0, "skipped": 0})
+
     def test_level_zero_changes_nothing(self):
         before, after = run_lite(CFG), run_lite(add_record_errors(CFG, 0.0, "mixed", 1))
         self.assertEqual({k: before[k] for k in KEYS}, {k: after[k] for k in KEYS})
