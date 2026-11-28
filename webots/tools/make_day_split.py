@@ -1,16 +1,15 @@
-"""Make the inputs for a day split (data/split_<name>.json): order files and scenarios, no training.
+"""Make train, validation and test scenarios from a frozen date split; no training.
 
     python tools/make_day_split.py data/split_days30.json \
         [--train-seeds 42] [--test-seeds 54] [--levels 0.03 0.065 0.10] [--mix mixed]
 Defaults are the constants TRAIN_SEEDS, TEST_SEEDS, LEVELS, MIX below; change them there or on the command line.
-  1. data/orders_<date>.json for every train and test day (tools/prep_dataset.py; skus.json does not
-     change, it is the top SKUs of the whole dataset)
-  2. logs/<name>/{train,test}/<date>_s<seed>_l<level>.json: gen_world.py --plain (8 robots, base layout)
+  1. data/orders_<date>.json for every split day (tools/prep_dataset.py; v3 uses all SKUs)
+  2. logs/<name>/{train,validation,test}/<date>_s<seed>_l<level>.json: gen_world.py --plain (8 robots, base layout)
      plus record errors at t=0 (tools/add_record_errors.py, err_seed = seed + 1000) and the
      record slip rate during the episode (record_slip_p = --slip-p)
      train: one level per (day, seed), cycling through --levels in day order (one seed: the days
-            share the levels; as many seeds as levels: every day gets every level); test: every
-            seed x every level
+            share the levels; as many seeds as levels: every day gets every level).
+     validation/test: every seed x every level
 gen_world.py overwrites the tracked scenario.json and worlds/warehouse.wbt; they are git-restored at
 the end. Do not run it while Webots is open. A seed changes the inbound trucks and which slots are
 wrong, not the orders: order variety comes from the days.

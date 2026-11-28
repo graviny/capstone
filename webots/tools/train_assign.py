@@ -7,8 +7,8 @@ the mean to the best few. The weights are few (lib/sched_learned.FEATURES) and t
 comes once per episode, which suits this method; no deep learning library is needed.
 
 Cost of an episode (lower is better): one of COSTS, --cost (default: see COSTS).
-The test table always reports the same metrics for every cost, so costs can be compared:
-order_all (lead of every released order, unfinished ones counted to the end) is the main one.
+The test table reports the same metrics for every cost. For the v3 protocol,
+pass --cost backlog_auc explicitly; the legacy default remains mix.
 
 Usage (from webots/):
   python tools/train_assign.py --train "logs/train_scenarios_v2/2023-03-09_*.json" \\
@@ -41,6 +41,7 @@ from wes_runner import WES  # noqa: E402
 
 # Episode cost candidates (lower is better), from the episode metrics m (see episode()).
 COSTS = {
+    "backlog_auc": lambda m: m["backlog_auc"],
     "old": lambda m: m["lead"] + 600 * (m["released"] - m["shipped"]) + 300 * m["missed"],
     "order_all": lambda m: m["order_all"],
     "unit": lambda m: m["unit"],
@@ -54,7 +55,8 @@ COSTS = {
 }
 MISSED_W = 300.0       # mix's cost per missed cutoff (--missed-w)
 DEFAULT_COST = "mix"   # chosen 2026-11-20 by the cost study (docs/lite_sim.md)
-METRICS = ("order_all", "unit", "p90", "tardy", "lead", "shipped", "released", "missed", "busy", "dist")
+METRICS = ("backlog_auc", "mis_shipped", "order_all", "unit", "p90", "tardy", "lead", "shipped",
+           "released", "missed", "busy", "dist")
 _cfgs, _layouts = {}, {}           # per worker process: scenario path -> cfg; layout -> (grid, fields)
 
 
@@ -77,7 +79,9 @@ def episode(job):
         wes = WES(cfg, scheduler=sched, log_dir=tmp)
         s = LiteSim(cfg, wes, grid=grid, fields=fields).run()
     end = cfg["episode"]["duration_s"]
-    return {"order_all": s["order_lead_all_s"] or end, "unit": s["unit_lead_s"] or end,
+    return {"backlog_auc": s["research_metrics"]["unit_backlog_auc_s"],
+            "mis_shipped": s["mis_shipped"],
+            "order_all": s["order_lead_all_s"] or end, "unit": s["unit_lead_s"] or end,
             "p90": s["order_lead_p90_s"] or end, "tardy": s["order_tardiness_s"] or 0.0,
             "lead": s["mean_order_lead_s"] or end, "shipped": s["units_shipped"], "released": s["units_released"],
             "missed": s["missed_cutoffs"], "busy": statistics.mean(s["robot_busy_share"].values()),

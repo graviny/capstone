@@ -1,7 +1,7 @@
 """Select a policy only from paired Webots runs on the frozen validation dates.
 
 Example:
-  python tools/select_policy_webots.py --split artifacts/dataset_audit_20261128/split_v3.json \
+  python tools/select_policy_webots.py --split experiments/split_v3.json \
       --policies sched_hungarian sched_verify --levels 0.065 --seeds 42 \
       --record-slip 0.01 --out validation.json "logs/*"
 
