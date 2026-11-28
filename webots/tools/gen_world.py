@@ -126,13 +126,31 @@ def build_orders(args, skus):
     """Real waves of one day, sampled and time-compressed into the episode."""
     data = json.loads((ROOT / "data" / f"orders_{args.date}.json").read_text(encoding="utf-8"))
     known = {s["sku"] for s in skus}
+    target_units = getattr(args, "target_units", 0)
+    if target_units and args.order_sample != 1.0:
+        raise SystemExit("--target-units and --order-sample cannot be combined")
+    selected_orders = None
+    if target_units:
+        order_units = {}
+        for w in data["waves"]:
+            for ln in w["lines"]:
+                if ln["sku"] in known and ln["qty"] > 0:
+                    order_units[ln["order"]] = order_units.get(ln["order"], 0) + (
+                        ln["qty"] if args.max_line_qty == 0 else min(ln["qty"], args.max_line_qty))
+        selected_orders, chosen_units = set(), 0
+        for order in sorted(order_units, key=lambda o: (unit_hash(args.date, o), o)):
+            if chosen_units + order_units[order] <= target_units:
+                selected_orders.add(order)
+                chosen_units += order_units[order]
     waves, capped = [], 0
     for w in data["waves"]:
         lines = []
         for ln in w["lines"]:
-            if ln["sku"] not in known or unit_hash(args.date, ln["order"]) >= args.order_sample:
+            if (ln["sku"] not in known or ln["qty"] <= 0 or
+                    (ln["order"] not in selected_orders if selected_orders is not None
+                     else unit_hash(args.date, ln["order"]) >= args.order_sample)):
                 continue
-            q = min(ln["qty"], args.max_line_qty)
+            q = ln["qty"] if args.max_line_qty == 0 else min(ln["qty"], args.max_line_qty)
             capped += ln["qty"] - q
             lines.append({**ln, "qty": q})
         if lines:
@@ -142,8 +160,8 @@ def build_orders(args, skus):
     t0 = waves[0]["release_s"]
     span = waves[-1]["release_s"] - t0
     scale = args.time_scale or max(1.0, span / (args.release_frac * args.duration))
-    # Waves are released one at a time on a fixed cadence (wave picking), never before
-    # their orders exist (creation time, compressed).
+    # Preserve the compressed source timing. An optional minimum gap can reproduce
+    # earlier experiments, but the default must not push busy-day waves past the horizon.
     prev = -1e9
     for w in waves:
         created = args.warmup + (w["release_s"] - t0) / scale
@@ -151,7 +169,10 @@ def build_orders(args, skus):
         w["release_t"] = round(max(created, prev + args.wave_interval), 1)
         prev = w["release_t"]
     meta = {"date": args.date, "source": data["source"], "synthetic_fields": data["synthetic_fields"],
+            "order_timing_version": "compressed-source-v2" if args.wave_interval == 0 else "min-gap-legacy-v1",
             "time_scale": round(scale, 2), "wave_interval_s": args.wave_interval, "order_sample": args.order_sample,
+            "target_units": target_units,
+            "order_selection": "whole-order-hash-cap-v1" if target_units else "hash-fraction-v1",
             "max_line_qty": args.max_line_qty, "units_capped": capped,
             "units": sum(ln["qty"] for w in waves for ln in w["lines"]), "waves": len(waves)}
     return waves, data["regions"], meta
@@ -168,7 +189,9 @@ def plan_stock(args, skus, waves, rack_slots, rng):
         per_sku[s] = per_sku.get(s, 0) + 1
 
     # Every SKU has a carton on the shelf; SKUs with demand get part of it up front.
-    init = {s["sku"]: 1 for s in skus}
+    # A full catalogue can contain far more SKUs than the rack. Only demand SKUs
+    # are candidates for initial stock; unused catalogue entries need no carton.
+    init = {s["sku"]: 1 for s in skus if len(skus) <= len(rack_slots) or s["sku"] in per_sku}
     for s, d in per_sku.items():
         init[s] = max(1, math.ceil(args.initial_cover * d))
     usable = [s for k, s in enumerate(rack_slots) if k % 4 != 3]   # every 4th slot stays free
@@ -259,6 +282,20 @@ def plan_stock(args, skus, waves, rack_slots, rng):
     return stock, trucks, per_sku
 
 
+def audit_workload(waves, stock, trucks, duration):
+    """Expose horizon losses and a necessary (not sufficient) supply check."""
+    due = sum(ln["qty"] for w in waves if w["release_t"] <= duration for ln in w["lines"])
+    late_waves = sum(w["release_t"] > duration for w in waves)
+    in_horizon = sum(len(t["cartons"]) for t in trucks if t["arrive_t"] <= duration)
+    late_cartons = sum(len(t["cartons"]) for t in trucks if t["arrive_t"] > duration)
+    supply_bound = len(stock) + in_horizon
+    return {"released_waves": len(waves) - late_waves, "waves_after_horizon": late_waves,
+            "released_units": due, "initial_stock_units": len(stock),
+            "inbound_cartons_within_horizon": in_horizon, "inbound_cartons_after_horizon": late_cartons,
+            "supply_upper_bound_units": supply_bound,
+            "unservable_units_lower_bound": max(0, due - supply_bound)}
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--date", default="2023-03-09")
@@ -275,11 +312,15 @@ def main():
     ap.add_argument("--seed", type=int, default=42,
                     help="scenario seed (initial stock, regions, inbound); 0 before 2026-11-16")
     ap.add_argument("--order-sample", type=float, default=1.0, help="share of orders kept (whole orders)")
-    ap.add_argument("--max-line-qty", type=int, default=6)
+    ap.add_argument("--target-units", type=int, default=100,
+                    help="whole-order sample, at most this many units after line cap (0: use order-sample)")
+    ap.add_argument("--max-line-qty", type=int, default=0, help="cap units per order line (0: no cap)")
     ap.add_argument("--time-scale", type=float, default=0.0, help="real s per sim s (0: fit releases)")
     ap.add_argument("--release-frac", type=float, default=0.6, help="releases spread over this share")
     ap.add_argument("--warmup", type=float, default=30.0)
-    ap.add_argument("--wave-interval", type=float, default=90.0, help="min gap between wave releases, s")
+    ap.add_argument("--wave-interval", type=float, default=0.0,
+                    help="minimum gap between wave releases, s (0: preserve compressed source timing; "
+                         "90: reproduce earlier scenarios)")
     ap.add_argument("--initial-cover", type=float, default=0.5, help="share of demand on the shelf at t=0")
     ap.add_argument("--initial-fill", type=float, default=0.6, help="max share of rack slots filled at t=0")
     ap.add_argument("--safety-stock", type=float, default=0.15)
@@ -305,6 +346,9 @@ def main():
     if pre.config:
         conf = json.loads(pre.config.read_text(encoding="utf-8"))
         conf = conf.get("generator", conf)            # a scenario.json carries its settings here
+        # A pre-v3 scenario has no target cap; keep its original order selection.
+        if "target_units" not in conf and "target-units" not in conf:
+            conf["target_units"] = 0
         known = {a.dest for a in ap._actions}
         # Older scenarios still carry the in-episode fault options removed on 2026-11-28.
         removed = {"no_faults", "fault_scale", "place_error_p", "worker_move_per_h", "worker_move_max_slots",
@@ -363,6 +407,7 @@ def main():
         lanes[region] = {"y": yc, "slots": ids, "truck_pos": [OUT_TRUCK_X, yc]}
 
     stock, trucks, per_sku = plan_stock(args, skus, waves, rack_slots, rng)
+    workload_audit = audit_workload(waves, stock, trucks, args.duration)
 
     # ---- world ----
     hx, hy = FLOOR_X / 2, FLOOR_Y / 2
@@ -550,6 +595,7 @@ def main():
         "skus": skus,
         "cartons": cartons,
         "initial_stock": stock,
+        "workload_audit": workload_audit,
         "initial_stock_layout": args.stock_layout,
         "robots": robots,
         "faces": faces,
@@ -595,6 +641,11 @@ def main():
           f"stock {len(stock)}/{len(rack_slots)} slots, {len(trucks)} trucks / {n_in} cartons; "
           f"patrol sweep {'on' if args.patrol_sweep else 'off'}, {'plain' if args.plain else 'decorated'}"
           + (f", run name {args.run_name}" if args.run_name else ""))
+    if workload_audit["unservable_units_lower_bound"]:
+        print("WARNING: at least "
+              f"{workload_audit['unservable_units_lower_bound']} released units cannot be served within "
+              f"{args.duration:g}s even if every available carton is delivered; "
+              "this scenario is a supply-stress case, not a clean policy comparison.")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,45 @@
+{
+ "date": "2023-10-10",
+ "source": "real (Customer_Order.csv), all SKUs",
+ "synthetic_fields": [
+  "region"
+ ],
+ "regions": [
+  "R1",
+  "R2",
+  "R3",
+  "R4"
+ ],
+ "waves_total": 1,
+ "units_kept": 3,
+ "units_dropped": 0,
+ "waves": [
+  {
+   "wave": "42860",
+   "release_s": 39060,
+   "lines": [
+    {
+     "order": "123349",
+     "customer": "C0000998",
+     "region": "R1",
+     "sku": "2LPO6D-9.5",
+     "qty": 1
+    },
+    {
+     "order": "123348",
+     "customer": "C0000998",
+     "region": "R1",
+     "sku": "UHYJ3A-9.5",
+     "qty": 1
+    },
+    {
+     "order": "123347",
+     "customer": "C0000998",
+     "region": "R1",
+     "sku": "WGHG3L-10.5",
+     "qty": 1
+    }
+   ]
+  }
+ ]
+}

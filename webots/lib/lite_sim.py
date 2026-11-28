@@ -6,9 +6,10 @@ the same summary.json fields. So a scheduler trained or tuned here runs unchange
 
 What is the same as Webots (controllers/supervisor + agent): orders, inbound trucks and belt,
 outbound docks and cutoffs, the robot's task phases (go, look, pick, go, look, place) and its
-reports. The only record errors are the ones written into the scenario at t=0
-(initial_record_errors, tools/add_record_errors.py); nothing changes the stock unrecorded during
-an episode.
+reports. Record errors include those written into the scenario at t=0
+(initial_record_errors, tools/add_record_errors.py) and optional WMS-only record slips
+after placement (record_slip_p). A robot physically placing a carton in a different
+slot from its assigned destination is not modelled.
 
 What is simpler:
   robots   no wheels, no collision avoidance: a leg takes path length / speed * slowdown

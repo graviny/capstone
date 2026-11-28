@@ -148,7 +148,9 @@ def main():
     # What this run was, so tools/validate_lite.py can repeat it in the lightweight simulator.
     (log_dir / "scenario.json").write_text(json.dumps(cfg), encoding="utf-8")
     (log_dir / "run_env.json").write_text(json.dumps({k: os.environ.get(k) for k in (
-        "WES_MODULE", "WES_SCHEDULER", "VERIFY_POLICY", "ASSIGN_WEIGHTS")}), encoding="utf-8")
+        "WES_MODULE", "WES_SCHEDULER", "VERIFY_POLICY", "VERIFY_PERIOD_S", "VERIFY_MAX_OPEN",
+        "VERIFY_RECENT_S", "VERIFY_NEIGHBORS", "VERIFY_TICK_RULE", "ASSIGN_WEIGHTS",
+        "ASSIGN_COMMIT")}), encoding="utf-8")
     ev_file = open(log_dir / "events.jsonl", "w", encoding="utf-8")
     truth_file = open(log_dir / "truth.jsonl", "w", encoding="utf-8")
     ts_file = open(log_dir / "timeseries.csv", "w", newline="", encoding="utf-8")

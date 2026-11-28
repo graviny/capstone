@@ -1,0 +1,108 @@
+{
+ "date": "2023-08-18",
+ "source": "real (Customer_Order.csv), all SKUs",
+ "synthetic_fields": [
+  "region"
+ ],
+ "regions": [
+  "R1",
+  "R2",
+  "R3",
+  "R4"
+ ],
+ "waves_total": 1,
+ "units_kept": 12,
+ "units_dropped": 0,
+ "waves": [
+  {
+   "wave": "41000",
+   "release_s": 46560,
+   "lines": [
+    {
+     "order": "115612",
+     "customer": "C0000750",
+     "region": "R1",
+     "sku": "QTMT7N-8.5",
+     "qty": 1
+    },
+    {
+     "order": "115611",
+     "customer": "C0000749",
+     "region": "R2",
+     "sku": "Q50W5L-10",
+     "qty": 1
+    },
+    {
+     "order": "115611",
+     "customer": "C0000749",
+     "region": "R2",
+     "sku": "V7JUQL-12",
+     "qty": 1
+    },
+    {
+     "order": "115610",
+     "customer": "C0000749",
+     "region": "R2",
+     "sku": "DGAONE-12",
+     "qty": 1
+    },
+    {
+     "order": "115610",
+     "customer": "C0000749",
+     "region": "R2",
+     "sku": "G8ASPE-9",
+     "qty": 1
+    },
+    {
+     "order": "115609",
+     "customer": "C0000749",
+     "region": "R2",
+     "sku": "V7JUQL-12",
+     "qty": 1
+    },
+    {
+     "order": "115608",
+     "customer": "C0000749",
+     "region": "R2",
+     "sku": "HLOISD-9",
+     "qty": 1
+    },
+    {
+     "order": "115607",
+     "customer": "C0000747",
+     "region": "R3",
+     "sku": "8N10W9-8.5",
+     "qty": 1
+    },
+    {
+     "order": "115606",
+     "customer": "C0000747",
+     "region": "R3",
+     "sku": "Z8KPP8-6.5",
+     "qty": 1
+    },
+    {
+     "order": "115605",
+     "customer": "C0000747",
+     "region": "R3",
+     "sku": "NJVZEL-7.5",
+     "qty": 1
+    },
+    {
+     "order": "115604",
+     "customer": "C0000747",
+     "region": "R3",
+     "sku": "ULG3QT-8.5",
+     "qty": 1
+    },
+    {
+     "order": "115603",
+     "customer": "C0000747",
+     "region": "R3",
+     "sku": "7BU1V7-8",
+     "qty": 1
+    }
+   ]
+  }
+ ]
+}

@@ -18,7 +18,7 @@ sys.path.insert(0, str(ROOT / "tools"))
 from add_record_errors import add_record_errors  # noqa: E402
 from lite_sim import LiteSim  # noqa: E402
 from nav import GridMap  # noqa: E402
-from wes_runner import WES  # noqa: E402
+from wes_runner import WES, log_dir_for  # noqa: E402
 from wms import MockWMS  # noqa: E402
 import sched_verify  # noqa: E402
 
@@ -40,6 +40,14 @@ def run_lite(cfg):
 
 
 class RecordErrorsTest(unittest.TestCase):
+    def test_slip_rates_have_distinct_log_directories(self):
+        base = add_record_errors(CFG, 0.065, "mixed", 1042)
+        paths = {rate: log_dir_for({**base, "record_slip_p": rate}, "wms-verify-event")
+                 for rate in (0.0, 0.01, 0.05)}
+        self.assertEqual(len(set(paths.values())), 3)
+        self.assertIn("slip0.01", paths[0.01].name)
+        self.assertIn("slip0.05", paths[0.05].name)
+
     def test_deterministic_and_level_zero_is_empty(self):
         a = add_record_errors(CFG, 0.1, "mixed", 7)
         self.assertEqual(a, add_record_errors(CFG, 0.1, "mixed", 7))

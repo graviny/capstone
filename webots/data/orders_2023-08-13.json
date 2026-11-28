@@ -1,0 +1,5762 @@
+{
+ "date": "2023-08-13",
+ "source": "real (Customer_Order.csv), all SKUs",
+ "synthetic_fields": [
+  "region"
+ ],
+ "regions": [
+  "R1",
+  "R2",
+  "R3",
+  "R4"
+ ],
+ "waves_total": 52,
+ "units_kept": 1231,
+ "units_dropped": 0,
+ "waves": [
+  {
+   "wave": "40811",
+   "release_s": 63300,
+   "lines": [
+    {
+     "order": "114914",
+     "customer": "C0000003",
+     "region": "R3",
+     "sku": "LXJQVG-6",
+     "qty": 3
+    },
+    {
+     "order": "114913",
+     "customer": "C0000003",
+     "region": "R3",
+     "sku": "AHR20O-6",
+     "qty": 1
+    },
+    {
+     "order": "114913",
+     "customer": "C0000003",
+     "region": "R3",
+     "sku": "G8ASPE-9.5",
+     "qty": 1
+    },
+    {
+     "order": "114912",
+     "customer": "C0000003",
+     "region": "R3",
+     "sku": "G8ASPE-9.5",
+     "qty": 1
+    },
+    {
+     "order": "114911",
+     "customer": "C0000003",
+     "region": "R3",
+     "sku": "G8ASPE-10.5",
+     "qty": 1
+    },
+    {
+     "order": "114910",
+     "customer": "C0000003",
+     "region": "R3",
+     "sku": "LXJQVG-11",
+     "qty": 1
+    },
+    {
+     "order": "114910",
+     "customer": "C0000003",
+     "region": "R3",
+     "sku": "G8ASPE-10.5",
+     "qty": 1
+    },
+    {
+     "order": "114910",
+     "customer": "C0000003",
+     "region": "R3",
+     "sku": "G8ASPE-10",
+     "qty": 2
+    },
+    {
+     "order": "114910",
+     "customer": "C0000003",
+     "region": "R3",
+     "sku": "G8ASPE-9.5",
+     "qty": 1
+    },
+    {
+     "order": "114909",
+     "customer": "C0000003",
+     "region": "R3",
+     "sku": "G8ASPE-11",
+     "qty": 1
+    },
+    {
+     "order": "114908",
+     "customer": "C0000003",
+     "region": "R3",
+     "sku": "G8ASPE-11",
+     "qty": 5
+    },
+    {
+     "order": "114907",
+     "customer": "C0000002",
+     "region": "R1",
+     "sku": "DGAONE-7",
+     "qty": 2
+    },
+    {
+     "order": "114906",
+     "customer": "C0000002",
+     "region": "R1",
+     "sku": "T3NVTG-9.5",
+     "qty": 1
+    },
+    {
+     "order": "114905",
+     "customer": "C0000002",
+     "region": "R1",
+     "sku": "32ZKOX-8.5",
+     "qty": 1
+    },
+    {
+     "order": "114904",
+     "customer": "C0000002",
+     "region": "R1",
+     "sku": "G8ASPE-12",
+     "qty": 1
+    },
+    {
+     "order": "114903",
+     "customer": "C0000002",
+     "region": "R1",
+     "sku": "J2URNJ-10.5",
+     "qty": 1
+    },
+    {
+     "order": "114902",
+     "customer": "C0000002",
+     "region": "R1",
+     "sku": "NM6C73-12",
+     "qty": 1
+    },
+    {
+     "order": "114902",
+     "customer": "C0000002",
+     "region": "R1",
+     "sku": "IJBSQT-14",
+     "qty": 1
+    }
+   ]
+  },
+  {
+   "wave": "40812",
+   "release_s": 63300,
+   "lines": [
+    {
+     "order": "114922",
+     "customer": "C0000004",
+     "region": "R2",
+     "sku": "XUZJ74-10",
+     "qty": 2
+    },
+    {
+     "order": "114922",
+     "customer": "C0000004",
+     "region": "R2",
+     "sku": "XUZJ74-8",
+     "qty": 1
+    },
+    {
+     "order": "114922",
+     "customer": "C0000004",
+     "region": "R2",
+     "sku": "5HQR89-9.5",
+     "qty": 1
+    },
+    {
+     "order": "114922",
+     "customer": "C0000004",
+     "region": "R2",
+     "sku": "QM2UH1-9",
+     "qty": 1
+    },
+    {
+     "order": "114921",
+     "customer": "C0000004",
+     "region": "R2",
+     "sku": "800OVF-8.5",
+     "qty": 1
+    },
+    {
+     "order": "114920",
+     "customer": "C0000004",
+     "region": "R2",
+     "sku": "800OVF-11",
+     "qty": 1
+    },
+    {
+     "order": "114919",
+     "customer": "C0000004",
+     "region": "R2",
+     "sku": "800OVF-11",
+     "qty": 1
+    },
+    {
+     "order": "114919",
+     "customer": "C0000004",
+     "region": "R2",
+     "sku": "800OVF-10.5",
+     "qty": 1
+    },
+    {
+     "order": "114919",
+     "customer": "C0000004",
+     "region": "R2",
+     "sku": "800OVF-10",
+     "qty": 1
+    },
+    {
+     "order": "114918",
+     "customer": "C0000004",
+     "region": "R2",
+     "sku": "LXJQVG-13",
+     "qty": 1
+    },
+    {
+     "order": "114918",
+     "customer": "C0000004",
+     "region": "R2",
+     "sku": "6M2FJM-13",
+     "qty": 1
+    },
+    {
+     "order": "114917",
+     "customer": "C0000004",
+     "region": "R2",
+     "sku": "LXJQVG-13",
+     "qty": 1
+    },
+    {
+     "order": "114916",
+     "customer": "C0000004",
+     "region": "R2",
+     "sku": "800OVF-10.5",
+     "qty": 2
+    },
+    {
+     "order": "114916",
+     "customer": "C0000004",
+     "region": "R2",
+     "sku": "800OVF-10",
+     "qty": 2
+    },
+    {
+     "order": "114915",
+     "customer": "C0000004",
+     "region": "R2",
+     "sku": "G8ASPE-10",
+     "qty": 3
+    },
+    {
+     "order": "114914",
+     "customer": "C0000003",
+     "region": "R3",
+     "sku": "LXJQVG-8.5",
+     "qty": 1
+    },
+    {
+     "order": "114914",
+     "customer": "C0000003",
+     "region": "R3",
+     "sku": "G8ASPE-12",
+     "qty": 1
+    },
+    {
+     "order": "114914",
+     "customer": "C0000003",
+     "region": "R3",
+     "sku": "G8ASPE-8.5",
+     "qty": 1
+    },
+    {
+     "order": "114914",
+     "customer": "C0000003",
+     "region": "R3",
+     "sku": "G8ASPE-8",
+     "qty": 1
+    }
+   ]
+  },
+  {
+   "wave": "40813",
+   "release_s": 63300,
+   "lines": [
+    {
+     "order": "114937",
+     "customer": "C0000010",
+     "region": "R2",
+     "sku": "05W6TK-13",
+     "qty": 2
+    },
+    {
+     "order": "114936",
+     "customer": "C0000010",
+     "region": "R2",
+     "sku": "2T1DJM-10.5",
+     "qty": 1
+    },
+    {
+     "order": "114936",
+     "customer": "C0000010",
+     "region": "R2",
+     "sku": "IJBSQT-10",
+     "qty": 1
+    },
+    {
+     "order": "114936",
+     "customer": "C0000010",
+     "region": "R2",
+     "sku": "W25EZN-10",
+     "qty": 1
+    },
+    {
+     "order": "114936",
+     "customer": "C0000010",
+     "region": "R2",
+     "sku": "5P2MVG-10",
+     "qty": 1
+    },
+    {
+     "order": "114936",
+     "customer": "C0000010",
+     "region": "R2",
+     "sku": "KTDZY0-8",
+     "qty": 1
+    },
+    {
+     "order": "114936",
+     "customer": "C0000010",
+     "region": "R2",
+     "sku": "WGHG3L-10",
+     "qty": 1
+    },
+    {
+     "order": "114935",
+     "customer": "C0000009",
+     "region": "R1",
+     "sku": "ZRCYSH-13",
+     "qty": 1
+    },
+    {
+     "order": "114934",
+     "customer": "C0000009",
+     "region": "R1",
+     "sku": "8N10W9-10.5",
+     "qty": 1
+    },
+    {
+     "order": "114933",
+     "customer": "C0000009",
+     "region": "R1",
+     "sku": "8N10W9-10",
+     "qty": 1
+    },
+    {
+     "order": "114932",
+     "customer": "C0000009",
+     "region": "R1",
+     "sku": "2T1DJM-12",
+     "qty": 1
+    },
+    {
+     "order": "114931",
+     "customer": "C0000009",
+     "region": "R1",
+     "sku": "ZRCYSH-12",
+     "qty": 1
+    },
+    {
+     "order": "114930",
+     "customer": "C0000009",
+     "region": "R1",
+     "sku": "8N10W9-8.5",
+     "qty": 1
+    },
+    {
+     "order": "114929",
+     "customer": "C0000009",
+     "region": "R1",
+     "sku": "Y813MQ-8",
+     "qty": 1
+    },
+    {
+     "order": "114928",
+     "customer": "C0000009",
+     "region": "R1",
+     "sku": "2T1DJM-14",
+     "qty": 1
+    },
+    {
+     "order": "114927",
+     "customer": "C0000008",
+     "region": "R3",
+     "sku": "6M2FJM-13",
+     "qty": 3
+    },
+    {
+     "order": "114926",
+     "customer": "C0000008",
+     "region": "R3",
+     "sku": "G8ASPE-8.5",
+     "qty": 1
+    },
+    {
+     "order": "114926",
+     "customer": "C0000008",
+     "region": "R3",
+     "sku": "G8ASPE-8",
+     "qty": 1
+    },
+    {
+     "order": "114925",
+     "customer": "C0000008",
+     "region": "R3",
+     "sku": "G8ASPE-9",
+     "qty": 1
+    },
+    {
+     "order": "114924",
+     "customer": "C0000008",
+     "region": "R3",
+     "sku": "G8ASPE-9.5",
+     "qty": 1
+    },
+    {
+     "order": "114923",
+     "customer": "C0000008",
+     "region": "R3",
+     "sku": "G8ASPE-10",
+     "qty": 1
+    }
+   ]
+  },
+  {
+   "wave": "40814",
+   "release_s": 63300,
+   "lines": [
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "8N10W9-6",
+     "qty": 1
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "2T1DJM-7",
+     "qty": 1
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "NM6C73-8",
+     "qty": 1
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "NM6C73-7",
+     "qty": 1
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "IJBSQT-7",
+     "qty": 1
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "KTDZY0-8",
+     "qty": 2
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "KTDZY0-7.5",
+     "qty": 1
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "8D9SAW-8",
+     "qty": 1
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "8D9SAW-7",
+     "qty": 1
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "8D9SAW-5",
+     "qty": 1
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "V7JUQL-5",
+     "qty": 1
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "LXJQVG-6",
+     "qty": 1
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "WRRW1W-6",
+     "qty": 1
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "UNPPMJ-8",
+     "qty": 1
+    },
+    {
+     "order": "114942",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "8D9SAW-6",
+     "qty": 1
+    },
+    {
+     "order": "114942",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "LXJQVG-8",
+     "qty": 1
+    },
+    {
+     "order": "114941",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "G8ASPE-10",
+     "qty": 1
+    },
+    {
+     "order": "114940",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "8D9SAW-6",
+     "qty": 2
+    },
+    {
+     "order": "114940",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "LXJQVG-13",
+     "qty": 2
+    },
+    {
+     "order": "114939",
+     "customer": "C0000010",
+     "region": "R2",
+     "sku": "JEGRCL-12",
+     "qty": 1
+    },
+    {
+     "order": "114938",
+     "customer": "C0000010",
+     "region": "R2",
+     "sku": "05W6TK-13",
+     "qty": 1
+    }
+   ]
+  },
+  {
+   "wave": "40815",
+   "release_s": 63300,
+   "lines": [
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "5HQR89-8.5",
+     "qty": 2
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "NM6C73-8.5",
+     "qty": 1
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "NM6C73-8",
+     "qty": 1
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "IJBSQT-9",
+     "qty": 1
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "IJBSQT-8.5",
+     "qty": 2
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "8D9SAW-9",
+     "qty": 4
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "8D9SAW-8.5",
+     "qty": 1
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "0LNUOV-8.5",
+     "qty": 1
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "ZGYCSW-8.5",
+     "qty": 2
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "I1KDJ0-9.5",
+     "qty": 1
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "WRRW1W-9",
+     "qty": 4
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "UNPPMJ-9",
+     "qty": 1
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "UNPPMJ-8.5",
+     "qty": 1
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "O9YFO8-9.5",
+     "qty": 1
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "O9YFO8-9",
+     "qty": 1
+    }
+   ]
+  },
+  {
+   "wave": "40816",
+   "release_s": 63300,
+   "lines": [
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "TBCCF7-13",
+     "qty": 1
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "2T1DJM-13",
+     "qty": 1
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "2T1DJM-9.5",
+     "qty": 1
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "CD1NU9-9.5",
+     "qty": 1
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "NM6C73-12",
+     "qty": 1
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "IJBSQT-11",
+     "qty": 1
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "IJBSQT-10.5",
+     "qty": 1
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "IJBSQT-10",
+     "qty": 1
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "IJBSQT-9.5",
+     "qty": 3
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "NISP6K-12",
+     "qty": 1
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "NISP6K-11",
+     "qty": 1
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "W25EZN-10.5",
+     "qty": 1
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "W25EZN-9.5",
+     "qty": 1
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "UHYJ3A-9.5",
+     "qty": 1
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "8D9SAW-10.5",
+     "qty": 1
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "8D9SAW-10",
+     "qty": 4
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "0LNUOV-10",
+     "qty": 2
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "ZGYCSW-10",
+     "qty": 1
+    }
+   ]
+  },
+  {
+   "wave": "40817",
+   "release_s": 63300,
+   "lines": [
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "7BU1V7-10.5",
+     "qty": 1
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "7BU1V7-10",
+     "qty": 1
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "7BU1V7-8.5",
+     "qty": 2
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "XUZJ74-11",
+     "qty": 1
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "XUZJ74-10.5",
+     "qty": 1
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "XUZJ74-8",
+     "qty": 1
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "SMMRK3-13",
+     "qty": 2
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "SMMRK3-12",
+     "qty": 2
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "8N10W9-14",
+     "qty": 2
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "WRRW1W-13",
+     "qty": 1
+    },
+    {
+     "order": "114943",
+     "customer": "C0000011",
+     "region": "R4",
+     "sku": "O9YFO8-13",
+     "qty": 1
+    }
+   ]
+  },
+  {
+   "wave": "40818",
+   "release_s": 63360,
+   "lines": [
+    {
+     "order": "114951",
+     "customer": "C0000015",
+     "region": "R3",
+     "sku": "0LNUOV-9",
+     "qty": 1
+    },
+    {
+     "order": "114951",
+     "customer": "C0000015",
+     "region": "R3",
+     "sku": "0LNUOV-8",
+     "qty": 2
+    },
+    {
+     "order": "114950",
+     "customer": "C0000015",
+     "region": "R3",
+     "sku": "Z8KPP8-8",
+     "qty": 2
+    },
+    {
+     "order": "114949",
+     "customer": "C0000015",
+     "region": "R3",
+     "sku": "G8ASPE-12",
+     "qty": 2
+    },
+    {
+     "order": "114949",
+     "customer": "C0000015",
+     "region": "R3",
+     "sku": "G8ASPE-8",
+     "qty": 2
+    },
+    {
+     "order": "114948",
+     "customer": "C0000015",
+     "region": "R3",
+     "sku": "G8ASPE-9",
+     "qty": 3
+    },
+    {
+     "order": "114947",
+     "customer": "C0000015",
+     "region": "R3",
+     "sku": "G8ASPE-10.5",
+     "qty": 3
+    },
+    {
+     "order": "114947",
+     "customer": "C0000015",
+     "region": "R3",
+     "sku": "G8ASPE-10",
+     "qty": 2
+    },
+    {
+     "order": "114947",
+     "customer": "C0000015",
+     "region": "R3",
+     "sku": "G8ASPE-9.5",
+     "qty": 2
+    },
+    {
+     "order": "114946",
+     "customer": "C0000015",
+     "region": "R3",
+     "sku": "G8ASPE-10",
+     "qty": 2
+    },
+    {
+     "order": "114946",
+     "customer": "C0000015",
+     "region": "R3",
+     "sku": "G8ASPE-9.5",
+     "qty": 1
+    },
+    {
+     "order": "114945",
+     "customer": "C0000015",
+     "region": "R3",
+     "sku": "G8ASPE-10",
+     "qty": 1
+    },
+    {
+     "order": "114944",
+     "customer": "C0000015",
+     "region": "R3",
+     "sku": "DGAONE-11",
+     "qty": 1
+    }
+   ]
+  },
+  {
+   "wave": "40819",
+   "release_s": 63360,
+   "lines": [
+    {
+     "order": "114952",
+     "customer": "C0000015",
+     "region": "R3",
+     "sku": "G8ASPE-7.5",
+     "qty": 1
+    },
+    {
+     "order": "114951",
+     "customer": "C0000015",
+     "region": "R3",
+     "sku": "0LNUOV-9",
+     "qty": 1
+    },
+    {
+     "order": "114951",
+     "customer": "C0000015",
+     "region": "R3",
+     "sku": "X31OGS-10",
+     "qty": 1
+    }
+   ]
+  },
+  {
+   "wave": "40820",
+   "release_s": 63420,
+   "lines": [
+    {
+     "order": "114960",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "8N10W9-9.5",
+     "qty": 1
+    },
+    {
+     "order": "114960",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "8N10W9-9",
+     "qty": 1
+    },
+    {
+     "order": "114960",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "2T1DJM-9.5",
+     "qty": 1
+    },
+    {
+     "order": "114960",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "I1KDJ0-10",
+     "qty": 1
+    },
+    {
+     "order": "114960",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "WRRW1W-10",
+     "qty": 1
+    },
+    {
+     "order": "114960",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "WRRW1W-9",
+     "qty": 1
+    },
+    {
+     "order": "114960",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "WRRW1W-5",
+     "qty": 1
+    },
+    {
+     "order": "114960",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "4SD17H-9.5",
+     "qty": 1
+    },
+    {
+     "order": "114960",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "4SD17H-9",
+     "qty": 1
+    },
+    {
+     "order": "114959",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "DGAONE-12",
+     "qty": 1
+    },
+    {
+     "order": "114959",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "DGAONE-10.5",
+     "qty": 1
+    },
+    {
+     "order": "114958",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "DGAONE-9",
+     "qty": 1
+    },
+    {
+     "order": "114957",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "DGAONE-11",
+     "qty": 1
+    },
+    {
+     "order": "114956",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "2T1DJM-10.5",
+     "qty": 1
+    },
+    {
+     "order": "114956",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "WRRW1W-9",
+     "qty": 1
+    },
+    {
+     "order": "114956",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "WRRW1W-8.5",
+     "qty": 1
+    },
+    {
+     "order": "114956",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "WRRW1W-8",
+     "qty": 1
+    },
+    {
+     "order": "114955",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "I1KDJ0-8.5",
+     "qty": 1
+    },
+    {
+     "order": "114954",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "ZRCYSH-9",
+     "qty": 1
+    },
+    {
+     "order": "114954",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "WGHG3L-10.5",
+     "qty": 1
+    },
+    {
+     "order": "114954",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "WGHG3L-9.5",
+     "qty": 1
+    },
+    {
+     "order": "114954",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "WGHG3L-8.5",
+     "qty": 1
+    },
+    {
+     "order": "114953",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "ZX6MUV-9",
+     "qty": 2
+    }
+   ]
+  },
+  {
+   "wave": "40821",
+   "release_s": 63420,
+   "lines": [
+    {
+     "order": "114964",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "WRRW1W-9.5",
+     "qty": 1
+    },
+    {
+     "order": "114964",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "WRRW1W-9",
+     "qty": 1
+    },
+    {
+     "order": "114964",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "WRRW1W-8.5",
+     "qty": 3
+    },
+    {
+     "order": "114964",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "WRRW1W-7",
+     "qty": 1
+    },
+    {
+     "order": "114964",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "WRRW1W-6.5",
+     "qty": 1
+    },
+    {
+     "order": "114963",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "DGAONE-12",
+     "qty": 1
+    },
+    {
+     "order": "114962",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "DGAONE-9",
+     "qty": 1
+    },
+    {
+     "order": "114961",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "8N10W9-13",
+     "qty": 1
+    },
+    {
+     "order": "114961",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "8N10W9-12",
+     "qty": 1
+    },
+    {
+     "order": "114961",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "8N10W9-9.5",
+     "qty": 1
+    },
+    {
+     "order": "114961",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "8N10W9-9",
+     "qty": 1
+    },
+    {
+     "order": "114961",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "WGHG3L-10.5",
+     "qty": 1
+    },
+    {
+     "order": "114961",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "WRRW1W-11",
+     "qty": 1
+    },
+    {
+     "order": "114961",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "WRRW1W-10.5",
+     "qty": 1
+    },
+    {
+     "order": "114961",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "WRRW1W-7",
+     "qty": 1
+    },
+    {
+     "order": "114960",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "8N10W9-12",
+     "qty": 2
+    },
+    {
+     "order": "114960",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "8N10W9-10.5",
+     "qty": 1
+    },
+    {
+     "order": "114960",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "8N10W9-10",
+     "qty": 1
+    },
+    {
+     "order": "114960",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "WRRW1W-12",
+     "qty": 1
+    },
+    {
+     "order": "114960",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "WRRW1W-10.5",
+     "qty": 1
+    },
+    {
+     "order": "114960",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "WRRW1W-10",
+     "qty": 1
+    }
+   ]
+  },
+  {
+   "wave": "40822",
+   "release_s": 63420,
+   "lines": [
+    {
+     "order": "114967",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "8N10W9-11",
+     "qty": 1
+    },
+    {
+     "order": "114967",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "8N10W9-9.5",
+     "qty": 1
+    },
+    {
+     "order": "114967",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "56TC1Z-13",
+     "qty": 1
+    },
+    {
+     "order": "114967",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "56TC1Z-11",
+     "qty": 1
+    },
+    {
+     "order": "114967",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "ZRCYSH-7",
+     "qty": 1
+    },
+    {
+     "order": "114967",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "5HQR89-7",
+     "qty": 1
+    },
+    {
+     "order": "114966",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "8N10W9-10.5",
+     "qty": 1
+    },
+    {
+     "order": "114966",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "8N10W9-9.5",
+     "qty": 1
+    },
+    {
+     "order": "114966",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "2T1DJM-11",
+     "qty": 1
+    },
+    {
+     "order": "114966",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "5HQR89-9.5",
+     "qty": 1
+    },
+    {
+     "order": "114965",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "8N10W9-12",
+     "qty": 2
+    },
+    {
+     "order": "114965",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "8N10W9-11",
+     "qty": 1
+    },
+    {
+     "order": "114965",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "8N10W9-9.5",
+     "qty": 1
+    },
+    {
+     "order": "114965",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "8N10W9-9",
+     "qty": 1
+    },
+    {
+     "order": "114965",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "ZRCYSH-12",
+     "qty": 1
+    },
+    {
+     "order": "114965",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "ZRCYSH-8.5",
+     "qty": 1
+    },
+    {
+     "order": "114965",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "ZRCYSH-7",
+     "qty": 1
+    },
+    {
+     "order": "114965",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "WRRW1W-12",
+     "qty": 1
+    },
+    {
+     "order": "114964",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "2T1DJM-10",
+     "qty": 1
+    },
+    {
+     "order": "114964",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "WRRW1W-11",
+     "qty": 1
+    },
+    {
+     "order": "114964",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "WRRW1W-10.5",
+     "qty": 1
+    },
+    {
+     "order": "114964",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "WRRW1W-10",
+     "qty": 1
+    },
+    {
+     "order": "114964",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "WRRW1W-9.5",
+     "qty": 1
+    }
+   ]
+  },
+  {
+   "wave": "40823",
+   "release_s": 63420,
+   "lines": [
+    {
+     "order": "114975",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "8N10W9-9.5",
+     "qty": 1
+    },
+    {
+     "order": "114975",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "8N10W9-8.5",
+     "qty": 1
+    },
+    {
+     "order": "114975",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "WRRW1W-8.5",
+     "qty": 1
+    },
+    {
+     "order": "114974",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "6M2FJM-13",
+     "qty": 1
+    },
+    {
+     "order": "114973",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "8N10W9-13",
+     "qty": 1
+    },
+    {
+     "order": "114973",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "8N10W9-10.5",
+     "qty": 1
+    },
+    {
+     "order": "114973",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "8N10W9-9",
+     "qty": 1
+    },
+    {
+     "order": "114972",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "DGAONE-12",
+     "qty": 1
+    },
+    {
+     "order": "114971",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "DGAONE-9",
+     "qty": 1
+    },
+    {
+     "order": "114970",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "8N10W9-12",
+     "qty": 2
+    },
+    {
+     "order": "114970",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "8N10W9-11",
+     "qty": 1
+    },
+    {
+     "order": "114970",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "8N10W9-10",
+     "qty": 1
+    },
+    {
+     "order": "114970",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "8N10W9-9.5",
+     "qty": 2
+    },
+    {
+     "order": "114970",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "2T1DJM-10",
+     "qty": 1
+    },
+    {
+     "order": "114970",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "ZRCYSH-12",
+     "qty": 1
+    },
+    {
+     "order": "114970",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "ZRCYSH-8.5",
+     "qty": 1
+    },
+    {
+     "order": "114970",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "ZRCYSH-7.5",
+     "qty": 1
+    },
+    {
+     "order": "114969",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "8N10W9-12",
+     "qty": 1
+    },
+    {
+     "order": "114969",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "ZRCYSH-12",
+     "qty": 1
+    },
+    {
+     "order": "114968",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "ZRCYSH-10",
+     "qty": 1
+    },
+    {
+     "order": "114968",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "ZRCYSH-9.5",
+     "qty": 1
+    },
+    {
+     "order": "114968",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "ZRCYSH-5",
+     "qty": 1
+    }
+   ]
+  },
+  {
+   "wave": "40824",
+   "release_s": 63420,
+   "lines": [
+    {
+     "order": "114980",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "8N10W9-10",
+     "qty": 1
+    },
+    {
+     "order": "114980",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "8N10W9-8.5",
+     "qty": 1
+    },
+    {
+     "order": "114980",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "J3FI7N-10",
+     "qty": 1
+    },
+    {
+     "order": "114980",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "ZRCYSH-10.5",
+     "qty": 1
+    },
+    {
+     "order": "114979",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "8N10W9-11",
+     "qty": 1
+    },
+    {
+     "order": "114979",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "8N10W9-8",
+     "qty": 1
+    },
+    {
+     "order": "114979",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "2T1DJM-11",
+     "qty": 1
+    },
+    {
+     "order": "114979",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "2T1DJM-9.5",
+     "qty": 1
+    },
+    {
+     "order": "114978",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "8N10W9-14",
+     "qty": 1
+    },
+    {
+     "order": "114978",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "8N10W9-12",
+     "qty": 1
+    },
+    {
+     "order": "114978",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "8N10W9-11",
+     "qty": 1
+    },
+    {
+     "order": "114978",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "2T1DJM-10.5",
+     "qty": 1
+    },
+    {
+     "order": "114977",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "8N10W9-11",
+     "qty": 1
+    },
+    {
+     "order": "114977",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "8N10W9-10",
+     "qty": 1
+    },
+    {
+     "order": "114977",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "ZRCYSH-10.5",
+     "qty": 1
+    },
+    {
+     "order": "114977",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "ZRCYSH-10",
+     "qty": 1
+    },
+    {
+     "order": "114976",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "2T1DJM-10",
+     "qty": 1
+    },
+    {
+     "order": "114976",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "ZRCYSH-12",
+     "qty": 1
+    },
+    {
+     "order": "114976",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "5HQR89-11",
+     "qty": 1
+    },
+    {
+     "order": "114976",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "5HQR89-9.5",
+     "qty": 1
+    },
+    {
+     "order": "114975",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "8N10W9-12",
+     "qty": 1
+    },
+    {
+     "order": "114975",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "I1KDJ0-9.5",
+     "qty": 1
+    },
+    {
+     "order": "114975",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "WRRW1W-13",
+     "qty": 1
+    },
+    {
+     "order": "114975",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "WRRW1W-10.5",
+     "qty": 1
+    }
+   ]
+  },
+  {
+   "wave": "40825",
+   "release_s": 63420,
+   "lines": [
+    {
+     "order": "114990",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "ZRCYSH-10.5",
+     "qty": 1
+    },
+    {
+     "order": "114990",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "ZRCYSH-9.5",
+     "qty": 1
+    },
+    {
+     "order": "114990",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "WRRW1W-8.5",
+     "qty": 1
+    },
+    {
+     "order": "114989",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "DGAONE-12",
+     "qty": 1
+    },
+    {
+     "order": "114988",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "8N10W9-13",
+     "qty": 1
+    },
+    {
+     "order": "114988",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "8N10W9-9.5",
+     "qty": 2
+    },
+    {
+     "order": "114988",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "8N10W9-9",
+     "qty": 1
+    },
+    {
+     "order": "114988",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "ZRCYSH-13",
+     "qty": 1
+    },
+    {
+     "order": "114988",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "ZRCYSH-9.5",
+     "qty": 1
+    },
+    {
+     "order": "114987",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "DGAONE-7",
+     "qty": 1
+    },
+    {
+     "order": "114986",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "8N10W9-13",
+     "qty": 1
+    },
+    {
+     "order": "114986",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "8N10W9-10.5",
+     "qty": 1
+    },
+    {
+     "order": "114986",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "8N10W9-10",
+     "qty": 1
+    },
+    {
+     "order": "114985",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "8N10W9-9.5",
+     "qty": 1
+    },
+    {
+     "order": "114984",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "DGAONE-12",
+     "qty": 1
+    },
+    {
+     "order": "114983",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "DGAONE-9",
+     "qty": 1
+    },
+    {
+     "order": "114982",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "DGAONE-11",
+     "qty": 1
+    },
+    {
+     "order": "114981",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "XUZJ74-12",
+     "qty": 1
+    },
+    {
+     "order": "114981",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "XUZJ74-9.5",
+     "qty": 1
+    },
+    {
+     "order": "114981",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "ZRCYSH-10.5",
+     "qty": 1
+    },
+    {
+     "order": "114981",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "ZRCYSH-9.5",
+     "qty": 1
+    },
+    {
+     "order": "114981",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "5HQR89-12",
+     "qty": 1
+    },
+    {
+     "order": "114980",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "J3FI7N-13",
+     "qty": 1
+    }
+   ]
+  },
+  {
+   "wave": "40826",
+   "release_s": 63420,
+   "lines": [
+    {
+     "order": "114999",
+     "customer": "C0000044",
+     "region": "R2",
+     "sku": "G8ASPE-8.5",
+     "qty": 1
+    },
+    {
+     "order": "114998",
+     "customer": "C0000044",
+     "region": "R2",
+     "sku": "LXJQVG-12",
+     "qty": 1
+    },
+    {
+     "order": "114997",
+     "customer": "C0000044",
+     "region": "R2",
+     "sku": "G8ASPE-9.5",
+     "qty": 1
+    },
+    {
+     "order": "114997",
+     "customer": "C0000044",
+     "region": "R2",
+     "sku": "G8ASPE-9",
+     "qty": 1
+    },
+    {
+     "order": "114996",
+     "customer": "C0000044",
+     "region": "R2",
+     "sku": "G8ASPE-10.5",
+     "qty": 1
+    },
+    {
+     "order": "114996",
+     "customer": "C0000044",
+     "region": "R2",
+     "sku": "6M2FJM-9.5",
+     "qty": 1
+    },
+    {
+     "order": "114995",
+     "customer": "C0000044",
+     "region": "R2",
+     "sku": "IJBSQT-13",
+     "qty": 2
+    },
+    {
+     "order": "114994",
+     "customer": "C0000035",
+     "region": "R1",
+     "sku": "DGAONE-12",
+     "qty": 1
+    },
+    {
+     "order": "114994",
+     "customer": "C0000035",
+     "region": "R1",
+     "sku": "05W6TK-8",
+     "qty": 1
+    },
+    {
+     "order": "114993",
+     "customer": "C0000035",
+     "region": "R1",
+     "sku": "05W6TK-6.5",
+     "qty": 1
+    },
+    {
+     "order": "114992",
+     "customer": "C0000035",
+     "region": "R1",
+     "sku": "DGAONE-11",
+     "qty": 1
+    },
+    {
+     "order": "114991",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "7BU1V7-10.5",
+     "qty": 1
+    },
+    {
+     "order": "114991",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "XUZJ74-13",
+     "qty": 1
+    },
+    {
+     "order": "114991",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "XUZJ74-12",
+     "qty": 1
+    },
+    {
+     "order": "114991",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "XUZJ74-10.5",
+     "qty": 1
+    },
+    {
+     "order": "114991",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "2T1DJM-9.5",
+     "qty": 1
+    },
+    {
+     "order": "114991",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "ZRCYSH-8.5",
+     "qty": 1
+    },
+    {
+     "order": "114991",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "ZRCYSH-7.5",
+     "qty": 1
+    },
+    {
+     "order": "114991",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "5HQR89-9.5",
+     "qty": 1
+    },
+    {
+     "order": "114991",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "WRRW1W-13",
+     "qty": 1
+    },
+    {
+     "order": "114991",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "WRRW1W-10",
+     "qty": 1
+    },
+    {
+     "order": "114991",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "WRRW1W-8.5",
+     "qty": 1
+    },
+    {
+     "order": "114990",
+     "customer": "C0000017",
+     "region": "R3",
+     "sku": "WRRW1W-11",
+     "qty": 1
+    }
+   ]
+  },
+  {
+   "wave": "40827",
+   "release_s": 63420,
+   "lines": [
+    {
+     "order": "115015",
+     "customer": "C0000111",
+     "region": "R1",
+     "sku": "05W6TK-6",
+     "qty": 1
+    },
+    {
+     "order": "115014",
+     "customer": "C0000111",
+     "region": "R1",
+     "sku": "05W6TK-12",
+     "qty": 1
+    },
+    {
+     "order": "115013",
+     "customer": "C0000106",
+     "region": "R3",
+     "sku": "PP9DNA-6",
+     "qty": 1
+    },
+    {
+     "order": "115012",
+     "customer": "C0000085",
+     "region": "R4",
+     "sku": "LXJQVG-13",
+     "qty": 1
+    },
+    {
+     "order": "115011",
+     "customer": "C0000072",
+     "region": "R4",
+     "sku": "LXJQVG-13",
+     "qty": 1
+    },
+    {
+     "order": "115011",
+     "customer": "C0000072",
+     "region": "R4",
+     "sku": "LXJQVG-9",
+     "qty": 1
+    },
+    {
+     "order": "115010",
+     "customer": "C0000072",
+     "region": "R4",
+     "sku": "G8ASPE-10.5",
+     "qty": 1
+    },
+    {
+     "order": "115010",
+     "customer": "C0000072",
+     "region": "R4",
+     "sku": "G8ASPE-9.5",
+     "qty": 1
+    },
+    {
+     "order": "115009",
+     "customer": "C0000070",
+     "region": "R4",
+     "sku": "56TC1Z-10.5",
+     "qty": 1
+    },
+    {
+     "order": "115008",
+     "customer": "C0000068",
+     "region": "R1",
+     "sku": "DGAONE-12",
+     "qty": 1
+    },
+    {
+     "order": "115007",
+     "customer": "C0000068",
+     "region": "R1",
+     "sku": "G8ASPE-12",
+     "qty": 1
+    },
+    {
+     "order": "115006",
+     "customer": "C0000068",
+     "region": "R1",
+     "sku": "DGAONE-9.5",
+     "qty": 3
+    },
+    {
+     "order": "115005",
+     "customer": "C0000068",
+     "region": "R1",
+     "sku": "DGAONE-11",
+     "qty": 2
+    },
+    {
+     "order": "115004",
+     "customer": "C0000049",
+     "region": "R1",
+     "sku": "AX7BJ8-9.5",
+     "qty": 1
+    },
+    {
+     "order": "115003",
+     "customer": "C0000049",
+     "region": "R1",
+     "sku": "DGAONE-12",
+     "qty": 1
+    },
+    {
+     "order": "115002",
+     "customer": "C0000049",
+     "region": "R1",
+     "sku": "DGAONE-9",
+     "qty": 1
+    },
+    {
+     "order": "115001",
+     "customer": "C0000049",
+     "region": "R1",
+     "sku": "DGAONE-11",
+     "qty": 1
+    },
+    {
+     "order": "115000",
+     "customer": "C0000044",
+     "region": "R2",
+     "sku": "LXJQVG-13",
+     "qty": 1
+    },
+    {
+     "order": "115000",
+     "customer": "C0000044",
+     "region": "R2",
+     "sku": "LXJQVG-8.5",
+     "qty": 1
+    },
+    {
+     "order": "115000",
+     "customer": "C0000044",
+     "region": "R2",
+     "sku": "G8ASPE-13",
+     "qty": 1
+    },
+    {
+     "order": "115000",
+     "customer": "C0000044",
+     "region": "R2",
+     "sku": "QTMT7N-8",
+     "qty": 1
+    }
+   ]
+  },
+  {
+   "wave": "40828",
+   "release_s": 63420,
+   "lines": [
+    {
+     "order": "115024",
+     "customer": "C0000148",
+     "region": "R2",
+     "sku": "8D9SAW-9.5",
+     "qty": 1
+    },
+    {
+     "order": "115024",
+     "customer": "C0000148",
+     "region": "R2",
+     "sku": "8D9SAW-9",
+     "qty": 2
+    },
+    {
+     "order": "115024",
+     "customer": "C0000148",
+     "region": "R2",
+     "sku": "8D9SAW-8.5",
+     "qty": 2
+    },
+    {
+     "order": "115024",
+     "customer": "C0000148",
+     "region": "R2",
+     "sku": "I1KDJ0-8.5",
+     "qty": 1
+    },
+    {
+     "order": "115023",
+     "customer": "C0000131",
+     "region": "R3",
+     "sku": "F73ZE1-12",
+     "qty": 1
+    },
+    {
+     "order": "115022",
+     "customer": "C0000120",
+     "region": "R2",
+     "sku": "G8ASPE-10.5",
+     "qty": 2
+    },
+    {
+     "order": "115022",
+     "customer": "C0000120",
+     "region": "R2",
+     "sku": "G8ASPE-9.5",
+     "qty": 1
+    },
+    {
+     "order": "115022",
+     "customer": "C0000120",
+     "region": "R2",
+     "sku": "G8ASPE-9",
+     "qty": 2
+    },
+    {
+     "order": "115021",
+     "customer": "C0000120",
+     "region": "R2",
+     "sku": "G8ASPE-10.5",
+     "qty": 1
+    },
+    {
+     "order": "115021",
+     "customer": "C0000120",
+     "region": "R2",
+     "sku": "G8ASPE-10",
+     "qty": 1
+    },
+    {
+     "order": "115021",
+     "customer": "C0000120",
+     "region": "R2",
+     "sku": "G8ASPE-9.5",
+     "qty": 1
+    },
+    {
+     "order": "115020",
+     "customer": "C0000120",
+     "region": "R2",
+     "sku": "G8ASPE-10",
+     "qty": 2
+    },
+    {
+     "order": "115019",
+     "customer": "C0000115",
+     "region": "R2",
+     "sku": "TBCCF7-9.5",
+     "qty": 1
+    },
+    {
+     "order": "115018",
+     "customer": "C0000115",
+     "region": "R2",
+     "sku": "IA7X1P-9",
+     "qty": 1
+    },
+    {
+     "order": "115018",
+     "customer": "C0000115",
+     "region": "R2",
+     "sku": "DGAONE-9.5",
+     "qty": 1
+    },
+    {
+     "order": "115017",
+     "customer": "C0000111",
+     "region": "R1",
+     "sku": "ZGYCSW-11",
+     "qty": 1
+    },
+    {
+     "order": "115016",
+     "customer": "C0000111",
+     "region": "R1",
+     "sku": "DGAONE-9",
+     "qty": 2
+    },
+    {
+     "order": "115015",
+     "customer": "C0000111",
+     "region": "R1",
+     "sku": "05W6TK-13",
+     "qty": 1
+    }
+   ]
+  },
+  {
+   "wave": "40829",
+   "release_s": 63420,
+   "lines": [
+    {
+     "order": "115034",
+     "customer": "C0000160",
+     "region": "R2",
+     "sku": "G8ASPE-8.5",
+     "qty": 1
+    },
+    {
+     "order": "115033",
+     "customer": "C0000160",
+     "region": "R2",
+     "sku": "LXJQVG-8.5",
+     "qty": 1
+    },
+    {
+     "order": "115033",
+     "customer": "C0000160",
+     "region": "R2",
+     "sku": "G8ASPE-12",
+     "qty": 1
+    },
+    {
+     "order": "115033",
+     "customer": "C0000160",
+     "region": "R2",
+     "sku": "G8ASPE-8.5",
+     "qty": 1
+    },
+    {
+     "order": "115032",
+     "customer": "C0000160",
+     "region": "R2",
+     "sku": "LXJQVG-8.5",
+     "qty": 1
+    },
+    {
+     "order": "115032",
+     "customer": "C0000160",
+     "region": "R2",
+     "sku": "G8ASPE-12",
+     "qty": 1
+    },
+    {
+     "order": "115031",
+     "customer": "C0000160",
+     "region": "R2",
+     "sku": "G8ASPE-8",
+     "qty": 1
+    },
+    {
+     "order": "115030",
+     "customer": "C0000160",
+     "region": "R2",
+     "sku": "G8ASPE-9.5",
+     "qty": 1
+    },
+    {
+     "order": "115029",
+     "customer": "C0000160",
+     "region": "R2",
+     "sku": "G8ASPE-10",
+     "qty": 1
+    },
+    {
+     "order": "115028",
+     "customer": "C0000159",
+     "region": "R3",
+     "sku": "QTMT7N-8",
+     "qty": 1
+    },
+    {
+     "order": "115027",
+     "customer": "C0000159",
+     "region": "R3",
+     "sku": "DGAONE-12",
+     "qty": 2
+    },
+    {
+     "order": "115027",
+     "customer": "C0000159",
+     "region": "R3",
+     "sku": "G8ASPE-12",
+     "qty": 1
+    },
+    {
+     "order": "115027",
+     "customer": "C0000159",
+     "region": "R3",
+     "sku": "G8ASPE-8",
+     "qty": 1
+    },
+    {
+     "order": "115026",
+     "customer": "C0000159",
+     "region": "R3",
+     "sku": "DGAONE-9.5",
+     "qty": 1
+    },
+    {
+     "order": "115025",
+     "customer": "C0000159",
+     "region": "R3",
+     "sku": "DGAONE-11",
+     "qty": 1
+    },
+    {
+     "order": "115024",
+     "customer": "C0000148",
+     "region": "R2",
+     "sku": "SMMRK3-13",
+     "qty": 1
+    },
+    {
+     "order": "115024",
+     "customer": "C0000148",
+     "region": "R2",
+     "sku": "SMMRK3-11",
+     "qty": 1
+    },
+    {
+     "order": "115024",
+     "customer": "C0000148",
+     "region": "R2",
+     "sku": "SMMRK3-9",
+     "qty": 1
+    },
+    {
+     "order": "115024",
+     "customer": "C0000148",
+     "region": "R2",
+     "sku": "8N10W9-13",
+     "qty": 1
+    },
+    {
+     "order": "115024",
+     "customer": "C0000148",
+     "region": "R2",
+     "sku": "8N10W9-11",
+     "qty": 1
+    },
+    {
+     "order": "115024",
+     "customer": "C0000148",
+     "region": "R2",
+     "sku": "8N10W9-10",
+     "qty": 1
+    },
+    {
+     "order": "115024",
+     "customer": "C0000148",
+     "region": "R2",
+     "sku": "8D9SAW-11",
+     "qty": 1
+    },
+    {
+     "order": "115024",
+     "customer": "C0000148",
+     "region": "R2",
+     "sku": "I1KDJ0-9.5",
+     "qty": 1
+    }
+   ]
+  },
+  {
+   "wave": "40830",
+   "release_s": 63420,
+   "lines": [
+    {
+     "order": "115043",
+     "customer": "C0000186",
+     "region": "R3",
+     "sku": "SMMRK3-8",
+     "qty": 1
+    },
+    {
+     "order": "115043",
+     "customer": "C0000186",
+     "region": "R3",
+     "sku": "8N10W9-12",
+     "qty": 2
+    },
+    {
+     "order": "115043",
+     "customer": "C0000186",
+     "region": "R3",
+     "sku": "8N10W9-9.5",
+     "qty": 1
+    },
+    {
+     "order": "115043",
+     "customer": "C0000186",
+     "region": "R3",
+     "sku": "NJVZEL-10",
+     "qty": 1
+    },
+    {
+     "order": "115043",
+     "customer": "C0000186",
+     "region": "R3",
+     "sku": "IA7X1P-10.5",
+     "qty": 1
+    },
+    {
+     "order": "115043",
+     "customer": "C0000186",
+     "region": "R3",
+     "sku": "8D9SAW-9",
+     "qty": 1
+    },
+    {
+     "order": "115043",
+     "customer": "C0000186",
+     "region": "R3",
+     "sku": "5MNTT7-10.5",
+     "qty": 1
+    },
+    {
+     "order": "115043",
+     "customer": "C0000186",
+     "region": "R3",
+     "sku": "WRRW1W-10",
+     "qty": 1
+    },
+    {
+     "order": "115042",
+     "customer": "C0000186",
+     "region": "R3",
+     "sku": "G8ASPE-8.5",
+     "qty": 1
+    },
+    {
+     "order": "115041",
+     "customer": "C0000186",
+     "region": "R3",
+     "sku": "5MNTT7-8",
+     "qty": 1
+    },
+    {
+     "order": "115040",
+     "customer": "C0000186",
+     "region": "R3",
+     "sku": "5MNTT7-11",
+     "qty": 1
+    },
+    {
+     "order": "115039",
+     "customer": "C0000186",
+     "region": "R3",
+     "sku": "37VA62-7",
+     "qty": 1
+    },
+    {
+     "order": "115038",
+     "customer": "C0000184",
+     "region": "R3",
+     "sku": "JCNON3-8",
+     "qty": 1
+    },
+    {
+     "order": "115037",
+     "customer": "C0000184",
+     "region": "R3",
+     "sku": "FJ25W1-5",
+     "qty": 1
+    },
+    {
+     "order": "115037",
+     "customer": "C0000184",
+     "region": "R3",
+     "sku": "RAUDQ6-10",
+     "qty": 1
+    },
+    {
+     "order": "115037",
+     "customer": "C0000184",
+     "region": "R3",
+     "sku": "RAUDQ6-9",
+     "qty": 1
+    },
+    {
+     "order": "115037",
+     "customer": "C0000184",
+     "region": "R3",
+     "sku": "I1KDJ0-9",
+     "qty": 5
+    },
+    {
+     "order": "115036",
+     "customer": "C0000184",
+     "region": "R3",
+     "sku": "FJ25W1-10.5",
+     "qty": 1
+    },
+    {
+     "order": "115035",
+     "customer": "C0000182",
+     "region": "R4",
+     "sku": "LXJQVG-11",
+     "qty": 1
+    }
+   ]
+  },
+  {
+   "wave": "40831",
+   "release_s": 63420,
+   "lines": [
+    {
+     "order": "115054",
+     "customer": "C0000215",
+     "region": "R1",
+     "sku": "IPGA7X-8.5",
+     "qty": 1
+    },
+    {
+     "order": "115053",
+     "customer": "C0000215",
+     "region": "R1",
+     "sku": "IPGA7X-11",
+     "qty": 1
+    },
+    {
+     "order": "115052",
+     "customer": "C0000215",
+     "region": "R1",
+     "sku": "IPGA7X-12",
+     "qty": 1
+    },
+    {
+     "order": "115051",
+     "customer": "C0000211",
+     "region": "R2",
+     "sku": "F7LULH-10.5",
+     "qty": 1
+    },
+    {
+     "order": "115051",
+     "customer": "C0000211",
+     "region": "R2",
+     "sku": "B24J86-10.5",
+     "qty": 1
+    },
+    {
+     "order": "115050",
+     "customer": "C0000208",
+     "region": "R1",
+     "sku": "G8ASPE-8.5",
+     "qty": 1
+    },
+    {
+     "order": "115049",
+     "customer": "C0000208",
+     "region": "R1",
+     "sku": "DGAONE-7",
+     "qty": 1
+    },
+    {
+     "order": "115048",
+     "customer": "C0000208",
+     "region": "R1",
+     "sku": "DGAONE-9.5",
+     "qty": 1
+    },
+    {
+     "order": "115047",
+     "customer": "C0000208",
+     "region": "R1",
+     "sku": "DGAONE-10",
+     "qty": 1
+    },
+    {
+     "order": "115046",
+     "customer": "C0000208",
+     "region": "R1",
+     "sku": "DGAONE-11",
+     "qty": 1
+    },
+    {
+     "order": "115045",
+     "customer": "C0000197",
+     "region": "R2",
+     "sku": "05W6TK-11.5",
+     "qty": 8
+    },
+    {
+     "order": "115044",
+     "customer": "C0000194",
+     "region": "R4",
+     "sku": "8N10W9-13",
+     "qty": 2
+    },
+    {
+     "order": "115044",
+     "customer": "C0000194",
+     "region": "R4",
+     "sku": "8N10W9-10.5",
+     "qty": 2
+    },
+    {
+     "order": "115044",
+     "customer": "C0000194",
+     "region": "R4",
+     "sku": "8N10W9-9",
+     "qty": 1
+    },
+    {
+     "order": "115043",
+     "customer": "C0000186",
+     "region": "R3",
+     "sku": "WH1BJI-10.5",
+     "qty": 1
+    }
+   ]
+  },
+  {
+   "wave": "40832",
+   "release_s": 63420,
+   "lines": [
+    {
+     "order": "115064",
+     "customer": "C0000255",
+     "region": "R1",
+     "sku": "DGAONE-11",
+     "qty": 1
+    },
+    {
+     "order": "115063",
+     "customer": "C0000234",
+     "region": "R1",
+     "sku": "LXJQVG-8.5",
+     "qty": 2
+    },
+    {
+     "order": "115062",
+     "customer": "C0000224",
+     "region": "R2",
+     "sku": "6M2FJM-13",
+     "qty": 3
+    },
+    {
+     "order": "115061",
+     "customer": "C0000223",
+     "region": "R3",
+     "sku": "G8ASPE-8.5",
+     "qty": 1
+    },
+    {
+     "order": "115061",
+     "customer": "C0000223",
+     "region": "R3",
+     "sku": "G8ASPE-8",
+     "qty": 2
+    },
+    {
+     "order": "115060",
+     "customer": "C0000223",
+     "region": "R3",
+     "sku": "G8ASPE-8",
+     "qty": 1
+    },
+    {
+     "order": "115059",
+     "customer": "C0000223",
+     "region": "R3",
+     "sku": "G8ASPE-10.5",
+     "qty": 1
+    },
+    {
+     "order": "115058",
+     "customer": "C0000220",
+     "region": "R1",
+     "sku": "G8ASPE-10.5",
+     "qty": 2
+    },
+    {
+     "order": "115057",
+     "customer": "C0000219",
+     "region": "R4",
+     "sku": "G8ASPE-9",
+     "qty": 2
+    },
+    {
+     "order": "115057",
+     "customer": "C0000219",
+     "region": "R4",
+     "sku": "G8ASPE-10.5",
+     "qty": 1
+    },
+    {
+     "order": "115057",
+     "customer": "C0000219",
+     "region": "R4",
+     "sku": "G8ASPE-10.5",
+     "qty": 1
+    },
+    {
+     "order": "115057",
+     "customer": "C0000219",
+     "region": "R4",
+     "sku": "G8ASPE-9.5",
+     "qty": 1
+    },
+    {
+     "order": "115057",
+     "customer": "C0000219",
+     "region": "R4",
+     "sku": "G8ASPE-10",
+     "qty": 1
+    },
+    {
+     "order": "115057",
+     "customer": "C0000219",
+     "region": "R4",
+     "sku": "G8ASPE-10",
+     "qty": 1
+    },
+    {
+     "order": "115056",
+     "customer": "C0000216",
+     "region": "R3",
+     "sku": "G8ASPE-10.5",
+     "qty": 1
+    },
+    {
+     "order": "115055",
+     "customer": "C0000216",
+     "region": "R3",
+     "sku": "G8ASPE-11",
+     "qty": 1
+    },
+    {
+     "order": "115054",
+     "customer": "C0000215",
+     "region": "R1",
+     "sku": "IPGA7X-9",
+     "qty": 2
+    }
+   ]
+  },
+  {
+   "wave": "40833",
+   "release_s": 63420,
+   "lines": [
+    {
+     "order": "115068",
+     "customer": "C0000289",
+     "region": "R3",
+     "sku": "IA7X1P-10.5",
+     "qty": 1
+    },
+    {
+     "order": "115068",
+     "customer": "C0000289",
+     "region": "R3",
+     "sku": "IA7X1P-10",
+     "qty": 2
+    },
+    {
+     "order": "115068",
+     "customer": "C0000289",
+     "region": "R3",
+     "sku": "IA7X1P-9.5",
+     "qty": 2
+    },
+    {
+     "order": "115068",
+     "customer": "C0000289",
+     "region": "R3",
+     "sku": "IA7X1P-9",
+     "qty": 2
+    },
+    {
+     "order": "115068",
+     "customer": "C0000289",
+     "region": "R3",
+     "sku": "IA7X1P-8.5",
+     "qty": 2
+    },
+    {
+     "order": "115068",
+     "customer": "C0000289",
+     "region": "R3",
+     "sku": "IA7X1P-8",
+     "qty": 2
+    },
+    {
+     "order": "115068",
+     "customer": "C0000289",
+     "region": "R3",
+     "sku": "LXJQVG-9",
+     "qty": 2
+    },
+    {
+     "order": "115068",
+     "customer": "C0000289",
+     "region": "R3",
+     "sku": "LXJQVG-8.5",
+     "qty": 2
+    },
+    {
+     "order": "115068",
+     "customer": "C0000289",
+     "region": "R3",
+     "sku": "LXJQVG-8",
+     "qty": 2
+    },
+    {
+     "order": "115068",
+     "customer": "C0000289",
+     "region": "R3",
+     "sku": "LXJQVG-7.5",
+     "qty": 1
+    },
+    {
+     "order": "115068",
+     "customer": "C0000289",
+     "region": "R3",
+     "sku": "LXJQVG-7",
+     "qty": 1
+    },
+    {
+     "order": "115067",
+     "customer": "C0000287",
+     "region": "R2",
+     "sku": "8N10W9-12",
+     "qty": 1
+    },
+    {
+     "order": "115066",
+     "customer": "C0000258",
+     "region": "R2",
+     "sku": "DGAONE-11",
+     "qty": 1
+    },
+    {
+     "order": "115065",
+     "customer": "C0000255",
+     "region": "R1",
+     "sku": "8D9SAW-9.5",
+     "qty": 1
+    },
+    {
+     "order": "115065",
+     "customer": "C0000255",
+     "region": "R1",
+     "sku": "WRRW1W-10",
+     "qty": 1
+    },
+    {
+     "order": "115065",
+     "customer": "C0000255",
+     "region": "R1",
+     "sku": "WRRW1W-7.5",
+     "qty": 1
+    }
+   ]
+  },
+  {
+   "wave": "40834",
+   "release_s": 63420,
+   "lines": [
+    {
+     "order": "115073",
+     "customer": "C0000295",
+     "region": "R1",
+     "sku": "G8ASPE-9.5",
+     "qty": 2
+    },
+    {
+     "order": "115073",
+     "customer": "C0000295",
+     "region": "R1",
+     "sku": "G8ASPE-8.5",
+     "qty": 4
+    },
+    {
+     "order": "115072",
+     "customer": "C0000295",
+     "region": "R1",
+     "sku": "G8ASPE-12",
+     "qty": 3
+    },
+    {
+     "order": "115071",
+     "customer": "C0000295",
+     "region": "R1",
+     "sku": "G8ASPE-9.5",
+     "qty": 1
+    },
+    {
+     "order": "115070",
+     "customer": "C0000295",
+     "region": "R1",
+     "sku": "G8ASPE-11",
+     "qty": 1
+    },
+    {
+     "order": "115069",
+     "customer": "C0000295",
+     "region": "R1",
+     "sku": "G8ASPE-11",
+     "qty": 9
+    },
+    {
+     "order": "115068",
+     "customer": "C0000289",
+     "region": "R3",
+     "sku": "IA7X1P-12",
+     "qty": 1
+    },
+    {
+     "order": "115068",
+     "customer": "C0000289",
+     "region": "R3",
+     "sku": "IA7X1P-11",
+     "qty": 2
+    },
+    {
+     "order": "115068",
+     "customer": "C0000289",
+     "region": "R3",
+     "sku": "IA7X1P-10.5",
+     "qty": 1
+    }
+   ]
+  },
+  {
+   "wave": "40835",
+   "release_s": 63420,
+   "lines": [
+    {
+     "order": "115081",
+     "customer": "C0000299",
+     "region": "R4",
+     "sku": "6M2FJM-9.5",
+     "qty": 1
+    },
+    {
+     "order": "115080",
+     "customer": "C0000298",
+     "region": "R2",
+     "sku": "G8ASPE-8",
+     "qty": 1
+    },
+    {
+     "order": "115079",
+     "customer": "C0000298",
+     "region": "R2",
+     "sku": "G8ASPE-10.5",
+     "qty": 1
+    },
+    {
+     "order": "115078",
+     "customer": "C0000296",
+     "region": "R3",
+     "sku": "32ZKOX-6",
+     "qty": 4
+    },
+    {
+     "order": "115077",
+     "customer": "C0000296",
+     "region": "R3",
+     "sku": "8D9SAW-6",
+     "qty": 2
+    },
+    {
+     "order": "115076",
+     "customer": "C0000296",
+     "region": "R3",
+     "sku": "G8ASPE-11",
+     "qty": 4
+    },
+    {
+     "order": "115075",
+     "customer": "C0000295",
+     "region": "R1",
+     "sku": "2T1DJM-8.5",
+     "qty": 1
+    },
+    {
+     "order": "115075",
+     "customer": "C0000295",
+     "region": "R1",
+     "sku": "KTDZY0-8",
+     "qty": 1
+    },
+    {
+     "order": "115075",
+     "customer": "C0000295",
+     "region": "R1",
+     "sku": "AHR20O-14",
+     "qty": 1
+    },
+    {
+     "order": "115075",
+     "customer": "C0000295",
+     "region": "R1",
+     "sku": "Z8KPP8-14",
+     "qty": 1
+    },
+    {
+     "order": "115075",
+     "customer": "C0000295",
+     "region": "R1",
+     "sku": "AB9XBU-8",
+     "qty": 1
+    },
+    {
+     "order": "115075",
+     "customer": "C0000295",
+     "region": "R1",
+     "sku": "2Z7ZEP-7.5",
+     "qty": 2
+    },
+    {
+     "order": "115074",
+     "customer": "C0000295",
+     "region": "R1",
+     "sku": "G8ASPE-9.5",
+     "qty": 1
+    },
+    {
+     "order": "115073",
+     "customer": "C0000295",
+     "region": "R1",
+     "sku": "G8ASPE-12",
+     "qty": 2
+    },
+    {
+     "order": "115073",
+     "customer": "C0000295",
+     "region": "R1",
+     "sku": "G8ASPE-9.5",
+     "qty": 1
+    }
+   ]
+  },
+  {
+   "wave": "40836",
+   "release_s": 63420,
+   "lines": [
+    {
+     "order": "115090",
+     "customer": "C0000303",
+     "region": "R4",
+     "sku": "32ZKOX-6",
+     "qty": 2
+    },
+    {
+     "order": "115090",
+     "customer": "C0000303",
+     "region": "R4",
+     "sku": "Z8KPP8-8",
+     "qty": 2
+    },
+    {
+     "order": "115089",
+     "customer": "C0000303",
+     "region": "R4",
+     "sku": "NM6C73-12",
+     "qty": 1
+    },
+    {
+     "order": "115088",
+     "customer": "C0000303",
+     "region": "R4",
+     "sku": "6M2FJM-9.5",
+     "qty": 1
+    },
+    {
+     "order": "115087",
+     "customer": "C0000303",
+     "region": "R4",
+     "sku": "6M2FJM-9.5",
+     "qty": 2
+    },
+    {
+     "order": "115086",
+     "customer": "C0000303",
+     "region": "R4",
+     "sku": "6M2FJM-9",
+     "qty": 2
+    },
+    {
+     "order": "115085",
+     "customer": "C0000303",
+     "region": "R4",
+     "sku": "6M2FJM-9",
+     "qty": 1
+    },
+    {
+     "order": "115084",
+     "customer": "C0000303",
+     "region": "R4",
+     "sku": "05W6TK-12",
+     "qty": 1
+    },
+    {
+     "order": "115084",
+     "customer": "C0000303",
+     "region": "R4",
+     "sku": "05W6TK-11",
+     "qty": 4
+    },
+    {
+     "order": "115083",
+     "customer": "C0000302",
+     "region": "R2",
+     "sku": "G8ASPE-8.5",
+     "qty": 2
+    },
+    {
+     "order": "115083",
+     "customer": "C0000302",
+     "region": "R2",
+     "sku": "G8ASPE-8",
+     "qty": 2
+    },
+    {
+     "order": "115082",
+     "customer": "C0000302",
+     "region": "R2",
+     "sku": "G8ASPE-12",
+     "qty": 1
+    },
+    {
+     "order": "115081",
+     "customer": "C0000299",
+     "region": "R4",
+     "sku": "DGAONE-9.5",
+     "qty": 1
+    },
+    {
+     "order": "115081",
+     "customer": "C0000299",
+     "region": "R4",
+     "sku": "G8ASPE-10.5",
+     "qty": 1
+    },
+    {
+     "order": "115081",
+     "customer": "C0000299",
+     "region": "R4",
+     "sku": "G8ASPE-9.5",
+     "qty": 1
+    }
+   ]
+  },
+  {
+   "wave": "40837",
+   "release_s": 63420,
+   "lines": [
+    {
+     "order": "115098",
+     "customer": "C0000325",
+     "region": "R1",
+     "sku": "DGAONE-6",
+     "qty": 1
+    },
+    {
+     "order": "115098",
+     "customer": "C0000325",
+     "region": "R1",
+     "sku": "QTMT7N-7.5",
+     "qty": 1
+    },
+    {
+     "order": "115098",
+     "customer": "C0000325",
+     "region": "R1",
+     "sku": "2LPO6D-8",
+     "qty": 1
+    },
+    {
+     "order": "115097",
+     "customer": "C0000325",
+     "region": "R1",
+     "sku": "LXJQVG-8.5",
+     "qty": 1
+    },
+    {
+     "order": "115096",
+     "customer": "C0000325",
+     "region": "R1",
+     "sku": "DGAONE-7",
+     "qty": 1
+    },
+    {
+     "order": "115095",
+     "customer": "C0000325",
+     "region": "R1",
+     "sku": "DGAONE-9.5",
+     "qty": 1
+    },
+    {
+     "order": "115094",
+     "customer": "C0000325",
+     "region": "R1",
+     "sku": "DGAONE-10",
+     "qty": 1
+    },
+    {
+     "order": "115093",
+     "customer": "C0000325",
+     "region": "R1",
+     "sku": "DGAONE-11",
+     "qty": 1
+    },
+    {
+     "order": "115092",
+     "customer": "C0000320",
+     "region": "R4",
+     "sku": "DGAONE-7",
+     "qty": 1
+    },
+    {
+     "order": "115091",
+     "customer": "C0000303",
+     "region": "R4",
+     "sku": "NM6C73-9.5",
+     "qty": 1
+    },
+    {
+     "order": "115091",
+     "customer": "C0000303",
+     "region": "R4",
+     "sku": "IJBSQT-8",
+     "qty": 1
+    },
+    {
+     "order": "115091",
+     "customer": "C0000303",
+     "region": "R4",
+     "sku": "UHYJ3A-6.5",
+     "qty": 1
+    },
+    {
+     "order": "115091",
+     "customer": "C0000303",
+     "region": "R4",
+     "sku": "0LNUOV-9.5",
+     "qty": 1
+    },
+    {
+     "order": "115091",
+     "customer": "C0000303",
+     "region": "R4",
+     "sku": "0LNUOV-8.5",
+     "qty": 1
+    },
+    {
+     "order": "115091",
+     "customer": "C0000303",
+     "region": "R4",
+     "sku": "WGHG3L-11",
+     "qty": 3
+    },
+    {
+     "order": "115091",
+     "customer": "C0000303",
+     "region": "R4",
+     "sku": "I1KDJ0-10",
+     "qty": 1
+    },
+    {
+     "order": "115091",
+     "customer": "C0000303",
+     "region": "R4",
+     "sku": "WRRW1W-7",
+     "qty": 3
+    },
+    {
+     "order": "115091",
+     "customer": "C0000303",
+     "region": "R4",
+     "sku": "WRRW1W-6.5",
+     "qty": 1
+    },
+    {
+     "order": "115091",
+     "customer": "C0000303",
+     "region": "R4",
+     "sku": "WRRW1W-6",
+     "qty": 1
+    },
+    {
+     "order": "115090",
+     "customer": "C0000303",
+     "region": "R4",
+     "sku": "Z8KPP8-8",
+     "qty": 1
+    }
+   ]
+  },
+  {
+   "wave": "40838",
+   "release_s": 63420,
+   "lines": [
+    {
+     "order": "115098",
+     "customer": "C0000325",
+     "region": "R1",
+     "sku": "SMMRK3-11",
+     "qty": 1
+    },
+    {
+     "order": "115098",
+     "customer": "C0000325",
+     "region": "R1",
+     "sku": "SMMRK3-10",
+     "qty": 2
+    },
+    {
+     "order": "115098",
+     "customer": "C0000325",
+     "region": "R1",
+     "sku": "SMMRK3-9",
+     "qty": 2
+    },
+    {
+     "order": "115098",
+     "customer": "C0000325",
+     "region": "R1",
+     "sku": "8N10W9-11",
+     "qty": 1
+    },
+    {
+     "order": "115098",
+     "customer": "C0000325",
+     "region": "R1",
+     "sku": "8N10W9-10.5",
+     "qty": 1
+    },
+    {
+     "order": "115098",
+     "customer": "C0000325",
+     "region": "R1",
+     "sku": "8N10W9-10",
+     "qty": 1
+    },
+    {
+     "order": "115098",
+     "customer": "C0000325",
+     "region": "R1",
+     "sku": "8N10W9-9.5",
+     "qty": 1
+    },
+    {
+     "order": "115098",
+     "customer": "C0000325",
+     "region": "R1",
+     "sku": "J3FI7N-12",
+     "qty": 1
+    },
+    {
+     "order": "115098",
+     "customer": "C0000325",
+     "region": "R1",
+     "sku": "J3FI7N-9.5",
+     "qty": 1
+    },
+    {
+     "order": "115098",
+     "customer": "C0000325",
+     "region": "R1",
+     "sku": "J3FI7N-8",
+     "qty": 1
+    },
+    {
+     "order": "115098",
+     "customer": "C0000325",
+     "region": "R1",
+     "sku": "W25EZN-9",
+     "qty": 1
+    },
+    {
+     "order": "115098",
+     "customer": "C0000325",
+     "region": "R1",
+     "sku": "8D9SAW-10.5",
+     "qty": 1
+    },
+    {
+     "order": "115098",
+     "customer": "C0000325",
+     "region": "R1",
+     "sku": "Q164T6-11",
+     "qty": 1
+    },
+    {
+     "order": "115098",
+     "customer": "C0000325",
+     "region": "R1",
+     "sku": "Q164T6-9",
+     "qty": 1
+    },
+    {
+     "order": "115098",
+     "customer": "C0000325",
+     "region": "R1",
+     "sku": "WGHG3L-10.5",
+     "qty": 1
+    },
+    {
+     "order": "115098",
+     "customer": "C0000325",
+     "region": "R1",
+     "sku": "WGHG3L-9.5",
+     "qty": 1
+    },
+    {
+     "order": "115098",
+     "customer": "C0000325",
+     "region": "R1",
+     "sku": "WGHG3L-9",
+     "qty": 1
+    },
+    {
+     "order": "115098",
+     "customer": "C0000325",
+     "region": "R1",
+     "sku": "WRRW1W-11",
+     "qty": 1
+    },
+    {
+     "order": "115098",
+     "customer": "C0000325",
+     "region": "R1",
+     "sku": "QTMT7N-10",
+     "qty": 1
+    },
+    {
+     "order": "115098",
+     "customer": "C0000325",
+     "region": "R1",
+     "sku": "2LPO6D-10.5",
+     "qty": 1
+    },
+    {
+     "order": "115098",
+     "customer": "C0000325",
+     "region": "R1",
+     "sku": "2LPO6D-10",
+     "qty": 1
+    },
+    {
+     "order": "115098",
+     "customer": "C0000325",
+     "region": "R1",
+     "sku": "2Z7ZEP-9",
+     "qty": 1
+    }
+   ]
+  },
+  {
+   "wave": "40839",
+   "release_s": 63420,
+   "lines": [
+    {
+     "order": "115106",
+     "customer": "C0000347",
+     "region": "R3",
+     "sku": "I1X92B-6.5",
+     "qty": 6
+    },
+    {
+     "order": "115105",
+     "customer": "C0000339",
+     "region": "R3",
+     "sku": "05W6TK-8",
+     "qty": 1
+    },
+    {
+     "order": "115104",
+     "customer": "C0000339",
+     "region": "R3",
+     "sku": "05W6TK-6",
+     "qty": 1
+    },
+    {
+     "order": "115103",
+     "customer": "C0000339",
+     "region": "R3",
+     "sku": "05W6TK-6.5",
+     "qty": 1
+    },
+    {
+     "order": "115102",
+     "customer": "C0000338",
+     "region": "R1",
+     "sku": "G8ASPE-9.5",
+     "qty": 1
+    },
+    {
+     "order": "115101",
+     "customer": "C0000337",
+     "region": "R2",
+     "sku": "Z8KPP8-8",
+     "qty": 1
+    },
+    {
+     "order": "115100",
+     "customer": "C0000326",
+     "region": "R3",
+     "sku": "WRRW1W-13",
+     "qty": 2
+    },
+    {
+     "order": "115100",
+     "customer": "C0000326",
+     "region": "R3",
+     "sku": "WRRW1W-11",
+     "qty": 2
+    },
+    {
+     "order": "115100",
+     "customer": "C0000326",
+     "region": "R3",
+     "sku": "WRRW1W-10.5",
+     "qty": 2
+    },
+    {
+     "order": "115100",
+     "customer": "C0000326",
+     "region": "R3",
+     "sku": "WRRW1W-10",
+     "qty": 1
+    },
+    {
+     "order": "115100",
+     "customer": "C0000326",
+     "region": "R3",
+     "sku": "WRRW1W-9.5",
+     "qty": 2
+    },
+    {
+     "order": "115100",
+     "customer": "C0000326",
+     "region": "R3",
+     "sku": "WRRW1W-9",
+     "qty": 3
+    },
+    {
+     "order": "115100",
+     "customer": "C0000326",
+     "region": "R3",
+     "sku": "WRRW1W-5",
+     "qty": 1
+    },
+    {
+     "order": "115099",
+     "customer": "C0000326",
+     "region": "R3",
+     "sku": "IYXV3Z-9",
+     "qty": 1
+    }
+   ]
+  },
+  {
+   "wave": "40840",
+   "release_s": 63420,
+   "lines": [
+    {
+     "order": "115106",
+     "customer": "C0000347",
+     "region": "R3",
+     "sku": "I1X92B-9",
+     "qty": 6
+    },
+    {
+     "order": "115106",
+     "customer": "C0000347",
+     "region": "R3",
+     "sku": "I1X92B-7",
+     "qty": 18
+    }
+   ]
+  },
+  {
+   "wave": "40841",
+   "release_s": 63420,
+   "lines": [
+    {
+     "order": "115106",
+     "customer": "C0000347",
+     "region": "R3",
+     "sku": "I1X92B-9",
+     "qty": 24
+    }
+   ]
+  },
+  {
+   "wave": "40842",
+   "release_s": 63420,
+   "lines": [
+    {
+     "order": "115106",
+     "customer": "C0000347",
+     "region": "R3",
+     "sku": "I1X92B-9.5",
+     "qty": 18
+    },
+    {
+     "order": "115106",
+     "customer": "C0000347",
+     "region": "R3",
+     "sku": "I1X92B-9",
+     "qty": 6
+    }
+   ]
+  },
+  {
+   "wave": "40843",
+   "release_s": 63420,
+   "lines": [
+    {
+     "order": "115106",
+     "customer": "C0000347",
+     "region": "R3",
+     "sku": "I1X92B-10",
+     "qty": 6
+    },
+    {
+     "order": "115106",
+     "customer": "C0000347",
+     "region": "R3",
+     "sku": "I1X92B-9.5",
+     "qty": 18
+    }
+   ]
+  },
+  {
+   "wave": "40844",
+   "release_s": 63420,
+   "lines": [
+    {
+     "order": "115106",
+     "customer": "C0000347",
+     "region": "R3",
+     "sku": "I1X92B-10",
+     "qty": 24
+    }
+   ]
+  },
+  {
+   "wave": "40845",
+   "release_s": 63420,
+   "lines": [
+    {
+     "order": "115106",
+     "customer": "C0000347",
+     "region": "R3",
+     "sku": "I1X92B-10.5",
+     "qty": 24
+    }
+   ]
+  },
+  {
+   "wave": "40846",
+   "release_s": 63420,
+   "lines": [
+    {
+     "order": "115106",
+     "customer": "C0000347",
+     "region": "R3",
+     "sku": "I1X92B-14",
+     "qty": 12
+    },
+    {
+     "order": "115106",
+     "customer": "C0000347",
+     "region": "R3",
+     "sku": "I1X92B-10.5",
+     "qty": 12
+    }
+   ]
+  },
+  {
+   "wave": "40847",
+   "release_s": 63420,
+   "lines": [
+    {
+     "order": "115121",
+     "customer": "C0000415",
+     "region": "R3",
+     "sku": "G8ASPE-8.5",
+     "qty": 1
+    },
+    {
+     "order": "115120",
+     "customer": "C0000415",
+     "region": "R3",
+     "sku": "G8ASPE-10.5",
+     "qty": 2
+    },
+    {
+     "order": "115119",
+     "customer": "C0000414",
+     "region": "R1",
+     "sku": "DGAONE-11",
+     "qty": 1
+    },
+    {
+     "order": "115118",
+     "customer": "C0000411",
+     "region": "R4",
+     "sku": "DGAONE-12",
+     "qty": 1
+    },
+    {
+     "order": "115117",
+     "customer": "C0000404",
+     "region": "R2",
+     "sku": "DGAONE-10",
+     "qty": 1
+    },
+    {
+     "order": "115116",
+     "customer": "C0000387",
+     "region": "R3",
+     "sku": "DGAONE-9.5",
+     "qty": 1
+    },
+    {
+     "order": "115115",
+     "customer": "C0000381",
+     "region": "R4",
+     "sku": "37VA62-13",
+     "qty": 1
+    },
+    {
+     "order": "115115",
+     "customer": "C0000381",
+     "region": "R4",
+     "sku": "37VA62-10",
+     "qty": 1
+    },
+    {
+     "order": "115115",
+     "customer": "C0000381",
+     "region": "R4",
+     "sku": "37VA62-9.5",
+     "qty": 1
+    },
+    {
+     "order": "115114",
+     "customer": "C0000381",
+     "region": "R4",
+     "sku": "800OVF-10.5",
+     "qty": 1
+    },
+    {
+     "order": "115114",
+     "customer": "C0000381",
+     "region": "R4",
+     "sku": "800OVF-10",
+     "qty": 1
+    },
+    {
+     "order": "115113",
+     "customer": "C0000375",
+     "region": "R2",
+     "sku": "G8ASPE-11",
+     "qty": 1
+    },
+    {
+     "order": "115112",
+     "customer": "C0000374",
+     "region": "R4",
+     "sku": "DGAONE-10",
+     "qty": 2
+    },
+    {
+     "order": "115111",
+     "customer": "C0000370",
+     "region": "R3",
+     "sku": "M8W7TS-9",
+     "qty": 1
+    },
+    {
+     "order": "115110",
+     "customer": "C0000370",
+     "region": "R3",
+     "sku": "G8ASPE-10.5",
+     "qty": 1
+    },
+    {
+     "order": "115109",
+     "customer": "C0000359",
+     "region": "R1",
+     "sku": "G8ASPE-9.5",
+     "qty": 1
+    },
+    {
+     "order": "115108",
+     "customer": "C0000354",
+     "region": "R2",
+     "sku": "800OVF-11",
+     "qty": 1
+    },
+    {
+     "order": "115108",
+     "customer": "C0000354",
+     "region": "R2",
+     "sku": "800OVF-10.5",
+     "qty": 1
+    },
+    {
+     "order": "115108",
+     "customer": "C0000354",
+     "region": "R2",
+     "sku": "800OVF-10",
+     "qty": 1
+    },
+    {
+     "order": "115107",
+     "customer": "C0000354",
+     "region": "R2",
+     "sku": "LXJQVG-11",
+     "qty": 2
+    },
+    {
+     "order": "115107",
+     "customer": "C0000354",
+     "region": "R2",
+     "sku": "LXJQVG-10",
+     "qty": 1
+    }
+   ]
+  },
+  {
+   "wave": "40848",
+   "release_s": 63420,
+   "lines": [
+    {
+     "order": "115128",
+     "customer": "C0000454",
+     "region": "R1",
+     "sku": "I2B1FH-8",
+     "qty": 7
+    },
+    {
+     "order": "115128",
+     "customer": "C0000454",
+     "region": "R1",
+     "sku": "I2B1FH-7",
+     "qty": 10
+    },
+    {
+     "order": "115127",
+     "customer": "C0000453",
+     "region": "R4",
+     "sku": "V6K6JX-11",
+     "qty": 2
+    },
+    {
+     "order": "115126",
+     "customer": "C0000439",
+     "region": "R4",
+     "sku": "NM6C73-12",
+     "qty": 1
+    },
+    {
+     "order": "115125",
+     "customer": "C0000439",
+     "region": "R4",
+     "sku": "ZGYCSW-9.5",
+     "qty": 1
+    },
+    {
+     "order": "115124",
+     "customer": "C0000439",
+     "region": "R4",
+     "sku": "DGAONE-12",
+     "qty": 1
+    },
+    {
+     "order": "115123",
+     "customer": "C0000439",
+     "region": "R4",
+     "sku": "G8ASPE-11",
+     "qty": 1
+    },
+    {
+     "order": "115122",
+     "customer": "C0000439",
+     "region": "R4",
+     "sku": "IJBSQT-13",
+     "qty": 1
+    }
+   ]
+  },
+  {
+   "wave": "40849",
+   "release_s": 63420,
+   "lines": [
+    {
+     "order": "115128",
+     "customer": "C0000454",
+     "region": "R1",
+     "sku": "I2B1FH-11",
+     "qty": 7
+    },
+    {
+     "order": "115128",
+     "customer": "C0000454",
+     "region": "R1",
+     "sku": "I2B1FH-9",
+     "qty": 17
+    }
+   ]
+  },
+  {
+   "wave": "40850",
+   "release_s": 63420,
+   "lines": [
+    {
+     "order": "115134",
+     "customer": "C0000482",
+     "region": "R1",
+     "sku": "UNPPMJ-7",
+     "qty": 1
+    },
+    {
+     "order": "115134",
+     "customer": "C0000482",
+     "region": "R1",
+     "sku": "UNPPMJ-6",
+     "qty": 1
+    },
+    {
+     "order": "115133",
+     "customer": "C0000472",
+     "region": "R4",
+     "sku": "05W6TK-11.5",
+     "qty": 4
+    },
+    {
+     "order": "115133",
+     "customer": "C0000472",
+     "region": "R4",
+     "sku": "05W6TK-9.5",
+     "qty": 2
+    },
+    {
+     "order": "115133",
+     "customer": "C0000472",
+     "region": "R4",
+     "sku": "05W6TK-8.5",
+     "qty": 1
+    },
+    {
+     "order": "115133",
+     "customer": "C0000472",
+     "region": "R4",
+     "sku": "05W6TK-7.5",
+     "qty": 1
+    },
+    {
+     "order": "115133",
+     "customer": "C0000472",
+     "region": "R4",
+     "sku": "05W6TK-9.5",
+     "qty": 1
+    },
+    {
+     "order": "115132",
+     "customer": "C0000462",
+     "region": "R3",
+     "sku": "6M2FJM-9.5",
+     "qty": 2
+    },
+    {
+     "order": "115131",
+     "customer": "C0000459",
+     "region": "R2",
+     "sku": "DGAONE-12",
+     "qty": 1
+    },
+    {
+     "order": "115131",
+     "customer": "C0000459",
+     "region": "R2",
+     "sku": "DGAONE-10.5",
+     "qty": 1
+    },
+    {
+     "order": "115130",
+     "customer": "C0000458",
+     "region": "R4",
+     "sku": "NM6C73-12",
+     "qty": 1
+    },
+    {
+     "order": "115129",
+     "customer": "C0000458",
+     "region": "R4",
+     "sku": "LXJQVG-11",
+     "qty": 1
+    },
+    {
+     "order": "115128",
+     "customer": "C0000454",
+     "region": "R1",
+     "sku": "I2B1FH-11",
+     "qty": 7
+    }
+   ]
+  },
+  {
+   "wave": "40851",
+   "release_s": 63420,
+   "lines": [
+    {
+     "order": "115134",
+     "customer": "C0000482",
+     "region": "R1",
+     "sku": "8N10W9-9.5",
+     "qty": 1
+    },
+    {
+     "order": "115134",
+     "customer": "C0000482",
+     "region": "R1",
+     "sku": "8N10W9-9",
+     "qty": 1
+    },
+    {
+     "order": "115134",
+     "customer": "C0000482",
+     "region": "R1",
+     "sku": "KTDZY0-9",
+     "qty": 2
+    },
+    {
+     "order": "115134",
+     "customer": "C0000482",
+     "region": "R1",
+     "sku": "I1KDJ0-10",
+     "qty": 4
+    },
+    {
+     "order": "115134",
+     "customer": "C0000482",
+     "region": "R1",
+     "sku": "I1KDJ0-9.5",
+     "qty": 4
+    },
+    {
+     "order": "115134",
+     "customer": "C0000482",
+     "region": "R1",
+     "sku": "I1KDJ0-9",
+     "qty": 3
+    },
+    {
+     "order": "115134",
+     "customer": "C0000482",
+     "region": "R1",
+     "sku": "I1KDJ0-8",
+     "qty": 2
+    },
+    {
+     "order": "115134",
+     "customer": "C0000482",
+     "region": "R1",
+     "sku": "WRRW1W-10",
+     "qty": 2
+    },
+    {
+     "order": "115134",
+     "customer": "C0000482",
+     "region": "R1",
+     "sku": "WRRW1W-9",
+     "qty": 1
+    },
+    {
+     "order": "115134",
+     "customer": "C0000482",
+     "region": "R1",
+     "sku": "WRRW1W-8",
+     "qty": 1
+    },
+    {
+     "order": "115134",
+     "customer": "C0000482",
+     "region": "R1",
+     "sku": "TNAHD4-10",
+     "qty": 1
+    },
+    {
+     "order": "115134",
+     "customer": "C0000482",
+     "region": "R1",
+     "sku": "TNAHD4-9.5",
+     "qty": 1
+    },
+    {
+     "order": "115134",
+     "customer": "C0000482",
+     "region": "R1",
+     "sku": "TNAHD4-7",
+     "qty": 1
+    }
+   ]
+  },
+  {
+   "wave": "40852",
+   "release_s": 63420,
+   "lines": [
+    {
+     "order": "115138",
+     "customer": "C0000516",
+     "region": "R4",
+     "sku": "O9YFO8-8",
+     "qty": 1
+    },
+    {
+     "order": "115138",
+     "customer": "C0000516",
+     "region": "R4",
+     "sku": "O9YFO8-6",
+     "qty": 1
+    },
+    {
+     "order": "115138",
+     "customer": "C0000516",
+     "region": "R4",
+     "sku": "O9YFO8-4",
+     "qty": 1
+    },
+    {
+     "order": "115136",
+     "customer": "C0000489",
+     "region": "R1",
+     "sku": "05W6TK-11",
+     "qty": 4
+    },
+    {
+     "order": "115135",
+     "customer": "C0000487",
+     "region": "R4",
+     "sku": "LXJQVG-13",
+     "qty": 1
+    },
+    {
+     "order": "115135",
+     "customer": "C0000487",
+     "region": "R4",
+     "sku": "6M2FJM-13",
+     "qty": 1
+    },
+    {
+     "order": "115135",
+     "customer": "C0000487",
+     "region": "R4",
+     "sku": "6M2FJM-9.5",
+     "qty": 3
+    },
+    {
+     "order": "115134",
+     "customer": "C0000482",
+     "region": "R1",
+     "sku": "8N10W9-12",
+     "qty": 2
+    },
+    {
+     "order": "115134",
+     "customer": "C0000482",
+     "region": "R1",
+     "sku": "8N10W9-11",
+     "qty": 3
+    },
+    {
+     "order": "115134",
+     "customer": "C0000482",
+     "region": "R1",
+     "sku": "TBCCF7-12",
+     "qty": 1
+    },
+    {
+     "order": "115134",
+     "customer": "C0000482",
+     "region": "R1",
+     "sku": "KTDZY0-12",
+     "qty": 1
+    },
+    {
+     "order": "115134",
+     "customer": "C0000482",
+     "region": "R1",
+     "sku": "WRRW1W-11",
+     "qty": 2
+    },
+    {
+     "order": "115134",
+     "customer": "C0000482",
+     "region": "R1",
+     "sku": "WRRW1W-10",
+     "qty": 1
+    },
+    {
+     "order": "115134",
+     "customer": "C0000482",
+     "region": "R1",
+     "sku": "TNAHD4-11",
+     "qty": 1
+    },
+    {
+     "order": "115134",
+     "customer": "C0000482",
+     "region": "R1",
+     "sku": "TNAHD4-10.5",
+     "qty": 1
+    }
+   ]
+  },
+  {
+   "wave": "40853",
+   "release_s": 63420,
+   "lines": [
+    {
+     "order": "115138",
+     "customer": "C0000516",
+     "region": "R4",
+     "sku": "CD1NU9-10",
+     "qty": 3
+    },
+    {
+     "order": "115138",
+     "customer": "C0000516",
+     "region": "R4",
+     "sku": "CD1NU9-9.5",
+     "qty": 2
+    },
+    {
+     "order": "115138",
+     "customer": "C0000516",
+     "region": "R4",
+     "sku": "CD1NU9-9",
+     "qty": 2
+    },
+    {
+     "order": "115138",
+     "customer": "C0000516",
+     "region": "R4",
+     "sku": "CD1NU9-8.5",
+     "qty": 2
+    },
+    {
+     "order": "115138",
+     "customer": "C0000516",
+     "region": "R4",
+     "sku": "CD1NU9-8",
+     "qty": 1
+    },
+    {
+     "order": "115138",
+     "customer": "C0000516",
+     "region": "R4",
+     "sku": "8D9SAW-9",
+     "qty": 1
+    },
+    {
+     "order": "115138",
+     "customer": "C0000516",
+     "region": "R4",
+     "sku": "8D9SAW-8.5",
+     "qty": 1
+    },
+    {
+     "order": "115138",
+     "customer": "C0000516",
+     "region": "R4",
+     "sku": "D05ZS7-10",
+     "qty": 4
+    },
+    {
+     "order": "115138",
+     "customer": "C0000516",
+     "region": "R4",
+     "sku": "D05ZS7-9",
+     "qty": 4
+    },
+    {
+     "order": "115138",
+     "customer": "C0000516",
+     "region": "R4",
+     "sku": "D05ZS7-8",
+     "qty": 1
+    },
+    {
+     "order": "115138",
+     "customer": "C0000516",
+     "region": "R4",
+     "sku": "O9YFO8-9",
+     "qty": 2
+    },
+    {
+     "order": "115138",
+     "customer": "C0000516",
+     "region": "R4",
+     "sku": "O9YFO8-8.5",
+     "qty": 1
+    }
+   ]
+  },
+  {
+   "wave": "40854",
+   "release_s": 63420,
+   "lines": [
+    {
+     "order": "115143",
+     "customer": "C0000521",
+     "region": "R4",
+     "sku": "V7JUQL-9",
+     "qty": 1
+    },
+    {
+     "order": "115142",
+     "customer": "C0000519",
+     "region": "R3",
+     "sku": "LXJQVG-11",
+     "qty": 1
+    },
+    {
+     "order": "115141",
+     "customer": "C0000518",
+     "region": "R1",
+     "sku": "0LNUOV-12",
+     "qty": 1
+    },
+    {
+     "order": "115140",
+     "customer": "C0000517",
+     "region": "R2",
+     "sku": "800OVF-10",
+     "qty": 1
+    },
+    {
+     "order": "115139",
+     "customer": "C0000517",
+     "region": "R2",
+     "sku": "37VA62-7",
+     "qty": 1
+    },
+    {
+     "order": "115138",
+     "customer": "C0000516",
+     "region": "R4",
+     "sku": "CD1NU9-12",
+     "qty": 1
+    },
+    {
+     "order": "115138",
+     "customer": "C0000516",
+     "region": "R4",
+     "sku": "CD1NU9-11",
+     "qty": 2
+    },
+    {
+     "order": "115138",
+     "customer": "C0000516",
+     "region": "R4",
+     "sku": "CD1NU9-10.5",
+     "qty": 3
+    },
+    {
+     "order": "115138",
+     "customer": "C0000516",
+     "region": "R4",
+     "sku": "QVFB0Q-12",
+     "qty": 1
+    },
+    {
+     "order": "115138",
+     "customer": "C0000516",
+     "region": "R4",
+     "sku": "QVFB0Q-10",
+     "qty": 1
+    },
+    {
+     "order": "115138",
+     "customer": "C0000516",
+     "region": "R4",
+     "sku": "8D9SAW-10.5",
+     "qty": 2
+    },
+    {
+     "order": "115138",
+     "customer": "C0000516",
+     "region": "R4",
+     "sku": "8D9SAW-10",
+     "qty": 3
+    },
+    {
+     "order": "115138",
+     "customer": "C0000516",
+     "region": "R4",
+     "sku": "D05ZS7-12",
+     "qty": 1
+    },
+    {
+     "order": "115138",
+     "customer": "C0000516",
+     "region": "R4",
+     "sku": "D05ZS7-11",
+     "qty": 1
+    },
+    {
+     "order": "115138",
+     "customer": "C0000516",
+     "region": "R4",
+     "sku": "D05ZS7-10.5",
+     "qty": 2
+    },
+    {
+     "order": "115138",
+     "customer": "C0000516",
+     "region": "R4",
+     "sku": "D05ZS7-10",
+     "qty": 2
+    }
+   ]
+  },
+  {
+   "wave": "40855",
+   "release_s": 63420,
+   "lines": [
+    {
+     "order": "115146",
+     "customer": "C0000531",
+     "region": "R3",
+     "sku": "05W6TK-13",
+     "qty": 1
+    },
+    {
+     "order": "115145",
+     "customer": "C0000526",
+     "region": "R1",
+     "sku": "ZGYCSW-11",
+     "qty": 2
+    },
+    {
+     "order": "115145",
+     "customer": "C0000526",
+     "region": "R1",
+     "sku": "6M2FJM-9.5",
+     "qty": 1
+    },
+    {
+     "order": "115144",
+     "customer": "C0000521",
+     "region": "R4",
+     "sku": "7BU1V7-11",
+     "qty": 1
+    },
+    {
+     "order": "115144",
+     "customer": "C0000521",
+     "region": "R4",
+     "sku": "WH1BJI-8.5",
+     "qty": 1
+    },
+    {
+     "order": "115144",
+     "customer": "C0000521",
+     "region": "R4",
+     "sku": "WH1BJI-8",
+     "qty": 1
+    },
+    {
+     "order": "115144",
+     "customer": "C0000521",
+     "region": "R4",
+     "sku": "SMMRK3-8",
+     "qty": 1
+    },
+    {
+     "order": "115144",
+     "customer": "C0000521",
+     "region": "R4",
+     "sku": "8N10W9-9.5",
+     "qty": 1
+    },
+    {
+     "order": "115144",
+     "customer": "C0000521",
+     "region": "R4",
+     "sku": "U95NWB-11",
+     "qty": 1
+    },
+    {
+     "order": "115144",
+     "customer": "C0000521",
+     "region": "R4",
+     "sku": "CD1NU9-5",
+     "qty": 1
+    },
+    {
+     "order": "115144",
+     "customer": "C0000521",
+     "region": "R4",
+     "sku": "8D9SAW-8.5",
+     "qty": 1
+    },
+    {
+     "order": "115144",
+     "customer": "C0000521",
+     "region": "R4",
+     "sku": "I1KDJ0-9.5",
+     "qty": 2
+    },
+    {
+     "order": "115144",
+     "customer": "C0000521",
+     "region": "R4",
+     "sku": "I1KDJ0-7.5",
+     "qty": 1
+    },
+    {
+     "order": "115144",
+     "customer": "C0000521",
+     "region": "R4",
+     "sku": "JEGRCL-13",
+     "qty": 1
+    },
+    {
+     "order": "115144",
+     "customer": "C0000521",
+     "region": "R4",
+     "sku": "AB9XBU-10",
+     "qty": 1
+    },
+    {
+     "order": "115144",
+     "customer": "C0000521",
+     "region": "R4",
+     "sku": "AB9XBU-9",
+     "qty": 1
+    },
+    {
+     "order": "115144",
+     "customer": "C0000521",
+     "region": "R4",
+     "sku": "AB9XBU-8.5",
+     "qty": 1
+    },
+    {
+     "order": "115144",
+     "customer": "C0000521",
+     "region": "R4",
+     "sku": "ZX6MUV-10",
+     "qty": 1
+    },
+    {
+     "order": "115144",
+     "customer": "C0000521",
+     "region": "R4",
+     "sku": "ZX6MUV-7.5",
+     "qty": 1
+    },
+    {
+     "order": "115144",
+     "customer": "C0000521",
+     "region": "R4",
+     "sku": "2Z7ZEP-8",
+     "qty": 1
+    },
+    {
+     "order": "115144",
+     "customer": "C0000521",
+     "region": "R4",
+     "sku": "2Z7ZEP-7.5",
+     "qty": 1
+    },
+    {
+     "order": "115144",
+     "customer": "C0000521",
+     "region": "R4",
+     "sku": "X31OGS-10",
+     "qty": 1
+    }
+   ]
+  },
+  {
+   "wave": "40856",
+   "release_s": 63420,
+   "lines": [
+    {
+     "order": "115156",
+     "customer": "C0000559",
+     "region": "R3",
+     "sku": "05W6TK-8",
+     "qty": 1
+    },
+    {
+     "order": "115155",
+     "customer": "C0000559",
+     "region": "R3",
+     "sku": "05W6TK-11.5",
+     "qty": 1
+    },
+    {
+     "order": "115154",
+     "customer": "C0000559",
+     "region": "R3",
+     "sku": "05W6TK-9.5",
+     "qty": 1
+    },
+    {
+     "order": "115153",
+     "customer": "C0000553",
+     "region": "R1",
+     "sku": "ZGYCSW-11",
+     "qty": 1
+    },
+    {
+     "order": "115152",
+     "customer": "C0000552",
+     "region": "R3",
+     "sku": "G8ASPE-8",
+     "qty": 2
+    },
+    {
+     "order": "115151",
+     "customer": "C0000552",
+     "region": "R3",
+     "sku": "DGAONE-12",
+     "qty": 2
+    },
+    {
+     "order": "115151",
+     "customer": "C0000552",
+     "region": "R3",
+     "sku": "DGAONE-7",
+     "qty": 1
+    },
+    {
+     "order": "115150",
+     "customer": "C0000552",
+     "region": "R3",
+     "sku": "G8ASPE-10.5",
+     "qty": 2
+    },
+    {
+     "order": "115150",
+     "customer": "C0000552",
+     "region": "R3",
+     "sku": "6M2FJM-9.5",
+     "qty": 2
+    },
+    {
+     "order": "115149",
+     "customer": "C0000552",
+     "region": "R3",
+     "sku": "G8ASPE-10.5",
+     "qty": 2
+    },
+    {
+     "order": "115149",
+     "customer": "C0000552",
+     "region": "R3",
+     "sku": "G8ASPE-10",
+     "qty": 2
+    },
+    {
+     "order": "115148",
+     "customer": "C0000552",
+     "region": "R3",
+     "sku": "G8ASPE-11",
+     "qty": 1
+    },
+    {
+     "order": "115147",
+     "customer": "C0000543",
+     "region": "R2",
+     "sku": "8N10W9-14",
+     "qty": 1
+    },
+    {
+     "order": "115147",
+     "customer": "C0000543",
+     "region": "R2",
+     "sku": "8N10W9-12",
+     "qty": 1
+    },
+    {
+     "order": "115147",
+     "customer": "C0000543",
+     "region": "R2",
+     "sku": "8N10W9-11",
+     "qty": 2
+    },
+    {
+     "order": "115147",
+     "customer": "C0000543",
+     "region": "R2",
+     "sku": "RAUDQ6-9",
+     "qty": 1
+    },
+    {
+     "order": "115147",
+     "customer": "C0000543",
+     "region": "R2",
+     "sku": "ZRCYSH-10.5",
+     "qty": 1
+    }
+   ]
+  },
+  {
+   "wave": "40857",
+   "release_s": 63420,
+   "lines": [
+    {
+     "order": "115168",
+     "customer": "C0000625",
+     "region": "R4",
+     "sku": "TOENMT-10",
+     "qty": 2
+    },
+    {
+     "order": "115168",
+     "customer": "C0000625",
+     "region": "R4",
+     "sku": "TOENMT-10",
+     "qty": 3
+    },
+    {
+     "order": "115168",
+     "customer": "C0000625",
+     "region": "R4",
+     "sku": "TOENMT-10",
+     "qty": 2
+    },
+    {
+     "order": "115167",
+     "customer": "C0000623",
+     "region": "R3",
+     "sku": "G8ASPE-10",
+     "qty": 4
+    },
+    {
+     "order": "115166",
+     "customer": "C0000621",
+     "region": "R3",
+     "sku": "5MNTT7-12",
+     "qty": 1
+    },
+    {
+     "order": "115166",
+     "customer": "C0000621",
+     "region": "R3",
+     "sku": "5MNTT7-11",
+     "qty": 1
+    },
+    {
+     "order": "115166",
+     "customer": "C0000621",
+     "region": "R3",
+     "sku": "800OVF-9",
+     "qty": 1
+    },
+    {
+     "order": "115165",
+     "customer": "C0000621",
+     "region": "R3",
+     "sku": "5MNTT7-11",
+     "qty": 2
+    },
+    {
+     "order": "115164",
+     "customer": "C0000621",
+     "region": "R3",
+     "sku": "G8ASPE-12",
+     "qty": 1
+    },
+    {
+     "order": "115163",
+     "customer": "C0000599",
+     "region": "R3",
+     "sku": "8N10W9-13",
+     "qty": 1
+    },
+    {
+     "order": "115162",
+     "customer": "C0000598",
+     "region": "R1",
+     "sku": "DGAONE-12",
+     "qty": 1
+    },
+    {
+     "order": "115161",
+     "customer": "C0000598",
+     "region": "R1",
+     "sku": "G8ASPE-9.5",
+     "qty": 1
+    },
+    {
+     "order": "115160",
+     "customer": "C0000598",
+     "region": "R1",
+     "sku": "DGAONE-9",
+     "qty": 1
+    },
+    {
+     "order": "115158",
+     "customer": "C0000582",
+     "region": "R4",
+     "sku": "TBCCF7-9.5",
+     "qty": 1
+    },
+    {
+     "order": "115158",
+     "customer": "C0000582",
+     "region": "R4",
+     "sku": "TBCCF7-9",
+     "qty": 1
+    },
+    {
+     "order": "115157",
+     "customer": "C0000568",
+     "region": "R4",
+     "sku": "G8ASPE-10.5",
+     "qty": 1
+    }
+   ]
+  },
+  {
+   "wave": "40858",
+   "release_s": 63420,
+   "lines": [
+    {
+     "order": "115180",
+     "customer": "C0000643",
+     "region": "R1",
+     "sku": "8N10W9-9",
+     "qty": 2
+    },
+    {
+     "order": "115180",
+     "customer": "C0000643",
+     "region": "R1",
+     "sku": "8N10W9-8",
+     "qty": 1
+    },
+    {
+     "order": "115180",
+     "customer": "C0000643",
+     "region": "R1",
+     "sku": "TBCCF7-9.5",
+     "qty": 1
+    },
+    {
+     "order": "115180",
+     "customer": "C0000643",
+     "region": "R1",
+     "sku": "J3FI7N-9.5",
+     "qty": 1
+    },
+    {
+     "order": "115180",
+     "customer": "C0000643",
+     "region": "R1",
+     "sku": "W25EZN-9",
+     "qty": 1
+    },
+    {
+     "order": "115180",
+     "customer": "C0000643",
+     "region": "R1",
+     "sku": "Q50W5L-8.5",
+     "qty": 1
+    },
+    {
+     "order": "115179",
+     "customer": "C0000640",
+     "region": "R3",
+     "sku": "6M2FJM-9.5",
+     "qty": 1
+    },
+    {
+     "order": "115178",
+     "customer": "C0000639",
+     "region": "R2",
+     "sku": "7BU1V7-10",
+     "qty": 1
+    },
+    {
+     "order": "115178",
+     "customer": "C0000639",
+     "region": "R2",
+     "sku": "SMMRK3-8",
+     "qty": 1
+    },
+    {
+     "order": "115178",
+     "customer": "C0000639",
+     "region": "R2",
+     "sku": "8N10W9-13",
+     "qty": 1
+    },
+    {
+     "order": "115178",
+     "customer": "C0000639",
+     "region": "R2",
+     "sku": "8N10W9-9",
+     "qty": 1
+    },
+    {
+     "order": "115178",
+     "customer": "C0000639",
+     "region": "R2",
+     "sku": "AKP0A7-9.5",
+     "qty": 1
+    },
+    {
+     "order": "115178",
+     "customer": "C0000639",
+     "region": "R2",
+     "sku": "UNPPMJ-8",
+     "qty": 1
+    },
+    {
+     "order": "115177",
+     "customer": "C0000639",
+     "region": "R2",
+     "sku": "AKP0A7-13",
+     "qty": 1
+    },
+    {
+     "order": "115176",
+     "customer": "C0000639",
+     "region": "R2",
+     "sku": "UNPPMJ-7",
+     "qty": 1
+    },
+    {
+     "order": "115175",
+     "customer": "C0000639",
+     "region": "R2",
+     "sku": "G8ASPE-8.5",
+     "qty": 1
+    },
+    {
+     "order": "115174",
+     "customer": "C0000639",
+     "region": "R2",
+     "sku": "Z8KPP8-8",
+     "qty": 1
+    },
+    {
+     "order": "115173",
+     "customer": "C0000639",
+     "region": "R2",
+     "sku": "G8ASPE-9.5",
+     "qty": 1
+    },
+    {
+     "order": "115172",
+     "customer": "C0000639",
+     "region": "R2",
+     "sku": "DGAONE-9.5",
+     "qty": 1
+    },
+    {
+     "order": "115171",
+     "customer": "C0000639",
+     "region": "R2",
+     "sku": "G8ASPE-9.5",
+     "qty": 1
+    },
+    {
+     "order": "115170",
+     "customer": "C0000639",
+     "region": "R2",
+     "sku": "G8ASPE-10.5",
+     "qty": 1
+    },
+    {
+     "order": "115169",
+     "customer": "C0000639",
+     "region": "R2",
+     "sku": "G8ASPE-11",
+     "qty": 1
+    },
+    {
+     "order": "115168",
+     "customer": "C0000625",
+     "region": "R4",
+     "sku": "TOENMT-10",
+     "qty": 1
+    }
+   ]
+  },
+  {
+   "wave": "40859",
+   "release_s": 63420,
+   "lines": [
+    {
+     "order": "115188",
+     "customer": "C0000700",
+     "region": "R2",
+     "sku": "TNAHD4-8.5",
+     "qty": 2
+    },
+    {
+     "order": "115187",
+     "customer": "C0000700",
+     "region": "R2",
+     "sku": "2LPO6D-8.5",
+     "qty": 1
+    },
+    {
+     "order": "115186",
+     "customer": "C0000674",
+     "region": "R1",
+     "sku": "DGAONE-12",
+     "qty": 2
+    },
+    {
+     "order": "115185",
+     "customer": "C0000654",
+     "region": "R3",
+     "sku": "G8ASPE-8",
+     "qty": 1
+    },
+    {
+     "order": "115184",
+     "customer": "C0000648",
+     "region": "R1",
+     "sku": "8N10W9-12",
+     "qty": 2
+    },
+    {
+     "order": "115184",
+     "customer": "C0000648",
+     "region": "R1",
+     "sku": "8N10W9-10",
+     "qty": 1
+    },
+    {
+     "order": "115184",
+     "customer": "C0000648",
+     "region": "R1",
+     "sku": "8N10W9-9.5",
+     "qty": 1
+    },
+    {
+     "order": "115184",
+     "customer": "C0000648",
+     "region": "R1",
+     "sku": "56TC1Z-9",
+     "qty": 1
+    },
+    {
+     "order": "115184",
+     "customer": "C0000648",
+     "region": "R1",
+     "sku": "ZRCYSH-10.5",
+     "qty": 1
+    },
+    {
+     "order": "115184",
+     "customer": "C0000648",
+     "region": "R1",
+     "sku": "ZRCYSH-9.5",
+     "qty": 1
+    },
+    {
+     "order": "115184",
+     "customer": "C0000648",
+     "region": "R1",
+     "sku": "ZRCYSH-9",
+     "qty": 2
+    },
+    {
+     "order": "115183",
+     "customer": "C0000646",
+     "region": "R4",
+     "sku": "LXJQVG-13",
+     "qty": 1
+    },
+    {
+     "order": "115182",
+     "customer": "C0000646",
+     "region": "R4",
+     "sku": "G8ASPE-10.5",
+     "qty": 1
+    },
+    {
+     "order": "115181",
+     "customer": "C0000646",
+     "region": "R4",
+     "sku": "DGAONE-11",
+     "qty": 1
+    },
+    {
+     "order": "115180",
+     "customer": "C0000643",
+     "region": "R1",
+     "sku": "7BU1V7-9.5",
+     "qty": 1
+    },
+    {
+     "order": "115180",
+     "customer": "C0000643",
+     "region": "R1",
+     "sku": "WH1BJI-11",
+     "qty": 1
+    },
+    {
+     "order": "115180",
+     "customer": "C0000643",
+     "region": "R1",
+     "sku": "8N10W9-11",
+     "qty": 1
+    },
+    {
+     "order": "115180",
+     "customer": "C0000643",
+     "region": "R1",
+     "sku": "8N10W9-10.5",
+     "qty": 1
+    },
+    {
+     "order": "115180",
+     "customer": "C0000643",
+     "region": "R1",
+     "sku": "AKP0A7-10",
+     "qty": 1
+    },
+    {
+     "order": "115180",
+     "customer": "C0000643",
+     "region": "R1",
+     "sku": "I1KDJ0-10",
+     "qty": 1
+    },
+    {
+     "order": "115180",
+     "customer": "C0000643",
+     "region": "R1",
+     "sku": "WRRW1W-11",
+     "qty": 1
+    }
+   ]
+  },
+  {
+   "wave": "40860",
+   "release_s": 63420,
+   "lines": [
+    {
+     "order": "115188",
+     "customer": "C0000700",
+     "region": "R2",
+     "sku": "U95NWB-10",
+     "qty": 1
+    },
+    {
+     "order": "115188",
+     "customer": "C0000700",
+     "region": "R2",
+     "sku": "NJVZEL-11",
+     "qty": 1
+    },
+    {
+     "order": "115188",
+     "customer": "C0000700",
+     "region": "R2",
+     "sku": "QVFB0Q-10",
+     "qty": 1
+    },
+    {
+     "order": "115188",
+     "customer": "C0000700",
+     "region": "R2",
+     "sku": "QVFB0Q-9",
+     "qty": 1
+    },
+    {
+     "order": "115188",
+     "customer": "C0000700",
+     "region": "R2",
+     "sku": "37VA62-10",
+     "qty": 1
+    },
+    {
+     "order": "115188",
+     "customer": "C0000700",
+     "region": "R2",
+     "sku": "TNAHD4-11",
+     "qty": 5
+    },
+    {
+     "order": "115188",
+     "customer": "C0000700",
+     "region": "R2",
+     "sku": "TNAHD4-10.5",
+     "qty": 5
+    },
+    {
+     "order": "115188",
+     "customer": "C0000700",
+     "region": "R2",
+     "sku": "TNAHD4-10",
+     "qty": 3
+    },
+    {
+     "order": "115188",
+     "customer": "C0000700",
+     "region": "R2",
+     "sku": "TNAHD4-9.5",
+     "qty": 3
+    },
+    {
+     "order": "115188",
+     "customer": "C0000700",
+     "region": "R2",
+     "sku": "TNAHD4-9",
+     "qty": 3
+    }
+   ]
+  },
+  {
+   "wave": "40861",
+   "release_s": 63420,
+   "lines": [
+    {
+     "order": "115191",
+     "customer": "C0000721",
+     "region": "R2",
+     "sku": "32ZKOX-10.5",
+     "qty": 2
+    },
+    {
+     "order": "115190",
+     "customer": "C0000709",
+     "region": "R2",
+     "sku": "RAUDQ6-9.5",
+     "qty": 1
+    },
+    {
+     "order": "115190",
+     "customer": "C0000709",
+     "region": "R2",
+     "sku": "2T1DJM-10.5",
+     "qty": 1
+    },
+    {
+     "order": "115190",
+     "customer": "C0000709",
+     "region": "R2",
+     "sku": "SWN7AU-14",
+     "qty": 1
+    },
+    {
+     "order": "115190",
+     "customer": "C0000709",
+     "region": "R2",
+     "sku": "SWN7AU-8.5",
+     "qty": 1
+    },
+    {
+     "order": "115190",
+     "customer": "C0000709",
+     "region": "R2",
+     "sku": "5P2MVG-12",
+     "qty": 1
+    },
+    {
+     "order": "115190",
+     "customer": "C0000709",
+     "region": "R2",
+     "sku": "1ENECA-9.5",
+     "qty": 1
+    },
+    {
+     "order": "115190",
+     "customer": "C0000709",
+     "region": "R2",
+     "sku": "1ENECA-8",
+     "qty": 1
+    },
+    {
+     "order": "115190",
+     "customer": "C0000709",
+     "region": "R2",
+     "sku": "EQQBND-14",
+     "qty": 1
+    },
+    {
+     "order": "115190",
+     "customer": "C0000709",
+     "region": "R2",
+     "sku": "WRRW1W-12",
+     "qty": 1
+    },
+    {
+     "order": "115190",
+     "customer": "C0000709",
+     "region": "R2",
+     "sku": "LXJQVG-13",
+     "qty": 1
+    },
+    {
+     "order": "115190",
+     "customer": "C0000709",
+     "region": "R2",
+     "sku": "LXJQVG-11",
+     "qty": 1
+    },
+    {
+     "order": "115189",
+     "customer": "C0000703",
+     "region": "R4",
+     "sku": "LXJQVG-11",
+     "qty": 1
+    },
+    {
+     "order": "115188",
+     "customer": "C0000700",
+     "region": "R2",
+     "sku": "XUZJ74-11",
+     "qty": 1
+    },
+    {
+     "order": "115188",
+     "customer": "C0000700",
+     "region": "R2",
+     "sku": "XUZJ74-10",
+     "qty": 1
+    },
+    {
+     "order": "115188",
+     "customer": "C0000700",
+     "region": "R2",
+     "sku": "XUZJ74-9",
+     "qty": 1
+    },
+    {
+     "order": "115188",
+     "customer": "C0000700",
+     "region": "R2",
+     "sku": "XUZJ74-8",
+     "qty": 1
+    },
+    {
+     "order": "115188",
+     "customer": "C0000700",
+     "region": "R2",
+     "sku": "SMMRK3-10",
+     "qty": 1
+    },
+    {
+     "order": "115188",
+     "customer": "C0000700",
+     "region": "R2",
+     "sku": "SMMRK3-9",
+     "qty": 1
+    },
+    {
+     "order": "115188",
+     "customer": "C0000700",
+     "region": "R2",
+     "sku": "SMMRK3-8",
+     "qty": 1
+    },
+    {
+     "order": "115188",
+     "customer": "C0000700",
+     "region": "R2",
+     "sku": "1ENECA-12",
+     "qty": 1
+    },
+    {
+     "order": "115188",
+     "customer": "C0000700",
+     "region": "R2",
+     "sku": "TNAHD4-12",
+     "qty": 2
+    }
+   ]
+  },
+  {
+   "wave": "40862",
+   "release_s": 63420,
+   "lines": [
+    {
+     "order": "115200",
+     "customer": "C0000728",
+     "region": "R2",
+     "sku": "CD1NU9-9",
+     "qty": 1
+    },
+    {
+     "order": "115200",
+     "customer": "C0000728",
+     "region": "R2",
+     "sku": "CD1NU9-7.5",
+     "qty": 1
+    },
+    {
+     "order": "115199",
+     "customer": "C0000725",
+     "region": "R1",
+     "sku": "G8ASPE-9",
+     "qty": 2
+    },
+    {
+     "order": "115198",
+     "customer": "C0000725",
+     "region": "R1",
+     "sku": "N6JU7C-6.5",
+     "qty": 1
+    },
+    {
+     "order": "115197",
+     "customer": "C0000721",
+     "region": "R2",
+     "sku": "Q164T6-11",
+     "qty": 1
+    },
+    {
+     "order": "115197",
+     "customer": "C0000721",
+     "region": "R2",
+     "sku": "I1KDJ0-8",
+     "qty": 1
+    },
+    {
+     "order": "115196",
+     "customer": "C0000721",
+     "region": "R2",
+     "sku": "LXJQVG-8",
+     "qty": 4
+    },
+    {
+     "order": "115195",
+     "customer": "C0000721",
+     "region": "R2",
+     "sku": "Z8KPP8-8",
+     "qty": 2
+    },
+    {
+     "order": "115194",
+     "customer": "C0000721",
+     "region": "R2",
+     "sku": "LXJQVG-11",
+     "qty": 2
+    },
+    {
+     "order": "115193",
+     "customer": "C0000721",
+     "region": "R2",
+     "sku": "LXJQVG-9",
+     "qty": 4
+    },
+    {
+     "order": "115192",
+     "customer": "C0000721",
+     "region": "R2",
+     "sku": "LXJQVG-13",
+     "qty": 2
+    },
+    {
+     "order": "115137",
+     "customer": "C0000489",
+     "region": "R1",
+     "sku": "EO69NY-11",
+     "qty": 12
+    }
+   ]
+  }
+ ]
+}
