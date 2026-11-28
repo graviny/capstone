@@ -145,6 +145,10 @@ def main():
     log_dir = log_dir_for(cfg, wes.name)               # same folder rule as the lite runs
     tag = log_dir.name
     log_dir.mkdir(parents=True, exist_ok=True)
+    # What this run was, so tools/validate_lite.py can repeat it in the lightweight simulator.
+    (log_dir / "scenario.json").write_text(json.dumps(cfg), encoding="utf-8")
+    (log_dir / "run_env.json").write_text(json.dumps({k: os.environ.get(k) for k in (
+        "WES_MODULE", "WES_SCHEDULER", "VERIFY_POLICY", "ASSIGN_WEIGHTS")}), encoding="utf-8")
     ev_file = open(log_dir / "events.jsonl", "w", encoding="utf-8")
     truth_file = open(log_dir / "truth.jsonl", "w", encoding="utf-8")
     ts_file = open(log_dir / "timeseries.csv", "w", newline="", encoding="utf-8")
